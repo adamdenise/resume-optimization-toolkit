@@ -1,34 +1,17 @@
-## V4.1 update
-- Added browser print-to-PDF workflow (Save PDF button opens iOS print sheet).
-- Added heuristic CV section review; keyword-based, not AI or ATS.
-- Improved mobile export buttons, focus states and print stylesheet.
-- TXT export retained.
-- No payment system, server, accounts or external API.
+# ResumePilot V4.3 — International Edition
 
-# ResumePilot — Resume Optimization Toolkit V4 Premium Demo
-
-A responsive, browser-based CV-to-job comparison demo built with HTML, CSS, and vanilla JavaScript.
+Browser-based resume builder, keyword comparison, and **estimated** ATS readiness heuristic.
 
 ## Features
-- Premium responsive interface
-- CV and job description comparison
-- Estimated keyword match based on recognized skills
-- Basic synonym matching and skill gap analysis
-- Actionable, rule-based recommendations
-- Downloadable text report
-- Example data, clear button, word counters
-- No accounts, API keys, analytics, or server-side processing
+- Interface language selector: English (default), Romanian, Italian, German, French, Spanish. **Core interface labels are localized; analysis recommendations, generated CV headings and PDF report text remain in English in this release.**
+- Upload text-based PDF and DOCX documents; extraction uses PDF.js and Mammoth downloaded from CDN, executed locally in the browser. Internet access required for the parser libraries on first use.
+- Legacy `.doc` and scanned/image PDFs are **not** supported.
+- Build a single-column resume from verified user-entered information; export basic PDF.
+- Keyword match and an **estimated ATS readiness heuristic** (55% recognized skill coverage, 30% section headings, 15% rough evidence signal). Not a verified ATS score, hiring probability, or format audit.
+- Export comparison report PDF and TXT.
 
-## How to publish on GitHub Pages
-1. Upload `index.html`, `style.css`, `script.js`, and `README.md` into the root of the `resume-optimization-toolkit` repository, replacing older versions.
-2. Commit the changes to the `main` branch.
-3. Under **Settings → Pages**, configure **Deploy from a branch**, `main`, `/(root)` if not already configured.
-4. Open `https://adamdenise.github.io/resume-optimization-toolkit/` after deployment.
+## Privacy and limitations
+Resume text is processed in-browser, without an application backend. Third-party parser scripts are loaded from a CDN; deploy self-hosted, reviewed copies before handling sensitive documents in production. Do not enter confidential personal details in demos. The AI Resume Writer is **not implemented**: adding real AI requires a secure backend, consent, data-retention policy and appropriate costs. PDF generator uses built-in Helvetica and ASCII transliteration, so diacritics and non-Latin characters may not be preserved in exports.
 
-## Important limitations
-This is not an AI product or ATS simulator. The score is simply the percentage of job skills recognized by the built-in dictionary that also appear in the resume. It cannot assess qualifications, job suitability, or hiring probability. Skill synonyms are incomplete. Users should not add unearned skills.
-
-The tool processes text locally in the browser and does not intentionally transmit resume text. For privacy, test with anonymized resumes. Review privacy, accessibility, security, and applicable laws before any commercial launch. There are no subscriptions or payment features yet.
-
-## License
-All rights reserved. No open-source license is granted by this repository unless its owner adds one.
+## Deploy
+Upload `index.html`, `style.css`, `script.js`, and `README.md` to the root of the existing GitHub Pages repository. The existing `pdf-addon.js` is unused and can remain without affecting this release.
