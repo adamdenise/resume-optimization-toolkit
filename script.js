@@ -57,7 +57,37 @@ function buildPdf(data){
  const xref=encoder.encode(pdf).length;pdf+=`xref\n0 ${objects.length}\n0000000000 65535 f \n`;for(let i=1;i<objects.length;i++)pdf+=`${String(offsets[i]).padStart(10,'0')} 00000 n \n`;pdf+=`trailer\n<< /Size ${objects.length} /Root ${catalog} 0 R >>\nstartxref\n${xref}\n%%EOF`;
  return new Blob([encoder.encode(pdf)],{type:'application/pdf'});
 }
-function saveBlob(blob,name){const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),60000);}
+
+async function saveBlob(blob, name) {
+  const file = new File([blob], name, {
+    type: blob.type || 'application/pdf'
+  });
+
+  if (
+    navigator.canShare &&
+    navigator.share &&
+    navigator.canShare({ files: [file] })
+  ) {
+    try {
+      await navigator.share({ files: [file] });
+      return;
+    } catch (error) {
+      if (error.name === 'AbortError') return;
+      console.warn('Share failed:', error);
+    }
+  }
+
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = name;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+
+  setTimeout(() => URL.revokeObjectURL(url), 60000);
+}
+
 $('analyze').addEventListener('click',analyze);
 $('resume').addEventListener('input',updateCounts);$('job').addEventListener('input',updateCounts);
 $('clear').addEventListener('click',()=>{$('resume').value='';$('job').value='';$('message').textContent='';$('exportMessage').textContent='';$('results').classList.add('hidden');report='';lastResult=null;updateCounts();$('resume').focus();});
