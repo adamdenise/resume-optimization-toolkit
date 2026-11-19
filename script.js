@@ -1,62 +1,44 @@
-"use strict";
-// Transparent, limited keyword dictionary. This is NOT an ATS or AI evaluation.
-const skillGroups = {
-  "Excel": ["excel", "microsoft excel", "spreadsheets"],
-  "Communication": ["communication", "communicating"],
-  "Customer Service": ["customer service", "customer support"],
-  "Data Analysis": ["data analysis", "data analytics"],
-  "Project Management": ["project management", "project manager"],
-  "Teamwork": ["teamwork", "collaboration", "collaborative"],
-  "Problem Solving": ["problem solving", "problem-solving"],
-  "Python": ["python"], "JavaScript": ["javascript"], "HTML": ["html"],
-  "CSS": ["css"], "SQL": ["sql"], "Git": ["git", "github"],
-  "SEO": ["seo", "search engine optimization"],
-  "Marketing": ["marketing"], "Leadership": ["leadership"],
-  "Sales": ["sales"], "Writing": ["writing", "copywriting"],
-  "Microsoft Word": ["microsoft word", "ms word"],
-  "Power BI": ["power bi"], "Tableau": ["tableau"],
-  "Figma": ["figma"], "Canva": ["canva"]
-};
+'use strict';
 const $ = id => document.getElementById(id);
-function containsTerm(text, term) {
-  const escaped = term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  return new RegExp("(^|[^a-z0-9])" + escaped + "(?=$|[^a-z0-9])", "i").test(text);
+const dictionary = {
+  'Excel':['excel','microsoft excel','spreadsheets'], 'Communication':['communication','communicating','verbal communication','written communication'],
+  'Customer Service':['customer service','customer support','client support','customer inquiries'],
+  'Data Analysis':['data analysis','data analytics','analyzing data','analyse data'],
+  'Teamwork':['teamwork','team collaboration','collaborative work','working in a team'],
+  'Problem Solving':['problem solving','problem-solving','troubleshooting','resolve problems','solving problems'],
+  'SQL':['sql','structured query language'], 'Python':['python'], 'JavaScript':['javascript','js'],
+  'HTML':['html'], 'CSS':['css'], 'Project Management':['project management','managing projects'],
+  'Leadership':['leadership','team lead','leading teams'], 'SEO':['seo','search engine optimization'],
+  'Marketing':['marketing','digital marketing'], 'Sales':['sales','selling'],
+  'Microsoft Word':['microsoft word','ms word'], 'Power BI':['power bi','powerbi'],
+  'Tableau':['tableau'], 'Git':['git','github'], 'CRM':['crm','salesforce','hubspot'],
+  'Administrative Support':['administrative support','administrative tasks','office administration'],
+  'Time Management':['time management','prioritization','prioritisation'],
+  'Attention to Detail':['attention to detail','detail oriented','detail-oriented'],
+  'Adaptability':['adaptability','adaptable','flexibility'], 'Research':['research','market research'],
+  'Writing':['writing','copywriting','content writing'], 'Design':['graphic design','visual design','figma','canva'],
+  'Healthcare':['healthcare','patient care','nursing'], 'Languages':['multilingual','foreign languages','bilingual']
+};
+function normalize(s){return s.toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g,'').replace(/[‐‑–—]/g,'-');}
+function hasPhrase(text,phrase){const escaped=normalize(phrase).replace(/[.*+?^${}()|[\]\\]/g,'\\$&');return new RegExp('(^|[^a-z0-9])'+escaped+'(?=$|[^a-z0-9])','i').test(text);}
+function findSkills(text){const clean=normalize(text);return Object.entries(dictionary).filter(([,terms])=>terms.some(t=>hasPhrase(clean,t))).map(([name])=>name);}
+function countWords(s){return s.trim()?s.trim().split(/\s+/).length:0;}
+function updateCounts(){$('resumeWords').textContent=countWords($('resume').value)+' words';$('jobWords').textContent=countWords($('job').value)+' words';}
+function renderChips(id,values,missing=false){const node=$(id);node.replaceChildren();if(!values.length){const p=document.createElement('p');p.className='empty';p.textContent=missing?'No missing recognized skills.':'No recognized matching skills.';node.append(p);return;}values.forEach(v=>{const chip=document.createElement('span');chip.className='chip'+(missing?' miss':'');chip.textContent=v;node.append(chip);});}
+let report='';
+function analyze(){const resume=$('resume').value.trim(),job=$('job').value.trim();if(!resume||!job){$('message').textContent='Please enter both your resume and the job description.';$('results').classList.add('hidden');return;}
+ const jobSkills=findSkills(job),resumeSkills=findSkills(resume);if(!jobSkills.length){$('message').textContent='No skills from our current dictionary were recognized in the job description. Try a more detailed job listing.';$('results').classList.add('hidden');return;}
+ const matched=jobSkills.filter(x=>resumeSkills.includes(x)),missing=jobSkills.filter(x=>!resumeSkills.includes(x));const score=Math.round(matched.length/jobSkills.length*100);const words=countWords(resume);
+ $('message').textContent='';$('score').textContent=score+'%';$('ring').style.setProperty('--score',score);$('matchedCount').textContent=matched.length;$('missingCount').textContent=missing.length;$('wordCount').textContent=words+' words';renderChips('matched',matched);renderChips('missing',missing,true);
+ const rec=[];if(missing.length)rec.push('If you genuinely have these skills, add concrete evidence of where you used them: '+missing.join(', ')+'.');else rec.push('All recognized job skills appear in your resume. Verify that your examples demonstrate your actual experience.');
+ rec.push('Support relevant skills with specific achievements, responsibilities, and measurable results when available.');if(words<150)rec.push('Your resume text is short. Consider adding relevant work examples, education, and outcomes.');rec.push('Read the complete job description manually. Keyword matching cannot assess seniority, qualifications, proficiency, or overall fit.');
+ const list=$('recommendations');list.replaceChildren();rec.forEach(r=>{const li=document.createElement('li');li.textContent=r;list.append(li);});
+ report=['RESUMEPILOT — V4 COMPATIBILITY REPORT','',`Estimated keyword match: ${score}% (not ATS score)`,`Resume length: ${words} words`,'',`Matched skills: ${matched.join(', ')||'None'}`,`Skills not found in CV: ${missing.join(', ')||'None'}`,'','RECOMMENDATIONS',...rec.map((r,i)=>`${i+1}. ${r}`),'','Rule-based browser analysis. Not an AI, ATS, or hiring prediction.'].join('\n');
+ $('results').classList.remove('hidden');$('results').scrollIntoView({behavior:'smooth',block:'start'});
 }
-function findSkills(text) {
-  return Object.keys(skillGroups).filter(name => skillGroups[name].some(term => containsTerm(text, term)));
-}
-function fillList(id, entries, emptyText) {
-  const list = $(id); list.replaceChildren();
-  (entries.length ? entries : [emptyText]).forEach(item => { const li = document.createElement("li"); li.textContent = item; list.append(li); });
-}
-function analyze() {
-  const resume = $("resume").value.trim();
-  const job = $("job").value.trim();
-  $("error").textContent = "";
-  if (!resume || !job) { $("results").hidden = true; $("error").textContent = "Please paste both a resume and a job description."; return; }
-  const required = findSkills(job), present = findSkills(resume);
-  const matched = required.filter(s => present.includes(s));
-  const missing = required.filter(s => !present.includes(s));
-  const score = required.length ? Math.round(matched.length / required.length * 100) : null;
-  $("score").textContent = score === null ? "N/A" : score + "%";
-  $("bar").style.width = (score ?? 0) + "%";
-  fillList("matched", matched, "No recognized skill matches yet.");
-  fillList("missing", missing, required.length ? "No missing skills from the recognized list." : "No skills from our limited dictionary were recognized in the job description.");
-  const tips = [];
-  if (!required.length) tips.push("The job ad contains no skills from our limited dictionary. Try a more detailed description; no score can be calculated.");
-  if (missing.length) tips.push("If you genuinely have these skills, describe where you used them: " + missing.join(", ") + ".");
-  if (matched.length) tips.push("Support matched skills with specific achievements and measurable results where possible.");
-  if (!/\b(experience|employment|work history)\b/i.test(resume)) tips.push("Consider adding a clearly labeled Experience section.");
-  if (!/\b(education|degree|qualification)\b/i.test(resume)) tips.push("Consider adding an Education section.");
-  tips.push("Review the complete job description manually; keyword matching cannot assess seniority, qualifications, or fit.");
-  fillList("tips", tips, "Review your resume carefully.");
-  $("results").hidden = false;
-  $("results").scrollIntoView({behavior:"smooth",block:"start"});
-}
-$("analyze").addEventListener("click", analyze);
-$("clear").addEventListener("click", () => { $("resume").value = ""; $("job").value = ""; $("results").hidden = true; $("error").textContent = ""; });
-$("demo").addEventListener("click", () => {
-  $("resume").value = "Professional Summary: Motivated professional in customer service. Experience: Two years helping customers. Education: Bachelor's Degree in Business Administration. Skills: Excel, Communication, Customer Service, Data Analysis, Teamwork.";
-  $("job").value = "We are hiring a Customer Support Analyst. Required skills: Customer Service, Excel, Communication, Data Analysis, SQL and Problem Solving. Experience in teamwork is valuable.";
-  $("results").hidden = true;
-});
+$('analyze').addEventListener('click',analyze);
+$('resume').addEventListener('input',updateCounts);$('job').addEventListener('input',updateCounts);
+$('clear').addEventListener('click',()=>{$('resume').value='';$('job').value='';$('message').textContent='';$('results').classList.add('hidden');report='';updateCounts();$('resume').focus();});
+$('sample').addEventListener('click',()=>{$('resume').value=`Professional Summary\nCustomer service professional with two years of experience responding to customer inquiries and coordinating administrative tasks.\n\nExperience\nCustomer Service Assistant: Supported customers, collaborated with colleagues, communicated clearly, and maintained Excel spreadsheets for reporting. Helped with data analysis and tracked service requests.\n\nEducation\nBachelor's Degree in Business Administration.\n\nSkills\nMicrosoft Excel, Communication, Customer Service, Data Analysis, Teamwork, Project Management.`;$('job').value=`Customer Operations Analyst\nWe are seeking a candidate with strong customer service, communication, teamwork, Excel, data analysis, problem solving, and SQL skills. Responsibilities include supporting customers, preparing reports, investigating issues and collaborating across departments.`;$('results').classList.add('hidden');$('message').textContent='Example loaded. Tap Analyze compatibility.';updateCounts();});
+$('download').addEventListener('click',()=>{if(!report)return;const blob=new Blob([report],{type:'text/plain;charset=utf-8'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='resumepilot-v4-report.txt';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);});
+updateCounts();

@@ -1,26 +1,27 @@
-# Resume Optimization Toolkit V3
+# ResumePilot — Resume Optimization Toolkit V4 Premium Demo
 
-A mobile-friendly CV-to-job-description comparison demo, built with HTML, CSS and JavaScript.
+A responsive, browser-based CV-to-job comparison demo built with HTML, CSS, and vanilla JavaScript.
 
 ## Features
-- Paste resume and job description
-- Compare recognized skill keywords
-- Show an estimated keyword match percentage
-- Identify matched and not-mentioned skills
-- Provide rule-based suggestions
-- Demo input and clear controls
+- Premium responsive interface
+- CV and job description comparison
+- Estimated keyword match based on recognized skills
+- Basic synonym matching and skill gap analysis
+- Actionable, rule-based recommendations
+- Downloadable text report
+- Example data, clear button, word counters
+- No accounts, API keys, analytics, or server-side processing
 
-## Run
-Open `index.html` in a browser or publish the repository root with GitHub Pages.
+## How to publish on GitHub Pages
+1. Upload `index.html`, `style.css`, `script.js`, and `README.md` into the root of the `resume-optimization-toolkit` repository, replacing older versions.
+2. Commit the changes to the `main` branch.
+3. Under **Settings → Pages**, configure **Deploy from a branch**, `main`, `/(root)` if not already configured.
+4. Open `https://adamdenise.github.io/resume-optimization-toolkit/` after deployment.
 
 ## Important limitations
-This is **not AI**, an applicant tracking system (ATS) assessment, or a hiring prediction. The percentage measures overlap among a limited set of recognized skill terms in the job description. A skill not found in the resume may still be possessed by the applicant. Do not invent credentials or work experience.
+This is not an AI product or ATS simulator. The score is simply the percentage of job skills recognized by the built-in dictionary that also appear in the resume. It cannot assess qualifications, job suitability, or hiring probability. Skill synonyms are incomplete. Users should not add unearned skills.
 
-## Privacy
-Analysis is performed locally in the browser; this version has no backend, analytics or storage. For public demos, use fictional or anonymized CVs. Review hosting and third-party services before making broader privacy promises.
+The tool processes text locally in the browser and does not intentionally transmit resume text. For privacy, test with anonymized resumes. Review privacy, accessibility, security, and applicable laws before any commercial launch. There are no subscriptions or payment features yet.
 
-## Commercial roadmap
-Future options include richer parsing, optional secure accounts, privacy controls, user research, accessible design, payments and server-side AI features with clear consent and safeguards.
-
-## Rights
-All rights reserved. No reuse license is granted by this repository.
+## License
+All rights reserved. No open-source license is granted by this repository unless its owner adds one.
