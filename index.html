@@ -1,0 +1,27 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resume Optimization Toolkit</title>
+</head>
+<body>
+  <h1>Resume Optimization Toolkit</h1>
+  <p>Analyze your resume. Identify skills. Improve your career opportunities.</p>
+  <h2>Resume Analyzer</h2>
+  <textarea id="resume" placeholder="Paste your resume here"></textarea>
+  <button onclick="analyzeResume()">Analyze Resume</button>
+  <p id="result"></p>
+
+  <script>
+    function analyzeResume() {
+      const resume = document.getElementById("resume").value.trim();
+      document.getElementById("result").textContent =
+        resume
+          ? "Resume received. Analysis features coming next."
+          : "Please enter your resume first.";
+    }
+  </script>
+</body>
+</html>
