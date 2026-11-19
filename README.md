@@ -1,3 +1,10 @@
+## V4.1 update
+- Added browser print-to-PDF workflow (Save PDF button opens iOS print sheet).
+- Added heuristic CV section review; keyword-based, not AI or ATS.
+- Improved mobile export buttons, focus states and print stylesheet.
+- TXT export retained.
+- No payment system, server, accounts or external API.
+
 # ResumePilot — Resume Optimization Toolkit V4 Premium Demo
 
 A responsive, browser-based CV-to-job comparison demo built with HTML, CSS, and vanilla JavaScript.
