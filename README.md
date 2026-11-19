@@ -1,25 +1,26 @@
-# Resume Optimization Toolkit Pro
+# Resume Optimization Toolkit V3
 
-A mobile-first, privacy-conscious, rule-based resume and job-description comparison demo.
+A mobile-friendly CV-to-job-description comparison demo, built with HTML, CSS and JavaScript.
 
 ## Features
-- Resume section and skills detection
-- Optional job description comparison
-- Transparent keyword overlap percentage (not an ATS score)
-- Actionable recommendations
-- Local browser-only processing; no account or API key required
+- Paste resume and job description
+- Compare recognized skill keywords
+- Show an estimated keyword match percentage
+- Identify matched and not-mentioned skills
+- Provide rule-based suggestions
+- Demo input and clear controls
 
 ## Run
-Open `index.html` in a browser, or deploy the repository with GitHub Pages (Settings → Pages → Deploy from a branch → main → /root).
+Open `index.html` in a browser or publish the repository root with GitHub Pages.
 
-## Limitations
-The dictionary is intentionally small; results may miss synonyms and context. No AI model, validated ATS scoring, or payment functionality is included. Do not enter confidential personal information into untrusted websites.
+## Important limitations
+This is **not AI**, an applicant tracking system (ATS) assessment, or a hiring prediction. The percentage measures overlap among a limited set of recognized skill terms in the job description. A skill not found in the resume may still be possessed by the applicant. Do not invent credentials or work experience.
 
-## Roadmap
-- Accessible report export
-- Multilingual support
-- Secure server-side AI suggestions
-- Authentication and subscriptions
+## Privacy
+Analysis is performed locally in the browser; this version has no backend, analytics or storage. For public demos, use fictional or anonymized CVs. Review hosting and third-party services before making broader privacy promises.
 
-## License
-All rights reserved unless a license is added by the repository owner.
+## Commercial roadmap
+Future options include richer parsing, optional secure accounts, privacy controls, user research, accessible design, payments and server-side AI features with clear consent and safeguards.
+
+## Rights
+All rights reserved. No reuse license is granted by this repository.
