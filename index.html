@@ -8,23 +8,88 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Resume Optimization Toolkit</h1>
-  <p>Analyze your resume. Identify skills. Improve your career opportunities.</p>
-  <h2>Resume Analyzer</h2>
-  <textarea id="resume" placeholder="Paste your resume here"></textarea>
-  <button onclick="analyzeResume()">Analyze Resume</button>
-  <p id="result"></p>
+  <main>
+    <h1>Resume Optimization Toolkit</h1>
+    <p>Analyze your resume. Discover skills. Improve your applications.</p>
+
+    <h2>Resume Analyzer</h2>
+    <label for="resume">Paste your resume below:</label>
+    <textarea id="resume" placeholder="Paste your resume here"></textarea>
+
+    <button type="button" onclick="analyzeResume()">Analyze Resume</button>
+
+    <section id="result" aria-live="polite">
+      Your analysis will appear here.
+    </section>
+  </main>
 
   <script>
     function analyzeResume() {
       const resume = document.getElementById("resume").value.trim();
-      document.getElementById("result").textContent =
-        resume
-          ? "Resume received. Analysis features coming next."
-          : "Please enter your resume first.";
+      const result = document.getElementById("result");
+
+      if (!resume) {
+        result.textContent = "Please enter your resume first.";
+        return;
+      }
+
+      const sections = {
+        "Experience": /\b(experience|employment|work history)\b/i,
+        "Education": /\b(education|university|degree)\b/i,
+        "Skills": /\b(skills|competencies|expertise)\b/i,
+        "Summary": /\b(summary|profile|objective)\b/i
+      };
+
+      const skills = [
+        "JavaScript", "HTML", "CSS", "Python",
+        "Excel", "SQL", "Marketing", "SEO",
+        "Communication", "Leadership",
+        "Project Management", "Data Analysis",
+        "Customer Service", "GitHub"
+      ];
+
+      const foundSections = Object.keys(sections)
+        .filter(name => sections[name].test(resume));
+
+      const foundSkills = skills.filter(skill =>
+        resume.toLowerCase().includes(skill.toLowerCase())
+      );
+
+      const missingSections = Object.keys(sections)
+        .filter(name => !foundSections.includes(name));
+
+      const wordCount = resume.split(/\s+/).length;
+
+      result.replaceChildren();
+
+      function addText(tag, value) {
+        const element = document.createElement(tag);
+        element.textContent = value;
+        result.appendChild(element);
+      }
+
+      addText("h2", "Resume Analysis Results");
+      addText("p", "Word count: " + wordCount);
+      addText("h3", "Detected Sections");
+      addText("p", foundSections.join(", ") || "None detected");
+
+      addText("h3", "Detected Skills");
+      addText("p", foundSkills.join(", ") || "No predefined skills detected");
+
+      addText("h3", "Recommendations");
+
+      if (missingSections.length) {
+        addText("p", "Review these sections: " + missingSections.join(", "));
+      } else {
+        addText("p", "All four common resume sections were detected.");
+      }
+
+      if (wordCount < 150) {
+        addText("p", "Your resume may need more detail about your experience and achievements.");
+      }
+
+      addText("p", "This is a basic rule-based analysis, not an AI or ATS evaluation.");
     }
   </script>
 </body>
 </html>
-
-
