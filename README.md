@@ -1,17 +1,21 @@
-# ResumePilot V4.3 — International Edition
+# ResumePilot V5.0 — Zero-Budget Foundation
 
-Browser-based resume builder, keyword comparison, and **estimated** ATS readiness heuristic.
+This package extends the working V4.3 International Edition. The original builder, PDF/DOCX importer, ATS readiness estimate and exports remain in place.
 
-## Features
-- Interface language selector: English (default), Romanian, Italian, German, French, Spanish. **Core interface labels are localized; analysis recommendations, generated CV headings and PDF report text remain in English in this release.**
-- Upload text-based PDF and DOCX documents; extraction uses PDF.js and Mammoth downloaded from CDN, executed locally in the browser. Internet access required for the parser libraries on first use.
-- Legacy `.doc` and scanned/image PDFs are **not** supported.
-- Build a single-column resume from verified user-entered information; export basic PDF.
-- Keyword match and an **estimated ATS readiness heuristic** (55% recognized skill coverage, 30% section headings, 15% rough evidence signal). Not a verified ATS score, hiring probability, or format audit.
-- Export comparison report PDF and TXT.
+## New in V5.0
+- Writing Studio: local rule-based structured draft from **verified** experience and skills.
+- Copy draft to existing Resume Builder.
+- Studio headings, buttons and disclaimers in six languages (English default). Generated draft content remains English in this preview.
+- No API keys, backend, accounts, telemetry, or server requests from the Writing Studio.
 
-## Privacy and limitations
-Resume text is processed in-browser, without an application backend. Third-party parser scripts are loaded from a CDN; deploy self-hosted, reviewed copies before handling sensitive documents in production. Do not enter confidential personal details in demos. The AI Resume Writer is **not implemented**: adding real AI requires a secure backend, consent, data-retention policy and appropriate costs. PDF generator uses built-in Helvetica and ASCII transliteration, so diacritics and non-Latin characters may not be preserved in exports.
+**IMPORTANT:** This is NOT generative AI. It does not make semantic recommendations. Existing PDF/DOCX import uses third-party CDN libraries as in V4.3. Do not present the application as AI-powered yet.
 
-## Deploy
-Upload `index.html`, `style.css`, `script.js`, and `README.md` to the root of the existing GitHub Pages repository. The existing `pdf-addon.js` is unused and can remain without affecting this release.
+## iPhone / GitHub installation
+1. Keep V4.3 working. Ideally create a `v4.3-backup` branch or download a copy of the repository first.
+2. Unzip the package in Files.
+3. Upload all **five** files to the existing repository root: `index.html`, `style.css`, `script.js`, `studio.js`, `README.md`.
+4. Commit to `main`, wait for GitHub Pages to publish, and reload in Safari.
+5. Test: V5.0 badge, Writing Studio draft, Copy to Resume Builder, Generate resume, PDF export, existing ATS demo and import.
+
+## Roadmap to real AI
+A secure backend (e.g. Cloudflare Worker) can be introduced when a funded API or carefully evaluated free provider is available. Add abuse prevention, request limits, consent and privacy notices before public access. Never embed an API secret in GitHub Pages.
