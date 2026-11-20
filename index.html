@@ -36,4 +36,375 @@
     <small>PEOPLE TECHNOLOGY</small>
   </span>
 </a>
-   <div class="header-tools"><select aria-label="Interface language" id="language"><option value="en">🇬🇧 English</option><option value="ro">🇷🇴 Română</option><option value="it">🇮🇹 Italiano</option><option value="de">🇩🇪 Deutsch</option><option value="fr">🇫🇷 Français</option><option value="es">🇪🇸 Español</option></select><span class="version">V5.0 · FOUNDATION</span></div></header><main id="top"><section class="hero"><span class="eyebrow">✦ YOUR NEXT CAREER MOVE STARTS HERE</span><h1 data-i18n="heroTitle">Make your resume <em>work smarter.</em></h1><p data-i18n="heroDescription">Compare your resume with a job description. Discover matching skills, identify gaps, and get practical recommendations — in seconds.</p><div class="hero-meta"><span>✓ No sign-up</span><span>✓ Private in-browser analysis</span><span>✓ Free demo</span></div></section><section class="workspace ai-preview" id="ai-studio"><div class="section-head"><div><span class="overline">V5.0 · ZERO-BUDGET FOUNDATION</span><h2 id="studioHeading">Resume Writing Studio</h2><p id="studioIntro">Rule-based writing assistance today. Real AI is not connected; no content is sent to a server.</p></div></div><div class="builder-grid"><label><span id="studioRoleLabel">Target role</span><input id="studioRole" placeholder="e.g. Customer Support Specialist" maxlength="120"></label><label><span id="studioToneLabel">Writing style</span><select id="studioTone"><option value="concise">Concise</option><option value="results">Results-focused</option></select></label><label><span id="studioExperienceLabel">Verified experience</span><textarea id="studioExperience" rows="4" placeholder="Describe real duties and achievements; do not include sensitive data."></textarea></label><label><span id="studioSkillsLabel">Verified skills</span><textarea id="studioSkills" rows="4" placeholder="e.g. Excel, customer service, CRM"></textarea></label></div><div class="actions"><button class="primary" id="studioDraft" type="button">Create structured draft</button><button class="ghost" id="studioToBuilder" type="button">Copy draft to Resume Builder</button></div><p class="message" id="studioStatus" role="status" aria-live="polite"></p><div class="studio-notice" id="studioNotice">Preview only: templates and text rules, NOT generative AI. Review and edit every statement. Never add qualifications you do not have.</div><pre class="builder-preview" id="studioOutput" aria-label="Writing studio draft"></pre></section><section class="workspace builder" id="builder"><div class="section-head"><div><span class="overline">RESUME BUILDER</span><h2 data-i18n="builderTitle" id="builderTitle">Create your ATS-friendly resume</h2><p data-i18n="builderIntro" id="builderIntro">Enter verified information and generate a clean, single-column resume. No AI is connected in this version.</p></div></div><div class="builder-grid"><label>Full name<input autocomplete="name" id="bName" placeholder="Your name"/></label><label>Professional title<input id="bTitle" placeholder="Customer Support Specialist"/></label><label>Contact (optional)<input id="bContact" placeholder="Email · City · LinkedIn"/></label><label>Education<textarea id="bEducation" placeholder="Degrees and qualifications" rows="3"></textarea></label><label>Professional summary<textarea id="bSummary" placeholder="Your professional background" rows="4"></textarea></label><label>Experience<textarea id="bExperience" placeholder="Role, employer, dates and real achievements" rows="5"></textarea></label><label>Skills<textarea id="bSkills" placeholder="Your actual skills" rows="4"></textarea></label></div><div class="actions"><button class="primary" data-i18n="buildResume" id="buildResume" type="button">Generate resume</button><button class="ghost" data-i18n="exportResume" id="exportResume" type="button">Export resume PDF</button></div><p class="message" id="builderMessage" role="status"></p><pre aria-label="Resume preview" class="builder-preview" id="builderPreview"></pre></section><section aria-labelledby="workspaceTitle" class="workspace"><div class="section-head"><div><span class="overline">YOUR WORKSPACE</span><h2 data-i18n="workspaceTitle" id="workspaceTitle">Resume &amp; job comparison</h2><p>Paste anonymized text into both fields to begin.</p></div><button class="ghost" data-i18n="sample" id="sample" type="button">✦ Load example</button></div><div class="import-panel"><label data-i18n="uploadLabel" for="resumeFile" id="uploadLabel"><strong>Upload your resume</strong> (PDF or DOCX)</label><input accept=".pdf,.docx,.doc,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document" id="resumeFile" type="file"/><p class="hint" id="fileStatus" role="status">Text-based PDFs and DOCX supported. Legacy .doc and scanned PDFs are not supported in this version. Parsing libraries load from a CDN; your file is processed locally in your browser.</p></div><div class="input-grid"><div class="field"><label for="resume">01 <strong>Your resume</strong></label><textarea id="resume" placeholder="Paste your professional summary, experience, education and skills here..." spellcheck="true"></textarea><div class="field-foot"><span>Remove personal contact details before testing.</span><span id="resumeWords">0 words</span></div></div><div class="field"><label for="job">02 <strong>Job description</strong></label><textarea id="job" placeholder="Paste the job responsibilities, required skills and qualifications here..." spellcheck="true"></textarea><div class="field-foot"><span>Include the full requirements for better results.</span><span id="jobWords">0 words</span></div></div></div><div class="actions"><button class="primary" data-i18n="analyze" id="analyze" type="button">Analyze compatibility <span>→</span></button><button class="ghost" data-i18n="clear" id="clear" type="button">Clear all</button></div><p aria-live="polite" class="message" id="message" role="status"></p></section><section aria-live="polite" class="results hidden" id="results"><div class="results-head"><div><span class="overline">YOUR ANALYSIS</span><h2>Compatibility report</h2><p>Transparent, skills-based guidance for your next application.</p></div><div class="export-actions"><button class="ghost" id="download" type="button">↓ Download TXT</button><button class="ghost" id="printPdf" type="button">↓ Save PDF</button></div></div><p aria-live="polite" class="export-message" id="exportMessage" role="status"></p><div class="score-layout"><div class="score-card"><div class="ring" id="ring"><div><strong id="score">0%</strong><span>keyword match</span></div></div><p>Estimated coverage of recognized skills mentioned in the job description.</p><small>Not an ATS score or hiring prediction.</small></div><div class="stats"><div class="stat"><span>Matched skills</span><strong id="matchedCount">0</strong></div><div class="stat"><span>Skills to review</span><strong id="missingCount">0</strong></div><div class="stat"><span>Resume length</span><strong id="wordCount">0 words</strong></div></div></div><article class="report-card ats-card"><h3 data-i18n="atsHeading" id="atsHeading">Estimated ATS readiness</h3><div class="ats-main"><strong id="atsScore">—</strong><div><p id="atsExplainer">A transparent heuristic combining keyword coverage, section headings and evidence of achievements.</p><small id="atsCaution">Not an official ATS score. Text input cannot assess PDF layout or parsing quality.</small></div></div><div class="structure-findings" id="atsFactors"></div></article><article class="report-card" id="structureCard"><h3>CV structure review</h3><div class="structure-findings" id="structureFindings"></div></article><div class="report-grid"><article class="report-card"><h3>✓ Matched skills</h3><div class="chips" id="matched"></div></article><article class="report-card"><h3>⌕ Skills not found in CV</h3><div class="chips" id="missing"></div></article></div><article class="report-card rec"><h3>✦ Personalized recommendations</h3><ol id="recommendations"></ol></article><p class="disclaimer">This is a browser-based, rule-based keyword comparison. It recognizes a limited skills dictionary and some synonyms; it cannot assess actual proficiency, job suitability, or recruitment outcomes. Only claim skills you truly have.</p></section></main><footer><span>ResumePilot · V5.0 Zero-Budget Foundation</span><span>Private by design · No server upload · No accounts</span></footer></div><script defer="" src="script.js?v=5.0"></script><script defer src="studio.js?v=5.0"></script></body></html>
+
+<div class="header-tools">
+  <select aria-label="Interface language" id="language">
+    <option value="en">🇬🇧 English</option>
+    <option value="ro">🇷🇴 Română</option>
+    <option value="it">🇮🇹 Italiano</option>
+    <option value="de">🇩🇪 Deutsch</option>
+    <option value="fr">🇫🇷 Français</option>
+    <option value="es">🇪🇸 Español</option>
+  </select>
+</div>
+</header>
+
+<main id="top">
+
+  <section class="hero" aria-labelledby="worknelyHeroTitle">
+    <span class="eyebrow">✦ YOUR CAREER, CONNECTED</span>
+    <h1 id="worknelyHeroTitle">
+      Build your career. <em>Shape your future.</em>
+    </h1>
+    <p>
+      Create professional resumes, compare your skills with job requirements,
+      and take your next career step with confidence.
+    </p>
+    <nav class="hero-actions" aria-label="Career tools">
+      <a class="primary" href="#builder">Build my resume</a>
+      <a class="ghost" href="#comparison">Analyze compatibility</a>
+    </nav>
+  </section>
+
+  <section class="workspace ai-preview" id="ai-studio">
+    <div class="section-head">
+      <div>
+        <span class="overline">WORKNELY CAREER STUDIO</span>
+        <h2 id="studioHeading">Resume Writing Studio</h2>
+        <p id="studioIntro">
+          Turn your verified experience and skills into a structured
+          resume draft using guided writing templates.
+        </p>
+      </div>
+    </div>
+
+    <div class="builder-grid">
+      <label>
+        <span id="studioRoleLabel">Target role</span>
+        <input id="studioRole"
+               placeholder="e.g. Customer Support Specialist"
+               maxlength="120">
+      </label>
+
+      <label>
+        <span id="studioToneLabel">Writing style</span>
+        <select id="studioTone">
+          <option value="concise">Concise</option>
+          <option value="results">Results-focused</option>
+        </select>
+      </label>
+
+      <label>
+        <span id="studioExperienceLabel">Verified experience</span>
+        <textarea id="studioExperience" rows="4"
+          placeholder="Describe your real duties and achievements."></textarea>
+      </label>
+
+      <label>
+        <span id="studioSkillsLabel">Verified skills</span>
+        <textarea id="studioSkills" rows="4"
+          placeholder="e.g. Excel, customer service, CRM"></textarea>
+      </label>
+    </div>
+
+    <div class="actions">
+      <button class="primary" id="studioDraft" type="button">
+        Create structured draft
+      </button>
+      <button class="ghost" id="studioToBuilder" type="button">
+        Copy draft to Resume Builder
+      </button>
+    </div>
+
+    <p class="message" id="studioStatus"
+       role="status" aria-live="polite"></p>
+
+    <div class="studio-notice" id="studioNotice">
+      Guided writing templates, not generative AI.
+      Review every statement and include only genuine qualifications.
+    </div>
+
+    <pre class="builder-preview" id="studioOutput"
+         aria-label="Writing studio draft"></pre>
+  </section>
+
+  <section class="workspace builder" id="builder">
+    <div class="section-head">
+      <div>
+        <span class="overline">PROFESSIONAL RESUME BUILDER</span>
+        <h2 data-i18n="builderTitle" id="builderTitle">
+          Create your ATS-friendly resume
+        </h2>
+        <p data-i18n="builderIntro" id="builderIntro">
+          Build a clean, professional resume using your verified
+          experience, education and skills.
+        </p>
+      </div>
+    </div>
+
+    <div class="builder-grid">
+      <label>Full name
+        <input autocomplete="name" id="bName"
+               placeholder="Your name">
+      </label>
+
+      <label>Professional title
+        <input id="bTitle"
+               placeholder="Customer Support Specialist">
+      </label>
+
+      <label>Contact (optional)
+        <input id="bContact"
+               placeholder="Email · City · LinkedIn">
+      </label>
+
+      <label>Education
+        <textarea id="bEducation" rows="3"
+          placeholder="Degrees and qualifications"></textarea>
+      </label>
+
+      <label>Professional summary
+        <textarea id="bSummary" rows="4"
+          placeholder="Your professional background"></textarea>
+      </label>
+
+      <label>Experience
+        <textarea id="bExperience" rows="5"
+          placeholder="Role, employer, dates and real achievements"></textarea>
+      </label>
+
+      <label>Skills
+        <textarea id="bSkills" rows="4"
+          placeholder="Your actual skills"></textarea>
+      </label>
+    </div>
+
+    <div class="actions">
+      <button class="primary" data-i18n="buildResume"
+              id="buildResume" type="button">
+        Generate resume
+      </button>
+      <button class="ghost" data-i18n="exportResume"
+              id="exportResume" type="button">
+        Export resume PDF
+      </button>
+    </div>
+
+    <p class="message" id="builderMessage" role="status"></p>
+
+    <pre class="builder-preview" id="builderPreview"
+         aria-label="Resume preview"></pre>
+  </section>
+
+  <section aria-labelledby="workspaceTitle"
+           class="workspace" id="comparison">
+    <div class="section-head">
+      <div>
+        <span class="overline">CAREER COMPATIBILITY ANALYSIS</span>
+        <h2 data-i18n="workspaceTitle" id="workspaceTitle">
+          Resume &amp; job comparison
+        </h2>
+        <p>
+          Compare your resume with job requirements and identify
+          relevant skills and potential gaps.
+        </p>
+      </div>
+
+      <button class="ghost" data-i18n="sample"
+              id="sample" type="button">
+        ✦ Load example
+      </button>
+    </div>
+
+    <div class="import-panel">
+      <label data-i18n="uploadLabel"
+             for="resumeFile" id="uploadLabel">
+        <strong>Upload your resume</strong> (PDF or DOCX)
+      </label>
+
+      <input
+        accept=".pdf,.docx,.doc,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        id="resumeFile" type="file">
+
+      <p class="hint" id="fileStatus" role="status">
+        Text-based PDF and DOCX files are supported.
+        Scanned PDFs and legacy DOC files are not supported.
+        Files are processed locally in your browser using
+        parsing libraries loaded from a CDN.
+      </p>
+    </div>
+
+    <div class="input-grid">
+      <div class="field">
+        <label for="resume">
+          01 <strong>Your resume</strong>
+        </label>
+
+        <textarea id="resume"
+          placeholder="Paste your professional summary, experience, education and skills here..."
+          spellcheck="true"></textarea>
+
+        <div class="field-foot">
+          <span>Remove personal contact details before testing.</span>
+          <span id="resumeWords">0 words</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="job">
+          02 <strong>Job description</strong>
+        </label>
+
+        <textarea id="job"
+          placeholder="Paste the job responsibilities, required skills and qualifications here..."
+          spellcheck="true"></textarea>
+
+        <div class="field-foot">
+          <span>Include full requirements for better results.</span>
+          <span id="jobWords">0 words</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="primary" data-i18n="analyze"
+              id="analyze" type="button">
+        Analyze compatibility <span>→</span>
+      </button>
+
+      <button class="ghost" data-i18n="clear"
+              id="clear" type="button">
+        Clear all
+      </button>
+    </div>
+
+    <p aria-live="polite" class="message"
+       id="message" role="status"></p>
+  </section>
+
+  <section aria-live="polite"
+           class="results hidden" id="results">
+    <div class="results-head">
+      <div>
+        <span class="overline">YOUR CAREER INSIGHTS</span>
+        <h2>Compatibility report</h2>
+        <p>
+          Understand your resume's keyword coverage and
+          identify opportunities for improvement.
+        </p>
+      </div>
+
+      <div class="export-actions">
+        <button class="ghost" id="download" type="button">
+          ↓ Download TXT
+        </button>
+        <button class="ghost" id="printPdf" type="button">
+          ↓ Save PDF
+        </button>
+      </div>
+    </div>
+
+    <p aria-live="polite" class="export-message"
+       id="exportMessage" role="status"></p>
+
+    <div class="score-layout">
+      <div class="score-card">
+        <div class="ring" id="ring">
+          <div>
+            <strong id="score">0%</strong>
+            <span>keyword match</span>
+          </div>
+        </div>
+
+        <p>
+          Estimated coverage of recognized skills
+          mentioned in the job description.
+        </p>
+        <small>Not an ATS score or hiring prediction.</small>
+      </div>
+
+      <div class="stats">
+        <div class="stat">
+          <span>Matched skills</span>
+          <strong id="matchedCount">0</strong>
+        </div>
+
+        <div class="stat">
+          <span>Skills to review</span>
+          <strong id="missingCount">0</strong>
+        </div>
+
+        <div class="stat">
+          <span>Resume length</span>
+          <strong id="wordCount">0 words</strong>
+        </div>
+      </div>
+    </div>
+
+    <article class="report-card ats-card">
+      <h3 data-i18n="atsHeading" id="atsHeading">
+        Estimated ATS readiness
+      </h3>
+
+      <div class="ats-main">
+        <strong id="atsScore">—</strong>
+        <div>
+          <p id="atsExplainer">
+            A transparent heuristic combining keyword coverage,
+            section headings and evidence of achievements.
+          </p>
+          <small id="atsCaution">
+            Not an official ATS score. Text input cannot assess
+            PDF layout or parsing quality.
+          </small>
+        </div>
+      </div>
+
+      <div class="structure-findings" id="atsFactors"></div>
+    </article>
+
+    <article class="report-card" id="structureCard">
+      <h3>CV structure review</h3>
+      <div class="structure-findings" id="structureFindings"></div>
+    </article>
+
+    <div class="report-grid">
+      <article class="report-card">
+        <h3>✓ Matched skills</h3>
+        <div class="chips" id="matched"></div>
+      </article>
+
+      <article class="report-card">
+        <h3>⌕ Skills not found in CV</h3>
+        <div class="chips" id="missing"></div>
+      </article>
+    </div>
+
+    <article class="report-card rec">
+      <h3>✦ Personalized recommendations</h3>
+      <ol id="recommendations"></ol>
+    </article>
+
+    <p class="disclaimer">
+      This is a browser-based, rule-based keyword comparison.
+      It recognizes a limited skills dictionary and some synonyms;
+      it cannot assess actual proficiency, job suitability,
+      or recruitment outcomes. Only claim skills you truly have.
+    </p>
+  </section>
+
+</main>
+
+<footer>
+  <span>© 2026 Worknely · People Technology</span>
+  <span>Build. Improve. Grow.</span>
+</footer>
+
+</div>
+
+<script defer src="script.js?v=5.0"></script>
+<script defer src="studio.js?v=5.0"></script>
+
+</body>
+</html>
+
