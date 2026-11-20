@@ -1,2 +1,47 @@
 /* Worknely V5.2 — Electric Career Edition. Load after existing styles. */
 :root{--wn-navy:#23134f;--wn-blue:#5424ff;--wn-violet:#742cff;--wn-cyan:#00cfff;--wn-bg:#f8f9ff;color:#23134f;background:#f8f9ff}*{box-sizing:border-box}html{scroll-behavior:smooth}body{background:radial-gradient(ellipse at 90% 5%,#e9e4ff 0,transparent 34%),radial-gradient(ellipse at 4% 20%,#e9faff 0,transparent 30%),#f8f9ff;color:#23134f}.shell{max-width:1240px;width:min(100% - 32px,1240px);margin-inline:auto}.top{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-block:18px;border-bottom:1px solid #e9e5f5}.brand{display:inline-flex;align-items:center;gap:10px;text-decoration:none;color:#24124c}.brandmark{background:linear-gradient(135deg,#00cfff,#5424ff 60%,#ff24a8);border-radius:12px;display:grid;place-items:center;width:48px;height:48px;padding:7px}.worknely-brandname{font-size:1.3rem;line-height:1.12;font-weight:800}.worknely-brandname small{display:block;font-size:.56rem;letter-spacing:.16em;margin-top:5px;color:#6b628a}.header-tools{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.header-tools select{max-width:155px}.version{background:#f0eaff;color:#5424ff;border:1px solid #e4d8ff}.hero{background:radial-gradient(circle at 86% 14%,rgba(255,36,168,.15),transparent 28%),radial-gradient(circle at 96% 90%,rgba(0,207,255,.22),transparent 32%),linear-gradient(125deg,#fff 0%,#f5f0ff 68%,#f9f9ff 100%);border:1px solid #ece5ff;border-radius:30px;box-shadow:0 24px 70px rgba(84,36,255,.09);padding:clamp(42px,7vw,88px) clamp(24px,6vw,72px);margin:26px 0 32px;position:relative;isolation:isolate;overflow:hidden}.hero:before{content:"";position:absolute;width:300px;height:300px;border:44px solid rgba(84,36,255,.09);border-radius:50%;right:-110px;top:-135px;z-index:-1}.hero:after{content:"";position:absolute;width:330px;height:330px;border:45px solid rgba(0,207,255,.1);border-radius:50%;right:-170px;bottom:-235px;transform:rotate(20deg);z-index:-1}.hero .eyebrow{color:#6d3df5;font-weight:800;letter-spacing:.11em}.hero h1{max-width:850px;color:#24124c;font-family:Manrope,Inter,sans-serif;font-size:clamp(2.5rem,5.5vw,5.1rem);line-height:1.08;letter-spacing:-.055em;margin:18px 0}.hero h1 em{font-style:normal;background:linear-gradient(100deg,#5424ff,#ff24a8);-webkit-background-clip:text;background-clip:text;color:transparent}.hero p{max-width:690px;color:#625a7a;font-size:clamp(1rem,1.7vw,1.2rem);line-height:1.7}.hero-meta{display:none}.wn-hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}.wn-hero-actions a{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:12px 20px;border-radius:12px;text-decoration:none;font-weight:700}.wn-hero-actions .wn-main-cta{color:white;background:linear-gradient(110deg,#5424ff,#ff24a8);box-shadow:0 10px 24px rgba(116,44,255,.2)}.wn-hero-actions .wn-secondary-cta{color:#5424ff;background:#fff;border:1px solid #e4d8ff}.wn-feature-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin:0 0 32px}.wn-feature-card{background:#fff;border:1px solid #ebe7f7;border-radius:20px;padding:24px;box-shadow:0 12px 30px rgba(47,27,99,.045)}.wn-feature-card .wn-symbol{display:grid;place-items:center;width:42px;height:42px;border-radius:13px;margin-bottom:16px;font-size:1.25rem;background:#f1eaff;color:#5424ff}.wn-feature-card:nth-child(2) .wn-symbol{background:#e7f9ff;color:#008ac5}.wn-feature-card:nth-child(3) .wn-symbol{background:#fff0f8;color:#db1b91}.wn-feature-card:nth-child(4) .wn-symbol{background:#e6fff6;color:#008b69}.wn-feature-card h2{font-size:1.05rem;color:#24124c;margin:0 0 8px}.wn-feature-card p{font-size:.9rem;color:#6a637c;line-height:1.55;margin:0}.workspace,.results,.report-card{border:1px solid #ebe7f7;box-shadow:0 14px 40px rgba(47,27,99,.045)}.section-head h2,.results-head h2{color:#24124c}.eyebrow,.overline,.field label{color:#5424ff}.primary{background:linear-gradient(105deg,#5424ff,#ff24a8);border-color:transparent;box-shadow:0 10px 22px rgba(84,36,255,.15)}.ghost{background:#f4efff;color:#5424ff;border-color:#e5d9ff}.ghost:hover{background:#eae0ff}.field textarea:focus,.builder-grid input:focus,.builder-grid textarea:focus,.ai-preview select:focus{outline:2px solid #bba2ff;outline-offset:1px;border-color:#5424ff}.ring{background:conic-gradient(#5424ff calc(var(--score)*1%),#e8e0fa 0)}.ring strong,.ats-main strong{color:#5424ff}.studio-notice{background:#f3eeff;color:#55457d}footer{border-top:1px solid #e9e5f5;color:#736b88}.wn-top-links{display:flex;align-items:center;gap:10px}.wn-top-links a{text-decoration:none;color:#5424ff;font-weight:700;padding:10px 14px;border-radius:10px;background:#f2edff}.wn-top-links a:last-child{background:linear-gradient(110deg,#5424ff,#ff24a8);color:#fff}@media(max-width:900px){.wn-feature-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.hero{padding:56px 36px}}@media(max-width:700px){.shell{width:min(100% - 24px,1240px)}.top{padding-block:12px;gap:10px}.brandmark{width:42px;height:42px}.worknely-brandname{font-size:1.1rem}.header-tools{width:100%;justify-content:space-between}.hero{margin:16px 0 24px;padding:48px 24px;border-radius:22px}.hero h1{letter-spacing:-.045em}.wn-feature-grid{gap:12px}.wn-feature-card{padding:18px}.wn-top-links a{padding:8px 11px;font-size:.85rem}}@media(max-width:480px){.wn-feature-grid{grid-template-columns:1fr}.hero{padding:42px 20px}.wn-hero-actions a{width:100%}.header-tools select{max-width:135px}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+/* WORKNELY — HERO MOBILE FIX */
+
+.hero .hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: 14px;
+  margin-top: 28px;
+}
+
+.hero .hero-actions a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  text-decoration: none;
+  box-sizing: border-box;
+  min-width: 0;
+  padding: 16px 22px;
+  border-radius: 16px;
+  font-weight: 700;
+  line-height: 1.35;
+  overflow-wrap: normal;
+  word-break: normal;
+}
+
+@media (max-width: 767px) {
+  .hero .hero-actions {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 12px;
+  }
+
+  .hero .hero-actions a {
+    display: flex;
+    width: 100%;
+    max-width: 100%;
+    min-height: 54px;
+    margin: 0;
+    padding: 15px 18px;
+    white-space: normal;
+  }
+}
