@@ -1,0 +1,53 @@
+
+'use strict';
+/* Worknely V5.1 presentation layer. Does not change CV processing or PDF exports. */
+(() => {
+  const byId = id => document.getElementById(id);
+  const words = {
+    en: ['YOUR CAREER, CONNECTED','Build your career. Shape your future.','Create a professional resume, compare your skills with job requirements, and move forward with confidence.','Create your resume','Compare with a job','Explore Worknely tools','Choose a tool to get started.','Writing Studio','Shape your professional story','Resume Builder','Create a clear, structured CV','Job Matching','Compare your CV with a job description'],
+    ro: ['CARIERA TA, CONECTATĂ','Construiește-ți cariera. Modelează-ți viitorul.','Creează un CV profesional, compară-ți competențele cu cerințele unui post și avansează cu încredere.','Creează CV-ul','Compară cu un job','Descoperă instrumentele Worknely','Alege un instrument pentru a începe.','Studio de redactare','Prezintă-ți experiența profesională','Constructor CV','Creează un CV clar și structurat','Comparare cu joburi','Compară CV-ul cu descrierea postului'],
+    it: ['LA TUA CARRIERA, CONNESSA','Costruisci la tua carriera. Dai forma al tuo futuro.','Crea un CV professionale, confronta le tue competenze con le offerte e fai il prossimo passo.','Crea il tuo CV','Confronta con un lavoro','Esplora gli strumenti Worknely','Scegli uno strumento per iniziare.','Studio di scrittura','Valorizza la tua esperienza','Creatore di CV','Crea un CV chiaro e strutturato','Confronto lavoro','Confronta il CV con un annuncio'],
+    de: ['DEINE KARRIERE, VERNETZT','Gestalte deine Karriere. Gestalte deine Zukunft.','Erstelle einen professionellen Lebenslauf und vergleiche deine Fähigkeiten mit Stellenanforderungen.','Lebenslauf erstellen','Mit Stelle vergleichen','Worknely-Tools entdecken','Wähle ein Tool, um zu beginnen.','Schreibstudio','Beschreibe deinen beruflichen Weg','Lebenslauf-Builder','Erstelle einen klaren Lebenslauf','Job-Abgleich','Vergleiche Lebenslauf und Stelle'],
+    fr: ['VOTRE CARRIÈRE, CONNECTÉE','Construisez votre carrière. Façonnez votre avenir.','Créez un CV professionnel et comparez vos compétences aux exigences des offres d’emploi.','Créer mon CV','Comparer avec une offre','Découvrez les outils Worknely','Choisissez un outil pour commencer.','Studio de rédaction','Valorisez votre parcours','Créateur de CV','Créez un CV clair et structuré','Correspondance emploi','Comparez votre CV à une offre'],
+    es: ['TU CARRERA, CONECTADA','Construye tu carrera. Diseña tu futuro.','Crea un currículum profesional y compara tus habilidades con los requisitos de empleo.','Crear mi CV','Comparar con un empleo','Explora las herramientas Worknely','Elige una herramienta para empezar.','Estudio de redacción','Presenta tu trayectoria profesional','Creador de CV','Crea un CV claro y estructurado','Comparación laboral','Compara tu CV con una oferta']
+  };
+  const hero = document.querySelector('.hero');
+  const main = document.querySelector('main');
+  if (!hero || !main) return;
+  hero.innerHTML = '<span class="eyebrow" id="wnEyebrow"></span><h1 id="wnHeadline"></h1><p id="wnDescription"></p><div class="wn-hero-actions"><a class="primary wn-action" href="#builder" id="wnCreate"></a><a class="ghost wn-action" href="#job-matching" id="wnCompare"></a></div>';
+  const matching = document.querySelector('section.workspace:not(.ai-preview):not(.builder)');
+  if (matching) matching.id = 'job-matching';
+  const cards = document.createElement('section');
+  cards.className = 'wn-tool-section';
+  cards.setAttribute('aria-labelledby','wnToolsTitle');
+  cards.innerHTML = '<div class="wn-tools-heading"><h2 id="wnToolsTitle"></h2><p id="wnToolsIntro"></p></div><div class="wn-tool-grid"><a class="wn-tool-card" href="#ai-studio"><span class="wn-tool-icon">✦</span><strong id="wnStudioTitle"></strong><span id="wnStudioDesc"></span></a><a class="wn-tool-card" href="#builder"><span class="wn-tool-icon">▤</span><strong id="wnBuilderTitle"></strong><span id="wnBuilderDesc"></span></a><a class="wn-tool-card" href="#job-matching"><span class="wn-tool-icon">◎</span><strong id="wnMatchTitle"></strong><span id="wnMatchDesc"></span></a></div>';
+  hero.insertAdjacentElement('afterend',cards);
+  const top = document.querySelector('header.top');
+  if (top) {
+    const nav = document.createElement('nav');
+    nav.className = 'wn-nav';
+    nav.setAttribute('aria-label','Worknely tools');
+    nav.innerHTML = '<a href="#ai-studio">Studio</a><a href="#builder">Resume Builder</a><a href="#job-matching">Job Matching</a>';
+    top.append(nav);
+  }
+  const version = document.querySelector('.version');
+  if (version) version.textContent = 'WORKNELY · V5.1';
+  document.querySelectorAll('.overline').forEach(el => {
+    if (/V5\.0|ZERO.BUDGET/i.test(el.textContent)) el.textContent = 'WORKNELY · WRITING TOOLS';
+  });
+  const footer = document.querySelector('footer');
+  if (footer) footer.innerHTML = '<span>© Worknely · People Technology</span><span>Career tools with transparent, rule-based analysis. Accounts and cloud saving are not available yet.</span>';
+  document.title = 'Worknely | Resume Builder & Job Matching';
+  const description = document.querySelector('meta[name="description"]');
+  if (description) description.content = 'Build a professional resume and compare your skills with job requirements using Worknely career tools.';
+  const theme = document.querySelector('meta[name="theme-color"]');
+  if (theme) theme.content = '#F8F9FF';
+  const setText = (id, value) => { const el = byId(id); if (el) el.textContent = value; };
+  function render() {
+    const lang = byId('language')?.value || 'en';
+    const a = words[lang] || words.en;
+    ['wnEyebrow','wnHeadline','wnDescription','wnCreate','wnCompare','wnToolsTitle','wnToolsIntro','wnStudioTitle','wnStudioDesc','wnBuilderTitle','wnBuilderDesc','wnMatchTitle','wnMatchDesc'].forEach((id,i)=>setText(id,a[i]));
+  }
+  byId('language')?.addEventListener('change', render);
+  render();
+})();
