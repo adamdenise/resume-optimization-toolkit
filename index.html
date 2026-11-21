@@ -10,20 +10,66 @@
   <meta name="color-scheme" content="light">
 
   <meta name="description"
-        content="Worknely helps you build professional resumes, review CV structure, and compare your skills with job requirements.">
+        content="Worknely helps you build professional resumes, review CV structure, compare skills with job requirements, and explore career opportunities.">
+
+  <meta name="application-name" content="Worknely">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Worknely">
+  <meta name="apple-mobile-web-app-status-bar-style"
+        content="default">
 
   <title>Worknely | Build Your Career. Shape Your Future.</title>
 
-  <link rel="stylesheet" href="style.css?v=5.0">
-  <link rel="stylesheet" href="worknely-theme.css?v=5.1">
-  <link rel="stylesheet" href="worknely-electric.css?v=5.3">
+  <link rel="canonical"
+        href="https://adamdenise.github.io/resume-optimization-toolkit/">
 
   <link rel="icon"
         type="image/svg+xml"
         href="worknely-favicon.svg">
 
-  <link rel="canonical"
-        href="https://adamdenise.github.io/resume-optimization-toolkit/">
+  <link rel="stylesheet" href="style.css?v=5.0">
+  <link rel="stylesheet" href="worknely-theme.css?v=5.1">
+  <link rel="stylesheet" href="worknely-electric.css?v=5.3">
+
+  <style>
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    button:focus-visible,
+    a:focus-visible,
+    select:focus-visible,
+    input:focus-visible,
+    textarea:focus-visible {
+      outline: 3px solid #6a3bff;
+      outline-offset: 3px;
+    }
+
+    .builder-preview {
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+
+    .message:empty,
+    .export-message:empty,
+    .builder-preview:empty {
+      display: none;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+    }
+  </style>
 </head>
 
 <body>
@@ -49,9 +95,7 @@
     </a>
 
     <div class="header-tools">
-      <label for="language"
-             class="sr-only"
-             style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0">
+      <label for="language" class="sr-only">
         Interface language
       </label>
 
@@ -101,7 +145,7 @@
       </nav>
     </section>
 
-    <!-- RESUME WRITING STUDIO -->
+    <!-- WORKNELY CAREER STUDIO -->
     <section class="workspace ai-preview"
              id="ai-studio"
              aria-labelledby="studioHeading">
@@ -118,8 +162,8 @@
 
           <p id="studioIntro">
             Transform your experience into professional
-            resume content. Use guided writing tools to
-            highlight your real skills and achievements.
+            resume content. Highlight your verified skills,
+            responsibilities, and achievements.
           </p>
         </div>
       </div>
@@ -127,7 +171,10 @@
       <div class="builder-grid">
 
         <label for="studioRole">
-          <span id="studioRoleLabel">Target role</span>
+          <span id="studioRoleLabel">
+            Target role
+          </span>
+
           <input id="studioRole"
                  type="text"
                  maxlength="120"
@@ -136,10 +183,18 @@
         </label>
 
         <label for="studioTone">
-          <span id="studioToneLabel">Writing style</span>
+          <span id="studioToneLabel">
+            Writing style
+          </span>
+
           <select id="studioTone">
-            <option value="concise">Concise</option>
-            <option value="results">Results-focused</option>
+            <option value="concise">
+              Concise
+            </option>
+
+            <option value="results">
+              Results-focused
+            </option>
           </select>
         </label>
 
@@ -147,6 +202,7 @@
           <span id="studioExperienceLabel">
             Verified experience
           </span>
+
           <textarea id="studioExperience"
                     rows="4"
                     placeholder="Describe your real duties and achievements."></textarea>
@@ -156,6 +212,7 @@
           <span id="studioSkillsLabel">
             Verified skills
           </span>
+
           <textarea id="studioSkills"
                     rows="4"
                     placeholder="e.g. Excel, customer service, CRM"></textarea>
@@ -204,8 +261,8 @@
 
           <p id="builderIntro"
              data-i18n="builderIntro">
-            Build a clean, professional resume using
-            your verified experience, education and skills.
+            Build a professional resume using your
+            verified experience, education, and skills.
           </p>
         </div>
       </div>
@@ -214,6 +271,7 @@
 
         <label for="bName">
           Full name
+
           <input id="bName"
                  type="text"
                  autocomplete="name"
@@ -222,6 +280,7 @@
 
         <label for="bTitle">
           Professional title
+
           <input id="bTitle"
                  type="text"
                  placeholder="Customer Support Specialist">
@@ -229,6 +288,7 @@
 
         <label for="bContact">
           Contact (optional)
+
           <input id="bContact"
                  type="text"
                  placeholder="Email · City · LinkedIn">
@@ -236,6 +296,7 @@
 
         <label for="bEducation">
           Education
+
           <textarea id="bEducation"
                     rows="3"
                     placeholder="Degrees and qualifications"></textarea>
@@ -243,6 +304,7 @@
 
         <label for="bSummary">
           Professional summary
+
           <textarea id="bSummary"
                     rows="4"
                     placeholder="Your professional background"></textarea>
@@ -250,6 +312,7 @@
 
         <label for="bExperience">
           Experience
+
           <textarea id="bExperience"
                     rows="5"
                     placeholder="Role, employer, dates and real achievements"></textarea>
@@ -257,6 +320,7 @@
 
         <label for="bSkills">
           Skills
+
           <textarea id="bSkills"
                     rows="4"
                     placeholder="Your actual skills"></textarea>
@@ -289,7 +353,7 @@
            aria-label="Resume preview"></pre>
     </section>
 
-    <!-- COMPATIBILITY ANALYSIS -->
+    <!-- CAREER COMPATIBILITY ANALYSIS -->
     <section class="workspace"
              id="comparison"
              aria-labelledby="workspaceTitle">
@@ -319,7 +383,9 @@
         </button>
       </div>
 
+      <!-- FILE IMPORT -->
       <div class="import-panel">
+
         <label id="uploadLabel"
                data-i18n="uploadLabel"
                for="resumeFile">
@@ -329,7 +395,7 @@
 
         <input id="resumeFile"
                type="file"
-               accept=".pdf,.docx,.doc,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+               accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                aria-describedby="fileStatus">
 
         <p class="hint"
@@ -343,6 +409,7 @@
         </p>
       </div>
 
+      <!-- INPUT FIELDS -->
       <div class="input-grid">
 
         <div class="field">
@@ -359,7 +426,10 @@
             <span>
               Remove personal contact details before testing.
             </span>
-            <span id="resumeWords">0 words</span>
+
+            <span id="resumeWords">
+              0 words
+            </span>
           </div>
         </div>
 
@@ -377,17 +447,22 @@
             <span>
               Include full requirements for better results.
             </span>
-            <span id="jobWords">0 words</span>
+
+            <span id="jobWords">
+              0 words
+            </span>
           </div>
         </div>
       </div>
 
       <div class="actions">
+
         <button class="primary"
                 id="analyze"
                 data-i18n="analyze"
                 type="button">
-          Analyze compatibility <span>→</span>
+          Analyze compatibility
+          <span aria-hidden="true">→</span>
         </button>
 
         <button class="ghost"
@@ -404,7 +479,7 @@
          aria-live="polite"></p>
     </section>
 
-    <!-- ANALYSIS RESULTS -->
+    <!-- COMPATIBILITY REPORT -->
     <section class="results hidden"
              id="results"
              aria-live="polite"
@@ -412,6 +487,7 @@
 
       <div class="results-head">
         <div>
+
           <span class="overline">
             YOUR CAREER INSIGHTS
           </span>
@@ -426,7 +502,9 @@
           </p>
         </div>
 
+        <!-- EXPORT ACTIONS -->
         <div class="export-actions">
+
           <button class="ghost"
                   id="download"
                   type="button">
@@ -446,13 +524,21 @@
          role="status"
          aria-live="polite"></p>
 
+      <!-- SCORE OVERVIEW -->
       <div class="score-layout">
 
         <div class="score-card">
-          <div class="ring" id="ring">
+          <div class="ring"
+               id="ring">
+
             <div>
-              <strong id="score">0%</strong>
-              <span>keyword match</span>
+              <strong id="score">
+                0%
+              </strong>
+
+              <span>
+                keyword match
+              </span>
             </div>
           </div>
 
@@ -467,32 +553,52 @@
         </div>
 
         <div class="stats">
+
           <div class="stat">
-            <span>Matched skills</span>
-            <strong id="matchedCount">0</strong>
+            <span>
+              Matched skills
+            </span>
+
+            <strong id="matchedCount">
+              0
+            </strong>
           </div>
 
           <div class="stat">
-            <span>Skills to review</span>
-            <strong id="missingCount">0</strong>
+            <span>
+              Skills to review
+            </span>
+
+            <strong id="missingCount">
+              0
+            </strong>
           </div>
 
           <div class="stat">
-            <span>Resume length</span>
-            <strong id="wordCount">0 words</strong>
+            <span>
+              Resume length
+            </span>
+
+            <strong id="wordCount">
+              0 words
+            </strong>
           </div>
         </div>
       </div>
 
-      <!-- ATS READINESS -->
+      <!-- ESTIMATED ATS READINESS -->
       <article class="report-card ats-card">
+
         <h3 id="atsHeading"
             data-i18n="atsHeading">
           Estimated ATS readiness
         </h3>
 
         <div class="ats-main">
-          <strong id="atsScore">—</strong>
+
+          <strong id="atsScore">
+            —
+          </strong>
 
           <div>
             <p id="atsExplainer">
@@ -513,34 +619,51 @@
              id="atsFactors"></div>
       </article>
 
-      <!-- CV STRUCTURE -->
+      <!-- CV STRUCTURE REVIEW -->
       <article class="report-card"
                id="structureCard">
-        <h3>CV structure review</h3>
+
+        <h3>
+          CV structure review
+        </h3>
 
         <div class="structure-findings"
              id="structureFindings"></div>
       </article>
 
-      <!-- SKILLS -->
+      <!-- MATCHED AND MISSING SKILLS -->
       <div class="report-grid">
+
         <article class="report-card">
-          <h3>✓ Matched skills</h3>
-          <div class="chips" id="matched"></div>
+          <h3>
+            ✓ Matched skills
+          </h3>
+
+          <div class="chips"
+               id="matched"></div>
         </article>
 
         <article class="report-card">
-          <h3>⌕ Skills not found in CV</h3>
-          <div class="chips" id="missing"></div>
+          <h3>
+            ⌕ Skills not found in CV
+          </h3>
+
+          <div class="chips"
+               id="missing"></div>
         </article>
       </div>
 
-      <!-- RECOMMENDATIONS -->
+      <!-- PERSONALIZED RECOMMENDATIONS -->
       <article class="report-card rec">
-        <h3>✦ Personalized recommendations</h3>
+
+        <h3>
+          ✦ Personalized recommendations
+        </h3>
+
         <ol id="recommendations"></ol>
       </article>
 
+      <!-- TRANSPARENCY -->
       <p class="disclaimer">
         This is a browser-based, rule-based keyword comparison.
         It recognizes a limited skills dictionary and some
@@ -548,19 +671,26 @@
         job suitability, or recruitment outcomes.
         Only claim skills you truly have.
       </p>
+
     </section>
 
   </main>
 
+  <!-- FOOTER -->
   <footer>
-    <span>© 2026 Worknely · People Technology</span>
-    <span>Build. Improve. Grow.</span>
+    <span>
+      © 2026 Worknely · People Technology
+    </span>
+
+    <span>
+      Build. Improve. Grow.
+    </span>
   </footer>
 
 </div>
 
-<!-- CORE APPLICATION -->
-<script defer src="script.js?v=5.0"></script>
+<!-- WORKNELY V6.0 CORE -->
+<script defer src="script.js?v=6.0"></script>
 
 <!-- RESUME WRITING STUDIO -->
 <script defer src="studio.js?v=5.1"></script>
@@ -568,8 +698,11 @@
 <!-- MULTILINGUAL INTERFACE -->
 <script defer src="worknely-i18n.js?v=3.1"></script>
 
-<!-- EXISTING REPORT TRANSLATIONS -->
+<!-- COMPATIBILITY REPORT TRANSLATIONS -->
 <script defer src="worknely-report-i18n.js?v=1.0"></script>
+
+<!-- PREMIUM PDF GENERATOR -->
+<script defer src="worknely-premium-pdf.js?v=6.1"></script>
 
 </body>
 </html>
