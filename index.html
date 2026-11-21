@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,9 +6,10 @@
         content="width=device-width, initial-scale=1">
 
   <meta name="theme-color" content="#5424FF">
+  <meta name="color-scheme" content="light">
 
   <meta name="description"
-        content="Worknely helps you create professional resumes, compare your CV with job requirements, and take your next career step with confidence.">
+        content="Worknely helps you build professional resumes, review CV structure, and compare your skills with job requirements.">
 
   <title>Worknely | Build Your Career. Shape Your Future.</title>
 
@@ -20,16 +20,23 @@
   <link rel="icon"
         type="image/svg+xml"
         href="worknely-favicon.svg">
+
+  <link rel="canonical"
+        href="https://adamdenise.github.io/resume-optimization-toolkit/">
 </head>
 
 <body>
 <div class="shell">
 
+  <!-- HEADER -->
   <header class="top">
-    <a class="brand" href="#top">
+    <a class="brand"
+       href="#top"
+       aria-label="Worknely home">
+
       <span class="brandmark">
         <img src="worknely-mark.svg"
-             alt="Worknely"
+             alt=""
              width="36"
              height="36">
       </span>
@@ -41,7 +48,14 @@
     </a>
 
     <div class="header-tools">
-      <select aria-label="Interface language" id="language">
+      <label for="language"
+             class="sr-only"
+             style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0">
+        Interface language
+      </label>
+
+      <select id="language"
+              aria-label="Interface language">
         <option value="en">🇬🇧 English</option>
         <option value="ro">🇷🇴 Română</option>
         <option value="it">🇮🇹 Italiano</option>
@@ -54,8 +68,10 @@
 
   <main id="top">
 
-    <!-- WORKNELY HERO -->
-    <section class="hero" aria-labelledby="worknelyHeroTitle">
+    <!-- HERO -->
+    <section class="hero"
+             aria-labelledby="worknelyHeroTitle">
+
       <span class="eyebrow">
         ✦ YOUR CAREER, CONNECTED
       </span>
@@ -71,10 +87,13 @@
         step with confidence.
       </p>
 
-      <nav class="hero-actions" aria-label="Career tools">
+      <nav class="hero-actions"
+           aria-label="Career tools">
+
         <a class="primary" href="#builder">
           Build my resume
         </a>
+
         <a class="ghost" href="#comparison">
           Analyze compatibility
         </a>
@@ -82,7 +101,10 @@
     </section>
 
     <!-- RESUME WRITING STUDIO -->
-    <section class="workspace ai-preview" id="ai-studio">
+    <section class="workspace ai-preview"
+             id="ai-studio"
+             aria-labelledby="studioHeading">
+
       <div class="section-head">
         <div>
           <span class="overline">
@@ -102,14 +124,17 @@
       </div>
 
       <div class="builder-grid">
-        <label>
+
+        <label for="studioRole">
           <span id="studioRoleLabel">Target role</span>
           <input id="studioRole"
+                 type="text"
                  maxlength="120"
+                 autocomplete="off"
                  placeholder="e.g. Customer Support Specialist">
         </label>
 
-        <label>
+        <label for="studioTone">
           <span id="studioToneLabel">Writing style</span>
           <select id="studioTone">
             <option value="concise">Concise</option>
@@ -117,7 +142,7 @@
           </select>
         </label>
 
-        <label>
+        <label for="studioExperience">
           <span id="studioExperienceLabel">
             Verified experience
           </span>
@@ -126,7 +151,7 @@
                     placeholder="Describe your real duties and achievements."></textarea>
         </label>
 
-        <label>
+        <label for="studioSkills">
           <span id="studioSkillsLabel">
             Verified skills
           </span>
@@ -155,7 +180,8 @@
          role="status"
          aria-live="polite"></p>
 
-      <div class="studio-notice" id="studioNotice">
+      <div class="studio-notice"
+           id="studioNotice">
         Guided writing templates, not generative AI.
         Review every statement and include only genuine
         qualifications.
@@ -167,20 +193,23 @@
     </section>
 
     <!-- RESUME BUILDER -->
-    <section class="workspace builder" id="builder">
+    <section class="workspace builder"
+             id="builder"
+             aria-labelledby="builderTitle">
+
       <div class="section-head">
         <div>
           <span class="overline">
             PROFESSIONAL RESUME BUILDER
           </span>
 
-          <h2 data-i18n="builderTitle"
-              id="builderTitle">
+          <h2 id="builderTitle"
+              data-i18n="builderTitle">
             Create your ATS-friendly resume
           </h2>
 
-          <p data-i18n="builderIntro"
-             id="builderIntro">
+          <p id="builderIntro"
+             data-i18n="builderIntro">
             Build a clean, professional resume using
             your verified experience, education and skills.
           </p>
@@ -188,47 +217,51 @@
       </div>
 
       <div class="builder-grid">
-        <label>
+
+        <label for="bName">
           Full name
-          <input autocomplete="name"
-                 id="bName"
+          <input id="bName"
+                 type="text"
+                 autocomplete="name"
                  placeholder="Your name">
         </label>
 
-        <label>
+        <label for="bTitle">
           Professional title
           <input id="bTitle"
+                 type="text"
                  placeholder="Customer Support Specialist">
         </label>
 
-        <label>
+        <label for="bContact">
           Contact (optional)
           <input id="bContact"
+                 type="text"
                  placeholder="Email · City · LinkedIn">
         </label>
 
-        <label>
+        <label for="bEducation">
           Education
           <textarea id="bEducation"
                     rows="3"
                     placeholder="Degrees and qualifications"></textarea>
         </label>
 
-        <label>
+        <label for="bSummary">
           Professional summary
           <textarea id="bSummary"
                     rows="4"
                     placeholder="Your professional background"></textarea>
         </label>
 
-        <label>
+        <label for="bExperience">
           Experience
           <textarea id="bExperience"
                     rows="5"
                     placeholder="Role, employer, dates and real achievements"></textarea>
         </label>
 
-        <label>
+        <label for="bSkills">
           Skills
           <textarea id="bSkills"
                     rows="4"
@@ -238,15 +271,15 @@
 
       <div class="actions">
         <button class="primary"
-                data-i18n="buildResume"
                 id="buildResume"
+                data-i18n="buildResume"
                 type="button">
           Generate resume
         </button>
 
         <button class="ghost"
-                data-i18n="exportResume"
                 id="exportResume"
+                data-i18n="exportResume"
                 type="button">
           Export resume PDF
         </button>
@@ -254,7 +287,8 @@
 
       <p class="message"
          id="builderMessage"
-         role="status"></p>
+         role="status"
+         aria-live="polite"></p>
 
       <pre class="builder-preview"
            id="builderPreview"
@@ -272,8 +306,8 @@
             CAREER COMPATIBILITY ANALYSIS
           </span>
 
-          <h2 data-i18n="workspaceTitle"
-              id="workspaceTitle">
+          <h2 id="workspaceTitle"
+              data-i18n="workspaceTitle">
             Resume &amp; job comparison
           </h2>
 
@@ -284,29 +318,30 @@
         </div>
 
         <button class="ghost"
-                data-i18n="sample"
                 id="sample"
+                data-i18n="sample"
                 type="button">
           ✦ Load example
         </button>
       </div>
 
       <div class="import-panel">
-        <label data-i18n="uploadLabel"
-               for="resumeFile"
-               id="uploadLabel">
+        <label id="uploadLabel"
+               data-i18n="uploadLabel"
+               for="resumeFile">
           <strong>Upload your resume</strong>
           (PDF or DOCX)
         </label>
 
-        <input
-          id="resumeFile"
-          type="file"
-          accept=".pdf,.docx,.doc,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+        <input id="resumeFile"
+               type="file"
+               accept=".pdf,.docx,.doc,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+               aria-describedby="fileStatus">
 
         <p class="hint"
            id="fileStatus"
-           role="status">
+           role="status"
+           aria-live="polite">
           Text-based PDF and DOCX files are supported.
           Scanned PDFs and legacy DOC files are not supported.
           Files are processed locally in your browser using
@@ -315,6 +350,7 @@
       </div>
 
       <div class="input-grid">
+
         <div class="field">
           <label for="resume">
             01 <strong>Your resume</strong>
@@ -322,6 +358,7 @@
 
           <textarea id="resume"
                     spellcheck="true"
+                    aria-describedby="resumeWords"
                     placeholder="Paste your professional summary, experience, education and skills here..."></textarea>
 
           <div class="field-foot">
@@ -339,6 +376,7 @@
 
           <textarea id="job"
                     spellcheck="true"
+                    aria-describedby="jobWords"
                     placeholder="Paste the job responsibilities, required skills and qualifications here..."></textarea>
 
           <div class="field-foot">
@@ -352,15 +390,15 @@
 
       <div class="actions">
         <button class="primary"
-                data-i18n="analyze"
                 id="analyze"
+                data-i18n="analyze"
                 type="button">
           Analyze compatibility <span>→</span>
         </button>
 
         <button class="ghost"
-                data-i18n="clear"
                 id="clear"
+                data-i18n="clear"
                 type="button">
           Clear all
         </button>
@@ -375,7 +413,8 @@
     <!-- ANALYSIS RESULTS -->
     <section class="results hidden"
              id="results"
-             aria-live="polite">
+             aria-live="polite"
+             aria-labelledby="reportTitle">
 
       <div class="results-head">
         <div>
@@ -383,7 +422,9 @@
             YOUR CAREER INSIGHTS
           </span>
 
-          <h2>Compatibility report</h2>
+          <h2 id="reportTitle">
+            Compatibility report
+          </h2>
 
           <p>
             Understand your resume's keyword coverage
@@ -412,6 +453,7 @@
          aria-live="polite"></p>
 
       <div class="score-layout">
+
         <div class="score-card">
           <div class="ring" id="ring">
             <div>
@@ -448,9 +490,10 @@
         </div>
       </div>
 
+      <!-- ATS READINESS -->
       <article class="report-card ats-card">
-        <h3 data-i18n="atsHeading"
-            id="atsHeading">
+        <h3 id="atsHeading"
+            data-i18n="atsHeading">
           Estimated ATS readiness
         </h3>
 
@@ -459,13 +502,15 @@
 
           <div>
             <p id="atsExplainer">
-              A transparent heuristic combining keyword coverage,
-              section headings and evidence of achievements.
+              A transparent heuristic combining keyword
+              coverage, section headings and evidence
+              of achievements.
             </p>
 
             <small id="atsCaution">
-              Not an official ATS score. Text input cannot assess
-              PDF layout or parsing quality.
+              Not an official ATS score.
+              Text input cannot assess PDF layout
+              or parsing quality.
             </small>
           </div>
         </div>
@@ -474,13 +519,16 @@
              id="atsFactors"></div>
       </article>
 
+      <!-- CV STRUCTURE -->
       <article class="report-card"
                id="structureCard">
         <h3>CV structure review</h3>
+
         <div class="structure-findings"
              id="structureFindings"></div>
       </article>
 
+      <!-- SKILLS -->
       <div class="report-grid">
         <article class="report-card">
           <h3>✓ Matched skills</h3>
@@ -493,6 +541,7 @@
         </article>
       </div>
 
+      <!-- RECOMMENDATIONS -->
       <article class="report-card rec">
         <h3>✦ Personalized recommendations</h3>
         <ol id="recommendations"></ol>
@@ -500,9 +549,10 @@
 
       <p class="disclaimer">
         This is a browser-based, rule-based keyword comparison.
-        It recognizes a limited skills dictionary and some synonyms;
-        it cannot assess actual proficiency, job suitability,
-        or recruitment outcomes. Only claim skills you truly have.
+        It recognizes a limited skills dictionary and some
+        synonyms. It cannot assess actual proficiency,
+        job suitability, or recruitment outcomes.
+        Only claim skills you truly have.
       </p>
     </section>
 
@@ -515,9 +565,18 @@
 
 </div>
 
+<!-- CORE APPLICATION: PRESERVED -->
 <script defer src="script.js?v=5.0"></script>
+
+<!-- GUIDED WRITING STUDIO: PRESERVED -->
 <script defer src="studio.js?v=5.1"></script>
-<script defer src="worknely-i18n.js?v=1.0"></script>
+
+<!-- MULTILINGUAL INTERFACE: UPDATED -->
+<script defer src="worknely-i18n.js?v=3.1"></script>
+
+<!-- EXISTING REPORT TRANSLATIONS: PRESERVED -->
 <script defer src="worknely-report-i18n.js?v=1.0"></script>
+
 </body>
 </html>
+
