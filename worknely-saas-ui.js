@@ -1,7 +1,7 @@
 
 /*
- * WORKNELY V6.3
- * Premium SaaS Authentication Interface
+ * WORKNELY V7.2
+ * Premium SaaS Account Navigation
  *
  * Keeps the existing Supabase authentication
  * and original form event handlers.
@@ -82,7 +82,7 @@
         top: calc(100% + 10px);
         right: 0;
         z-index: 100;
-        min-width: 195px;
+        min-width: 215px;
         background: white;
         border: 1px solid #e8e2fa;
         border-radius: 16px;
@@ -95,7 +95,8 @@
         display: none !important;
       }
 
-      .wn-menu-panel button {
+      .wn-menu-panel button,
+      .wn-menu-panel a {
         display: block;
         width: 100%;
         text-align: left;
@@ -105,11 +106,28 @@
         background: transparent;
         color: #27144d;
         font: inherit;
+        font-size: 14px;
+        text-decoration: none;
         cursor: pointer;
+        box-sizing: border-box;
       }
 
-      .wn-menu-panel button:hover {
+      .wn-menu-panel button:hover,
+      .wn-menu-panel a:hover,
+      .wn-menu-panel button:focus-visible,
+      .wn-menu-panel a:focus-visible {
         background: #f3efff;
+      }
+
+      .wn-menu-divider {
+        height: 1px;
+        background: #eee8fa;
+        margin: 6px 3px;
+      }
+
+      .wn-menu-pro {
+        color: #7025e8 !important;
+        font-weight: 750 !important;
       }
 
       .wn-dialog {
@@ -213,6 +231,11 @@
           font-size: 12px;
         }
 
+        .wn-menu-panel {
+          min-width: 205px;
+          max-width: calc(100vw - 24px);
+        }
+
         .wn-dialog .workspace {
           padding: 18px !important;
         }
@@ -243,16 +266,61 @@
     accountBtn.className = "wn-auth-btn wn-account";
     accountBtn.textContent = "My Account ▾";
     accountBtn.setAttribute("aria-expanded", "false");
+    accountBtn.setAttribute("aria-haspopup", "true");
 
     const menu = document.createElement("div");
     menu.className = "wn-menu-panel";
     menu.hidden = true;
 
+    function menuLink(text, href, className = "") {
+      const link = document.createElement("a");
+      link.textContent = text;
+      link.href = href;
+
+      if (className) link.className = className;
+
+      link.addEventListener("click", closeMenu);
+      return link;
+    }
+
+    const dashboardLink = menuLink(
+      "My Dashboard",
+      "dashboard.html"
+    );
+
+    const resumesLink = menuLink(
+      "My Resumes",
+      "dashboard.html#resumes"
+    );
+
+    const builderLink = menuLink(
+      "Resume Builder",
+      "#builder"
+    );
+
+    const proLink = menuLink(
+      "Upgrade to Pro",
+      "dashboard.html#pro",
+      "wn-menu-pro"
+    );
+
+    const divider = document.createElement("div");
+    divider.className = "wn-menu-divider";
+    divider.setAttribute("role", "separator");
+
     const logoutBtn = document.createElement("button");
     logoutBtn.type = "button";
     logoutBtn.textContent = "Log Out";
 
-    menu.appendChild(logoutBtn);
+    menu.append(
+      dashboardLink,
+      resumesLink,
+      builderLink,
+      proLink,
+      divider,
+      logoutBtn
+    );
+
     accountWrap.append(accountBtn, menu);
     nav.append(loginBtn, signupBtn, accountWrap);
     header.appendChild(nav);
@@ -280,18 +348,28 @@
     document.body.appendChild(dialog);
 
     const heading = section.querySelector("#accountTitle");
-    const originalSignup = document.getElementById("authSignUp");
-    const originalLogin = document.getElementById("authLogin");
-    const form = document.getElementById("worknelyAuthForm");
-    const password = document.getElementById("authPassword");
+    const originalSignup =
+      document.getElementById("authSignUp");
+    const originalLogin =
+      document.getElementById("authLogin");
+    const form =
+      document.getElementById("worknelyAuthForm");
+    const password =
+      document.getElementById("authPassword");
 
-    function openAuth(mode) {
+    function closeMenu() {
       menu.hidden = true;
       accountBtn.setAttribute("aria-expanded", "false");
+    }
+
+    function openAuth(mode) {
+      closeMenu();
 
       if (heading) {
         heading.textContent =
-          mode === "signup" ? "Create your account" : "Welcome back";
+          mode === "signup"
+            ? "Create your account"
+            : "Welcome back";
       }
 
       if (originalSignup) {
@@ -304,7 +382,9 @@
 
       if (!dialog.open) dialog.showModal();
 
-      const email = document.getElementById("authEmail");
+      const email =
+        document.getElementById("authEmail");
+
       if (email) email.focus();
     }
 
@@ -324,53 +404,68 @@
       }
 
       if (!authenticated) {
-        menu.hidden = true;
-        accountBtn.setAttribute("aria-expanded", "false");
+        closeMenu();
       }
     }
 
-    loginBtn.addEventListener("click", () => openAuth("login"));
-    signupBtn.addEventListener("click", () => openAuth("signup"));
+    loginBtn.addEventListener(
+      "click",
+      () => openAuth("login")
+    );
 
-    closeBtn.addEventListener("click", () => dialog.close());
+    signupBtn.addEventListener(
+      "click",
+      () => openAuth("signup")
+    );
+
+    closeBtn.addEventListener(
+      "click",
+      () => dialog.close()
+    );
 
     dialog.addEventListener("click", event => {
       if (event.target === dialog) dialog.close();
     });
 
     accountBtn.addEventListener("click", () => {
-      menu.hidden = !menu.hidden;
+      const opening = menu.hidden;
+      menu.hidden = !opening;
+
       accountBtn.setAttribute(
         "aria-expanded",
-        String(!menu.hidden)
+        String(opening)
       );
     });
 
     logoutBtn.addEventListener("click", () => {
-      menu.hidden = true;
+      closeMenu();
       logout.click();
     });
 
     document.addEventListener("click", event => {
       if (!accountWrap.contains(event.target)) {
-        menu.hidden = true;
-        accountBtn.setAttribute("aria-expanded", "false");
+        closeMenu();
+      }
+    });
+
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape") {
+        closeMenu();
       }
     });
 
     const observer = new MutationObserver(syncAuth);
+
     observer.observe(logout, {
       attributes: true,
       attributeFilter: ["hidden", "style", "class"]
     });
 
-    // The existing authentication module owns the actual
-    // sign-up, log-in and log-out operations.
-    // This module changes presentation only.
-
     if (form) {
       form.addEventListener("submit", () => {
-        if (password) password.autocomplete = "current-password";
+        if (password) {
+          password.autocomplete = "current-password";
+        }
       });
     }
 
