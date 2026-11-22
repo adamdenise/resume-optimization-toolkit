@@ -1,8 +1,11 @@
 
 /*
- * WORKNELY V7.1
+ * WORKNELY V7.5
  * Save Resume Builder data to Supabase
  * GitHub Pages compatible
+ *
+ * Original V7.1 functionality preserved.
+ * Success Celebration integration added.
  */
 
 import { createClient } from
@@ -65,8 +68,23 @@ function collectResume() {
   return content;
 }
 
+/*
+ * WORKNELY V7.5
+ * Trigger celebration only after Supabase
+ * confirms a successful database insert.
+ */
+function celebrateSaveSuccess() {
+  document.dispatchEvent(
+    new CustomEvent("worknely:success", {
+      detail: {
+        type: "saved"
+      }
+    })
+  );
+}
+
 async function saveToAccount() {
-  if (!saveButton) return;
+  if (!saveButton || saveButton.disabled) return;
 
   saveButton.disabled = true;
   showSaveStatus("Saving your resume...");
@@ -117,6 +135,12 @@ async function saveToAccount() {
 
     if (error) throw error;
 
+    if (!data?.id) {
+      throw new Error(
+        "Save confirmation was not received."
+      );
+    }
+
     showSaveStatus(
       "Resume saved successfully! " +
       "Open My Dashboard to view it."
@@ -127,7 +151,15 @@ async function saveToAccount() {
       data.id
     );
 
+    // WORKNELY V7.5 SUCCESS CELEBRATION
+    celebrateSaveSuccess();
+
   } catch (error) {
+    console.error(
+      "Worknely resume save error:",
+      error
+    );
+
     showSaveStatus(
       "Unable to save resume: " +
       (error.message || "Unknown error")
