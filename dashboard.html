@@ -1,0 +1,142 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#5424ff">
+<meta name="robots" content="noindex,nofollow">
+<title>My Dashboard | Worknely</title>
+<link rel="icon" type="image/svg+xml" href="worknely-favicon.svg">
+<link rel="stylesheet" href="dashboard.css?v=7.0">
+</head>
+<body>
+<div id="loading" role="status">Checking your Worknely session…</div>
+
+<div id="app" hidden>
+  <header class="topbar">
+    <a class="brand" href="./">
+      <img src="worknely-mark.svg" width="38" height="38" alt="">
+      <span>Worknely<small>PEOPLE TECHNOLOGY</small></span>
+    </a>
+    <button id="logout" class="outline" type="button">Log Out</button>
+  </header>
+
+  <div class="layout">
+    <nav class="sidebar" aria-label="Dashboard navigation">
+      <a href="#overview">Overview</a>
+      <a href="#resumes">My Resumes</a>
+      <a href="#pro">Upgrade to Pro</a>
+      <a href="./#builder">Resume Builder ↗</a>
+      <a href="./#comparison">Career Analysis ↗</a>
+    </nav>
+
+    <main>
+      <section id="overview" class="hero">
+        <span class="eyebrow">YOUR WORKNELY WORKSPACE</span>
+        <h1>My Dashboard</h1>
+        <p id="welcome">Your career documents, in one place.</p>
+
+        <div class="metrics">
+          <div>
+            <strong id="resumeCount">—</strong>
+            <span>Saved resumes</span>
+          </div>
+          <div>
+            <strong>Free</strong>
+            <span>Current plan</span>
+          </div>
+        </div>
+      </section>
+
+      <section id="resumes" class="panel">
+        <div class="section-title">
+          <div>
+            <span class="eyebrow">YOUR DOCUMENTS</span>
+            <h2>My Resumes</h2>
+            <p>Save your current Resume Builder fields to your private account.</p>
+          </div>
+          <a class="button" href="./#builder">Open Resume Builder</a>
+        </div>
+
+        <form id="resumeForm">
+          <label for="resumeTitle">Resume title</label>
+          <input
+            id="resumeTitle"
+            maxlength="120"
+            required
+            placeholder="e.g. Customer Support CV"
+          >
+
+          <div class="fields">
+            <label>
+              Full name
+              <input id="fullName" maxlength="200" autocomplete="name">
+            </label>
+
+            <label>
+              Professional title
+              <input id="professionalTitle" maxlength="200">
+            </label>
+
+            <label>
+              Contact
+              <textarea id="contact" rows="2"></textarea>
+            </label>
+
+            <label>
+              Education
+              <textarea id="education" rows="3"></textarea>
+            </label>
+
+            <label>
+              Summary
+              <textarea id="summary" rows="3"></textarea>
+            </label>
+
+            <label>
+              Experience
+              <textarea id="experience" rows="4"></textarea>
+            </label>
+
+            <label>
+              Skills
+              <textarea id="skills" rows="3"></textarea>
+            </label>
+          </div>
+
+          <div class="actions">
+            <button class="button" type="submit" id="saveResume">
+              Save Resume
+            </button>
+            <button class="outline" type="button" id="newResume">
+              New / Clear
+            </button>
+          </div>
+        </form>
+
+        <p id="resumeStatus" role="status" aria-live="polite"></p>
+
+        <h3>Saved resumes</h3>
+        <div id="resumeList" class="resume-list"></div>
+      </section>
+
+      <section id="pro" class="panel pro">
+        <span class="eyebrow">COMING LATER</span>
+        <h2>Worknely Pro</h2>
+        <p>Premium features and subscriptions are not active yet.</p>
+        <button class="outline" type="button" disabled>
+          Upgrade to Pro — Coming soon
+        </button>
+      </section>
+
+      <footer>
+        © 2026 Worknely · People Technology
+      </footer>
+    </main>
+  </div>
+</div>
+
+<script type="module" src="dashboard.js?v=7.0"></script>
+</body>
+</html>
