@@ -674,6 +674,76 @@
 
     </section>
 
+    <!-- WORKNELY ACCOUNT -->
+    <section id="worknelyAccount"
+             class="workspace"
+             aria-labelledby="accountTitle">
+
+      <div class="section-head">
+        <div>
+          <span class="overline">
+            WORKNELY ACCOUNT
+          </span>
+
+          <h2 id="accountTitle">
+            Your Worknely Account
+          </h2>
+
+          <p>
+            Create an account to save and manage
+            your resumes securely.
+          </p>
+        </div>
+      </div>
+
+      <form id="worknelyAuthForm"
+            class="builder-grid">
+
+        <label for="authEmail">
+          Email
+          <input id="authEmail"
+                 type="email"
+                 autocomplete="email"
+                 required>
+        </label>
+
+        <label for="authPassword">
+          Password
+          <input id="authPassword"
+                 type="password"
+                 autocomplete="current-password"
+                 minlength="6"
+                 required>
+        </label>
+
+        <div class="actions">
+          <button id="authSignUp"
+                  type="button"
+                  class="primary">
+            Sign Up
+          </button>
+
+          <button id="authLogin"
+                  type="submit"
+                  class="ghost">
+            Log In
+          </button>
+
+          <button id="authLogout"
+                  type="button"
+                  class="ghost"
+                  hidden>
+            Log Out
+          </button>
+        </div>
+      </form>
+
+      <p id="authStatus"
+         class="message"
+         role="status"
+         aria-live="polite"></p>
+    </section>
+
   </main>
 
   <!-- FOOTER -->
