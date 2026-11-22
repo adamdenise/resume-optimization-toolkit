@@ -64,6 +64,40 @@
       display: none;
     }
 
+    .account-save-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      margin-top: 18px;
+    }
+
+    .account-save-actions .primary,
+    .account-save-actions .ghost {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      text-align: center;
+      text-decoration: none;
+    }
+
+    #saveAccountStatus {
+      overflow-wrap: anywhere;
+    }
+
+    @media (max-width: 600px) {
+      .account-save-actions {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .account-save-actions .primary,
+      .account-save-actions .ghost {
+        width: 100%;
+      }
+    }
+
     @media (prefers-reduced-motion: reduce) {
       html {
         scroll-behavior: auto;
@@ -327,6 +361,7 @@
         </label>
       </div>
 
+      <!-- EXISTING RESUME ACTIONS -->
       <div class="actions">
         <button class="primary"
                 id="buildResume"
@@ -342,6 +377,26 @@
           Export resume PDF
         </button>
       </div>
+
+      <!-- WORKNELY V7.1 ACCOUNT ACTIONS -->
+      <div class="account-save-actions">
+
+        <button class="primary"
+                id="saveToAccount"
+                type="button">
+          Save to My Account
+        </button>
+
+        <a class="ghost"
+           href="dashboard.html">
+          My Dashboard
+        </a>
+      </div>
+
+      <p class="message"
+         id="saveAccountStatus"
+         role="status"
+         aria-live="polite"></p>
 
       <p class="message"
          id="builderMessage"
@@ -675,8 +730,6 @@
     </section>
 
     <!-- WORKNELY ACCOUNT -->
-    <!-- Existing authentication form is retained.
-         The V6.3 UI moves it into a modal window. -->
     <section id="worknelyAccount"
              class="workspace"
              aria-labelledby="accountTitle">
@@ -776,12 +829,17 @@
 <!-- WORKNELY V6.2 PREMIUM PDF GENERATOR -->
 <script defer src="worknely-premium-pdf.js?v=6.2"></script>
 
-<!-- WORKNELY SUPABASE AUTHENTICATION V1.1 -->
-<script type="module" src="worknely-auth.js?v=1.1"></script>
+<!-- WORKNELY SUPABASE AUTHENTICATION -->
+<script type="module"
+        src="worknely-auth.js?v=1.1"></script>
 
 <!-- WORKNELY V6.3 PREMIUM SAAS UI -->
-<script defer src="worknely-saas-ui.js?v=6.3"></script>
+<script defer
+        src="worknely-saas-ui.js?v=6.3"></script>
+
+<!-- WORKNELY V7.1 SAVE TO ACCOUNT -->
+<script type="module"
+        src="worknely-save-account.js?v=7.1"></script>
 
 </body>
 </html>
-
