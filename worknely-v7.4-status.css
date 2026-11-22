@@ -1,0 +1,59 @@
+
+/* WORKNELY V7.4 — PREMIUM STATUS MESSAGES */
+
+#builderMessage,
+#saveAccountStatus,
+#exportMessage,
+#studioStatus {
+  display: none;
+  margin: 16px 0;
+  padding: 16px 18px;
+  border-radius: 16px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+  border: 1px solid transparent;
+  box-shadow: 0 6px 20px rgba(40, 20, 90, 0.04);
+}
+
+#builderMessage:not(:empty),
+#saveAccountStatus:not(:empty),
+#exportMessage:not(:empty),
+#studioStatus:not(:empty) {
+  display: block;
+}
+
+/* SUCCESS — GREEN */
+
+.worknely-status-success {
+  color: #08784c !important;
+  background: #ecfdf4 !important;
+  border-color: #b7efd1 !important;
+}
+
+/* ERROR — RED */
+
+.worknely-status-error {
+  color: #b42332 !important;
+  background: #fff1f2 !important;
+  border-color: #fecdd3 !important;
+}
+
+/* INFORMATION — PURPLE */
+
+.worknely-status-info {
+  color: #5424ff !important;
+  background: #f3efff !important;
+  border-color: #e1d7ff !important;
+}
+
+@media (max-width: 600px) {
+  #builderMessage,
+  #saveAccountStatus,
+  #exportMessage,
+  #studioStatus {
+    padding: 14px 16px;
+    border-radius: 14px;
+  }
+}
