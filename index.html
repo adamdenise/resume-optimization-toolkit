@@ -64,22 +64,86 @@
       display: none;
     }
 
-    .account-save-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      align-items: center;
-      margin-top: 18px;
+    /*
+     * WORKNELY V7.3
+     * Preserve existing brand and component styling.
+     */
+
+    [hidden],
+    .wn-tool-view[hidden] {
+      display: none !important;
     }
 
-    .account-save-actions .primary,
-    .account-save-actions .ghost {
+    .wn-tool-view {
+      min-width: 0;
+    }
+
+    .wn-tool-view:focus {
+      outline: none;
+    }
+
+    .wn-tool-navigation {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 22px 0;
+    }
+
+    .wn-tool-navigation a {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      min-height: 48px;
+      padding: 12px 16px;
+      border: 1px solid #e5dbfa;
+      border-radius: 13px;
+      background: #fff;
+      color: #5424ff;
+      font-weight: 750;
+      font-size: 14px;
       text-align: center;
       text-decoration: none;
+    }
+
+    .wn-tool-navigation a[aria-current="page"] {
+      background: linear-gradient(
+        105deg,
+        #5626ff,
+        #ec22ad
+      );
+      border-color: transparent;
+      color: #fff;
+    }
+
+    .wn-builder-actions {
+      display: grid;
+      gap: 12px;
+      margin-top: 22px;
+    }
+
+    .wn-builder-primary {
+      display: flex;
+    }
+
+    .wn-builder-primary .primary {
+      width: 100%;
+      min-height: 54px;
+    }
+
+    .wn-builder-secondary {
+      display: grid;
+      grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .wn-builder-secondary button {
+      width: 100%;
+      min-width: 0;
+      min-height: 48px;
+      padding: 12px 10px;
+      font-size: 14px;
+      line-height: 1.3;
+      white-space: normal;
     }
 
     #saveAccountStatus {
@@ -87,14 +151,32 @@
     }
 
     @media (max-width: 600px) {
-      .account-save-actions {
-        flex-direction: column;
-        align-items: stretch;
+      .wn-tool-navigation {
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        padding: 3px 0 10px;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
       }
 
-      .account-save-actions .primary,
-      .account-save-actions .ghost {
-        width: 100%;
+      .wn-tool-navigation::-webkit-scrollbar {
+        display: none;
+      }
+
+      .wn-tool-navigation a {
+        flex: 0 0 auto;
+        font-size: 13px;
+        padding: 11px 13px;
+      }
+
+      .wn-builder-secondary {
+        gap: 9px;
+      }
+
+      .wn-builder-secondary button {
+        font-size: 13px;
+        padding: 12px 7px;
       }
     }
 
@@ -179,10 +261,33 @@
       </nav>
     </section>
 
+    <!-- DEDICATED TOOL NAVIGATION -->
+    <nav class="wn-tool-navigation"
+         aria-label="Worknely tools">
+
+      <a href="#ai-studio"
+         data-wn-tool="ai-studio">
+        Writing Studio
+      </a>
+
+      <a href="#builder"
+         data-wn-tool="builder">
+        Resume Builder
+      </a>
+
+      <a href="#comparison"
+         data-wn-tool="comparison">
+        Career Analysis
+      </a>
+    </nav>
+
     <!-- WORKNELY CAREER STUDIO -->
-    <section class="workspace ai-preview"
+    <section class="workspace ai-preview wn-tool-view"
              id="ai-studio"
-             aria-labelledby="studioHeading">
+             data-wn-view="ai-studio"
+             aria-labelledby="studioHeading"
+             tabindex="-1"
+             hidden>
 
       <div class="section-head">
         <div>
@@ -278,9 +383,11 @@
     </section>
 
     <!-- RESUME BUILDER -->
-    <section class="workspace builder"
+    <section class="workspace builder wn-tool-view"
              id="builder"
-             aria-labelledby="builderTitle">
+             data-wn-view="builder"
+             aria-labelledby="builderTitle"
+             tabindex="-1">
 
       <div class="section-head">
         <div>
@@ -305,7 +412,6 @@
 
         <label for="bName">
           Full name
-
           <input id="bName"
                  type="text"
                  autocomplete="name"
@@ -314,7 +420,6 @@
 
         <label for="bTitle">
           Professional title
-
           <input id="bTitle"
                  type="text"
                  placeholder="Customer Support Specialist">
@@ -322,7 +427,6 @@
 
         <label for="bContact">
           Contact (optional)
-
           <input id="bContact"
                  type="text"
                  placeholder="Email · City · LinkedIn">
@@ -330,7 +434,6 @@
 
         <label for="bEducation">
           Education
-
           <textarea id="bEducation"
                     rows="3"
                     placeholder="Degrees and qualifications"></textarea>
@@ -338,7 +441,6 @@
 
         <label for="bSummary">
           Professional summary
-
           <textarea id="bSummary"
                     rows="4"
                     placeholder="Your professional background"></textarea>
@@ -346,7 +448,6 @@
 
         <label for="bExperience">
           Experience
-
           <textarea id="bExperience"
                     rows="5"
                     placeholder="Role, employer, dates and real achievements"></textarea>
@@ -354,43 +455,38 @@
 
         <label for="bSkills">
           Skills
-
           <textarea id="bSkills"
                     rows="4"
                     placeholder="Your actual skills"></textarea>
         </label>
       </div>
 
-      <!-- RESUME ACTIONS -->
-      <div class="actions">
-        <button class="primary"
-                id="buildResume"
-                data-i18n="buildResume"
-                type="button">
-          Generate resume
-        </button>
+      <!-- V7.3 ORGANIZED RESUME ACTIONS -->
+      <div class="wn-builder-actions">
 
-        <button class="ghost"
-                id="exportResume"
-                data-i18n="exportResume"
-                type="button">
-          Export resume PDF
-        </button>
-      </div>
+        <div class="wn-builder-primary">
+          <button class="primary"
+                  id="buildResume"
+                  data-i18n="buildResume"
+                  type="button">
+            Generate resume
+          </button>
+        </div>
 
-      <!-- WORKNELY V7.2 ACCOUNT ACTIONS -->
-      <div class="account-save-actions">
+        <div class="wn-builder-secondary">
+          <button class="ghost"
+                  id="saveToAccount"
+                  type="button">
+            Save to My Account
+          </button>
 
-        <button class="primary"
-                id="saveToAccount"
-                type="button">
-          Save to My Account
-        </button>
-
-        <a class="ghost"
-           href="dashboard.html">
-          My Dashboard
-        </a>
+          <button class="ghost"
+                  id="exportResume"
+                  data-i18n="exportResume"
+                  type="button">
+            Export resume PDF
+          </button>
+        </div>
       </div>
 
       <p class="message"
@@ -409,9 +505,12 @@
     </section>
 
     <!-- CAREER COMPATIBILITY ANALYSIS -->
-    <section class="workspace"
+    <section class="workspace wn-tool-view"
              id="comparison"
-             aria-labelledby="workspaceTitle">
+             data-wn-view="comparison"
+             aria-labelledby="workspaceTitle"
+             tabindex="-1"
+             hidden>
 
       <div class="section-head">
         <div>
@@ -535,7 +634,7 @@
     </section>
 
     <!-- COMPATIBILITY REPORT -->
-    <section class="results hidden"
+    <section class="results hidden wn-tool-view"
              id="results"
              aria-live="polite"
              aria-labelledby="reportTitle">
@@ -694,7 +793,6 @@
         job suitability, or recruitment outcomes.
         Only claim skills you truly have.
       </p>
-
     </section>
 
     <!-- WORKNELY ACCOUNT -->
@@ -777,32 +875,107 @@
 
 </div>
 
-<!-- WORKNELY V6.0 CORE -->
+<!-- EXISTING FUNCTIONAL MODULES -->
 <script defer src="script.js?v=6.0"></script>
-
-<!-- RESUME WRITING STUDIO -->
 <script defer src="studio.js?v=5.1"></script>
-
-<!-- MULTILINGUAL INTERFACE -->
 <script defer src="worknely-i18n.js?v=3.1"></script>
-
-<!-- COMPATIBILITY REPORT TRANSLATIONS -->
 <script defer src="worknely-report-i18n.js?v=1.0"></script>
-
-<!-- WORKNELY V6.2 PREMIUM PDF GENERATOR -->
 <script defer src="worknely-premium-pdf.js?v=6.2"></script>
 
-<!-- WORKNELY SUPABASE AUTHENTICATION -->
 <script type="module"
         src="worknely-auth.js?v=1.1"></script>
 
-<!-- WORKNELY V7.2 PREMIUM SAAS NAVIGATION -->
 <script defer
         src="worknely-saas-ui.js?v=7.2"></script>
 
-<!-- WORKNELY V7.1 SAVE TO ACCOUNT -->
 <script type="module"
         src="worknely-save-account.js?v=7.1"></script>
+
+<!-- V7.3 TOOL NAVIGATION -->
+<script>
+(() => {
+  "use strict";
+
+  const toolIds = [
+    "ai-studio",
+    "builder",
+    "comparison"
+  ];
+
+  function getActiveTool() {
+    const hash = window.location.hash
+      .replace("#", "")
+      .toLowerCase();
+
+    if (hash === "results") {
+      return "comparison";
+    }
+
+    return toolIds.includes(hash)
+      ? hash
+      : "builder";
+  }
+
+  function updateToolNavigation() {
+    const active = getActiveTool();
+
+    document.querySelectorAll(
+      ".wn-tool-view[data-wn-view]"
+    ).forEach(section => {
+      section.hidden =
+        section.dataset.wnView !== active;
+    });
+
+    document.querySelectorAll(
+      ".wn-tool-navigation [data-wn-tool]"
+    ).forEach(link => {
+      if (link.dataset.wnTool === active) {
+        link.setAttribute(
+          "aria-current",
+          "page"
+        );
+      } else {
+        link.removeAttribute(
+          "aria-current"
+        );
+      }
+    });
+
+    const report =
+      document.getElementById("results");
+
+    if (report) {
+      report.hidden = active !== "comparison";
+    }
+
+    const target =
+      document.getElementById(active);
+
+    if (target && window.location.hash) {
+      requestAnimationFrame(() => {
+        target.scrollIntoView({
+          block: "start",
+          behavior: "instant"
+        });
+      });
+    }
+  }
+
+  window.addEventListener(
+    "hashchange",
+    updateToolNavigation
+  );
+
+  if (document.readyState === "loading") {
+    document.addEventListener(
+      "DOMContentLoaded",
+      updateToolNavigation
+    );
+  } else {
+    updateToolNavigation();
+  }
+})();
+</script>
 
 </body>
 </html>
