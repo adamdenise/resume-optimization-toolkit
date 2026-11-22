@@ -1,9 +1,12 @@
 
 /*
- * WORKNELY V7.0
+ * WORKNELY V7.3
  * Personal SaaS Dashboard
- * Supabase Authentication + Resume Storage
- * Compatible with GitHub Pages
+ *
+ * Supabase Authentication
+ * Resume Storage
+ * Dedicated Dashboard Views
+ * GitHub Pages Compatible
  */
 
 import { createClient } from
@@ -152,13 +155,20 @@ function fillResumeForm(content = {}) {
 
 function resetForm() {
   editingResumeId = null;
+
   resumeForm.reset();
   fillResumeForm({});
+
   saveButton.textContent = "Save Resume";
-  setStatus("Ready to create a new resume.");
+
+  setStatus(
+    "Ready to create a new resume."
+  );
+
+  resumeTitle.focus();
 }
 
-/* RESUME LIST */
+/* RESUME CARDS */
 
 function createResumeCard(resume) {
   const card = document.createElement("article");
@@ -210,6 +220,8 @@ function createResumeCard(resume) {
   return card;
 }
 
+/* RENDER RESUMES */
+
 function renderResumes() {
   resumeList.replaceChildren();
 
@@ -221,7 +233,7 @@ function renderResumes() {
       document.createElement("p");
 
     empty.textContent =
-      "No saved resumes yet. Create your first resume above.";
+      "No saved resumes yet. Create your first resume.";
 
     resumeList.appendChild(empty);
     return;
@@ -237,7 +249,7 @@ function renderResumes() {
 /* FETCH USER RESUMES */
 
 async function loadResumes() {
-  if (!currentUser) return;
+  if (!currentUser) return false;
 
   setStatus("Loading your resumes...");
 
@@ -256,16 +268,18 @@ async function loadResumes() {
       "Unable to load resumes: " +
       error.message
     );
-    return;
+    return false;
   }
 
   savedResumes = data || [];
 
   renderResumes();
   setStatus("");
+
+  return true;
 }
 
-/* SAVE / UPDATE RESUME */
+/* SAVE OR UPDATE RESUME */
 
 async function saveResume(event) {
   event.preventDefault();
@@ -276,6 +290,7 @@ async function saveResume(event) {
 
   if (!title) {
     setStatus("Please enter a resume title.");
+    resumeTitle.focus();
     return;
   }
 
@@ -319,12 +334,20 @@ async function saveResume(event) {
 
     editingResumeId = result.data.id;
 
-    await loadResumes();
+    const refreshed = await loadResumes();
 
     setStatus(
-      wasEditing
-        ? "Resume updated successfully."
-        : "Resume saved successfully."
+      refreshed
+        ? (
+            wasEditing
+              ? "Resume updated successfully."
+              : "Resume saved successfully."
+          )
+        : (
+            wasEditing
+              ? "Resume updated, but the list could not refresh."
+              : "Resume saved, but the list could not refresh."
+          )
     );
 
     saveButton.textContent =
@@ -368,11 +391,20 @@ function editResume(id) {
     "Editing: " + resume.title
   );
 
-  document.getElementById("resumes")
-    .scrollIntoView({
+  if (window.location.hash !== "#resumes") {
+    window.location.hash = "resumes";
+  }
+
+  requestAnimationFrame(() => {
+    resumeForm.scrollIntoView({
       behavior: "smooth",
       block: "start"
     });
+
+    resumeTitle.focus({
+      preventScroll: true
+    });
+  });
 }
 
 /* DELETE RESUME */
@@ -417,10 +449,12 @@ async function deleteResume(id) {
       resetForm();
     }
 
-    await loadResumes();
+    const refreshed = await loadResumes();
 
     setStatus(
-      "Resume deleted successfully."
+      refreshed
+        ? "Resume deleted successfully."
+        : "Resume deleted, but the list could not refresh."
     );
 
   } catch (error) {
@@ -514,7 +548,7 @@ logoutButton.addEventListener(
 );
 
 supabase.auth.onAuthStateChange(
-  (event, session) => {
+  (event) => {
     if (
       event === "SIGNED_OUT" &&
       currentUser
