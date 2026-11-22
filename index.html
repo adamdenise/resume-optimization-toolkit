@@ -2,876 +2,819 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <meta name="theme-color" content="#5424FF">
-  <meta name="color-scheme" content="light">
+<meta name="theme-color" content="#5424FF">
+<meta name="color-scheme" content="light">
 
-  <meta name="description"
-        content="Worknely helps you build professional resumes, review CV structure, compare skills with job requirements, and explore career opportunities.">
+<meta name="description"
+content="Worknely helps you build professional resumes, review CV structure, compare skills with job requirements, and explore career opportunities.">
 
-  <meta name="application-name" content="Worknely">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-title" content="Worknely">
-  <meta name="apple-mobile-web-app-status-bar-style"
-        content="default">
+<meta name="application-name" content="Worknely">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Worknely">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 
-  <title>Worknely | Build Your Career. Shape Your Future.</title>
+<title>Worknely | Build Your Career. Shape Your Future.</title>
 
-  <link rel="canonical"
-        href="https://adamdenise.github.io/resume-optimization-toolkit/">
+<link rel="canonical"
+href="https://adamdenise.github.io/resume-optimization-toolkit/">
 
-  <link rel="icon"
-        type="image/svg+xml"
-        href="worknely-favicon.svg">
+<link rel="icon" type="image/svg+xml"
+href="worknely-favicon.svg">
 
-  <link rel="stylesheet" href="style.css?v=5.0">
-  <link rel="stylesheet" href="worknely-theme.css?v=5.1">
-  <link rel="stylesheet" href="worknely-electric.css?v=5.3">
+<link rel="stylesheet" href="style.css?v=5.0">
+<link rel="stylesheet" href="worknely-theme.css?v=5.1">
+<link rel="stylesheet" href="worknely-electric.css?v=5.3">
 
-  <style>
-    .sr-only {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
-      overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-      white-space: nowrap;
-      border: 0;
-    }
+<style>
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
 
-    button:focus-visible,
-    a:focus-visible,
-    select:focus-visible,
-    input:focus-visible,
-    textarea:focus-visible {
-      outline: 3px solid #6a3bff;
-      outline-offset: 3px;
-    }
+button:focus-visible,
+a:focus-visible,
+select:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid #6a3bff;
+  outline-offset: 3px;
+}
 
-    .builder-preview {
-      white-space: pre-wrap;
-      overflow-wrap: anywhere;
-    }
+.builder-preview {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
 
-    .message:empty,
-    .export-message:empty,
-    .builder-preview:empty {
-      display: none;
-    }
+.message:empty,
+.export-message:empty,
+.builder-preview:empty {
+  display: none;
+}
 
-    /*
-     * WORKNELY V7.3
-     * Preserve existing brand and component styling.
-     */
+[hidden],
+.wn-tool-view[hidden] {
+  display: none !important;
+}
 
-    [hidden],
-    .wn-tool-view[hidden] {
-      display: none !important;
-    }
+.wn-tool-view {
+  min-width: 0;
+}
 
-    .wn-tool-view {
-      min-width: 0;
-    }
+.wn-tool-view:focus {
+  outline: none;
+}
 
-    .wn-tool-view:focus {
-      outline: none;
-    }
+/* WORKNELY V7.3 NAVIGATION */
 
-    .wn-tool-navigation {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin: 22px 0;
-    }
+.wn-tool-navigation {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 22px 0;
+}
 
-    .wn-tool-navigation a {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 12px 16px;
-      border: 1px solid #e5dbfa;
-      border-radius: 13px;
-      background: #fff;
-      color: #5424ff;
-      font-weight: 750;
-      font-size: 14px;
-      text-align: center;
-      text-decoration: none;
-    }
+.wn-tool-navigation a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 16px;
+  border: 1px solid #e5dbfa;
+  border-radius: 13px;
+  background: #fff;
+  color: #5424ff;
+  font-weight: 750;
+  font-size: 14px;
+  text-align: center;
+  text-decoration: none;
+}
 
-    .wn-tool-navigation a[aria-current="page"] {
-      background: linear-gradient(
-        105deg,
-        #5626ff,
-        #ec22ad
-      );
-      border-color: transparent;
-      color: #fff;
-    }
+.wn-tool-navigation a[aria-current="page"] {
+  background: linear-gradient(105deg,#5626ff,#ec22ad);
+  border-color: transparent;
+  color: #fff;
+}
 
-    .wn-builder-actions {
-      display: grid;
-      gap: 12px;
-      margin-top: 22px;
-    }
+/* ORGANIZED RESUME ACTIONS */
 
-    .wn-builder-primary {
-      display: flex;
-    }
+.wn-builder-actions {
+  display: grid;
+  gap: 12px;
+  margin-top: 22px;
+}
 
-    .wn-builder-primary .primary {
-      width: 100%;
-      min-height: 54px;
-    }
+.wn-builder-primary {
+  display: flex;
+}
 
-    .wn-builder-secondary {
-      display: grid;
-      grid-template-columns:
-        repeat(2, minmax(0, 1fr));
-      gap: 12px;
-    }
+.wn-builder-primary .primary {
+  width: 100%;
+  min-height: 54px;
+}
 
-    .wn-builder-secondary button {
-      width: 100%;
-      min-width: 0;
-      min-height: 48px;
-      padding: 12px 10px;
-      font-size: 14px;
-      line-height: 1.3;
-      white-space: normal;
-    }
+.wn-builder-secondary {
+  display: grid;
+  grid-template-columns: repeat(2,minmax(0,1fr));
+  gap: 12px;
+}
 
-    #saveAccountStatus {
-      overflow-wrap: anywhere;
-    }
+.wn-builder-secondary button {
+  width: 100%;
+  min-width: 0;
+  min-height: 48px;
+  padding: 12px 10px;
+  font-size: 14px;
+  line-height: 1.3;
+  white-space: normal;
+}
 
-    @media (max-width: 600px) {
-      .wn-tool-navigation {
-        display: flex;
-        flex-wrap: nowrap;
-        overflow-x: auto;
-        padding: 3px 0 10px;
-        -webkit-overflow-scrolling: touch;
-        scrollbar-width: none;
-      }
+/* WORKNELY V7.4 PREMIUM STATUS */
 
-      .wn-tool-navigation::-webkit-scrollbar {
-        display: none;
-      }
+#builderMessage,
+#saveAccountStatus,
+#exportMessage,
+#studioStatus {
+  display: none;
+  margin: 16px 0;
+  padding: 16px 18px;
+  border-radius: 16px;
+  border: 1px solid transparent;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+  box-shadow: 0 6px 20px rgba(40,20,90,.04);
+}
 
-      .wn-tool-navigation a {
-        flex: 0 0 auto;
-        font-size: 13px;
-        padding: 11px 13px;
-      }
+#builderMessage:not(:empty),
+#saveAccountStatus:not(:empty),
+#exportMessage:not(:empty),
+#studioStatus:not(:empty) {
+  display: block;
+}
 
-      .wn-builder-secondary {
-        gap: 9px;
-      }
+.worknely-status-success {
+  color: #08784c !important;
+  background: #ecfdf4 !important;
+  border-color: #b7efd1 !important;
+}
 
-      .wn-builder-secondary button {
-        font-size: 13px;
-        padding: 12px 7px;
-      }
-    }
+.worknely-status-error {
+  color: #b42332 !important;
+  background: #fff1f2 !important;
+  border-color: #fecdd3 !important;
+}
 
-    @media (prefers-reduced-motion: reduce) {
-      html {
-        scroll-behavior: auto;
-      }
-    }
-  </style>
+.worknely-status-info {
+  color: #5424ff !important;
+  background: #f3efff !important;
+  border-color: #e1d7ff !important;
+}
+
+@media (max-width:600px) {
+  .wn-tool-navigation {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding: 3px 0 10px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .wn-tool-navigation::-webkit-scrollbar {
+    display: none;
+  }
+
+  .wn-tool-navigation a {
+    flex: 0 0 auto;
+    font-size: 13px;
+    padding: 11px 13px;
+  }
+
+  .wn-builder-secondary {
+    gap: 9px;
+  }
+
+  .wn-builder-secondary button {
+    font-size: 13px;
+    padding: 12px 7px;
+  }
+
+  #builderMessage,
+  #saveAccountStatus,
+  #exportMessage,
+  #studioStatus {
+    padding: 14px 16px;
+    border-radius: 14px;
+  }
+}
+
+@media (prefers-reduced-motion:reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+</style>
 </head>
 
 <body>
 <div class="shell">
 
-  <!-- HEADER -->
-  <header class="top">
-    <a class="brand"
-       href="#top"
-       aria-label="Worknely home">
+<header class="top">
+  <a class="brand" href="#top"
+     aria-label="Worknely home">
+    <span class="brandmark">
+      <img src="worknely-mark.svg"
+           alt="" width="36" height="36">
+    </span>
+    <span class="worknely-brandname">
+      Worknely
+      <small>PEOPLE TECHNOLOGY</small>
+    </span>
+  </a>
 
-      <span class="brandmark">
-        <img src="worknely-mark.svg"
-             alt=""
-             width="36"
-             height="36">
-      </span>
+  <div class="header-tools">
+    <label for="language" class="sr-only">
+      Interface language
+    </label>
+    <select id="language"
+            aria-label="Interface language">
+      <option value="en">🇬🇧 English</option>
+      <option value="ro">🇷🇴 Română</option>
+      <option value="it">🇮🇹 Italiano</option>
+      <option value="de">🇩🇪 Deutsch</option>
+      <option value="fr">🇫🇷 Français</option>
+      <option value="es">🇪🇸 Español</option>
+    </select>
+  </div>
+</header>
 
-      <span class="worknely-brandname">
-        Worknely
-        <small>PEOPLE TECHNOLOGY</small>
-      </span>
+<main id="top">
+
+<!-- HERO -->
+<section class="hero"
+         aria-labelledby="worknelyHeroTitle">
+  <span class="eyebrow">
+    ✦ YOUR CAREER, CONNECTED
+  </span>
+
+  <h1 id="worknelyHeroTitle">
+    Build your career.
+    <em>Shape your future.</em>
+  </h1>
+
+  <p>
+    Create professional resumes, compare your skills
+    with job requirements, and take your next career
+    step with confidence.
+  </p>
+
+  <nav class="hero-actions"
+       aria-label="Career tools">
+    <a class="primary" href="#builder">
+      Build my resume
     </a>
+    <a class="ghost" href="#comparison">
+      Analyze compatibility
+    </a>
+  </nav>
+</section>
 
-    <div class="header-tools">
-      <label for="language" class="sr-only">
-        Interface language
-      </label>
+<!-- TOOL NAVIGATION -->
+<nav class="wn-tool-navigation"
+     aria-label="Worknely tools">
+  <a href="#ai-studio"
+     data-wn-tool="ai-studio">
+    Writing Studio
+  </a>
+  <a href="#builder"
+     data-wn-tool="builder">
+    Resume Builder
+  </a>
+  <a href="#comparison"
+     data-wn-tool="comparison">
+    Career Analysis
+  </a>
+</nav>
 
-      <select id="language"
-              aria-label="Interface language">
-        <option value="en">🇬🇧 English</option>
-        <option value="ro">🇷🇴 Română</option>
-        <option value="it">🇮🇹 Italiano</option>
-        <option value="de">🇩🇪 Deutsch</option>
-        <option value="fr">🇫🇷 Français</option>
-        <option value="es">🇪🇸 Español</option>
-      </select>
-    </div>
-  </header>
+<!-- WRITING STUDIO -->
+<section class="workspace ai-preview wn-tool-view"
+         id="ai-studio"
+         data-wn-view="ai-studio"
+         aria-labelledby="studioHeading"
+         tabindex="-1"
+         hidden>
 
-  <main id="top">
-
-    <!-- HERO -->
-    <section class="hero"
-             aria-labelledby="worknelyHeroTitle">
-
-      <span class="eyebrow">
-        ✦ YOUR CAREER, CONNECTED
+  <div class="section-head">
+    <div>
+      <span class="overline">
+        WORKNELY CAREER STUDIO
       </span>
+      <h2 id="studioHeading">
+        Resume Writing Studio
+      </h2>
+      <p id="studioIntro">
+        Transform your experience into professional
+        resume content. Highlight your verified skills,
+        responsibilities, and achievements.
+      </p>
+    </div>
+  </div>
 
-      <h1 id="worknelyHeroTitle">
-        Build your career.
-        <em>Shape your future.</em>
-      </h1>
+  <div class="builder-grid">
+    <label for="studioRole">
+      <span id="studioRoleLabel">Target role</span>
+      <input id="studioRole"
+             type="text"
+             maxlength="120"
+             autocomplete="off"
+             placeholder="e.g. Customer Support Specialist">
+    </label>
 
+    <label for="studioTone">
+      <span id="studioToneLabel">Writing style</span>
+      <select id="studioTone">
+        <option value="concise">Concise</option>
+        <option value="results">Results-focused</option>
+      </select>
+    </label>
+
+    <label for="studioExperience">
+      <span id="studioExperienceLabel">
+        Verified experience
+      </span>
+      <textarea id="studioExperience"
+                rows="4"
+                placeholder="Describe your real duties and achievements."></textarea>
+    </label>
+
+    <label for="studioSkills">
+      <span id="studioSkillsLabel">
+        Verified skills
+      </span>
+      <textarea id="studioSkills"
+                rows="4"
+                placeholder="e.g. Excel, customer service, CRM"></textarea>
+    </label>
+  </div>
+
+  <div class="actions">
+    <button class="primary"
+            id="studioDraft" type="button">
+      Create structured draft
+    </button>
+    <button class="ghost"
+            id="studioToBuilder" type="button">
+      Copy draft to Resume Builder
+    </button>
+  </div>
+
+  <p class="message"
+     id="studioStatus"
+     role="status"
+     aria-live="polite"></p>
+
+  <pre class="builder-preview"
+       id="studioOutput"
+       aria-label="Writing studio draft"></pre>
+</section>
+
+<!-- RESUME BUILDER -->
+<section class="workspace builder wn-tool-view"
+         id="builder"
+         data-wn-view="builder"
+         aria-labelledby="builderTitle"
+         tabindex="-1">
+
+  <div class="section-head">
+    <div>
+      <span class="overline">
+        PROFESSIONAL RESUME BUILDER
+      </span>
+      <h2 id="builderTitle"
+          data-i18n="builderTitle">
+        Create your ATS-friendly resume
+      </h2>
+      <p id="builderIntro"
+         data-i18n="builderIntro">
+        Build a professional resume using your
+        verified experience, education, and skills.
+      </p>
+    </div>
+  </div>
+
+  <div class="builder-grid">
+    <label for="bName">
+      Full name
+      <input id="bName"
+             type="text"
+             autocomplete="name"
+             placeholder="Your name">
+    </label>
+
+    <label for="bTitle">
+      Professional title
+      <input id="bTitle"
+             type="text"
+             placeholder="Customer Support Specialist">
+    </label>
+
+    <label for="bContact">
+      Contact (optional)
+      <input id="bContact"
+             type="text"
+             placeholder="Email · City · LinkedIn">
+    </label>
+
+    <label for="bEducation">
+      Education
+      <textarea id="bEducation"
+                rows="3"
+                placeholder="Degrees and qualifications"></textarea>
+    </label>
+
+    <label for="bSummary">
+      Professional summary
+      <textarea id="bSummary"
+                rows="4"
+                placeholder="Your professional background"></textarea>
+    </label>
+
+    <label for="bExperience">
+      Experience
+      <textarea id="bExperience"
+                rows="5"
+                placeholder="Role, employer, dates and real achievements"></textarea>
+    </label>
+
+    <label for="bSkills">
+      Skills
+      <textarea id="bSkills"
+                rows="4"
+                placeholder="Your actual skills"></textarea>
+    </label>
+  </div>
+
+  <div class="wn-builder-actions">
+    <div class="wn-builder-primary">
+      <button class="primary"
+              id="buildResume"
+              data-i18n="buildResume"
+              type="button">
+        Generate resume
+      </button>
+    </div>
+
+    <div class="wn-builder-secondary">
+      <button class="ghost"
+              id="saveToAccount"
+              type="button">
+        Save to My Account
+      </button>
+
+      <button class="ghost"
+              id="exportResume"
+              data-i18n="exportResume"
+              type="button">
+        Export resume PDF
+      </button>
+    </div>
+  </div>
+
+  <p class="message"
+     id="saveAccountStatus"
+     role="status"
+     aria-live="polite"></p>
+
+  <p class="message"
+     id="builderMessage"
+     role="status"
+     aria-live="polite"></p>
+
+  <pre class="builder-preview"
+       id="builderPreview"
+       aria-label="Resume preview"></pre>
+</section>
+
+<!-- CAREER ANALYSIS -->
+<section class="workspace wn-tool-view"
+         id="comparison"
+         data-wn-view="comparison"
+         aria-labelledby="workspaceTitle"
+         tabindex="-1"
+         hidden>
+
+  <div class="section-head">
+    <div>
+      <span class="overline">
+        CAREER COMPATIBILITY ANALYSIS
+      </span>
+      <h2 id="workspaceTitle"
+          data-i18n="workspaceTitle">
+        Resume &amp; job comparison
+      </h2>
       <p>
-        Create professional resumes, compare your skills
-        with job requirements, and take your next career
-        step with confidence.
+        Compare your resume with job requirements
+        and identify relevant skills and potential gaps.
       </p>
+    </div>
 
-      <nav class="hero-actions"
-           aria-label="Career tools">
+    <button class="ghost"
+            id="sample"
+            data-i18n="sample"
+            type="button">
+      ✦ Load example
+    </button>
+  </div>
 
-        <a class="primary" href="#builder">
-          Build my resume
-        </a>
+  <div class="import-panel">
+    <label id="uploadLabel"
+           data-i18n="uploadLabel"
+           for="resumeFile">
+      <strong>Upload your resume</strong>
+      (PDF or DOCX)
+    </label>
 
-        <a class="ghost" href="#comparison">
-          Analyze compatibility
-        </a>
-      </nav>
-    </section>
+    <input id="resumeFile"
+           type="file"
+           accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+           aria-describedby="fileStatus">
 
-    <!-- DEDICATED TOOL NAVIGATION -->
-    <nav class="wn-tool-navigation"
-         aria-label="Worknely tools">
+    <p class="hint"
+       id="fileStatus"
+       role="status"
+       aria-live="polite">
+      Text-based PDF and DOCX files are supported.
+      Scanned PDFs and legacy DOC files are not supported.
+      Files are processed locally in your browser using
+      parsing libraries loaded from a CDN.
+    </p>
+  </div>
 
-      <a href="#ai-studio"
-         data-wn-tool="ai-studio">
-        Writing Studio
-      </a>
+  <div class="input-grid">
+    <div class="field">
+      <label for="resume">
+        01 <strong>Your resume</strong>
+      </label>
+      <textarea id="resume"
+                spellcheck="true"
+                aria-describedby="resumeWords"
+                placeholder="Paste your professional summary, experience, education and skills here..."></textarea>
+      <div class="field-foot">
+        <span>
+          Remove personal contact details before testing.
+        </span>
+        <span id="resumeWords">0 words</span>
+      </div>
+    </div>
 
-      <a href="#builder"
-         data-wn-tool="builder">
-        Resume Builder
-      </a>
+    <div class="field">
+      <label for="job">
+        02 <strong>Job description</strong>
+      </label>
+      <textarea id="job"
+                spellcheck="true"
+                aria-describedby="jobWords"
+                placeholder="Paste the job responsibilities, required skills and qualifications here..."></textarea>
+      <div class="field-foot">
+        <span>
+          Remove unnecessary personal information.
+        </span>
+        <span id="jobWords">0 words</span>
+      </div>
+    </div>
+  </div>
 
-      <a href="#comparison"
-         data-wn-tool="comparison">
-        Career Analysis
-      </a>
-    </nav>
+  <div class="actions">
+    <button class="primary"
+            id="analyze"
+            data-i18n="analyze"
+            type="button">
+      Analyze compatibility
+      <span aria-hidden="true">→</span>
+    </button>
 
-    <!-- WORKNELY CAREER STUDIO -->
-    <section class="workspace ai-preview wn-tool-view"
-             id="ai-studio"
-             data-wn-view="ai-studio"
-             aria-labelledby="studioHeading"
-             tabindex="-1"
-             hidden>
+    <button class="ghost"
+            id="clear"
+            data-i18n="clear"
+            type="button">
+      Clear all
+    </button>
+  </div>
 
-      <div class="section-head">
+  <p class="message"
+     id="message"
+     role="status"
+     aria-live="polite"></p>
+</section>
+
+<!-- COMPATIBILITY REPORT -->
+<section class="results hidden wn-tool-view"
+         id="results"
+         aria-live="polite"
+         aria-labelledby="reportTitle">
+
+  <div class="results-head">
+    <div>
+      <span class="overline">
+        YOUR CAREER INSIGHTS
+      </span>
+      <h2 id="reportTitle">
+        Compatibility report
+      </h2>
+      <p>
+        Understand your resume's keyword coverage
+        and identify opportunities for improvement.
+      </p>
+    </div>
+
+    <div class="export-actions">
+      <button class="ghost"
+              id="download" type="button">
+        ↓ Download TXT
+      </button>
+      <button class="ghost"
+              id="printPdf" type="button">
+        ↓ Save PDF
+      </button>
+    </div>
+  </div>
+
+  <p class="export-message"
+     id="exportMessage"
+     role="status"
+     aria-live="polite"></p>
+
+  <div class="score-layout">
+    <div class="score-card">
+      <div class="ring" id="ring">
         <div>
-          <span class="overline">
-            WORKNELY CAREER STUDIO
-          </span>
-
-          <h2 id="studioHeading">
-            Resume Writing Studio
-          </h2>
-
-          <p id="studioIntro">
-            Transform your experience into professional
-            resume content. Highlight your verified skills,
-            responsibilities, and achievements.
-          </p>
+          <strong id="score">0%</strong>
+          <span>keyword match</span>
         </div>
       </div>
+      <p>
+        Estimated coverage of recognized skills
+        mentioned in the job description.
+      </p>
+      <small>
+        Not an ATS score or hiring prediction.
+      </small>
+    </div>
+  </div>
 
-      <div class="builder-grid">
+  <div class="stats">
+    <div class="stat">
+      <span>Matched skills</span>
+      <strong id="matchedCount">0</strong>
+    </div>
+    <div class="stat">
+      <span>Skills to review</span>
+      <strong id="missingCount">0</strong>
+    </div>
+    <div class="stat">
+      <span>Resume length</span>
+      <strong id="wordCount">0 words</strong>
+    </div>
+  </div>
 
-        <label for="studioRole">
-          <span id="studioRoleLabel">
-            Target role
-          </span>
+  <article class="report-card ats-card">
+    <h3 id="atsHeading"
+        data-i18n="atsHeading">
+      Estimated ATS readiness
+    </h3>
 
-          <input id="studioRole"
-                 type="text"
-                 maxlength="120"
-                 autocomplete="off"
-                 placeholder="e.g. Customer Support Specialist">
-        </label>
-
-        <label for="studioTone">
-          <span id="studioToneLabel">
-            Writing style
-          </span>
-
-          <select id="studioTone">
-            <option value="concise">
-              Concise
-            </option>
-
-            <option value="results">
-              Results-focused
-            </option>
-          </select>
-        </label>
-
-        <label for="studioExperience">
-          <span id="studioExperienceLabel">
-            Verified experience
-          </span>
-
-          <textarea id="studioExperience"
-                    rows="4"
-                    placeholder="Describe your real duties and achievements."></textarea>
-        </label>
-
-        <label for="studioSkills">
-          <span id="studioSkillsLabel">
-            Verified skills
-          </span>
-
-          <textarea id="studioSkills"
-                    rows="4"
-                    placeholder="e.g. Excel, customer service, CRM"></textarea>
-        </label>
-      </div>
-
-      <div class="actions">
-        <button class="primary"
-                id="studioDraft"
-                type="button">
-          Create structured draft
-        </button>
-
-        <button class="ghost"
-                id="studioToBuilder"
-                type="button">
-          Copy draft to Resume Builder
-        </button>
-      </div>
-
-      <p class="message"
-         id="studioStatus"
-         role="status"
-         aria-live="polite"></p>
-
-      <pre class="builder-preview"
-           id="studioOutput"
-           aria-label="Writing studio draft"></pre>
-    </section>
-
-    <!-- RESUME BUILDER -->
-    <section class="workspace builder wn-tool-view"
-             id="builder"
-             data-wn-view="builder"
-             aria-labelledby="builderTitle"
-             tabindex="-1">
-
-      <div class="section-head">
-        <div>
-          <span class="overline">
-            PROFESSIONAL RESUME BUILDER
-          </span>
-
-          <h2 id="builderTitle"
-              data-i18n="builderTitle">
-            Create your ATS-friendly resume
-          </h2>
-
-          <p id="builderIntro"
-             data-i18n="builderIntro">
-            Build a professional resume using your
-            verified experience, education, and skills.
-          </p>
-        </div>
-      </div>
-
-      <div class="builder-grid">
-
-        <label for="bName">
-          Full name
-          <input id="bName"
-                 type="text"
-                 autocomplete="name"
-                 placeholder="Your name">
-        </label>
-
-        <label for="bTitle">
-          Professional title
-          <input id="bTitle"
-                 type="text"
-                 placeholder="Customer Support Specialist">
-        </label>
-
-        <label for="bContact">
-          Contact (optional)
-          <input id="bContact"
-                 type="text"
-                 placeholder="Email · City · LinkedIn">
-        </label>
-
-        <label for="bEducation">
-          Education
-          <textarea id="bEducation"
-                    rows="3"
-                    placeholder="Degrees and qualifications"></textarea>
-        </label>
-
-        <label for="bSummary">
-          Professional summary
-          <textarea id="bSummary"
-                    rows="4"
-                    placeholder="Your professional background"></textarea>
-        </label>
-
-        <label for="bExperience">
-          Experience
-          <textarea id="bExperience"
-                    rows="5"
-                    placeholder="Role, employer, dates and real achievements"></textarea>
-        </label>
-
-        <label for="bSkills">
-          Skills
-          <textarea id="bSkills"
-                    rows="4"
-                    placeholder="Your actual skills"></textarea>
-        </label>
-      </div>
-
-      <!-- V7.3 ORGANIZED RESUME ACTIONS -->
-      <div class="wn-builder-actions">
-
-        <div class="wn-builder-primary">
-          <button class="primary"
-                  id="buildResume"
-                  data-i18n="buildResume"
-                  type="button">
-            Generate resume
-          </button>
-        </div>
-
-        <div class="wn-builder-secondary">
-          <button class="ghost"
-                  id="saveToAccount"
-                  type="button">
-            Save to My Account
-          </button>
-
-          <button class="ghost"
-                  id="exportResume"
-                  data-i18n="exportResume"
-                  type="button">
-            Export resume PDF
-          </button>
-        </div>
-      </div>
-
-      <p class="message"
-         id="saveAccountStatus"
-         role="status"
-         aria-live="polite"></p>
-
-      <p class="message"
-         id="builderMessage"
-         role="status"
-         aria-live="polite"></p>
-
-      <pre class="builder-preview"
-           id="builderPreview"
-           aria-label="Resume preview"></pre>
-    </section>
-
-    <!-- CAREER COMPATIBILITY ANALYSIS -->
-    <section class="workspace wn-tool-view"
-             id="comparison"
-             data-wn-view="comparison"
-             aria-labelledby="workspaceTitle"
-             tabindex="-1"
-             hidden>
-
-      <div class="section-head">
-        <div>
-          <span class="overline">
-            CAREER COMPATIBILITY ANALYSIS
-          </span>
-
-          <h2 id="workspaceTitle"
-              data-i18n="workspaceTitle">
-            Resume &amp; job comparison
-          </h2>
-
-          <p>
-            Compare your resume with job requirements
-            and identify relevant skills and potential gaps.
-          </p>
-        </div>
-
-        <button class="ghost"
-                id="sample"
-                data-i18n="sample"
-                type="button">
-          ✦ Load example
-        </button>
-      </div>
-
-      <!-- FILE IMPORT -->
-      <div class="import-panel">
-
-        <label id="uploadLabel"
-               data-i18n="uploadLabel"
-               for="resumeFile">
-          <strong>Upload your resume</strong>
-          (PDF or DOCX)
-        </label>
-
-        <input id="resumeFile"
-               type="file"
-               accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-               aria-describedby="fileStatus">
-
-        <p class="hint"
-           id="fileStatus"
-           role="status"
-           aria-live="polite">
-          Text-based PDF and DOCX files are supported.
-          Scanned PDFs and legacy DOC files are not supported.
-          Files are processed locally in your browser using
-          parsing libraries loaded from a CDN.
+    <div class="ats-main">
+      <strong id="atsScore">—</strong>
+      <div>
+        <p id="atsExplainer">
+          A transparent heuristic combining keyword
+          coverage, section headings and evidence
+          of achievements.
         </p>
+        <small id="atsCaution">
+          Not an official ATS score.
+          Text input cannot assess PDF layout
+          or parsing quality.
+        </small>
       </div>
+    </div>
 
-      <!-- INPUT FIELDS -->
-      <div class="input-grid">
+    <div class="structure-findings"
+         id="atsFactors"></div>
+  </article>
 
-        <div class="field">
-          <label for="resume">
-            01 <strong>Your resume</strong>
-          </label>
+  <article class="report-card"
+           id="structureCard">
+    <h3>CV structure review</h3>
+    <div class="structure-findings"
+         id="structureFindings"></div>
+  </article>
 
-          <textarea id="resume"
-                    spellcheck="true"
-                    aria-describedby="resumeWords"
-                    placeholder="Paste your professional summary, experience, education and skills here..."></textarea>
+  <div class="report-grid">
+    <article class="report-card">
+      <h3>✓ Matched skills</h3>
+      <div class="chips" id="matched"></div>
+    </article>
+    <article class="report-card">
+      <h3>⌕ Skills not found in CV</h3>
+      <div class="chips" id="missing"></div>
+    </article>
+  </div>
 
-          <div class="field-foot">
-            <span>
-              Remove personal contact details before testing.
-            </span>
+  <article class="report-card rec">
+    <h3>✦ Personalized recommendations</h3>
+    <ol id="recommendations"></ol>
+  </article>
 
-            <span id="resumeWords">
-              0 words
-            </span>
-          </div>
-        </div>
+  <p class="disclaimer">
+    This is a browser-based, rule-based keyword comparison.
+    It recognizes a limited skills dictionary and some
+    synonyms. It cannot assess actual proficiency,
+    job suitability, or recruitment outcomes.
+    Only claim skills you truly have.
+  </p>
+</section>
 
-        <div class="field">
-          <label for="job">
-            02 <strong>Job description</strong>
-          </label>
+<!-- ACCOUNT -->
+<section id="worknelyAccount"
+         class="workspace"
+         aria-labelledby="accountTitle">
 
-          <textarea id="job"
-                    spellcheck="true"
-                    aria-describedby="jobWords"
-                    placeholder="Paste the job responsibilities, required skills and qualifications here..."></textarea>
-
-          <div class="field-foot">
-            <span>
-              Remove unnecessary personal information.
-            </span>
-
-            <span id="jobWords">
-              0 words
-            </span>
-          </div>
-        </div>
-      </div>
-
-      <div class="actions">
-
-        <button class="primary"
-                id="analyze"
-                data-i18n="analyze"
-                type="button">
-          Analyze compatibility
-          <span aria-hidden="true">→</span>
-        </button>
-
-        <button class="ghost"
-                id="clear"
-                data-i18n="clear"
-                type="button">
-          Clear all
-        </button>
-      </div>
-
-      <p class="message"
-         id="message"
-         role="status"
-         aria-live="polite"></p>
-    </section>
-
-    <!-- COMPATIBILITY REPORT -->
-    <section class="results hidden wn-tool-view"
-             id="results"
-             aria-live="polite"
-             aria-labelledby="reportTitle">
-
-      <div class="results-head">
-        <div>
-
-          <span class="overline">
-            YOUR CAREER INSIGHTS
-          </span>
-
-          <h2 id="reportTitle">
-            Compatibility report
-          </h2>
-
-          <p>
-            Understand your resume's keyword coverage
-            and identify opportunities for improvement.
-          </p>
-        </div>
-
-        <div class="export-actions">
-
-          <button class="ghost"
-                  id="download"
-                  type="button">
-            ↓ Download TXT
-          </button>
-
-          <button class="ghost"
-                  id="printPdf"
-                  type="button">
-            ↓ Save PDF
-          </button>
-        </div>
-      </div>
-
-      <p class="export-message"
-         id="exportMessage"
-         role="status"
-         aria-live="polite"></p>
-
-      <div class="score-layout">
-
-        <div class="score-card">
-          <div class="ring"
-               id="ring">
-
-            <div>
-              <strong id="score">
-                0%
-              </strong>
-
-              <span>
-                keyword match
-              </span>
-            </div>
-          </div>
-
-          <p>
-            Estimated coverage of recognized skills
-            mentioned in the job description.
-          </p>
-
-          <small>
-            Not an ATS score or hiring prediction.
-          </small>
-        </div>
-      </div>
-
-      <div class="stats">
-
-        <div class="stat">
-          <span>Matched skills</span>
-          <strong id="matchedCount">0</strong>
-        </div>
-
-        <div class="stat">
-          <span>Skills to review</span>
-          <strong id="missingCount">0</strong>
-        </div>
-
-        <div class="stat">
-          <span>Resume length</span>
-          <strong id="wordCount">0 words</strong>
-        </div>
-      </div>
-
-      <!-- ESTIMATED ATS READINESS -->
-      <article class="report-card ats-card">
-
-        <h3 id="atsHeading"
-            data-i18n="atsHeading">
-          Estimated ATS readiness
-        </h3>
-
-        <div class="ats-main">
-
-          <strong id="atsScore">—</strong>
-
-          <div>
-            <p id="atsExplainer">
-              A transparent heuristic combining keyword
-              coverage, section headings and evidence
-              of achievements.
-            </p>
-
-            <small id="atsCaution">
-              Not an official ATS score.
-              Text input cannot assess PDF layout
-              or parsing quality.
-            </small>
-          </div>
-        </div>
-
-        <div class="structure-findings"
-             id="atsFactors"></div>
-      </article>
-
-      <!-- CV STRUCTURE REVIEW -->
-      <article class="report-card"
-               id="structureCard">
-
-        <h3>CV structure review</h3>
-
-        <div class="structure-findings"
-             id="structureFindings"></div>
-      </article>
-
-      <!-- MATCHED AND MISSING SKILLS -->
-      <div class="report-grid">
-
-        <article class="report-card">
-          <h3>✓ Matched skills</h3>
-          <div class="chips" id="matched"></div>
-        </article>
-
-        <article class="report-card">
-          <h3>⌕ Skills not found in CV</h3>
-          <div class="chips" id="missing"></div>
-        </article>
-      </div>
-
-      <!-- PERSONALIZED RECOMMENDATIONS -->
-      <article class="report-card rec">
-
-        <h3>✦ Personalized recommendations</h3>
-
-        <ol id="recommendations"></ol>
-      </article>
-
-      <p class="disclaimer">
-        This is a browser-based, rule-based keyword comparison.
-        It recognizes a limited skills dictionary and some
-        synonyms. It cannot assess actual proficiency,
-        job suitability, or recruitment outcomes.
-        Only claim skills you truly have.
+  <div class="section-head">
+    <div>
+      <span class="overline">
+        WORKNELY ACCOUNT
+      </span>
+      <h2 id="accountTitle">
+        Your Worknely Account
+      </h2>
+      <p>
+        Create an account to save and manage
+        your resumes securely.
       </p>
-    </section>
+    </div>
+  </div>
 
-    <!-- WORKNELY ACCOUNT -->
-    <section id="worknelyAccount"
-             class="workspace"
-             aria-labelledby="accountTitle">
+  <form id="worknelyAuthForm"
+        class="builder-grid">
+    <label for="authEmail">
+      Email
+      <input id="authEmail"
+             type="email"
+             autocomplete="email"
+             required>
+    </label>
 
-      <div class="section-head">
-        <div>
-          <span class="overline">
-            WORKNELY ACCOUNT
-          </span>
+    <label for="authPassword">
+      Password
+      <input id="authPassword"
+             type="password"
+             autocomplete="current-password"
+             minlength="6"
+             required>
+    </label>
 
-          <h2 id="accountTitle">
-            Your Worknely Account
-          </h2>
+    <div class="actions">
+      <button id="authSignUp"
+              type="button"
+              class="primary">
+        Sign Up
+      </button>
+      <button id="authLogin"
+              type="submit"
+              class="ghost">
+        Log In
+      </button>
+      <button id="authLogout"
+              type="button"
+              class="ghost"
+              hidden>
+        Log Out
+      </button>
+    </div>
+  </form>
 
-          <p>
-            Create an account to save and manage
-            your resumes securely.
-          </p>
-        </div>
-      </div>
+  <p id="authStatus"
+     class="message"
+     role="status"
+     aria-live="polite"></p>
+</section>
 
-      <form id="worknelyAuthForm"
-            class="builder-grid">
+</main>
 
-        <label for="authEmail">
-          Email
-          <input id="authEmail"
-                 type="email"
-                 autocomplete="email"
-                 required>
-        </label>
-
-        <label for="authPassword">
-          Password
-          <input id="authPassword"
-                 type="password"
-                 autocomplete="current-password"
-                 minlength="6"
-                 required>
-        </label>
-
-        <div class="actions">
-          <button id="authSignUp"
-                  type="button"
-                  class="primary">
-            Sign Up
-          </button>
-
-          <button id="authLogin"
-                  type="submit"
-                  class="ghost">
-            Log In
-          </button>
-
-          <button id="authLogout"
-                  type="button"
-                  class="ghost"
-                  hidden>
-            Log Out
-          </button>
-        </div>
-      </form>
-
-      <p id="authStatus"
-         class="message"
-         role="status"
-         aria-live="polite"></p>
-    </section>
-
-  </main>
-
-  <!-- FOOTER -->
-  <footer>
-    <span>© 2026 Worknely · People Technology</span>
-    <span>Build. Improve. Grow.</span>
-  </footer>
+<footer>
+  <span>© 2026 Worknely · People Technology</span>
+  <span>Build. Improve. Grow.</span>
+</footer>
 
 </div>
 
@@ -883,13 +826,13 @@
 <script defer src="worknely-premium-pdf.js?v=6.2"></script>
 
 <script type="module"
-        src="worknely-auth.js?v=1.1"></script>
+src="worknely-auth.js?v=1.1"></script>
 
 <script defer
-        src="worknely-saas-ui.js?v=7.2"></script>
+src="worknely-saas-ui.js?v=7.2"></script>
 
 <script type="module"
-        src="worknely-save-account.js?v=7.1"></script>
+src="worknely-save-account.js?v=7.1"></script>
 
 <!-- V7.3 TOOL NAVIGATION -->
 <script>
@@ -930,27 +873,18 @@
       ".wn-tool-navigation [data-wn-tool]"
     ).forEach(link => {
       if (link.dataset.wnTool === active) {
-        link.setAttribute(
-          "aria-current",
-          "page"
-        );
+        link.setAttribute("aria-current", "page");
       } else {
-        link.removeAttribute(
-          "aria-current"
-        );
+        link.removeAttribute("aria-current");
       }
     });
 
-    const report =
-      document.getElementById("results");
-
+    const report = document.getElementById("results");
     if (report) {
       report.hidden = active !== "comparison";
     }
 
-    const target =
-      document.getElementById(active);
-
+    const target = document.getElementById(active);
     if (target && window.location.hash) {
       requestAnimationFrame(() => {
         target.scrollIntoView({
@@ -973,6 +907,104 @@
     );
   } else {
     updateToolNavigation();
+  }
+})();
+</script>
+
+<!-- WORKNELY V7.4 PREMIUM STATUS -->
+<script>
+(() => {
+  "use strict";
+
+  const ids = [
+    "builderMessage",
+    "saveAccountStatus",
+    "exportMessage",
+    "studioStatus"
+  ];
+
+  const successPatterns = [
+    /success/i,
+    /generated/i,
+    /created/i,
+    /saved/i,
+    /updated/i,
+    /prepared/i,
+    /ready/i,
+    /download started/i,
+    /draft copied/i
+  ];
+
+  const errorPatterns = [
+    /failed/i,
+    /error/i,
+    /unable/i,
+    /please enter/i,
+    /please retry/i,
+    /not supported/i,
+    /could not/i,
+    /cannot/i
+  ];
+
+  function classify(message) {
+    if (errorPatterns.some(pattern =>
+      pattern.test(message)
+    )) {
+      return "error";
+    }
+
+    if (successPatterns.some(pattern =>
+      pattern.test(message)
+    )) {
+      return "success";
+    }
+
+    return "info";
+  }
+
+  function updateStatus(element) {
+    const message = element.textContent.trim();
+
+    element.classList.remove(
+      "worknely-status-success",
+      "worknely-status-error",
+      "worknely-status-info"
+    );
+
+    if (!message) return;
+
+    element.classList.add(
+      "worknely-status-" + classify(message)
+    );
+  }
+
+  function initialize() {
+    ids.forEach(id => {
+      const element = document.getElementById(id);
+      if (!element) return;
+
+      const observer = new MutationObserver(
+        () => updateStatus(element)
+      );
+
+      observer.observe(element, {
+        childList: true,
+        characterData: true,
+        subtree: true
+      });
+
+      updateStatus(element);
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener(
+      "DOMContentLoaded",
+      initialize,
+      { once: true }
+    );
+  } else {
+    initialize();
   }
 })();
 </script>
