@@ -1,9 +1,10 @@
 
 'use strict';
 
-// WORKNELY V6.0 FOUNDATION
+// WORKNELY V7.5 FOUNDATION
 // Career analysis, resume builder and PDF exports.
 // Browser-based, rule-based processing.
+// Success Celebration integration.
 
 const $ = id => document.getElementById(id);
 
@@ -39,6 +40,14 @@ const dictionary = {
   'Healthcare': ['healthcare','patient care','nursing'],
   'Languages': ['multilingual','foreign languages','bilingual']
 };
+
+function celebrateWorknely(type) {
+  document.dispatchEvent(
+    new CustomEvent('worknely:success', {
+      detail: { type }
+    })
+  );
+}
 
 function normalize(s) {
   return s.toLowerCase()
@@ -514,6 +523,7 @@ function buildPlainPdf(lines, title) {
 }
 
 // iOS SHARE + DOWNLOAD FALLBACK
+// V7.5: returns the delivery outcome.
 
 async function saveBlob(blob, name) {
   const file = new File([blob], name, {
@@ -527,9 +537,12 @@ async function saveBlob(blob, name) {
   ) {
     try {
       await navigator.share({ files: [file] });
-      return;
+      return 'shared';
     } catch (error) {
-      if (error.name === 'AbortError') return;
+      if (error.name === 'AbortError') {
+        return 'cancelled';
+      }
+
       console.warn('Share failed:', error);
     }
   }
@@ -541,10 +554,18 @@ async function saveBlob(blob, name) {
   link.download = name;
 
   document.body.appendChild(link);
-  link.click();
-  link.remove();
 
-  setTimeout(() => URL.revokeObjectURL(url), 60000);
+  try {
+    link.click();
+    return 'downloaded';
+  } finally {
+    link.remove();
+
+    setTimeout(
+      () => URL.revokeObjectURL(url),
+      60000
+    );
+  }
 }
 
 // ANALYSIS BUTTONS
@@ -595,20 +616,32 @@ $('sample').addEventListener('click', () => {
 });
 
 // REPORT EXPORTS
+// Premium PDF module intercepts printPdf via capture.
 
-$('printPdf').addEventListener('click', () => {
+$('printPdf').addEventListener('click', async () => {
   if (!lastResult) return;
 
   try {
     const blob = buildPdf(lastResult);
 
-    saveBlob(
+    const result = await saveBlob(
       blob,
       'worknely-compatibility-report.pdf'
     );
 
+    if (result === 'cancelled') {
+      $('exportMessage').textContent =
+        'PDF sharing cancelled. You can try again.';
+      return;
+    }
+
     $('exportMessage').textContent =
-      'PDF generated. On iPhone, use Share > Save to Files or check Safari Downloads.';
+      result === 'shared'
+        ? 'PDF prepared. Save it from the share menu.'
+        : 'PDF download started. Check browser downloads.';
+
+    celebrateWorknely('pdf');
+
   } catch (error) {
     $('exportMessage').textContent =
       'PDF generation failed. Please retry in Safari.';
@@ -616,18 +649,22 @@ $('printPdf').addEventListener('click', () => {
   }
 });
 
-$('download').addEventListener('click', () => {
+$('download').addEventListener('click', async () => {
   if (!report) return;
 
-  const blob = new Blob(
-    [report],
-    { type: 'text/plain;charset=utf-8' }
-  );
+  try {
+    const blob = new Blob(
+      [report],
+      { type: 'text/plain;charset=utf-8' }
+    );
 
-  saveBlob(
-    blob,
-    'worknely-compatibility-report.txt'
-  );
+    await saveBlob(
+      blob,
+      'worknely-compatibility-report.txt'
+    );
+  } catch (error) {
+    console.error('TXT export failed:', error);
+  }
 });
 
 // FILE IMPORT: PDF / DOCX
@@ -765,11 +802,25 @@ function makeResume() {
   return output;
 }
 
-$('buildResume').addEventListener('click', makeResume);
+// V7.5: Celebrate only after successful generation.
+$('buildResume').addEventListener('click', () => {
+  const content = makeResume();
 
-$('exportResume').addEventListener('click', () => {
+  if (content) {
+    celebrateWorknely('generated');
+  }
+});
+
+// V7.5: Await delivery before showing success.
+$('exportResume').addEventListener('click', async () => {
+  const button = $('exportResume');
+
+  if (button.disabled) return;
+
   const content = makeResume();
   if (!content) return;
+
+  button.disabled = true;
 
   try {
     const lines = content.split('\n')
@@ -780,17 +831,29 @@ $('exportResume').addEventListener('click', () => {
       'WORKNELY | Professional Resume'
     );
 
-    saveBlob(
+    const result = await saveBlob(
       blob,
       'worknely-professional-resume.pdf'
     );
 
+    if (result === 'cancelled') {
+      $('builderMessage').textContent =
+        'PDF sharing cancelled. You can try again.';
+      return;
+    }
+
     $('builderMessage').textContent =
-      'PDF generated. Check Safari Downloads or Save to Files.';
+      result === 'shared'
+        ? 'PDF prepared and shared successfully.'
+        : 'PDF download started. Check your browser downloads.';
+
+    celebrateWorknely('pdf');
 
   } catch (error) {
     $('builderMessage').textContent =
       'PDF export failed: ' + error.message;
+  } finally {
+    button.disabled = false;
   }
 });
 
