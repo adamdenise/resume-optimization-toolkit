@@ -1,52 +1,55 @@
 
 /*
- * WORKNELY V7.2
- * Premium SaaS Account Navigation
+ * WORKNELY V7.7
+ * Premium Authentication UI Refinement
  *
- * Keeps the existing Supabase authentication
- * and original form event handlers.
+ * Compatible with Worknely V7.6 authentication.
+ * Does not replace Supabase event handlers.
  */
 
 (() => {
   "use strict";
 
-  const init = () => {
+  function initialize() {
     if (document.getElementById("wnAuthDialog")) return;
 
     const header = document.querySelector(".top");
     const section = document.getElementById("worknelyAccount");
     const logout = document.getElementById("authLogout");
     const status = document.getElementById("authStatus");
+    const form = document.getElementById("worknelyAuthForm");
+    const login = document.getElementById("authLogin");
+    const signup = document.getElementById("authSignUp");
+    const password = document.getElementById("authPassword");
 
-    if (!header || !section || !logout || !status) {
-      console.warn("Worknely: Authentication UI elements missing.");
+    if (
+      !header || !section || !logout || !status ||
+      !form || !login || !signup
+    ) {
+      console.warn("Worknely: Account UI elements missing.");
       return;
     }
 
     const style = document.createElement("style");
+
     style.textContent = `
       .wn-auth-nav {
         display: flex;
         align-items: center;
         justify-content: flex-end;
-        gap: 9px;
+        gap: 8px;
         flex-wrap: wrap;
         margin-left: auto;
       }
 
       .wn-auth-btn {
         font: inherit;
-        font-size: 14px;
+        font-size: 13px;
         font-weight: 750;
-        border-radius: 13px;
-        padding: 11px 16px;
+        border-radius: 12px;
+        padding: 10px 14px;
         cursor: pointer;
-        transition: transform .2s, box-shadow .2s;
         white-space: nowrap;
-      }
-
-      .wn-auth-btn:active {
-        transform: scale(.97);
       }
 
       .wn-login {
@@ -58,13 +61,9 @@
       .wn-signup {
         color: #fff;
         background: linear-gradient(
-          110deg,
-          #5424ff,
-          #a326e8,
-          #ff23a5
+          110deg, #5424ff, #a326e8, #ff23a5
         );
         border: 0;
-        box-shadow: 0 6px 18px #6829f52b;
       }
 
       .wn-account {
@@ -83,7 +82,7 @@
         right: 0;
         z-index: 100;
         min-width: 215px;
-        background: white;
+        background: #fff;
         border: 1px solid #e8e2fa;
         border-radius: 16px;
         padding: 9px;
@@ -113,9 +112,7 @@
       }
 
       .wn-menu-panel button:hover,
-      .wn-menu-panel a:hover,
-      .wn-menu-panel button:focus-visible,
-      .wn-menu-panel a:focus-visible {
+      .wn-menu-panel a:hover {
         background: #f3efff;
       }
 
@@ -131,6 +128,7 @@
       }
 
       .wn-dialog {
+        box-sizing: border-box;
         border: 0;
         border-radius: 24px;
         padding: 0;
@@ -154,7 +152,7 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 18px 22px;
+        padding: 17px 22px;
         background: #fff;
         border-bottom: 1px solid #eee8fa;
       }
@@ -185,20 +183,28 @@
         box-shadow: none !important;
         padding: 22px !important;
         border-radius: 0 !important;
+        box-sizing: border-box;
       }
 
       .wn-dialog .section-head {
-        margin-bottom: 20px;
+        margin-bottom: 18px;
       }
 
       .wn-dialog .builder-grid {
         display: grid;
-        grid-template-columns: 1fr;
-        gap: 14px;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 15px;
       }
 
       .wn-dialog .builder-grid > label {
         min-width: 0;
+      }
+
+      .wn-dialog input {
+        box-sizing: border-box;
+        width: 100%;
+        max-width: 100%;
+        min-height: 48px;
       }
 
       .wn-dialog .actions {
@@ -206,14 +212,96 @@
         flex-direction: column;
         gap: 10px;
         width: 100%;
+        margin-top: 4px;
       }
 
-      .wn-dialog .actions button {
+      .wn-dialog #authLogin,
+      .wn-dialog #authSignUp {
+        box-sizing: border-box;
+        display: block;
         width: 100%;
+        min-height: 50px;
+        padding: 13px 18px;
+        border: 0;
+        border-radius: 13px;
+        background: linear-gradient(
+          110deg, #5424ff, #a326e8
+        );
+        color: #fff;
+        font: inherit;
+        font-size: 15px;
+        font-weight: 750;
+        cursor: pointer;
+      }
+
+      .wn-dialog #authLogin[hidden],
+      .wn-dialog #authSignUp[hidden],
+      .wn-dialog #authLogout[hidden] {
+        display: none !important;
+      }
+
+      .wn-dialog #authForgotPassword,
+      .wn-dialog #authResendConfirmation {
+        display: block;
+        width: auto;
+        min-height: 0;
+        padding: 5px 2px;
+        margin: 0 auto;
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+        box-shadow: none;
+        color: #5424ff;
+        font: inherit;
+        font-size: 13px;
+        font-weight: 650;
+        text-align: center;
+        text-decoration: none;
+        cursor: pointer;
+      }
+
+      .wn-dialog #authForgotPassword:hover,
+      .wn-dialog #authResendConfirmation:hover {
+        text-decoration: underline;
+      }
+
+      .wn-dialog .wn-auth-switch {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 5px;
+        margin-top: 12px;
+        font-size: 13px;
+        color: #786c90;
+      }
+
+      .wn-dialog .wn-auth-switch button {
+        border: 0;
+        background: transparent;
+        color: #5424ff;
+        padding: 3px;
+        font: inherit;
+        font-weight: 750;
+        cursor: pointer;
+      }
+
+      .wn-dialog .wn-auth-support {
+        border-top: 1px solid #eee8fa;
+        margin-top: 16px;
+        padding-top: 14px;
+        text-align: center;
+      }
+
+      .wn-dialog .wn-auth-support p {
+        margin: 0 0 6px;
+        color: #857993;
+        font-size: 12px;
       }
 
       .wn-dialog .message {
         overflow-wrap: anywhere;
+        font-size: 13px;
       }
 
       @media (max-width: 600px) {
@@ -239,8 +327,13 @@
         .wn-dialog .workspace {
           padding: 18px !important;
         }
+
+        .wn-dialog-head {
+          padding: 15px 18px;
+        }
       }
     `;
+
     document.head.appendChild(style);
 
     const nav = document.createElement("div");
@@ -272,37 +365,19 @@
     menu.className = "wn-menu-panel";
     menu.hidden = true;
 
-    function menuLink(text, href, className = "") {
+    function closeMenu() {
+      menu.hidden = true;
+      accountBtn.setAttribute("aria-expanded", "false");
+    }
+
+    function menuLink(label, href, className = "") {
       const link = document.createElement("a");
-      link.textContent = text;
+      link.textContent = label;
       link.href = href;
-
       if (className) link.className = className;
-
       link.addEventListener("click", closeMenu);
       return link;
     }
-
-    const dashboardLink = menuLink(
-      "My Dashboard",
-      "dashboard.html"
-    );
-
-    const resumesLink = menuLink(
-      "My Resumes",
-      "dashboard.html#resumes"
-    );
-
-    const builderLink = menuLink(
-      "Resume Builder",
-      "#builder"
-    );
-
-    const proLink = menuLink(
-      "Upgrade to Pro",
-      "dashboard.html#pro",
-      "wn-menu-pro"
-    );
 
     const divider = document.createElement("div");
     divider.className = "wn-menu-divider";
@@ -313,10 +388,14 @@
     logoutBtn.textContent = "Log Out";
 
     menu.append(
-      dashboardLink,
-      resumesLink,
-      builderLink,
-      proLink,
+      menuLink("My Dashboard", "dashboard.html"),
+      menuLink("My Resumes", "dashboard.html#resumes"),
+      menuLink("Resume Builder", "#builder"),
+      menuLink(
+        "Upgrade to Pro",
+        "dashboard.html#pro",
+        "wn-menu-pro"
+      ),
       divider,
       logoutBtn
     );
@@ -348,22 +427,48 @@
     document.body.appendChild(dialog);
 
     const heading = section.querySelector("#accountTitle");
-    const originalSignup =
-      document.getElementById("authSignUp");
-    const originalLogin =
-      document.getElementById("authLogin");
-    const form =
-      document.getElementById("worknelyAuthForm");
-    const password =
-      document.getElementById("authPassword");
+    const email = document.getElementById("authEmail");
+    const forgot = document.getElementById("authForgotPassword");
+    const resend = document.getElementById("authResendConfirmation");
 
-    function closeMenu() {
-      menu.hidden = true;
-      accountBtn.setAttribute("aria-expanded", "false");
+    let mode = "login";
+
+    const switchRow = document.createElement("div");
+    switchRow.className = "wn-auth-switch";
+
+    const switchText = document.createElement("span");
+    const switchButton = document.createElement("button");
+    switchButton.type = "button";
+
+    switchRow.append(switchText, switchButton);
+
+    const support = document.createElement("div");
+    support.className = "wn-auth-support";
+
+    const supportText = document.createElement("p");
+    supportText.textContent =
+      "Didn't receive your confirmation email?";
+
+    if (resend) {
+      support.append(supportText, resend);
     }
 
-    function openAuth(mode) {
-      closeMenu();
+    if (forgot) {
+      const passwordLabel = password?.closest("label");
+
+      if (passwordLabel) {
+        passwordLabel.insertAdjacentElement(
+          "afterend",
+          forgot
+        );
+      }
+    }
+
+    form.insertAdjacentElement("afterend", switchRow);
+    switchRow.insertAdjacentElement("afterend", support);
+
+    function setMode(nextMode) {
+      mode = nextMode === "signup" ? "signup" : "login";
 
       if (heading) {
         heading.textContent =
@@ -372,28 +477,46 @@
             : "Welcome back";
       }
 
-      if (originalSignup) {
-        originalSignup.hidden = mode !== "signup";
+      login.hidden = mode !== "login";
+      signup.hidden = mode !== "signup";
+
+      if (forgot) {
+        forgot.hidden = mode !== "login";
       }
 
-      if (originalLogin) {
-        originalLogin.hidden = mode !== "login";
+      if (resend) {
+        resend.hidden = mode !== "login";
       }
+
+      support.hidden = mode !== "login";
+
+      switchText.textContent =
+        mode === "login"
+          ? "Don't have an account?"
+          : "Already have an account?";
+
+      switchButton.textContent =
+        mode === "login" ? "Sign Up" : "Log In";
+
+      if (password) {
+        password.autocomplete =
+          mode === "signup"
+            ? "new-password"
+            : "current-password";
+      }
+    }
+
+    function openAuth(nextMode) {
+      closeMenu();
+      setMode(nextMode);
 
       if (!dialog.open) dialog.showModal();
-
-      const email =
-        document.getElementById("authEmail");
 
       if (email) email.focus();
     }
 
-    function signedIn() {
-      return !logout.hidden;
-    }
-
     function syncAuth() {
-      const authenticated = signedIn();
+      const authenticated = !logout.hidden;
 
       loginBtn.hidden = authenticated;
       signupBtn.hidden = authenticated;
@@ -417,6 +540,10 @@
       "click",
       () => openAuth("signup")
     );
+
+    switchButton.addEventListener("click", () => {
+      setMode(mode === "login" ? "signup" : "login");
+    });
 
     closeBtn.addEventListener(
       "click",
@@ -449,9 +576,7 @@
     });
 
     document.addEventListener("keydown", event => {
-      if (event.key === "Escape") {
-        closeMenu();
-      }
+      if (event.key === "Escape") closeMenu();
     });
 
     const observer = new MutationObserver(syncAuth);
@@ -461,20 +586,17 @@
       attributeFilter: ["hidden", "style", "class"]
     });
 
-    if (form) {
-      form.addEventListener("submit", () => {
-        if (password) {
-          password.autocomplete = "current-password";
-        }
-      });
-    }
-
+    setMode("login");
     syncAuth();
-  };
+  }
 
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", init);
+    document.addEventListener(
+      "DOMContentLoaded",
+      initialize,
+      { once: true }
+    );
   } else {
-    init();
+    initialize();
   }
 })();
