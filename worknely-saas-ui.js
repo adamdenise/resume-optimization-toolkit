@@ -1,10 +1,12 @@
 
 /*
- * WORKNELY V7.7.2
- * Responsive authentication UI
+ * WORKNELY V7.8.1
+ * Responsive Authentication UI + Pricing Navigation
+ *
  * Compatible with worknely-auth.js V7.6.
- * Supabase handlers remain attached to their original buttons.
+ * Preserves existing Supabase authentication handlers.
  */
+
 (() => {
   "use strict";
 
@@ -29,13 +31,15 @@
     }
 
     const style = document.createElement("style");
-    style.id = "wn-auth-layout-v772";
+    style.id = "wn-auth-layout-v781";
+
     style.textContent = `
       .wn-auth-nav { display:flex; align-items:center; justify-content:flex-end; gap:8px; flex-wrap:wrap; margin-left:auto; min-width:0; }
       .wn-auth-btn { box-sizing:border-box; font:inherit; font-size:13px; font-weight:750; border-radius:12px; padding:10px 14px; cursor:pointer; white-space:nowrap; }
       .wn-login { color:#5424ff; background:#fff; border:1px solid #ded7ff; }
       .wn-signup { color:#fff; background:linear-gradient(110deg,#5424ff,#a326e8,#ff23a5); border:0; }
       .wn-account { color:#5424ff; background:#f1edff; border:1px solid #ddd2ff; }
+      .wn-pricing-link { display:inline-flex; align-items:center; justify-content:center; text-decoration:none; }
       .wn-account-menu { position:relative; }
       .wn-menu-panel { position:absolute; top:calc(100% + 10px); right:0; z-index:100; min-width:215px; max-width:calc(100vw - 24px); padding:9px; background:#fff; border:1px solid #e8e2fa; border-radius:16px; box-shadow:0 16px 45px #21104c26; }
       .wn-menu-panel a, .wn-menu-panel button { display:block; box-sizing:border-box; width:100%; padding:12px; text-align:left; color:#27144d; background:transparent; border:0; border-radius:10px; font:inherit; font-size:14px; text-decoration:none; cursor:pointer; }
@@ -53,48 +57,203 @@
         background:#fff!important; color:#261449!important; box-shadow:0 24px 80px #1d104d55!important;
         overscroll-behavior:contain;
       }
+
       dialog#wnAuthDialog.wn-dialog:not([open]) { display:none!important; }
       dialog#wnAuthDialog.wn-dialog::backdrop { background:rgba(22,11,53,.68); backdrop-filter:blur(6px); }
-      #wnAuthDialog, #wnAuthDialog *, #wnAuthDialog *::before, #wnAuthDialog *::after { box-sizing:border-box; }
+
+      #wnAuthDialog, #wnAuthDialog *, #wnAuthDialog *::before, #wnAuthDialog *::after {
+        box-sizing:border-box;
+      }
+
       #wnAuthDialog [hidden] { display:none!important; }
-      #wnAuthDialog .wn-dialog-head { position:sticky; top:0; z-index:2; display:flex; align-items:center; justify-content:space-between; gap:12px; width:100%; padding:15px 20px; background:#fff; border-bottom:1px solid #eee8fa; }
-      #wnAuthDialog .wn-dialog-brand { color:#5424ff; font-size:21px; font-weight:850; letter-spacing:-.6px; }
-      #wnAuthDialog .wn-close { display:grid; place-items:center; flex:0 0 38px; width:38px; height:38px; min-height:38px; padding:0; border:0; border-radius:12px; background:#f1edff; color:#5424ff; font-size:25px; cursor:pointer; }
-      #wnAuthDialog #worknelyAccount.workspace { display:block!important; position:static!important; width:100%!important; max-width:100%!important; min-width:0!important; margin:0!important; padding:22px!important; border:0!important; border-radius:0!important; box-shadow:none!important; background:#fff!important; overflow:visible!important; }
-      #wnAuthDialog .section-head { display:block!important; margin:0 0 20px!important; width:100%; }
+
+      #wnAuthDialog .wn-dialog-head {
+        position:sticky; top:0; z-index:2; display:flex; align-items:center;
+        justify-content:space-between; gap:12px; width:100%; padding:15px 20px;
+        background:#fff; border-bottom:1px solid #eee8fa;
+      }
+
+      #wnAuthDialog .wn-dialog-brand {
+        color:#5424ff; font-size:21px; font-weight:850; letter-spacing:-.6px;
+      }
+
+      #wnAuthDialog .wn-close {
+        display:grid; place-items:center; flex:0 0 38px; width:38px; height:38px;
+        min-height:38px; padding:0; border:0; border-radius:12px;
+        background:#f1edff; color:#5424ff; font-size:25px; cursor:pointer;
+      }
+
+      #wnAuthDialog #worknelyAccount.workspace {
+        display:block!important; position:static!important; width:100%!important;
+        max-width:100%!important; min-width:0!important; margin:0!important;
+        padding:22px!important; border:0!important; border-radius:0!important;
+        box-shadow:none!important; background:#fff!important; overflow:visible!important;
+      }
+
+      #wnAuthDialog .section-head {
+        display:block!important; margin:0 0 20px!important; width:100%;
+      }
+
       #wnAuthDialog .section-head > div { min-width:0; }
-      #wnAuthDialog .section-head .overline { display:block; margin-bottom:10px; color:#5424ff; font-size:11px; font-weight:800; letter-spacing:2px; }
-      #wnAuthDialog #accountTitle { margin:0 0 8px!important; color:#261449; font-size:clamp(25px,6vw,31px); font-weight:800; line-height:1.2; letter-spacing:-.7px; }
-      #wnAuthDialog .section-head p { margin:0!important; color:#7d8298; font-size:14px; line-height:1.5; }
-      #wnAuthDialog #worknelyAuthForm { display:grid!important; grid-template-columns:minmax(0,1fr)!important; gap:14px!important; width:100%!important; max-width:100%!important; margin:0!important; padding:0!important; }
-      #wnAuthDialog #worknelyAuthForm > label { display:flex!important; flex-direction:column!important; gap:7px!important; width:100%!important; min-width:0!important; margin:0!important; padding:0!important; color:#261449; font-size:14px; font-weight:650; }
-      #wnAuthDialog #authEmail, #wnAuthDialog #authPassword { display:block!important; width:100%!important; max-width:100%!important; min-width:0!important; height:49px!important; min-height:49px!important; margin:0!important; padding:12px 14px!important; border:1px solid #dedfee!important; border-radius:12px!important; background:#fbfbfe!important; color:#261449!important; font-size:16px!important; font-weight:400!important; box-shadow:none!important; -webkit-appearance:none; appearance:none; }
-      #wnAuthDialog #authEmail:focus, #wnAuthDialog #authPassword:focus { border-color:#5424ff!important; outline:2px solid rgba(84,36,255,.15); outline-offset:1px; }
-      #wnAuthDialog .wn-forgot-row { display:flex!important; justify-content:flex-end; width:100%; margin:-5px 0 0; padding:0; }
+
+      #wnAuthDialog .section-head .overline {
+        display:block; margin-bottom:10px; color:#5424ff;
+        font-size:11px; font-weight:800; letter-spacing:2px;
+      }
+
+      #wnAuthDialog #accountTitle {
+        margin:0 0 8px!important; color:#261449;
+        font-size:clamp(25px,6vw,31px); font-weight:800;
+        line-height:1.2; letter-spacing:-.7px;
+      }
+
+      #wnAuthDialog .section-head p {
+        margin:0!important; color:#7d8298; font-size:14px; line-height:1.5;
+      }
+
+      #wnAuthDialog #worknelyAuthForm {
+        display:grid!important; grid-template-columns:minmax(0,1fr)!important;
+        gap:14px!important; width:100%!important; max-width:100%!important;
+        margin:0!important; padding:0!important;
+      }
+
+      #wnAuthDialog #worknelyAuthForm > label {
+        display:flex!important; flex-direction:column!important; gap:7px!important;
+        width:100%!important; min-width:0!important; margin:0!important;
+        padding:0!important; color:#261449; font-size:14px; font-weight:650;
+      }
+
+      #wnAuthDialog #authEmail, #wnAuthDialog #authPassword {
+        display:block!important; width:100%!important; max-width:100%!important;
+        min-width:0!important; height:49px!important; min-height:49px!important;
+        margin:0!important; padding:12px 14px!important;
+        border:1px solid #dedfee!important; border-radius:12px!important;
+        background:#fbfbfe!important; color:#261449!important;
+        font-size:16px!important; font-weight:400!important;
+        box-shadow:none!important; -webkit-appearance:none; appearance:none;
+      }
+
+      #wnAuthDialog #authEmail:focus, #wnAuthDialog #authPassword:focus {
+        border-color:#5424ff!important;
+        outline:2px solid rgba(84,36,255,.15); outline-offset:1px;
+      }
+
+      #wnAuthDialog .wn-forgot-row {
+        display:flex!important; justify-content:flex-end; width:100%;
+        margin:-5px 0 0; padding:0;
+      }
+
       #wnAuthDialog .wn-forgot-row[hidden] { display:none!important; }
-      #wnAuthDialog #wnResetPassword, #wnAuthDialog #wnResendConfirmation { display:inline-block!important; width:auto!important; max-width:100%!important; min-width:0!important; min-height:0!important; height:auto!important; margin:0!important; padding:4px 2px!important; border:0!important; border-radius:0!important; background:transparent!important; color:#5424ff!important; box-shadow:none!important; font:inherit!important; font-size:13px!important; font-weight:700!important; line-height:1.5!important; text-align:center!important; cursor:pointer; }
-      #wnAuthDialog #wnResetPassword[hidden], #wnAuthDialog #wnResendConfirmation[hidden] { display:none!important; }
-      #wnAuthDialog #worknelyAuthForm > .actions { display:flex!important; flex-direction:column!important; gap:10px!important; width:100%!important; margin:2px 0 0!important; padding:0!important; }
-      #wnAuthDialog #authLogin, #wnAuthDialog #authSignUp, #wnAuthDialog #wnUpdatePassword { display:block!important; width:100%!important; max-width:100%!important; min-width:0!important; min-height:50px!important; margin:0!important; padding:12px 16px!important; border:0!important; border-radius:13px!important; background:linear-gradient(110deg,#5424ff,#a326e8)!important; color:#fff!important; box-shadow:none!important; font:inherit!important; font-size:16px!important; font-weight:750!important; text-align:center!important; cursor:pointer; }
-      #wnAuthDialog #authLogin[hidden], #wnAuthDialog #authSignUp[hidden], #wnAuthDialog #wnUpdatePassword[hidden], #wnAuthDialog #authLogout[hidden] { display:none!important; }
-      #wnAuthDialog #wnSecurityActions { display:contents!important; }
-      #wnAuthDialog .wn-auth-switch { display:flex; justify-content:center; align-items:center; flex-wrap:wrap; gap:5px; margin:14px 0 0; color:#786c90; font-size:13px; text-align:center; }
-      #wnAuthDialog .wn-auth-switch button { width:auto!important; min-height:0!important; padding:2px!important; border:0!important; background:transparent!important; color:#5424ff!important; box-shadow:none!important; font:inherit!important; font-weight:750!important; cursor:pointer; }
-      #wnAuthDialog .wn-auth-support { margin:17px 0 0; padding:15px 0 0; border-top:1px solid #eee8fa; text-align:center; }
-      #wnAuthDialog .wn-auth-support p { margin:0 0 5px; color:#857993; font-size:12px; line-height:1.5; }
-      #wnAuthDialog #authStatus { width:100%; min-width:0; margin:12px 0 0; overflow-wrap:anywhere; font-size:13px; line-height:1.5; }
-      #wnAuthDialog #authStatus:empty { display:none!important; }
+
+      #wnAuthDialog #wnResetPassword,
+      #wnAuthDialog #wnResendConfirmation {
+        display:inline-block!important; width:auto!important;
+        max-width:100%!important; min-width:0!important;
+        min-height:0!important; height:auto!important;
+        margin:0!important; padding:4px 2px!important;
+        border:0!important; border-radius:0!important;
+        background:transparent!important; color:#5424ff!important;
+        box-shadow:none!important; font:inherit!important;
+        font-size:13px!important; font-weight:700!important;
+        line-height:1.5!important; text-align:center!important; cursor:pointer;
+      }
+
+      #wnAuthDialog #wnResetPassword[hidden],
+      #wnAuthDialog #wnResendConfirmation[hidden] {
+        display:none!important;
+      }
+
+      #wnAuthDialog #worknelyAuthForm > .actions {
+        display:flex!important; flex-direction:column!important;
+        gap:10px!important; width:100%!important;
+        margin:2px 0 0!important; padding:0!important;
+      }
+
+      #wnAuthDialog #authLogin,
+      #wnAuthDialog #authSignUp,
+      #wnAuthDialog #wnUpdatePassword {
+        display:block!important; width:100%!important;
+        max-width:100%!important; min-width:0!important;
+        min-height:50px!important; margin:0!important;
+        padding:12px 16px!important; border:0!important;
+        border-radius:13px!important;
+        background:linear-gradient(110deg,#5424ff,#a326e8)!important;
+        color:#fff!important; box-shadow:none!important;
+        font:inherit!important; font-size:16px!important;
+        font-weight:750!important; text-align:center!important; cursor:pointer;
+      }
+
+      #wnAuthDialog #authLogin[hidden],
+      #wnAuthDialog #authSignUp[hidden],
+      #wnAuthDialog #wnUpdatePassword[hidden],
+      #wnAuthDialog #authLogout[hidden] {
+        display:none!important;
+      }
+
+      #wnAuthDialog #wnSecurityActions {
+        display:contents!important;
+      }
+
+      #wnAuthDialog .wn-auth-switch {
+        display:flex; justify-content:center; align-items:center;
+        flex-wrap:wrap; gap:5px; margin:14px 0 0;
+        color:#786c90; font-size:13px; text-align:center;
+      }
+
+      #wnAuthDialog .wn-auth-switch button {
+        width:auto!important; min-height:0!important;
+        padding:2px!important; border:0!important;
+        background:transparent!important; color:#5424ff!important;
+        box-shadow:none!important; font:inherit!important;
+        font-weight:750!important; cursor:pointer;
+      }
+
+      #wnAuthDialog .wn-auth-support {
+        margin:17px 0 0; padding:15px 0 0;
+        border-top:1px solid #eee8fa; text-align:center;
+      }
+
+      #wnAuthDialog .wn-auth-support p {
+        margin:0 0 5px; color:#857993; font-size:12px; line-height:1.5;
+      }
+
+      #wnAuthDialog #authStatus {
+        width:100%; min-width:0; margin:12px 0 0;
+        overflow-wrap:anywhere; font-size:13px; line-height:1.5;
+      }
+
+      #wnAuthDialog #authStatus:empty {
+        display:none!important;
+      }
+
       @media(max-width:600px) {
         .top { flex-wrap:wrap; gap:10px; }
         .wn-auth-nav { gap:6px; }
         .wn-auth-btn { padding:9px 11px; font-size:12px; }
-        dialog#wnAuthDialog.wn-dialog { width:calc(100vw - 24px)!important; max-width:calc(100vw - 24px)!important; border-radius:20px!important; }
+
+        dialog#wnAuthDialog.wn-dialog {
+          width:calc(100vw - 24px)!important;
+          max-width:calc(100vw - 24px)!important;
+          border-radius:20px!important;
+        }
+
         #wnAuthDialog .wn-dialog-head { padding:13px 17px; }
-        #wnAuthDialog #worknelyAccount.workspace { padding:19px 18px!important; }
+
+        #wnAuthDialog #worknelyAccount.workspace {
+          padding:19px 18px!important;
+        }
       }
-      @media(max-width:360px) { #wnAuthDialog #worknelyAccount.workspace { padding:17px 14px!important; } }
+
+      @media(max-width:360px) {
+        #wnAuthDialog #worknelyAccount.workspace {
+          padding:17px 14px!important;
+        }
+      }
     `;
+
     document.head.appendChild(style);
+
+    /* NAVIGATION */
 
     const nav = document.createElement("div");
     nav.className = "wn-auth-nav";
@@ -110,6 +269,13 @@
 
     const loginBtn = makeButton("Log In", "wn-login");
     const signupBtn = makeButton("Sign Up", "wn-signup");
+
+    /* PRICING LINK — PUBLIC ACCESS */
+
+    const pricingLink = document.createElement("a");
+    pricingLink.href = "pricing.html";
+    pricingLink.className = "wn-auth-btn wn-login wn-pricing-link";
+    pricingLink.textContent = "Pricing";
 
     const accountWrap = document.createElement("div");
     accountWrap.className = "wn-account-menu";
@@ -132,7 +298,9 @@
       const link = document.createElement("a");
       link.textContent = label;
       link.href = href;
+
       if (className) link.className = className;
+
       link.addEventListener("click", closeMenu);
       return link;
     }
@@ -148,15 +316,25 @@
     menu.append(
       menuLink("My Dashboard", "dashboard.html"),
       menuLink("My Resumes", "dashboard.html#resumes"),
-      menuLink("Resume Builder", "#builder"),
-      menuLink("Upgrade to Pro", "dashboard.html#pro", "wn-menu-pro"),
+      menuLink("Resume Builder", "index.html#builder"),
+      menuLink("Pricing & Plans", "pricing.html"),
+      menuLink("Upgrade to Pro", "pricing.html", "wn-menu-pro"),
       divider,
       logoutBtn
     );
 
     accountWrap.append(accountBtn, menu);
-    nav.append(loginBtn, signupBtn, accountWrap);
+
+    nav.append(
+      pricingLink,
+      loginBtn,
+      signupBtn,
+      accountWrap
+    );
+
     header.appendChild(nav);
+
+    /* AUTHENTICATION MODAL */
 
     const dialog = document.createElement("dialog");
     dialog.id = "wnAuthDialog";
@@ -195,7 +373,9 @@
     support.className = "wn-auth-support";
 
     const supportText = document.createElement("p");
-    supportText.textContent = "Didn't receive your confirmation email?";
+    supportText.textContent =
+      "Didn't receive your confirmation email?";
+
     support.appendChild(supportText);
 
     form.insertAdjacentElement("afterend", switchRow);
@@ -205,8 +385,12 @@
     forgotRow.className = "wn-forgot-row";
 
     const passwordLabel = password.closest("label");
+
     if (passwordLabel) {
-      passwordLabel.insertAdjacentElement("afterend", forgotRow);
+      passwordLabel.insertAdjacentElement(
+        "afterend",
+        forgotRow
+      );
     }
 
     let mode = "login";
@@ -276,8 +460,8 @@
         forgotRow.appendChild(forgot);
         support.appendChild(resend);
 
-        // Keep Update Password inside the original form.
-        // Its Supabase click handler stays intact.
+        // Preserve the original Supabase event handler.
+        // Update Password remains inside the auth form.
         const actions = form.querySelector(":scope > .actions");
 
         if (actions) {
@@ -311,8 +495,8 @@
       }
     }
 
-    // The authentication module may create its buttons
-    // after this deferred UI script initializes.
+    /* ASYNCHRONOUS SECURITY CONTROLS */
+
     const securityObserver = new MutationObserver(() => {
       if (positionSecurityControls()) {
         securityObserver.disconnect();
@@ -355,10 +539,12 @@
         setMode(nextMode);
       }
 
-      if (!dialog.open) dialog.showModal();
-
-      // Do not force the iPhone keyboard open.
+      if (!dialog.open) {
+        dialog.showModal();
+      }
     }
+
+    /* SESSION UI */
 
     function syncAuth() {
       const authenticated = !logout.hidden;
@@ -367,12 +553,20 @@
       signupBtn.hidden = authenticated;
       accountWrap.hidden = !authenticated;
 
-      if (authenticated && dialog.open && !isRecovery()) {
+      if (
+        authenticated &&
+        dialog.open &&
+        !isRecovery()
+      ) {
         closeDialog();
       }
 
-      if (!authenticated) closeMenu();
+      if (!authenticated) {
+        closeMenu();
+      }
     }
+
+    /* EVENTS */
 
     loginBtn.addEventListener("click", () => {
       openAuth("login");
@@ -383,7 +577,9 @@
     });
 
     switchButton.addEventListener("click", () => {
-      setMode(mode === "login" ? "signup" : "login");
+      setMode(
+        mode === "login" ? "signup" : "login"
+      );
     });
 
     closeBtn.addEventListener("click", closeDialog);
@@ -404,7 +600,9 @@
 
     accountBtn.addEventListener("click", () => {
       const opening = menu.hidden;
+
       menu.hidden = !opening;
+
       accountBtn.setAttribute(
         "aria-expanded",
         String(opening)
@@ -423,7 +621,9 @@
     });
 
     document.addEventListener("keydown", event => {
-      if (event.key === "Escape") closeMenu();
+      if (event.key === "Escape") {
+        closeMenu();
+      }
     });
 
     new MutationObserver(syncAuth).observe(logout, {
