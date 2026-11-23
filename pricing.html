@@ -5,10 +5,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#5424ff">
-<meta name="description" content="Explore Worknely Free, Pro and Premium membership plans.">
+<meta name="description" content="Compare Worknely Free, Pro and Premium memberships.">
 <title>Pricing & Membership | Worknely</title>
 <link rel="icon" type="image/svg+xml" href="worknely-favicon.svg">
-<link rel="stylesheet" href="worknely-electric.css?v=5.3">
 
 <style>
 :root {
@@ -21,64 +20,63 @@
 * {box-sizing:border-box}
 body {
   margin:0;
-  background:linear-gradient(180deg,#faf8ff,#fff 60%);
+  background:linear-gradient(180deg,#faf8ff,#fff 70%);
   color:var(--ink);
   font-family:Inter,-apple-system,BlinkMacSystemFont,
-  "Segoe UI",sans-serif;
+    "Segoe UI",sans-serif;
 }
 a {text-decoration:none}
-button,a {-webkit-tap-highlight-color:transparent}
+button {font:inherit}
 button:focus-visible,a:focus-visible {
   outline:3px solid var(--purple);
-  outline-offset:4px;
+  outline-offset:3px;
 }
 .container {
-  max-width:1160px;
+  max-width:1140px;
   margin:auto;
-  padding:0 22px;
+  padding:0 20px;
 }
 header {
   background:#fff;
   border-bottom:1px solid var(--border);
 }
 .header-inner {
-  min-height:76px;
+  min-height:72px;
   display:flex;
   justify-content:space-between;
   align-items:center;
-  gap:15px;
+  gap:12px;
 }
 .brand {
   display:flex;
   align-items:center;
-  gap:10px;
+  gap:9px;
   color:var(--purple);
-  font-size:24px;
+  font-size:23px;
   font-weight:850;
-  letter-spacing:-.8px;
 }
 .brand img {width:34px;height:34px}
 .back {
-  font-size:13px;
-  font-weight:700;
   color:var(--purple);
+  font-size:13px;
+  font-weight:750;
 }
 .hero {
+  padding:48px 0 22px;
   text-align:center;
-  padding:65px 0 38px;
 }
 .eyebrow {
   color:var(--purple);
   font-size:11px;
-  letter-spacing:2px;
   font-weight:850;
+  letter-spacing:2px;
 }
 h1 {
-  font-size:clamp(32px,5vw,52px);
-  line-height:1.13;
-  letter-spacing:-1.6px;
-  margin:17px auto;
   max-width:740px;
+  margin:14px auto;
+  font-size:clamp(30px,5vw,49px);
+  line-height:1.15;
+  letter-spacing:-1.4px;
 }
 .gradient {
   background:linear-gradient(105deg,#5424ff,#e928c8);
@@ -87,179 +85,207 @@ h1 {
   color:transparent;
 }
 .hero p {
-  color:var(--muted);
-  font-size:16px;
-  line-height:1.7;
   max-width:570px;
   margin:0 auto;
+  color:var(--muted);
+  font-size:15px;
+  line-height:1.6;
 }
 .billing {
   display:flex;
   justify-content:center;
   align-items:center;
+  flex-wrap:wrap;
   gap:10px;
-  margin-top:30px;
+  margin-top:25px;
+}
+.billing-switch {
+  display:flex;
+  padding:5px;
+  border:1px solid var(--border);
+  border-radius:100px;
+  background:#fff;
+}
+.billing-switch button {
+  padding:10px 19px;
+  border:0;
+  border-radius:100px;
+  background:transparent;
   color:var(--muted);
   font-size:13px;
+  font-weight:750;
+  cursor:pointer;
 }
-.billing strong {
-  color:var(--purple);
-  background:#eee8ff;
-  padding:9px 16px;
+.billing-switch button[aria-pressed="true"] {
+  background:var(--purple);
+  color:#fff;
+}
+.savings {
+  padding:7px 11px;
   border-radius:100px;
+  background:#f0eaff;
+  color:var(--purple);
+  font-size:12px;
+  font-weight:750;
 }
 .plans {
   display:grid;
   grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:20px;
+  gap:18px;
   align-items:stretch;
-  margin:28px auto 65px;
+  margin:32px auto 45px;
 }
 .plan {
   position:relative;
-  background:#fff;
-  border:1px solid var(--border);
-  border-radius:24px;
-  padding:32px 25px;
-  box-shadow:0 12px 40px rgba(40,20,90,.045);
-  min-width:0;
   display:flex;
   flex-direction:column;
+  min-width:0;
+  padding:25px 23px;
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:22px;
+  box-shadow:0 10px 30px rgba(40,20,90,.04);
 }
 .plan.featured {
   border:2px solid var(--purple);
-  box-shadow:0 20px 55px rgba(84,36,255,.13);
+  box-shadow:0 15px 40px rgba(84,36,255,.12);
 }
 .popular {
   position:absolute;
-  top:-16px;
+  top:-15px;
   left:50%;
   transform:translateX(-50%);
+  padding:8px 15px;
+  border-radius:100px;
   background:linear-gradient(105deg,#5424ff,#e928c8);
   color:#fff;
   font-size:11px;
   font-weight:800;
-  padding:9px 17px;
-  border-radius:30px;
   white-space:nowrap;
 }
 .plan-icon {
-  width:42px;
-  height:42px;
   display:grid;
   place-items:center;
-  border-radius:13px;
+  width:39px;
+  height:39px;
+  border-radius:12px;
   background:#f1ecff;
   color:var(--purple);
-  font-size:22px;
+  font-size:21px;
 }
 .plan h2 {
-  font-size:24px;
-  margin:18px 0 7px;
+  margin:14px 0 5px;
+  font-size:23px;
 }
 .description {
-  min-height:44px;
+  min-height:39px;
+  margin:0;
   color:var(--muted);
   font-size:13px;
-  line-height:1.6;
+  line-height:1.5;
 }
 .price {
   display:flex;
   align-items:baseline;
   gap:5px;
-  margin:22px 0;
+  margin:17px 0 3px;
 }
 .amount {
-  font-size:43px;
+  font-size:39px;
   font-weight:850;
-  letter-spacing:-2px;
+  letter-spacing:-1.7px;
 }
 .period {
-  font-size:13px;
   color:var(--muted);
+  font-size:13px;
+}
+.billing-note {
+  min-height:22px;
+  margin:0 0 15px;
+  color:var(--muted);
+  font-size:11px;
 }
 .action {
   display:flex;
   justify-content:center;
   align-items:center;
   width:100%;
-  min-height:49px;
-  padding:13px;
-  border-radius:13px;
-  font:inherit;
+  min-height:47px;
+  padding:12px;
+  border:0;
+  border-radius:12px;
   font-size:14px;
   font-weight:750;
   text-align:center;
 }
 .action-free {
-  color:var(--purple);
   background:#f2eeff;
-}
-.action-pro {
-  color:#fff;
-  background:linear-gradient(105deg,#5424ff,#b82be9);
+  color:var(--purple);
 }
 .action-disabled {
-  color:#8d849e;
   background:#f1eff5;
-  border:0;
+  color:#827b91;
   cursor:not-allowed;
 }
 .plan ul {
-  list-style:none;
-  padding:0;
-  margin:27px 0 0;
   display:grid;
-  gap:16px;
+  gap:12px;
+  margin:21px 0 0;
+  padding:0;
+  list-style:none;
 }
 .plan li {
   display:flex;
   align-items:flex-start;
-  gap:10px;
+  gap:9px;
   font-size:13px;
-  line-height:1.55;
+  line-height:1.45;
 }
 .check {
   color:var(--purple);
   font-weight:850;
 }
 .note {
+  margin:auto 0 0;
+  padding-top:22px;
   color:var(--muted);
   font-size:11px;
-  margin-top:25px;
-  line-height:1.6;
+  line-height:1.5;
 }
 .notice {
-  max-width:800px;
-  margin:0 auto 70px;
-  padding:22px;
-  background:#f6f2ff;
+  max-width:780px;
+  margin:0 auto 55px;
+  padding:20px;
   border:1px solid #e9ddff;
-  border-radius:18px;
+  border-radius:17px;
+  background:#f6f2ff;
   color:#665b80;
   text-align:center;
   font-size:13px;
-  line-height:1.7;
+  line-height:1.6;
 }
+.notice p {margin:8px 0 0}
 footer {
-  padding:28px 16px;
+  padding:25px 15px;
   border-top:1px solid var(--border);
-  text-align:center;
   color:var(--muted);
+  text-align:center;
   font-size:12px;
 }
 @media(max-width:850px) {
-  .plans {grid-template-columns:1fr;max-width:480px;gap:30px}
-  .plan {padding:29px 25px}
-  .hero {padding:45px 0 30px}
+  .plans {
+    grid-template-columns:1fr;
+    max-width:470px;
+    gap:25px;
+  }
+  .plan {padding:23px 22px}
+  .description {min-height:0}
+  .hero {padding:38px 0 20px}
 }
 @media(max-width:380px) {
-  .container {padding:0 15px}
+  .container {padding:0 14px}
   .brand {font-size:20px}
-  .plan {padding:26px 20px}
-}
-@media(prefers-reduced-motion:reduce) {
-  *,*::before,*::after {scroll-behavior:auto!important}
+  .plan {padding:22px 18px}
 }
 </style>
 </head>
@@ -284,12 +310,19 @@ footer {
     </h1>
     <p>
       Start free. Explore what's next.
-      Find the right tools to build your career
-      with confidence.
+      Choose the career tools that fit your ambitions.
     </p>
+
     <div class="billing">
-      <strong>Monthly plans</strong>
-      <span>Annual billing coming later</span>
+      <div class="billing-switch" aria-label="Billing period">
+        <button id="monthly" type="button" aria-pressed="true">
+          Monthly
+        </button>
+        <button id="yearly" type="button" aria-pressed="false">
+          Yearly
+        </button>
+      </div>
+      <span class="savings">Save up to 17% yearly</span>
     </div>
   </section>
 
@@ -305,6 +338,7 @@ footer {
         <span class="amount">$0</span>
         <span class="period">/ month</span>
       </div>
+      <p class="billing-note">Free forever</p>
       <a class="action action-free" href="index.html#builder">
         Get Started Free
       </a>
@@ -315,10 +349,7 @@ footer {
         <li><span class="check">✓</span> PDF Resume Export</li>
         <li><span class="check">✓</span> Account Registration</li>
       </ul>
-      <p class="note">
-        Free features are subject to the current
-        capabilities of the Worknely application.
-      </p>
+      <p class="note">Available with the current Worknely tools.</p>
     </article>
 
     <article class="plan featured">
@@ -329,9 +360,12 @@ footer {
         More powerful tools for ambitious professionals.
       </p>
       <div class="price">
-        <span class="amount">$9</span>
-        <span class="period">/ month</span>
+        <span class="amount" id="proPrice">$9</span>
+        <span class="period" id="proPeriod">/ month</span>
       </div>
+      <p class="billing-note" id="proBilling">
+        Billed monthly
+      </p>
       <button class="action action-disabled" disabled>
         Coming Soon
       </button>
@@ -343,8 +377,7 @@ footer {
         <li><span class="check">✓</span> Planned premium templates</li>
       </ul>
       <p class="note">
-        Pro features are in development.
-        No paid subscription is currently available.
+        Features in development. No subscription available yet.
       </p>
     </article>
 
@@ -355,9 +388,12 @@ footer {
         A complete career workspace for your future.
       </p>
       <div class="price">
-        <span class="amount">$19</span>
-        <span class="period">/ month</span>
+        <span class="amount" id="premiumPrice">$19</span>
+        <span class="period" id="premiumPeriod">/ month</span>
       </div>
+      <p class="billing-note" id="premiumBilling">
+        Billed monthly
+      </p>
       <button class="action action-disabled" disabled>
         Coming Soon
       </button>
@@ -369,8 +405,7 @@ footer {
         <li><span class="check">✓</span> Planned premium experience</li>
       </ul>
       <p class="note">
-        Premium features are planned and
-        may change before commercial launch.
+        Features in development. No subscription available yet.
       </p>
     </article>
 
@@ -379,9 +414,8 @@ footer {
   <aside class="notice">
     <strong>We're building the next chapter of Worknely.</strong>
     <p>
-      Free tools are available today. Pro and Premium
-      are previews of planned memberships.
-      Prices, benefits and launch dates may change.
+      Pro and Premium are planned memberships.
+      Prices and benefits may change before launch.
       No payments are collected on this page.
     </p>
   </aside>
@@ -391,5 +425,41 @@ footer {
   © 2026 Worknely · People Technology
   <p>Build. Improve. Grow.</p>
 </footer>
+
+<script>
+(() => {
+  "use strict";
+
+  const $ = id => document.getElementById(id);
+  const monthly = $("monthly");
+  const yearly = $("yearly");
+
+  function setBilling(period) {
+    const annual = period === "yearly";
+
+    monthly.setAttribute("aria-pressed", String(!annual));
+    yearly.setAttribute("aria-pressed", String(annual));
+
+    $("proPrice").textContent = annual ? "$90" : "$9";
+    $("premiumPrice").textContent = annual ? "$190" : "$19";
+
+    $("proPeriod").textContent = annual ? "/ year" : "/ month";
+    $("premiumPeriod").textContent = annual ? "/ year" : "/ month";
+
+    $("proBilling").textContent = annual
+      ? "Billed yearly · Save $18"
+      : "Billed monthly";
+
+    $("premiumBilling").textContent = annual
+      ? "Billed yearly · Save $38"
+      : "Billed monthly";
+  }
+
+  monthly.addEventListener("click", () => setBilling("monthly"));
+  yearly.addEventListener("click", () => setBilling("yearly"));
+
+  setBilling("monthly");
+})();
+</script>
 </body>
 </html>
