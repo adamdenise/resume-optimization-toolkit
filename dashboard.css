@@ -1,9 +1,15 @@
 
 /*
- * WORKNELY V7.3
- * Premium Dashboard Styling
- * Studio + Executive
- * Preserves original brand identity
+ * WORKNELY V7.10
+ * Premium SaaS Dashboard
+ *
+ * Mobile First Refinement
+ * Responsive Desktop Layout
+ * Brand: Electric Purple / Pink
+ *
+ * Compatible with:
+ * dashboard.html V7.9.2
+ * dashboard.js V7.9.2
  */
 
 :root {
@@ -18,6 +24,9 @@
   --wn-pink: #ec22ad;
   --wn-border: #e8e0f7;
   --wn-muted: #706782;
+  --wn-surface: #ffffff;
+  --wn-soft: #f5f1ff;
+  --wn-shadow: 0 12px 35px rgba(55, 25, 130, .055);
 }
 
 * {
@@ -59,7 +68,7 @@ button:disabled {
 }
 
 :focus-visible {
-  outline: 3px solid #673cff;
+  outline: 3px solid var(--wn-violet);
   outline-offset: 3px;
 }
 
@@ -84,7 +93,7 @@ button:disabled {
   padding: 18px clamp(16px, 4vw, 48px);
 
   background: #fff;
-  border-bottom: 1px solid #e9e4fa;
+  border-bottom: 1px solid var(--wn-border);
 }
 
 .brand {
@@ -135,7 +144,7 @@ button:disabled {
 
 .sidebar a[aria-current="page"] {
   background: #ebe5ff;
-  color: #5424ff;
+  color: var(--wn-purple);
   font-weight: 800;
 }
 
@@ -166,14 +175,14 @@ main {
 
 .hero,
 .panel {
-  background: white;
-  border: 1px solid #e8e0f7;
+  background: var(--wn-surface);
+  border: 1px solid var(--wn-border);
   border-radius: 24px;
 
   padding: clamp(20px, 3vw, 35px);
   margin-bottom: 22px;
 
-  box-shadow: 0 8px 25px #391b8508;
+  box-shadow: var(--wn-shadow);
 }
 
 .hero {
@@ -200,11 +209,13 @@ main {
 h1 {
   font-size: clamp(30px, 5vw, 52px);
   margin: 14px 0;
+  letter-spacing: -.035em;
 }
 
 h2 {
-  font-size: 27px;
-  margin: 10px 0;
+  font-size: clamp(23px, 3vw, 29px);
+  margin: 20px 0 15px;
+  letter-spacing: -.025em;
 }
 
 h3 {
@@ -213,7 +224,7 @@ h3 {
 
 p {
   line-height: 1.55;
-  color: #706782;
+  color: var(--wn-muted);
 }
 
 /* DASHBOARD METRICS */
@@ -272,12 +283,21 @@ p {
 
 .button,
 .outline {
-  display: inline-block;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+
   border-radius: 13px;
   padding: 13px 19px;
   font-weight: 750;
   border: 1px solid #ddd2fc;
   text-align: center;
+
+  transition:
+    background .2s ease,
+    box-shadow .2s ease,
+    transform .2s ease;
 }
 
 .button {
@@ -292,7 +312,7 @@ p {
 }
 
 .outline {
-  background: #f5f1ff;
+  background: var(--wn-soft);
   color: #5929ed;
 }
 
@@ -364,19 +384,38 @@ textarea {
 }
 
 .resume-item {
-  padding: 16px;
+  padding: 17px 18px;
   border: 1px solid #e5ddf5;
-  border-radius: 14px;
+  border-radius: 17px;
+  background: #fff;
 
   display: flex;
   justify-content: space-between;
-  gap: 12px;
+  gap: 14px;
   align-items: center;
   flex-wrap: wrap;
+
+  box-shadow: 0 4px 16px rgba(64, 30, 135, .025);
+
+  transition:
+    border-color .2s ease,
+    box-shadow .2s ease;
+}
+
+.resume-item:hover {
+  border-color: #cbbcf8;
+  box-shadow: 0 8px 24px rgba(64, 30, 135, .065);
+}
+
+.resume-item > div:first-child {
+  flex: 1 1 190px;
+  min-width: 0;
 }
 
 .resume-item strong {
   display: block;
+  font-size: 15px;
+  font-weight: 800;
   overflow-wrap: anywhere;
 }
 
@@ -384,14 +423,56 @@ textarea {
   display: block;
   color: #827890;
   margin-top: 5px;
+  font-size: 12px;
 }
 
 .resume-item .actions {
   margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 9px;
 }
 
 .resume-item button {
-  padding: 9px 13px;
+  padding: 11px 14px;
+  font-size: 13px;
+  line-height: 1.3;
+  border-radius: 11px;
+  min-height: 42px;
+}
+
+/* PRIMARY RESUME EDIT ACTION */
+
+.resume-item .actions button:first-child {
+  background: linear-gradient(
+    105deg,
+    var(--wn-purple),
+    var(--wn-pink)
+  );
+
+  color: #fff;
+  border-color: transparent;
+  font-weight: 800;
+}
+
+.resume-item .actions button:first-child:hover {
+  filter: brightness(1.06);
+}
+
+/* SECONDARY DELETE ACTION */
+
+.resume-item .actions button:last-child {
+  background: #fff;
+  color: #766b88;
+  border: 1px solid #e6e0ef;
+  font-weight: 650;
+}
+
+.resume-item .actions button:last-child:hover {
+  background: #fff4f6;
+  color: #b42345;
+  border-color: #f0cbd3;
 }
 
 /* PRO PAGE */
@@ -450,7 +531,7 @@ footer {
   }
 
   .sidebar a[aria-current="page"] {
-    background: #5424ff;
+    background: var(--wn-purple);
     color: white;
   }
 
@@ -481,6 +562,7 @@ footer {
   .hero,
   .panel {
     border-radius: 19px;
+    padding: 20px 16px;
   }
 
   .wn-dashboard-actions {
@@ -504,6 +586,35 @@ footer {
     min-width: 0;
     padding: 16px;
   }
+
+  /* COMPACT MOBILE RESUME CARDS */
+
+  .resume-list {
+    gap: 11px;
+  }
+
+  .resume-item {
+    padding: 15px;
+    gap: 13px;
+    align-items: stretch;
+  }
+
+  .resume-item > div:first-child {
+    flex: 1 1 100%;
+  }
+
+  .resume-item .actions {
+    width: 100%;
+    gap: 9px;
+  }
+
+  .resume-item .actions button:first-child {
+    flex: 1 1 auto;
+  }
+
+  .resume-item .actions button:last-child {
+    flex: 0 0 auto;
+  }
 }
 
 /* SMALL IPHONE SCREENS */
@@ -525,16 +636,16 @@ footer {
     font-size: 12px;
   }
 
-  .resume-item {
-    align-items: stretch;
-  }
-
   .resume-item .actions {
-    width: 100%;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 8px;
   }
 
   .resume-item .actions button {
-    flex: 1;
+    min-width: 0;
+    padding: 10px;
+    font-size: 12px;
   }
 }
 
@@ -543,7 +654,10 @@ footer {
     scroll-behavior: auto;
   }
 
-  .sidebar a {
+  .sidebar a,
+  .button,
+  .outline,
+  .resume-item {
     transition: none;
   }
 }
