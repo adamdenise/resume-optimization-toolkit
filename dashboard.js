@@ -1,23 +1,20 @@
 
 /*
- * WORKNELY V7.9.1
+ * WORKNELY V7.9.2
  * Personal SaaS Dashboard
  *
- * Preserves V7.3:
- * - Supabase Authentication
- * - Dashboard Views
- * - Resume Creation
- * - Resume Editing
- * - Resume Deletion
- * - Resume Counting
- * - Logout
- *
- * NEW:
- * - Edit in Resume Builder
- * - Direct integration with index.html V7.9
- * - Safe resume ID navigation
- *
+ * Supabase Authentication
+ * Resume Storage
+ * Dashboard Views
  * GitHub Pages Compatible
+ *
+ * V7.9.2:
+ * - Removed duplicate Edit button
+ * - Kept Edit in Resume Builder
+ * - Kept Delete with confirmation
+ * - Preserved resume creation
+ * - Preserved Supabase operations
+ * - Preserved logout and resume counting
  */
 
 import { createClient } from
@@ -167,6 +164,8 @@ function formatDate(date) {
   );
 }
 
+/* RESUME CONTENT */
+
 function getResumeContent() {
   const content = {};
 
@@ -200,7 +199,8 @@ function resetForm() {
   resumeForm.reset();
   fillResumeForm({});
 
-  saveButton.textContent = "Save Resume";
+  saveButton.textContent =
+    "Save Resume";
 
   setStatus(
     "Ready to create a new resume."
@@ -209,9 +209,7 @@ function resetForm() {
   resumeTitle.focus();
 }
 
-/* WORKNELY V7.9.1
- * OPEN SAVED RESUME IN MAIN BUILDER
- */
+/* RESUME BUILDER INTEGRATION */
 
 function getBuilderEditURL(resumeId) {
   const url = new URL(
@@ -279,28 +277,7 @@ function createResumeCard(resume) {
 
   actions.className = "actions";
 
-  /* EXISTING DASHBOARD EDIT */
-
-  const editButton =
-    document.createElement("button");
-
-  editButton.type = "button";
-  editButton.className = "outline";
-  editButton.textContent = "Edit";
-
-  editButton.setAttribute(
-    "aria-label",
-    "Edit " +
-    (resume.title || "resume") +
-    " in Dashboard"
-  );
-
-  editButton.addEventListener(
-    "click",
-    () => editResume(resume.id)
-  );
-
-  /* NEW RESUME BUILDER EDIT */
+  /* PRIMARY EDIT BUTTON */
 
   const builderButton =
     document.createElement("button");
@@ -323,13 +300,14 @@ function createResumeCard(resume) {
     () => openInResumeBuilder(resume.id)
   );
 
-  /* EXISTING DELETE */
+  /* DELETE BUTTON */
 
   const deleteButton =
     document.createElement("button");
 
   deleteButton.type = "button";
   deleteButton.className = "outline";
+
   deleteButton.textContent = "Delete";
 
   deleteButton.setAttribute(
@@ -344,7 +322,6 @@ function createResumeCard(resume) {
   );
 
   actions.append(
-    editButton,
     builderButton,
     deleteButton
   );
@@ -506,50 +483,6 @@ async function saveResume(event) {
   } finally {
     setBusy(false);
   }
-}
-
-/* EDIT RESUME IN DASHBOARD */
-
-function editResume(id) {
-  if (isBusy) return;
-
-  const resume = savedResumes.find(
-    item => item.id === id
-  );
-
-  if (!resume) {
-    setStatus("Resume not found.");
-    return;
-  }
-
-  editingResumeId = resume.id;
-
-  resumeTitle.value =
-    resume.title || "";
-
-  fillResumeForm(resume.content || {});
-
-  saveButton.textContent =
-    "Update Resume";
-
-  setStatus(
-    "Editing: " + resume.title
-  );
-
-  if (window.location.hash !== "#resumes") {
-    window.location.hash = "resumes";
-  }
-
-  requestAnimationFrame(() => {
-    resumeForm.scrollIntoView({
-      behavior: "smooth",
-      block: "start"
-    });
-
-    resumeTitle.focus({
-      preventScroll: true
-    });
-  });
 }
 
 /* DELETE RESUME */
