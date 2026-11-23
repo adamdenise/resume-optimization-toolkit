@@ -1,0 +1,395 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#5424ff">
+<meta name="description" content="Explore Worknely Free, Pro and Premium membership plans.">
+<title>Pricing & Membership | Worknely</title>
+<link rel="icon" type="image/svg+xml" href="worknely-favicon.svg">
+<link rel="stylesheet" href="worknely-electric.css?v=5.3">
+
+<style>
+:root {
+  --purple:#5424ff;
+  --pink:#e928c8;
+  --ink:#241442;
+  --muted:#817994;
+  --border:#e9e3f5;
+}
+* {box-sizing:border-box}
+body {
+  margin:0;
+  background:linear-gradient(180deg,#faf8ff,#fff 60%);
+  color:var(--ink);
+  font-family:Inter,-apple-system,BlinkMacSystemFont,
+  "Segoe UI",sans-serif;
+}
+a {text-decoration:none}
+button,a {-webkit-tap-highlight-color:transparent}
+button:focus-visible,a:focus-visible {
+  outline:3px solid var(--purple);
+  outline-offset:4px;
+}
+.container {
+  max-width:1160px;
+  margin:auto;
+  padding:0 22px;
+}
+header {
+  background:#fff;
+  border-bottom:1px solid var(--border);
+}
+.header-inner {
+  min-height:76px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:15px;
+}
+.brand {
+  display:flex;
+  align-items:center;
+  gap:10px;
+  color:var(--purple);
+  font-size:24px;
+  font-weight:850;
+  letter-spacing:-.8px;
+}
+.brand img {width:34px;height:34px}
+.back {
+  font-size:13px;
+  font-weight:700;
+  color:var(--purple);
+}
+.hero {
+  text-align:center;
+  padding:65px 0 38px;
+}
+.eyebrow {
+  color:var(--purple);
+  font-size:11px;
+  letter-spacing:2px;
+  font-weight:850;
+}
+h1 {
+  font-size:clamp(32px,5vw,52px);
+  line-height:1.13;
+  letter-spacing:-1.6px;
+  margin:17px auto;
+  max-width:740px;
+}
+.gradient {
+  background:linear-gradient(105deg,#5424ff,#e928c8);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+}
+.hero p {
+  color:var(--muted);
+  font-size:16px;
+  line-height:1.7;
+  max-width:570px;
+  margin:0 auto;
+}
+.billing {
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:10px;
+  margin-top:30px;
+  color:var(--muted);
+  font-size:13px;
+}
+.billing strong {
+  color:var(--purple);
+  background:#eee8ff;
+  padding:9px 16px;
+  border-radius:100px;
+}
+.plans {
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:20px;
+  align-items:stretch;
+  margin:28px auto 65px;
+}
+.plan {
+  position:relative;
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:24px;
+  padding:32px 25px;
+  box-shadow:0 12px 40px rgba(40,20,90,.045);
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+}
+.plan.featured {
+  border:2px solid var(--purple);
+  box-shadow:0 20px 55px rgba(84,36,255,.13);
+}
+.popular {
+  position:absolute;
+  top:-16px;
+  left:50%;
+  transform:translateX(-50%);
+  background:linear-gradient(105deg,#5424ff,#e928c8);
+  color:#fff;
+  font-size:11px;
+  font-weight:800;
+  padding:9px 17px;
+  border-radius:30px;
+  white-space:nowrap;
+}
+.plan-icon {
+  width:42px;
+  height:42px;
+  display:grid;
+  place-items:center;
+  border-radius:13px;
+  background:#f1ecff;
+  color:var(--purple);
+  font-size:22px;
+}
+.plan h2 {
+  font-size:24px;
+  margin:18px 0 7px;
+}
+.description {
+  min-height:44px;
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.6;
+}
+.price {
+  display:flex;
+  align-items:baseline;
+  gap:5px;
+  margin:22px 0;
+}
+.amount {
+  font-size:43px;
+  font-weight:850;
+  letter-spacing:-2px;
+}
+.period {
+  font-size:13px;
+  color:var(--muted);
+}
+.action {
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  width:100%;
+  min-height:49px;
+  padding:13px;
+  border-radius:13px;
+  font:inherit;
+  font-size:14px;
+  font-weight:750;
+  text-align:center;
+}
+.action-free {
+  color:var(--purple);
+  background:#f2eeff;
+}
+.action-pro {
+  color:#fff;
+  background:linear-gradient(105deg,#5424ff,#b82be9);
+}
+.action-disabled {
+  color:#8d849e;
+  background:#f1eff5;
+  border:0;
+  cursor:not-allowed;
+}
+.plan ul {
+  list-style:none;
+  padding:0;
+  margin:27px 0 0;
+  display:grid;
+  gap:16px;
+}
+.plan li {
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  font-size:13px;
+  line-height:1.55;
+}
+.check {
+  color:var(--purple);
+  font-weight:850;
+}
+.note {
+  color:var(--muted);
+  font-size:11px;
+  margin-top:25px;
+  line-height:1.6;
+}
+.notice {
+  max-width:800px;
+  margin:0 auto 70px;
+  padding:22px;
+  background:#f6f2ff;
+  border:1px solid #e9ddff;
+  border-radius:18px;
+  color:#665b80;
+  text-align:center;
+  font-size:13px;
+  line-height:1.7;
+}
+footer {
+  padding:28px 16px;
+  border-top:1px solid var(--border);
+  text-align:center;
+  color:var(--muted);
+  font-size:12px;
+}
+@media(max-width:850px) {
+  .plans {grid-template-columns:1fr;max-width:480px;gap:30px}
+  .plan {padding:29px 25px}
+  .hero {padding:45px 0 30px}
+}
+@media(max-width:380px) {
+  .container {padding:0 15px}
+  .brand {font-size:20px}
+  .plan {padding:26px 20px}
+}
+@media(prefers-reduced-motion:reduce) {
+  *,*::before,*::after {scroll-behavior:auto!important}
+}
+</style>
+</head>
+
+<body>
+<header>
+  <div class="container header-inner">
+    <a class="brand" href="index.html">
+      <img src="worknely-mark.svg" alt="">
+      Worknely
+    </a>
+    <a class="back" href="index.html">← Back to Worknely</a>
+  </div>
+</header>
+
+<main class="container">
+  <section class="hero">
+    <span class="eyebrow">WORKNELY MEMBERSHIP</span>
+    <h1>
+      Your career deserves
+      <span class="gradient">more possibilities.</span>
+    </h1>
+    <p>
+      Start free. Explore what's next.
+      Find the right tools to build your career
+      with confidence.
+    </p>
+    <div class="billing">
+      <strong>Monthly plans</strong>
+      <span>Annual billing coming later</span>
+    </div>
+  </section>
+
+  <section class="plans" aria-label="Membership plans">
+
+    <article class="plan">
+      <div class="plan-icon">✦</div>
+      <h2>Free</h2>
+      <p class="description">
+        Your first step toward a stronger resume.
+      </p>
+      <div class="price">
+        <span class="amount">$0</span>
+        <span class="period">/ month</span>
+      </div>
+      <a class="action action-free" href="index.html#builder">
+        Get Started Free
+      </a>
+      <ul>
+        <li><span class="check">✓</span> Resume Builder</li>
+        <li><span class="check">✓</span> Basic Writing Studio</li>
+        <li><span class="check">✓</span> Career Compatibility Analysis</li>
+        <li><span class="check">✓</span> PDF Resume Export</li>
+        <li><span class="check">✓</span> Account Registration</li>
+      </ul>
+      <p class="note">
+        Free features are subject to the current
+        capabilities of the Worknely application.
+      </p>
+    </article>
+
+    <article class="plan featured">
+      <span class="popular">MOST POPULAR</span>
+      <div class="plan-icon">✧</div>
+      <h2>Pro</h2>
+      <p class="description">
+        More powerful tools for ambitious professionals.
+      </p>
+      <div class="price">
+        <span class="amount">$9</span>
+        <span class="period">/ month</span>
+      </div>
+      <button class="action action-disabled" disabled>
+        Coming Soon
+      </button>
+      <ul>
+        <li><span class="check">✓</span> Everything in Free</li>
+        <li><span class="check">✓</span> Planned advanced writing tools</li>
+        <li><span class="check">✓</span> Planned extended CV analysis</li>
+        <li><span class="check">✓</span> Planned expanded resume storage</li>
+        <li><span class="check">✓</span> Planned premium templates</li>
+      </ul>
+      <p class="note">
+        Pro features are in development.
+        No paid subscription is currently available.
+      </p>
+    </article>
+
+    <article class="plan">
+      <div class="plan-icon">✺</div>
+      <h2>Premium</h2>
+      <p class="description">
+        A complete career workspace for your future.
+      </p>
+      <div class="price">
+        <span class="amount">$19</span>
+        <span class="period">/ month</span>
+      </div>
+      <button class="action action-disabled" disabled>
+        Coming Soon
+      </button>
+      <ul>
+        <li><span class="check">✓</span> Everything planned for Pro</li>
+        <li><span class="check">✓</span> Planned complete career dashboard</li>
+        <li><span class="check">✓</span> Planned advanced resume insights</li>
+        <li><span class="check">✓</span> Planned career document tools</li>
+        <li><span class="check">✓</span> Planned premium experience</li>
+      </ul>
+      <p class="note">
+        Premium features are planned and
+        may change before commercial launch.
+      </p>
+    </article>
+
+  </section>
+
+  <aside class="notice">
+    <strong>We're building the next chapter of Worknely.</strong>
+    <p>
+      Free tools are available today. Pro and Premium
+      are previews of planned memberships.
+      Prices, benefits and launch dates may change.
+      No payments are collected on this page.
+    </p>
+  </aside>
+</main>
+
+<footer>
+  © 2026 Worknely · People Technology
+  <p>Build. Improve. Grow.</p>
+</footer>
+</body>
+</html>
