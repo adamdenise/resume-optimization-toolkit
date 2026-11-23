@@ -8,7 +8,10 @@
 <meta name="theme-color" content="#5424FF">
 <meta name="color-scheme" content="light">
 
-<meta name="description" content="Worknely helps you build professional resumes, review CV structure, compare skills with job requirements, and explore career opportunities.">
+<meta
+  name="description"
+  content="Worknely helps you build professional resumes, review CV structure, compare skills with job requirements, and explore career opportunities."
+>
 <meta name="application-name" content="Worknely">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Worknely">
@@ -16,7 +19,10 @@
 
 <title>Worknely | Build Your Career. Shape Your Future.</title>
 
-<link rel="canonical" href="https://adamdenise.github.io/resume-optimization-toolkit/">
+<link
+  rel="canonical"
+  href="https://adamdenise.github.io/resume-optimization-toolkit/"
+>
 <link rel="icon" type="image/svg+xml" href="worknely-favicon.svg">
 
 <link rel="stylesheet" href="style.css?v=5.0">
@@ -24,6 +30,14 @@
 <link rel="stylesheet" href="worknely-electric.css?v=5.3">
 
 <style>
+/*
+ * WORKNELY V7.7.2
+ * Main page layout.
+ *
+ * Authentication modal styling is managed by
+ * worknely-saas-ui.js V7.7.2.
+ */
+
 .sr-only {
   position:absolute;
   width:1px;
@@ -69,7 +83,7 @@ textarea:focus-visible {
   outline:none;
 }
 
-/* V7.3 TOOL NAVIGATION */
+/* TOOL NAVIGATION */
 
 .wn-tool-navigation {
   display:flex;
@@ -132,7 +146,7 @@ textarea:focus-visible {
   white-space:normal;
 }
 
-/* V7.4 STATUS MESSAGES */
+/* STATUS MESSAGES */
 
 #builderMessage,
 #saveAccountStatus,
@@ -175,83 +189,7 @@ textarea:focus-visible {
   border-color:#e1d7ff !important;
 }
 
-/* V7.7.1 AUTHENTICATION LAYOUT */
-
-#wnAuthDialog {
-  box-sizing:border-box;
-  width:min(94vw,470px);
-  max-width:470px;
-  max-height:88dvh;
-}
-
-#wnAuthDialog *,
-#wnAuthDialog *::before,
-#wnAuthDialog *::after {
-  box-sizing:border-box;
-}
-
-#wnAuthDialog #worknelyAccount {
-  min-width:0;
-}
-
-#wnAuthDialog #worknelyAuthForm {
-  display:grid;
-  grid-template-columns:minmax(0,1fr);
-  gap:16px;
-  width:100%;
-}
-
-#wnAuthDialog #worknelyAuthForm > label {
-  display:block;
-  width:100%;
-  min-width:0;
-}
-
-#wnAuthDialog #authEmail,
-#wnAuthDialog #authPassword {
-  display:block;
-  width:100%;
-  max-width:100%;
-  min-width:0;
-}
-
-#wnAuthDialog #worknelyAuthForm > .actions {
-  display:flex;
-  flex-direction:column;
-  align-items:stretch;
-  justify-content:flex-start;
-  gap:12px;
-  width:100%;
-  min-width:0;
-  margin-top:8px;
-}
-
-#wnAuthDialog #worknelyAuthForm > .actions > button {
-  display:block;
-  flex:none;
-  width:100%;
-  max-width:100%;
-  min-width:0;
-  min-height:48px;
-  margin:0;
-  padding:13px 16px;
-  border-radius:14px;
-  text-align:center;
-  white-space:normal;
-  overflow-wrap:anywhere;
-  line-height:1.4;
-  font:inherit;
-  font-weight:750;
-  cursor:pointer;
-}
-
-#wnAuthDialog #worknelyAuthForm > .actions > button[hidden] {
-  display:none !important;
-}
-
-#wnAuthDialog #authStatus {
-  overflow-wrap:anywhere;
-}
+/* MOBILE OPTIMIZATION */
 
 @media (max-width:600px) {
   .wn-tool-navigation {
@@ -288,15 +226,6 @@ textarea:focus-visible {
     padding:14px 16px;
     border-radius:14px;
   }
-
-  #wnAuthDialog {
-    width:calc(100vw - 28px);
-    max-height:88dvh;
-  }
-
-  #wnAuthDialog #worknelyAuthForm > .actions {
-    gap:10px;
-  }
 }
 
 @media (prefers-reduced-motion:reduce) {
@@ -310,11 +239,19 @@ textarea:focus-visible {
 <body>
 <div class="shell">
 
+<!-- HEADER -->
+
 <header class="top">
   <a class="brand" href="#top" aria-label="Worknely home">
     <span class="brandmark">
-      <img src="worknely-mark.svg" alt="" width="36" height="36">
+      <img
+        src="worknely-mark.svg"
+        alt=""
+        width="36"
+        height="36"
+      >
     </span>
+
     <span class="worknely-brandname">
       Worknely
       <small>PEOPLE TECHNOLOGY</small>
@@ -325,6 +262,7 @@ textarea:focus-visible {
     <label for="language" class="sr-only">
       Interface language
     </label>
+
     <select id="language" aria-label="Interface language">
       <option value="en">🇬🇧 English</option>
       <option value="ro">🇷🇴 Română</option>
@@ -360,6 +298,7 @@ textarea:focus-visible {
     <a class="primary" href="#builder">
       Build my resume
     </a>
+
     <a class="ghost" href="#comparison">
       Analyze compatibility
     </a>
@@ -372,9 +311,11 @@ textarea:focus-visible {
   <a href="#ai-studio" data-wn-tool="ai-studio">
     Writing Studio
   </a>
+
   <a href="#builder" data-wn-tool="builder">
     Resume Builder
   </a>
+
   <a href="#comparison" data-wn-tool="comparison">
     Career Analysis
   </a>
@@ -432,6 +373,7 @@ textarea:focus-visible {
       <span id="studioExperienceLabel">
         Verified experience
       </span>
+
       <textarea
         id="studioExperience"
         rows="4"
@@ -443,6 +385,7 @@ textarea:focus-visible {
       <span id="studioSkillsLabel">
         Verified skills
       </span>
+
       <textarea
         id="studioSkills"
         rows="4"
@@ -452,11 +395,19 @@ textarea:focus-visible {
   </div>
 
   <div class="actions">
-    <button class="primary" id="studioDraft" type="button">
+    <button
+      class="primary"
+      id="studioDraft"
+      type="button"
+    >
       Create structured draft
     </button>
 
-    <button class="ghost" id="studioToBuilder" type="button">
+    <button
+      class="ghost"
+      id="studioToBuilder"
+      type="button"
+    >
       Copy draft to Resume Builder
     </button>
   </div>
@@ -703,6 +654,7 @@ textarea:focus-visible {
         <span>
           Remove personal contact details before testing.
         </span>
+
         <span id="resumeWords">0 words</span>
       </div>
     </div>
@@ -723,6 +675,7 @@ textarea:focus-visible {
         <span>
           Remove unnecessary personal information.
         </span>
+
         <span id="jobWords">0 words</span>
       </div>
     </div>
@@ -782,11 +735,19 @@ textarea:focus-visible {
     </div>
 
     <div class="export-actions">
-      <button class="ghost" id="download" type="button">
+      <button
+        class="ghost"
+        id="download"
+        type="button"
+      >
         ↓ Download TXT
       </button>
 
-      <button class="ghost" id="printPdf" type="button">
+      <button
+        class="ghost"
+        id="printPdf"
+        type="button"
+      >
         ↓ Save PDF
       </button>
     </div>
@@ -864,6 +825,7 @@ textarea:focus-visible {
 
   <article class="report-card" id="structureCard">
     <h3>CV structure review</h3>
+
     <div
       class="structure-findings"
       id="structureFindings"
@@ -923,6 +885,7 @@ textarea:focus-visible {
   <form id="worknelyAuthForm" class="builder-grid">
     <label for="authEmail">
       Email
+
       <input
         id="authEmail"
         type="email"
@@ -933,6 +896,7 @@ textarea:focus-visible {
 
     <label for="authPassword">
       Password
+
       <input
         id="authPassword"
         type="password"
@@ -980,6 +944,8 @@ textarea:focus-visible {
 
 </main>
 
+<!-- FOOTER -->
+
 <footer>
   <span>© 2026 Worknely · People Technology</span>
   <span>Build. Improve. Grow.</span>
@@ -990,17 +956,35 @@ textarea:focus-visible {
 <!-- FUNCTIONAL MODULES -->
 
 <script defer src="script.js?v=7.5"></script>
+
 <script defer src="studio.js?v=5.1"></script>
+
 <script defer src="worknely-i18n.js?v=3.1"></script>
+
 <script defer src="worknely-report-i18n.js?v=1.0"></script>
+
 <script defer src="worknely-premium-pdf.js?v=7.5"></script>
 
-<script type="module" src="worknely-auth.js?v=7.6"></script>
+<!-- SUPABASE AUTHENTICATION V7.6 -->
 
-<!-- V7.7.1 AUTHENTICATION INTERFACE -->
-<script defer src="worknely-saas-ui.js?v=7.7.1"></script>
+<script
+  type="module"
+  src="worknely-auth.js?v=7.6"
+></script>
 
-<script type="module" src="worknely-save-account.js?v=7.5"></script>
+<!-- PREMIUM AUTHENTICATION UI V7.7.2 -->
+
+<script
+  defer
+  src="worknely-saas-ui.js?v=7.7.2"
+></script>
+
+<!-- ACCOUNT SAVING -->
+
+<script
+  type="module"
+  src="worknely-save-account.js?v=7.5"
+></script>
 
 <!-- TOOL NAVIGATION -->
 
@@ -1082,7 +1066,7 @@ textarea:focus-visible {
 })();
 </script>
 
-<!-- PREMIUM STATUS -->
+<!-- PREMIUM STATUS MESSAGES -->
 
 <script>
 (() => {
@@ -1183,7 +1167,10 @@ textarea:focus-visible {
 
 <!-- SUCCESS CELEBRATION -->
 
-<script defer src="worknely-celebration.js?v=7.5"></script>
+<script
+  defer
+  src="worknely-celebration.js?v=7.5"
+></script>
 
 </body>
 </html>
