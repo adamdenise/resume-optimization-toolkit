@@ -1,11 +1,22 @@
 
 /*
- * WORKNELY V7.3
+ * WORKNELY V7.9.1
  * Personal SaaS Dashboard
  *
- * Supabase Authentication
- * Resume Storage
- * Dedicated Dashboard Views
+ * Preserves V7.3:
+ * - Supabase Authentication
+ * - Dashboard Views
+ * - Resume Creation
+ * - Resume Editing
+ * - Resume Deletion
+ * - Resume Counting
+ * - Logout
+ *
+ * NEW:
+ * - Edit in Resume Builder
+ * - Direct integration with index.html V7.9
+ * - Safe resume ID navigation
+ *
  * GitHub Pages Compatible
  */
 
@@ -21,17 +32,19 @@ const SUPABASE_PUBLISHABLE_KEY =
 const SITE_URL =
   "https://adamdenise.github.io/resume-optimization-toolkit/";
 
-const supabase = createClient(
-  SUPABASE_URL,
-  SUPABASE_PUBLISHABLE_KEY,
-  {
-    auth: {
-      persistSession: true,
-      autoRefreshToken: true,
-      detectSessionInUrl: true
+const supabase =
+  window.worknelySupabase ||
+  createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY,
+    {
+      auth: {
+        persistSession: true,
+        autoRefreshToken: true,
+        detectSessionInUrl: true
+      }
     }
-  }
-);
+  );
 
 /* DOM ELEMENTS */
 
@@ -69,14 +82,26 @@ const newButton =
   document.getElementById("newResume");
 
 const fields = {
-  fullName: document.getElementById("fullName"),
+  fullName:
+    document.getElementById("fullName"),
+
   professionalTitle:
     document.getElementById("professionalTitle"),
-  contact: document.getElementById("contact"),
-  education: document.getElementById("education"),
-  summary: document.getElementById("summary"),
-  experience: document.getElementById("experience"),
-  skills: document.getElementById("skills")
+
+  contact:
+    document.getElementById("contact"),
+
+  education:
+    document.getElementById("education"),
+
+  summary:
+    document.getElementById("summary"),
+
+  experience:
+    document.getElementById("experience"),
+
+  skills:
+    document.getElementById("skills")
 };
 
 /* APPLICATION STATE */
@@ -89,14 +114,21 @@ let isBusy = false;
 /* HELPERS */
 
 function setStatus(message) {
-  resumeStatus.textContent = message;
+  if (resumeStatus) {
+    resumeStatus.textContent = message;
+  }
 }
 
 function setBusy(busy) {
   isBusy = busy;
 
-  saveButton.disabled = busy;
-  newButton.disabled = busy;
+  if (saveButton) {
+    saveButton.disabled = busy;
+  }
+
+  if (newButton) {
+    newButton.disabled = busy;
+  }
 }
 
 function showApp() {
@@ -140,7 +172,10 @@ function getResumeContent() {
 
   for (const [key, element] of
     Object.entries(fields)) {
-    content[key] = element.value.trim();
+
+    content[key] = element
+      ? element.value.trim()
+      : "";
   }
 
   return content;
@@ -149,7 +184,13 @@ function getResumeContent() {
 function fillResumeForm(content = {}) {
   for (const [key, element] of
     Object.entries(fields)) {
-    element.value = content[key] || "";
+
+    if (!element) continue;
+
+    element.value =
+      typeof content[key] === "string"
+        ? content[key]
+        : "";
   }
 }
 
@@ -168,27 +209,77 @@ function resetForm() {
   resumeTitle.focus();
 }
 
+/* WORKNELY V7.9.1
+ * OPEN SAVED RESUME IN MAIN BUILDER
+ */
+
+function getBuilderEditURL(resumeId) {
+  const url = new URL(
+    "index.html",
+    SITE_URL
+  );
+
+  url.searchParams.set(
+    "edit",
+    String(resumeId)
+  );
+
+  url.hash = "builder";
+
+  return url.toString();
+}
+
+function openInResumeBuilder(id) {
+  if (isBusy || !currentUser) return;
+
+  const resume = savedResumes.find(
+    item => String(item.id) === String(id)
+  );
+
+  if (!resume) {
+    setStatus(
+      "Resume not found. Please refresh your dashboard."
+    );
+    return;
+  }
+
+  window.location.assign(
+    getBuilderEditURL(resume.id)
+  );
+}
+
 /* RESUME CARDS */
 
 function createResumeCard(resume) {
-  const card = document.createElement("article");
+  const card =
+    document.createElement("article");
+
   card.className = "resume-item";
 
-  const info = document.createElement("div");
+  const info =
+    document.createElement("div");
 
-  const title = document.createElement("strong");
+  const title =
+    document.createElement("strong");
+
   title.textContent =
     resume.title || "Untitled Resume";
 
-  const date = document.createElement("small");
+  const date =
+    document.createElement("small");
+
   date.textContent =
     "Updated " +
     formatDate(resume.updated_at);
 
   info.append(title, date);
 
-  const actions = document.createElement("div");
+  const actions =
+    document.createElement("div");
+
   actions.className = "actions";
+
+  /* EXISTING DASHBOARD EDIT */
 
   const editButton =
     document.createElement("button");
@@ -197,10 +288,42 @@ function createResumeCard(resume) {
   editButton.className = "outline";
   editButton.textContent = "Edit";
 
+  editButton.setAttribute(
+    "aria-label",
+    "Edit " +
+    (resume.title || "resume") +
+    " in Dashboard"
+  );
+
   editButton.addEventListener(
     "click",
     () => editResume(resume.id)
   );
+
+  /* NEW RESUME BUILDER EDIT */
+
+  const builderButton =
+    document.createElement("button");
+
+  builderButton.type = "button";
+  builderButton.className = "outline";
+
+  builderButton.textContent =
+    "Edit in Resume Builder ↗";
+
+  builderButton.setAttribute(
+    "aria-label",
+    "Open " +
+    (resume.title || "resume") +
+    " in Resume Builder"
+  );
+
+  builderButton.addEventListener(
+    "click",
+    () => openInResumeBuilder(resume.id)
+  );
+
+  /* EXISTING DELETE */
 
   const deleteButton =
     document.createElement("button");
@@ -209,12 +332,23 @@ function createResumeCard(resume) {
   deleteButton.className = "outline";
   deleteButton.textContent = "Delete";
 
+  deleteButton.setAttribute(
+    "aria-label",
+    "Delete " +
+    (resume.title || "resume")
+  );
+
   deleteButton.addEventListener(
     "click",
     () => deleteResume(resume.id)
   );
 
-  actions.append(editButton, deleteButton);
+  actions.append(
+    editButton,
+    builderButton,
+    deleteButton
+  );
+
   card.append(info, actions);
 
   return card;
@@ -289,7 +423,10 @@ async function saveResume(event) {
   const title = resumeTitle.value.trim();
 
   if (!title) {
-    setStatus("Please enter a resume title.");
+    setStatus(
+      "Please enter a resume title."
+    );
+
     resumeTitle.focus();
     return;
   }
@@ -329,12 +466,19 @@ async function saveResume(event) {
       throw result.error;
     }
 
+    if (!result.data?.id) {
+      throw new Error(
+        "Save confirmation was not received."
+      );
+    }
+
     const wasEditing =
       Boolean(editingResumeId);
 
     editingResumeId = result.data.id;
 
-    const refreshed = await loadResumes();
+    const refreshed =
+      await loadResumes();
 
     setStatus(
       refreshed
@@ -358,12 +502,13 @@ async function saveResume(event) {
       "Unable to save resume: " +
       (error.message || "Unknown error")
     );
+
   } finally {
     setBusy(false);
   }
 }
 
-/* EDIT RESUME */
+/* EDIT RESUME IN DASHBOARD */
 
 function editResume(id) {
   if (isBusy) return;
@@ -449,7 +594,8 @@ async function deleteResume(id) {
       resetForm();
     }
 
-    const refreshed = await loadResumes();
+    const refreshed =
+      await loadResumes();
 
     setStatus(
       refreshed
@@ -462,6 +608,7 @@ async function deleteResume(id) {
       "Unable to delete resume: " +
       (error.message || "Unknown error")
     );
+
   } finally {
     setBusy(false);
   }
@@ -507,7 +654,7 @@ async function initializeDashboard() {
     const { data, error } =
       await supabase.auth.getUser();
 
-    if (error || !data.user) {
+    if (error || !data?.user) {
       redirectToLogin();
       return;
     }
@@ -548,7 +695,7 @@ logoutButton.addEventListener(
 );
 
 supabase.auth.onAuthStateChange(
-  (event) => {
+  event => {
     if (
       event === "SIGNED_OUT" &&
       currentUser
