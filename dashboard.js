@@ -1,20 +1,16 @@
 
 /*
- * WORKNELY V7.9.2
- * Personal SaaS Dashboard
+ * WORKNELY V7.11
+ * Premium Resume Workspace
  *
  * Supabase Authentication
- * Resume Storage
- * Dashboard Views
- * GitHub Pages Compatible
+ * Professional Document Management
+ * Mobile First Experience
+ * Quick Create Resume
+ * Empty State Design
  *
- * V7.9.2:
- * - Removed duplicate Edit button
- * - Kept Edit in Resume Builder
- * - Kept Delete with confirmation
- * - Preserved resume creation
- * - Preserved Supabase operations
- * - Preserved logout and resume counting
+ * Preserves V7.9.2 functionality.
+ * Compatible with GitHub Pages.
  */
 
 import { createClient } from
@@ -66,6 +62,9 @@ const resumeTitle =
 const resumeCount =
   document.getElementById("resumeCount");
 
+const workspaceResumeCount =
+  document.getElementById("workspaceResumeCount");
+
 const resumeList =
   document.getElementById("resumeList");
 
@@ -77,6 +76,9 @@ const saveButton =
 
 const newButton =
   document.getElementById("newResume");
+
+const quickCreate =
+  document.getElementById("quickCreate");
 
 const fields = {
   fullName:
@@ -108,13 +110,21 @@ let editingResumeId = null;
 let savedResumes = [];
 let isBusy = false;
 
-/* HELPERS */
+/* STATUS MANAGEMENT */
 
-function setStatus(message) {
-  if (resumeStatus) {
-    resumeStatus.textContent = message;
+function setStatus(message, type = "info") {
+  if (!resumeStatus) return;
+
+  resumeStatus.textContent = message;
+
+  if (message) {
+    resumeStatus.dataset.status = type;
+  } else {
+    delete resumeStatus.dataset.status;
   }
 }
+
+/* BUSY STATE */
 
 function setBusy(busy) {
   isBusy = busy;
@@ -126,7 +136,28 @@ function setBusy(busy) {
   if (newButton) {
     newButton.disabled = busy;
   }
+
+  if (logoutButton) {
+    logoutButton.disabled = busy;
+  }
+
+  if (resumeList) {
+    resumeList
+      .querySelectorAll("button")
+      .forEach(button => {
+        button.disabled = busy;
+      });
+  }
+
+  if (resumeForm) {
+    resumeForm.setAttribute(
+      "aria-busy",
+      String(busy)
+    );
+  }
 }
+
+/* SESSION DISPLAY */
 
 function showApp() {
   loading.hidden = true;
@@ -145,6 +176,8 @@ function redirectToLogin() {
   );
 }
 
+/* DATE FORMATTING */
+
 function formatDate(date) {
   if (!date) return "Unknown date";
 
@@ -162,6 +195,77 @@ function formatDate(date) {
       day: "numeric"
     }
   );
+}
+
+/* SVG ICON SYSTEM */
+
+const SVG_NS =
+  "http://www.w3.org/2000/svg";
+
+function createIcon(name = "document") {
+  const svg =
+    document.createElementNS(
+      SVG_NS,
+      "svg"
+    );
+
+  svg.setAttribute(
+    "viewBox",
+    "0 0 24 24"
+  );
+
+  svg.setAttribute("fill", "none");
+  svg.setAttribute("stroke", "currentColor");
+  svg.setAttribute("stroke-width", "1.7");
+  svg.setAttribute("stroke-linecap", "round");
+  svg.setAttribute("stroke-linejoin", "round");
+  svg.setAttribute("aria-hidden", "true");
+  svg.setAttribute("focusable", "false");
+
+  const paths = {
+    document: [
+      "M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z",
+      "M14 2v6h6",
+      "M8 13h8",
+      "M8 17h8"
+    ],
+
+    plus: [
+      "M12 5v14",
+      "M5 12h14"
+    ],
+
+    filePlus: [
+      "M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z",
+      "M14 2v6h6",
+      "M12 11v6",
+      "M9 14h6"
+    ],
+
+    trash: [
+      "M3 6h18",
+      "M8 6V4h8v2",
+      "M19 6l-1 14H6L5 6",
+      "M10 10v6",
+      "M14 10v6"
+    ]
+  };
+
+  const selected =
+    paths[name] || paths.document;
+
+  selected.forEach(value => {
+    const path =
+      document.createElementNS(
+        SVG_NS,
+        "path"
+      );
+
+    path.setAttribute("d", value);
+    svg.appendChild(path);
+  });
+
+  return svg;
 }
 
 /* RESUME CONTENT */
@@ -193,7 +297,14 @@ function fillResumeForm(content = {}) {
   }
 }
 
-function resetForm() {
+/* RESET QUICK CREATE FORM */
+
+function resetForm(options = {}) {
+  const {
+    focus = true,
+    announce = true
+  } = options;
+
   editingResumeId = null;
 
   resumeForm.reset();
@@ -202,11 +313,20 @@ function resetForm() {
   saveButton.textContent =
     "Save Resume";
 
-  setStatus(
-    "Ready to create a new resume."
-  );
+  if (announce) {
+    setStatus(
+      "Ready to create a new resume.",
+      "info"
+    );
+  }
 
-  resumeTitle.focus();
+  if (focus) {
+    if (quickCreate) {
+      quickCreate.open = true;
+    }
+
+    resumeTitle.focus();
+  }
 }
 
 /* RESUME BUILDER INTEGRATION */
@@ -227,6 +347,17 @@ function getBuilderEditURL(resumeId) {
   return url.toString();
 }
 
+function getNewResumeURL() {
+  const url = new URL(
+    "index.html",
+    SITE_URL
+  );
+
+  url.hash = "builder";
+
+  return url.toString();
+}
+
 function openInResumeBuilder(id) {
   if (isBusy || !currentUser) return;
 
@@ -236,8 +367,10 @@ function openInResumeBuilder(id) {
 
   if (!resume) {
     setStatus(
-      "Resume not found. Please refresh your dashboard."
+      "Resume not found. Please refresh your dashboard.",
+      "error"
     );
+
     return;
   }
 
@@ -246,7 +379,7 @@ function openInResumeBuilder(id) {
   );
 }
 
-/* RESUME CARDS */
+/* PROFESSIONAL RESUME CARDS */
 
 function createResumeCard(resume) {
   const card =
@@ -256,6 +389,26 @@ function createResumeCard(resume) {
 
   const info =
     document.createElement("div");
+
+  info.className = "resume-info";
+
+  /* DOCUMENT ICON */
+
+  const icon =
+    document.createElement("span");
+
+  icon.className = "resume-icon";
+
+  icon.appendChild(
+    createIcon("document")
+  );
+
+  /* DOCUMENT DETAILS */
+
+  const details =
+    document.createElement("div");
+
+  details.className = "resume-details";
 
   const title =
     document.createElement("strong");
@@ -268,22 +421,29 @@ function createResumeCard(resume) {
 
   date.textContent =
     "Updated " +
-    formatDate(resume.updated_at);
+    formatDate(
+      resume.updated_at ||
+      resume.created_at
+    );
 
-  info.append(title, date);
+  details.append(title, date);
+  info.append(icon, details);
+
+  /* DOCUMENT ACTIONS */
 
   const actions =
     document.createElement("div");
 
   actions.className = "actions";
 
-  /* PRIMARY EDIT BUTTON */
+  /* EDIT IN RESUME BUILDER */
 
   const builderButton =
     document.createElement("button");
 
   builderButton.type = "button";
   builderButton.className = "outline";
+  builderButton.disabled = isBusy;
 
   builderButton.textContent =
     "Edit in Resume Builder ↗";
@@ -300,15 +460,19 @@ function createResumeCard(resume) {
     () => openInResumeBuilder(resume.id)
   );
 
-  /* DELETE BUTTON */
+  /* DELETE RESUME */
 
   const deleteButton =
     document.createElement("button");
 
   deleteButton.type = "button";
   deleteButton.className = "outline";
+  deleteButton.disabled = isBusy;
 
-  deleteButton.textContent = "Delete";
+  deleteButton.append(
+    createIcon("trash"),
+    document.createTextNode("Delete")
+  );
 
   deleteButton.setAttribute(
     "aria-label",
@@ -331,30 +495,104 @@ function createResumeCard(resume) {
   return card;
 }
 
-/* RENDER RESUMES */
+/* EMPTY STATE */
+
+function createEmptyState() {
+  const empty =
+    document.createElement("div");
+
+  empty.className = "resume-empty";
+
+  const icon =
+    document.createElement("div");
+
+  icon.className =
+    "resume-empty-icon";
+
+  icon.appendChild(
+    createIcon("filePlus")
+  );
+
+  const heading =
+    document.createElement("h3");
+
+  heading.textContent =
+    "Your career starts here";
+
+  const description =
+    document.createElement("p");
+
+  description.textContent =
+    "Create your first professional resume " +
+    "and keep your career documents " +
+    "organized in one place.";
+
+  const createButton =
+    document.createElement("a");
+
+  createButton.className = "button";
+
+  createButton.href =
+    getNewResumeURL();
+
+  createButton.append(
+    createIcon("plus"),
+    document.createTextNode(
+      "Create Your First Resume"
+    )
+  );
+
+  empty.append(
+    icon,
+    heading,
+    description,
+    createButton
+  );
+
+  return empty;
+}
+
+/* RESUME COUNTERS */
+
+function updateResumeCounters() {
+  const count =
+    String(savedResumes.length);
+
+  if (resumeCount) {
+    resumeCount.textContent = count;
+  }
+
+  if (workspaceResumeCount) {
+    workspaceResumeCount.textContent =
+      count;
+  }
+}
+
+/* RENDER RESUME WORKSPACE */
 
 function renderResumes() {
   resumeList.replaceChildren();
 
-  resumeCount.textContent =
-    String(savedResumes.length);
+  updateResumeCounters();
 
   if (!savedResumes.length) {
-    const empty =
-      document.createElement("p");
+    resumeList.appendChild(
+      createEmptyState()
+    );
 
-    empty.textContent =
-      "No saved resumes yet. Create your first resume.";
-
-    resumeList.appendChild(empty);
     return;
   }
 
+  const fragment =
+    document.createDocumentFragment();
+
   for (const resume of savedResumes) {
-    resumeList.appendChild(
+    fragment.appendChild(
       createResumeCard(resume)
     );
   }
+
+  resumeList.appendChild(fragment);
 }
 
 /* FETCH USER RESUMES */
@@ -362,32 +600,40 @@ function renderResumes() {
 async function loadResumes() {
   if (!currentUser) return false;
 
-  setStatus("Loading your resumes...");
+  setStatus(
+    "Loading your resumes...",
+    "info"
+  );
 
-  const { data, error } = await supabase
-    .from("resumes")
-    .select(
-      "id,title,content,created_at,updated_at"
-    )
-    .eq("user_id", currentUser.id)
-    .order("updated_at", {
-      ascending: false
-    });
+  try {
+    const { data, error } = await supabase
+      .from("resumes")
+      .select(
+        "id,title,content,created_at,updated_at"
+      )
+      .eq("user_id", currentUser.id)
+      .order("updated_at", {
+        ascending: false
+      });
 
-  if (error) {
+    if (error) throw error;
+
+    savedResumes = data || [];
+
+    renderResumes();
+    setStatus("");
+
+    return true;
+
+  } catch (error) {
     setStatus(
       "Unable to load resumes: " +
-      error.message
+      (error.message || "Unknown error"),
+      "error"
     );
+
     return false;
   }
-
-  savedResumes = data || [];
-
-  renderResumes();
-  setStatus("");
-
-  return true;
 }
 
 /* SAVE OR UPDATE RESUME */
@@ -397,11 +643,13 @@ async function saveResume(event) {
 
   if (isBusy || !currentUser) return;
 
-  const title = resumeTitle.value.trim();
+  const title =
+    resumeTitle.value.trim();
 
   if (!title) {
     setStatus(
-      "Please enter a resume title."
+      "Please enter a resume title.",
+      "error"
     );
 
     resumeTitle.focus();
@@ -409,16 +657,24 @@ async function saveResume(event) {
   }
 
   setBusy(true);
-  setStatus("Saving your resume...");
+
+  setStatus(
+    "Saving your resume...",
+    "info"
+  );
 
   const payload = {
     title,
     content: getResumeContent(),
-    updated_at: new Date().toISOString()
+    updated_at:
+      new Date().toISOString()
   };
 
   try {
     let result;
+
+    const wasEditing =
+      Boolean(editingResumeId);
 
     if (editingResumeId) {
       result = await supabase
@@ -428,6 +684,7 @@ async function saveResume(event) {
         .eq("user_id", currentUser.id)
         .select("id")
         .single();
+
     } else {
       result = await supabase
         .from("resumes")
@@ -449,35 +706,40 @@ async function saveResume(event) {
       );
     }
 
-    const wasEditing =
-      Boolean(editingResumeId);
-
-    editingResumeId = result.data.id;
+    editingResumeId =
+      result.data.id;
 
     const refreshed =
       await loadResumes();
 
-    setStatus(
-      refreshed
-        ? (
-            wasEditing
-              ? "Resume updated successfully."
-              : "Resume saved successfully."
-          )
-        : (
-            wasEditing
-              ? "Resume updated, but the list could not refresh."
-              : "Resume saved, but the list could not refresh."
-          )
-    );
-
     saveButton.textContent =
       "Update Resume";
+
+    if (refreshed) {
+      setStatus(
+        wasEditing
+          ? "Resume updated successfully."
+          : "Resume saved successfully.",
+        "success"
+      );
+
+      if (quickCreate) {
+        quickCreate.open = false;
+      }
+
+    } else {
+      setStatus(
+        "Resume saved, but the list could not refresh. " +
+        "Please reload your dashboard.",
+        "info"
+      );
+    }
 
   } catch (error) {
     setStatus(
       "Unable to save resume: " +
-      (error.message || "Unknown error")
+      (error.message || "Unknown error"),
+      "error"
     );
 
   } finally {
@@ -491,21 +753,25 @@ async function deleteResume(id) {
   if (isBusy || !currentUser) return;
 
   const resume = savedResumes.find(
-    item => item.id === id
+    item => String(item.id) === String(id)
   );
 
   if (!resume) return;
 
   const confirmed = window.confirm(
     'Delete "' +
-    resume.title +
+    (resume.title || "Untitled Resume") +
     '" permanently?'
   );
 
   if (!confirmed) return;
 
   setBusy(true);
-  setStatus("Deleting resume...");
+
+  setStatus(
+    "Deleting resume...",
+    "info"
+  );
 
   try {
     const { data, error } = await supabase
@@ -523,9 +789,21 @@ async function deleteResume(id) {
       );
     }
 
-    if (editingResumeId === id) {
-      resetForm();
+    if (
+      editingResumeId &&
+      String(editingResumeId) === String(id)
+    ) {
+      resetForm({
+        focus: false,
+        announce: false
+      });
     }
+
+    savedResumes = savedResumes.filter(
+      item => String(item.id) !== String(id)
+    );
+
+    renderResumes();
 
     const refreshed =
       await loadResumes();
@@ -533,13 +811,17 @@ async function deleteResume(id) {
     setStatus(
       refreshed
         ? "Resume deleted successfully."
-        : "Resume deleted, but the list could not refresh."
+        : "Resume deleted, but the list could not refresh.",
+      refreshed
+        ? "success"
+        : "info"
     );
 
   } catch (error) {
     setStatus(
       "Unable to delete resume: " +
-      (error.message || "Unknown error")
+      (error.message || "Unknown error"),
+      "error"
     );
 
   } finally {
@@ -552,7 +834,7 @@ async function deleteResume(id) {
 async function logOut() {
   if (isBusy) return;
 
-  logoutButton.disabled = true;
+  setBusy(true);
 
   try {
     const { error } =
@@ -567,16 +849,19 @@ async function logOut() {
     redirectToLogin();
 
   } catch (error) {
-    logoutButton.disabled = false;
+    setBusy(false);
 
-    setStatus(
+    const message =
       "Unable to sign out: " +
-      (error.message || "Unknown error")
-    );
+      (error.message || "Unknown error");
+
+    setStatus(message, "error");
+
+    window.alert(message);
   }
 }
 
-/* INITIALIZATION */
+/* DASHBOARD INITIALIZATION */
 
 async function initializeDashboard() {
   showLoading(
@@ -596,16 +881,24 @@ async function initializeDashboard() {
 
     welcome.textContent =
       "Welcome back, " +
-      (currentUser.email || "Worknely user") +
+      (currentUser.email ||
+        "Worknely user") +
       "!";
 
     showApp();
 
-    await loadResumes();
+    setBusy(true);
+
+    try {
+      await loadResumes();
+    } finally {
+      setBusy(false);
+    }
 
   } catch (error) {
     showLoading(
-      "Unable to verify your session. Please try again."
+      "Unable to verify your session. " +
+      "Please try again."
     );
   }
 }
@@ -619,13 +912,15 @@ resumeForm.addEventListener(
 
 newButton.addEventListener(
   "click",
-  resetForm
+  () => resetForm()
 );
 
 logoutButton.addEventListener(
   "click",
   logOut
 );
+
+/* SUPABASE AUTH STATE */
 
 supabase.auth.onAuthStateChange(
   event => {
@@ -634,9 +929,14 @@ supabase.auth.onAuthStateChange(
       currentUser
     ) {
       currentUser = null;
+      savedResumes = [];
+
+      showLoading("Signing out...");
       redirectToLogin();
     }
   }
 );
+
+/* START WORKNELY */
 
 initializeDashboard();
