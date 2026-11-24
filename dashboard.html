@@ -1,6 +1,8 @@
+
 <!doctype html>
 <html lang="en">
 <head>
+
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#5424ff">
@@ -14,11 +16,13 @@
 <link rel="icon" type="image/svg+xml" href="worknely-favicon.svg">
 
 <!--
-WORKNELY V7.15
-International Dashboard
-Advanced Document Management
-Six Language Interface
-Persistent Language Preferences
+WORKNELY V7.16.10
+Professional Dashboard Integration
+International Document Management
+Professional Resume Templates
+Persistent Resume Design
+Professional PDF Export
+EN / RO / IT / DE / FR / ES
 Supabase Account Integration
 -->
 
@@ -253,6 +257,66 @@ body .topbar #logout {
   line-height:1.25;
 }
 
+/* PROFESSIONAL DESIGN INFORMATION */
+
+.wn-design-notice {
+  display:flex;
+  align-items:flex-start;
+  gap:12px;
+  padding:14px;
+  margin:14px 0;
+  border:1px solid #e3d9ff;
+  border-radius:13px;
+  background:linear-gradient(135deg,#faf8ff,#fff8fd);
+  min-width:0;
+}
+
+.wn-design-notice-icon {
+  display:grid;
+  place-items:center;
+  flex:0 0 36px;
+  width:36px;
+  height:36px;
+  border-radius:10px;
+  background:#eee7ff;
+  color:var(--wn-purple);
+}
+
+.wn-design-notice-icon svg {
+  width:20px;
+  height:20px;
+}
+
+.wn-design-notice-content {
+  flex:1;
+  min-width:0;
+}
+
+.wn-design-notice-content strong {
+  display:block;
+  color:var(--wn-ink);
+  font-size:13px;
+  line-height:1.4;
+}
+
+.wn-design-notice-content p {
+  margin:5px 0 9px;
+  color:var(--wn-muted);
+  font-size:12px;
+  line-height:1.6;
+  overflow-wrap:anywhere;
+}
+
+.wn-design-notice-content a {
+  display:inline-flex;
+  align-items:center;
+  min-height:36px;
+  color:var(--wn-purple);
+  font-size:12px;
+  font-weight:750;
+  text-decoration:none;
+}
+
 /* DOCUMENT TOOLBAR */
 
 #wnDocumentToolbar {
@@ -398,6 +462,7 @@ body .topbar #logout {
 #resumeList .resume-details small {
   font-size:11px;
   line-height:1.4;
+  overflow-wrap:anywhere;
 }
 
 #resumeList .resume-icon {
@@ -514,6 +579,12 @@ body .topbar #logout {
 
 #resumeList .wn-document-menu-panel .wn-danger-action:hover {
   background:#fff1f2;
+}
+
+#resumeList .wn-document-menu-divider {
+  height:1px;
+  margin:4px 6px;
+  background:var(--wn-border);
 }
 
 #resumeList .wn-document-menu-panel[hidden],
@@ -1023,6 +1094,10 @@ body dialog.wn-document-dialog:not([open]) {
     padding:17px;
   }
 
+  .wn-design-notice-content a {
+    min-height:44px;
+  }
+
   #pro .outline {
     min-height:44px;
   }
@@ -1098,14 +1173,11 @@ body dialog.wn-document-dialog:not([open]) {
 }
 
 </style>
-
 </head>
 
 <body>
 
-<div id="loading"
-     role="status"
-     data-wn-dashboard-text="checking">
+<div id="loading" role="status">
   Checking your Worknely session…
 </div>
 
@@ -1262,6 +1334,52 @@ body dialog.wn-document-dialog:not([open]) {
        data-wn-dashboard-text="create">
       Create New Resume
     </a>
+
+  </div>
+
+  <div class="wn-design-notice">
+
+    <span class="wn-design-notice-icon"
+          aria-hidden="true">
+
+      <svg viewBox="0 0 24 24"
+           fill="none"
+           stroke="currentColor"
+           stroke-width="1.7"
+           stroke-linecap="round"
+           stroke-linejoin="round">
+
+        <rect x="3" y="3"
+              width="18" height="18"
+              rx="3"></rect>
+
+        <path d="M3 9h18"></path>
+        <path d="M10 9v12"></path>
+        <path d="M13 13h5"></path>
+        <path d="M13 17h5"></path>
+
+      </svg>
+
+    </span>
+
+    <div class="wn-design-notice-content">
+
+      <strong data-wn-dashboard-text="designTitle">
+        Professional Resume Design
+      </strong>
+
+      <p data-wn-dashboard-text="designIntro">
+        Explore five professional templates, customize
+        your colors and prepare your resume for PDF export
+        in Resume Builder.
+      </p>
+
+      <a href="./index.html#builder"
+         data-wn-dashboard-text="designAction">
+        Explore Resume Templates ↗
+      </a>
+
+    </div>
 
   </div>
 
@@ -1448,7 +1566,6 @@ body dialog.wn-document-dialog:not([open]) {
     <span id="wnSearchResultCount"
           role="status"
           aria-live="polite">
-      Recently updated
     </span>
 
   </div>
@@ -1669,6 +1786,23 @@ body dialog.wn-document-dialog:not([open]) {
 
       </form>
 
+      <div class="wn-design-notice">
+
+        <div class="wn-design-notice-content">
+
+          <strong data-wn-dashboard-text="designTitle">
+            Professional Resume Design
+          </strong>
+
+          <p data-wn-dashboard-text="quickDesign">
+            To customize a saved resume, open it in Resume
+            Builder using its Edit button.
+          </p>
+
+        </div>
+
+      </div>
+
     </div>
 
   </details>
@@ -1709,9 +1843,7 @@ body dialog.wn-document-dialog:not([open]) {
 </footer>
 
 </main>
-
 </div>
-
 </div>
 
 <!-- RENAME DOCUMENT -->
@@ -1779,8 +1911,7 @@ body dialog.wn-document-dialog:not([open]) {
 
         <button id="wnRenameConfirm"
                 class="wn-dialog-confirm"
-                type="submit"
-                data-wn-dashboard-text="saveName">
+                type="submit">
           Save Name
         </button>
 
@@ -1860,8 +1991,7 @@ body dialog.wn-document-dialog:not([open]) {
 
         <button id="wnDuplicateConfirm"
                 class="wn-dialog-confirm"
-                type="submit"
-                data-wn-dashboard-text="createCopy">
+                type="submit">
           Create Copy
         </button>
 
@@ -1917,7 +2047,7 @@ body dialog.wn-document-dialog:not([open]) {
         this resume
       </strong>.
 
-      <span data-wn-i18n="document.deleteWarning">
+      <span data-wn-dashboard-text="deleteWarning">
         This action cannot be undone.
       </span>
 
@@ -1940,8 +2070,7 @@ body dialog.wn-document-dialog:not([open]) {
 
       <button id="wnDeleteConfirm"
               class="wn-dialog-delete"
-              type="button"
-              data-wn-i18n="document.delete">
+              type="button">
         Delete Resume
       </button>
 
@@ -1951,13 +2080,21 @@ body dialog.wn-document-dialog:not([open]) {
 
 </dialog>
 
-<!-- V7.15 SHARED LOCALIZATION ENGINE -->
+<!-- SHARED LOCALIZATION ENGINE -->
 
 <script defer src="worknely-localization.js?v=7.15"></script>
 
-<!-- DASHBOARD APPLICATION -->
+<!-- PROFESSIONAL RESUME TEMPLATE ENGINE -->
 
-<script type="module" src="dashboard.js?v=7.14"></script>
+<script defer src="worknely-templates.js?v=7.16.1"></script>
+
+<!-- PROFESSIONAL PDF EXPORT ENGINE -->
+
+<script defer src="worknely-pdf-export.js?v=7.16.5"></script>
+
+<!-- PROFESSIONAL DESIGN PERSISTENCE -->
+
+<script defer src="worknely-template-persistence.js?v=7.16.6"></script>
 
 <!-- INTERNATIONAL DASHBOARD DICTIONARY -->
 
@@ -1966,6 +2103,8 @@ body dialog.wn-document-dialog:not([open]) {
 (() => {
 
   "use strict";
+
+  const VERSION = "7.16.10";
 
   const translations = {
 
@@ -2017,7 +2156,12 @@ body dialog.wn-document-dialog:not([open]) {
       createCopy:"Create Copy",
       deleteHeading:"Delete resume?",
       deleteIntro:"You are about to permanently delete:",
-      welcomeDefault:"Your career documents, in one place."
+      deleteWarning:"This action cannot be undone.",
+      welcomeDefault:"Your career documents, in one place.",
+      designTitle:"Professional Resume Design",
+      designIntro:"Explore five professional templates, customize your colors and prepare your resume for PDF export in Resume Builder.",
+      designAction:"Explore Resume Templates ↗",
+      quickDesign:"To customize a saved resume, open it in Resume Builder using its Edit button."
 
     },
 
@@ -2069,7 +2213,12 @@ body dialog.wn-document-dialog:not([open]) {
       createCopy:"Creează copia",
       deleteHeading:"Ștergi CV-ul?",
       deleteIntro:"Urmează să ștergi definitiv:",
-      welcomeDefault:"Documentele tale profesionale, într-un singur loc."
+      deleteWarning:"Această acțiune nu poate fi anulată.",
+      welcomeDefault:"Documentele tale profesionale, într-un singur loc.",
+      designTitle:"Design profesional pentru CV",
+      designIntro:"Explorează cinci șabloane profesionale, personalizează culorile și pregătește CV-ul pentru export PDF în editorul de CV-uri.",
+      designAction:"Explorează șabloanele de CV ↗",
+      quickDesign:"Pentru a personaliza un CV salvat, deschide-l în editorul de CV-uri folosind butonul de editare."
 
     },
 
@@ -2121,7 +2270,12 @@ body dialog.wn-document-dialog:not([open]) {
       createCopy:"Crea copia",
       deleteHeading:"Eliminare il curriculum?",
       deleteIntro:"Stai per eliminare definitivamente:",
-      welcomeDefault:"I tuoi documenti professionali, in un unico posto."
+      deleteWarning:"Questa azione non può essere annullata.",
+      welcomeDefault:"I tuoi documenti professionali, in un unico posto.",
+      designTitle:"Design professionale del curriculum",
+      designIntro:"Esplora cinque modelli professionali, personalizza i colori e prepara il curriculum per l'esportazione PDF nell'editor.",
+      designAction:"Esplora i modelli di curriculum ↗",
+      quickDesign:"Per personalizzare un curriculum salvato, aprilo nell'editor utilizzando il pulsante di modifica."
 
     },
 
@@ -2173,7 +2327,12 @@ body dialog.wn-document-dialog:not([open]) {
       createCopy:"Kopie erstellen",
       deleteHeading:"Lebenslauf löschen?",
       deleteIntro:"Du bist dabei, Folgendes dauerhaft zu löschen:",
-      welcomeDefault:"Deine beruflichen Dokumente an einem Ort."
+      deleteWarning:"Diese Aktion kann nicht rückgängig gemacht werden.",
+      welcomeDefault:"Deine beruflichen Dokumente an einem Ort.",
+      designTitle:"Professionelles Lebenslaufdesign",
+      designIntro:"Entdecke fünf professionelle Vorlagen, passe die Farben an und bereite deinen Lebenslauf im Editor für den PDF-Export vor.",
+      designAction:"Lebenslaufvorlagen entdecken ↗",
+      quickDesign:"Öffne einen gespeicherten Lebenslauf über die Schaltfläche zum Bearbeiten im Lebenslauf-Editor, um sein Design anzupassen."
 
     },
 
@@ -2225,7 +2384,12 @@ body dialog.wn-document-dialog:not([open]) {
       createCopy:"Créer une copie",
       deleteHeading:"Supprimer le CV ?",
       deleteIntro:"Vous êtes sur le point de supprimer définitivement :",
-      welcomeDefault:"Vos documents professionnels au même endroit."
+      deleteWarning:"Cette action est irréversible.",
+      welcomeDefault:"Vos documents professionnels au même endroit.",
+      designTitle:"Design professionnel de CV",
+      designIntro:"Explorez cinq modèles professionnels, personnalisez les couleurs et préparez votre CV pour l'exportation PDF dans l'éditeur.",
+      designAction:"Explorer les modèles de CV ↗",
+      quickDesign:"Pour personnaliser un CV enregistré, ouvrez-le dans l'éditeur à l'aide du bouton de modification."
 
     },
 
@@ -2277,21 +2441,24 @@ body dialog.wn-document-dialog:not([open]) {
       createCopy:"Crear copia",
       deleteHeading:"¿Eliminar currículum?",
       deleteIntro:"Estás a punto de eliminar permanentemente:",
-      welcomeDefault:"Tus documentos profesionales en un solo lugar."
+      deleteWarning:"Esta acción no se puede deshacer.",
+      welcomeDefault:"Tus documentos profesionales en un solo lugar.",
+      designTitle:"Diseño profesional de currículums",
+      designIntro:"Explora cinco plantillas profesionales, personaliza los colores y prepara tu currículum para exportarlo a PDF en el editor.",
+      designAction:"Explorar plantillas de CV ↗",
+      quickDesign:"Para personalizar un currículum guardado, ábrelo en el editor mediante el botón de edición."
 
     }
 
   };
 
   const flags = {
-
     en:"🇬🇧",
     ro:"🇷🇴",
     it:"🇮🇹",
     de:"🇩🇪",
     fr:"🇫🇷",
     es:"🇪🇸"
-
   };
 
   function getLanguage() {
@@ -2302,7 +2469,9 @@ body dialog.wn-document-dialog:not([open]) {
 
       const language = engine.getLanguage();
 
-      return translations[language] ? language : "en";
+      return translations[language]
+        ? language
+        : "en";
 
     }
 
@@ -2311,7 +2480,9 @@ body dialog.wn-document-dialog:not([open]) {
       const language =
         localStorage.getItem("worknely.language");
 
-      return translations[language] ? language : "en";
+      return translations[language]
+        ? language
+        : "en";
 
     } catch {
 
@@ -2323,9 +2494,7 @@ body dialog.wn-document-dialog:not([open]) {
 
   function translate(key) {
 
-    const language = getLanguage();
-
-    return translations[language]?.[key]
+    return translations[getLanguage()]?.[key]
       || translations.en[key]
       || key;
 
@@ -2333,98 +2502,14 @@ body dialog.wn-document-dialog:not([open]) {
 
   function setText(element, value) {
 
-    if (element && element.textContent !== value) {
+    if (
+      element &&
+      element.textContent !== value
+    ) {
 
       element.textContent = value;
 
     }
-
-  }
-
-  function applyDashboardTranslations() {
-
-    const language = getLanguage();
-
-    document.documentElement.lang = language;
-
-    const selector = document.getElementById("language");
-
-    if (selector) {
-
-      selector.value = language;
-
-    }
-
-    setText(
-      document.getElementById("wnLanguageFlag"),
-      flags[language]
-    );
-
-    document.querySelectorAll(
-      "[data-wn-dashboard-text]"
-    ).forEach(element => {
-
-      setText(
-        element,
-        translate(element.dataset.wnDashboardText)
-      );
-
-    });
-
-    document.querySelectorAll(
-      "[data-wn-dashboard-placeholder]"
-    ).forEach(element => {
-
-      element.placeholder = translate(
-        element.dataset.wnDashboardPlaceholder
-      );
-
-    });
-
-    document.querySelectorAll(
-      "[data-wn-dashboard-aria]"
-    ).forEach(element => {
-
-      element.setAttribute(
-        "aria-label",
-        translate(element.dataset.wnDashboardAria)
-      );
-
-    });
-
-    const welcome =
-      document.getElementById("welcome");
-
-    if (welcome) {
-
-      const current = welcome.textContent.trim();
-
-      const isDefault = Object.values(
-        translations
-      ).some(dictionary => {
-
-        return dictionary.welcomeDefault === current;
-
-      });
-
-      if (isDefault) {
-
-        setText(
-          welcome,
-          translate("welcomeDefault")
-        );
-
-      }
-
-    }
-
-    if (window.WorknelyLocalization) {
-
-      window.WorknelyLocalization.apply();
-
-    }
-
-    updatePageTitle();
 
   }
 
@@ -2466,19 +2551,109 @@ body dialog.wn-document-dialog:not([open]) {
 
   }
 
-  /*
-   * Public dashboard translation API.
-   * Used by the next dashboard.js V7.15 update.
-   */
+  function applyDashboardTranslations() {
 
-  window.WorknelyDashboardLocalization = Object.freeze({
+    const language = getLanguage();
 
-    version:"7.15",
-    getLanguage,
-    t:translate,
-    apply:applyDashboardTranslations
+    document.documentElement.lang = language;
 
-  });
+    const selector =
+      document.getElementById("language");
+
+    if (
+      selector &&
+      selector.value !== language
+    ) {
+
+      selector.value = language;
+
+    }
+
+    setText(
+      document.getElementById("wnLanguageFlag"),
+      flags[language]
+    );
+
+    document.querySelectorAll(
+      "[data-wn-dashboard-text]"
+    ).forEach(element => {
+
+      setText(
+        element,
+        translate(
+          element.dataset.wnDashboardText
+        )
+      );
+
+    });
+
+    document.querySelectorAll(
+      "[data-wn-dashboard-placeholder]"
+    ).forEach(element => {
+
+      element.placeholder = translate(
+        element.dataset.wnDashboardPlaceholder
+      );
+
+    });
+
+    document.querySelectorAll(
+      "[data-wn-dashboard-aria]"
+    ).forEach(element => {
+
+      element.setAttribute(
+        "aria-label",
+        translate(
+          element.dataset.wnDashboardAria
+        )
+      );
+
+    });
+
+    const welcome =
+      document.getElementById("welcome");
+
+    if (welcome) {
+
+      const current =
+        welcome.textContent.trim();
+
+      const isDefault = Object.values(
+        translations
+      ).some(dictionary => {
+
+        return dictionary.welcomeDefault === current;
+
+      });
+
+      if (isDefault) {
+
+        setText(
+          welcome,
+          translate("welcomeDefault")
+        );
+
+      }
+
+    }
+
+    window.WorknelyLocalization?.apply?.();
+
+    updatePageTitle();
+
+  }
+
+  /* PUBLIC DASHBOARD LOCALIZATION API */
+
+  window.WorknelyDashboardLocalization =
+    Object.freeze({
+
+      version:VERSION,
+      getLanguage,
+      t:translate,
+      apply:applyDashboardTranslations
+
+    });
 
   function initialize() {
 
@@ -2487,33 +2662,33 @@ body dialog.wn-document-dialog:not([open]) {
 
     if (selector) {
 
-      selector.addEventListener("change", () => {
+      selector.addEventListener(
+        "change",
+        () => {
 
-        const language = selector.value;
+          /*
+           * The shared localization engine owns
+           * the language selector when available.
+           * Avoid duplicate language dispatches.
+           */
 
-        if (window.WorknelyLocalization) {
+          if (!window.WorknelyLocalization) {
 
-          window.WorknelyLocalization.setLanguage(
-            language,
-            {source:selector}
-          );
+            try {
 
-        } else {
+              localStorage.setItem(
+                "worknely.language",
+                selector.value
+              );
 
-          try {
+            } catch {}
 
-            localStorage.setItem(
-              "worknely.language",
-              language
-            );
+            applyDashboardTranslations();
 
-          } catch {}
+          }
 
         }
-
-        applyDashboardTranslations();
-
-      });
+      );
 
     }
 
@@ -2635,11 +2810,8 @@ body dialog.wn-document-dialog:not([open]) {
 
     }
 
-    if (window.WorknelyDashboardLocalization) {
-
-      window.WorknelyDashboardLocalization.apply();
-
-    }
+    window.WorknelyDashboardLocalization
+      ?.apply?.();
 
     window.scrollTo(0,0);
 
@@ -2668,7 +2840,11 @@ body dialog.wn-document-dialog:not([open]) {
 
 </script>
 
-<!-- END WORKNELY V7.15 INTERNATIONAL DASHBOARD -->
+<!-- DASHBOARD APPLICATION ENGINE -->
+
+<script type="module" src="dashboard.js?v=7.16.9"></script>
+
+<!-- END WORKNELY V7.16.10 -->
 
 </body>
 </html>
