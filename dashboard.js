@@ -1,36 +1,28 @@
+
 /*
- * WORKNELY V7.14
- * Advanced Document Management Engine
+ * WORKNELY V7.15
+ * International Dashboard Engine
+ * EN / RO / IT / DE / FR / ES
  *
  * Supabase Authentication
+ * International Document Management
+ * Localized Notifications
  * Smart Search & Sorting
- * Document Action Menu
- * Rename & Duplicate Resume
+ * Rename / Duplicate / Delete
  * Printable PDF Export
- * Custom Delete Confirmation
- * Compact Quick Create
- * Mobile First SaaS Workspace
- *
- * Compatible with GitHub Pages.
+ * Responsive SaaS Workspace
  */
 
 import { createClient } from
   "https://esm.sh/@supabase/supabase-js@2";
 
-const SUPABASE_URL =
-  "https://xuyronnwsokfadnekeir.supabase.co";
-
-const SUPABASE_PUBLISHABLE_KEY =
-  "sb_publishable_nr1qlZLiORejUM1JwVqciw_YRSDjnni";
-
 const SITE_URL =
   "https://adamdenise.github.io/resume-optimization-toolkit/";
 
-const supabase =
-  window.worknelySupabase ||
+const supabase = window.worknelySupabase ||
   createClient(
-    SUPABASE_URL,
-    SUPABASE_PUBLISHABLE_KEY,
+    "https://xuyronnwsokfadnekeir.supabase.co",
+    "sb_publishable_nr1qlZLiORejUM1JwVqciw_YRSDjnni",
     {
       auth: {
         persistSession: true,
@@ -40,42 +32,30 @@ const supabase =
     }
   );
 
-/* DOM ELEMENTS */
+window.worknelySupabase = supabase;
 
-const $ = id =>
-  document.getElementById(id);
+const $ = id => document.getElementById(id);
 
 const loading = $("loading");
 const app = $("app");
 const welcome = $("welcome");
 const logoutButton = $("logout");
-
 const resumeForm = $("resumeForm");
 const resumeTitle = $("resumeTitle");
 const resumeCount = $("resumeCount");
-const workspaceResumeCount =
-  $("workspaceResumeCount");
-
+const workspaceResumeCount = $("workspaceResumeCount");
 const resumeList = $("resumeList");
 const resumeStatus = $("resumeStatus");
-
 const saveButton = $("saveResume");
 const newButton = $("newResume");
 const quickCreate = $("quickCreate");
-
-/* SEARCH & SORT */
 
 const searchInput = $("wnResumeSearch");
 const sortInput = $("wnResumeSort");
 const clearSearch = $("wnClearSearch");
 const resetSearch = $("wnResetSearch");
-const searchResultCount =
-  $("wnSearchResultCount");
-
-const noSearchResults =
-  $("wnNoSearchResults");
-
-/* RENAME DIALOG */
+const searchResultCount = $("wnSearchResultCount");
+const noSearchResults = $("wnNoSearchResults");
 
 const renameDialog = $("wnRenameDialog");
 const renameForm = $("wnRenameForm");
@@ -84,38 +64,18 @@ const renameStatus = $("wnRenameStatus");
 const renameCancel = $("wnRenameCancel");
 const renameConfirm = $("wnRenameConfirm");
 
-/* DUPLICATE DIALOG */
-
-const duplicateDialog =
-  $("wnDuplicateDialog");
-
-const duplicateForm =
-  $("wnDuplicateForm");
-
-const duplicateInput =
-  $("wnDuplicateInput");
-
-const duplicateStatus =
-  $("wnDuplicateStatus");
-
-const duplicateCancel =
-  $("wnDuplicateCancel");
-
-const duplicateConfirm =
-  $("wnDuplicateConfirm");
-
-/* DELETE DIALOG */
+const duplicateDialog = $("wnDuplicateDialog");
+const duplicateForm = $("wnDuplicateForm");
+const duplicateInput = $("wnDuplicateInput");
+const duplicateStatus = $("wnDuplicateStatus");
+const duplicateCancel = $("wnDuplicateCancel");
+const duplicateConfirm = $("wnDuplicateConfirm");
 
 const deleteDialog = $("wnDeleteDialog");
-
-const deleteResumeName =
-  $("wnDeleteResumeName");
-
+const deleteResumeName = $("wnDeleteResumeName");
 const deleteStatus = $("wnDeleteStatus");
 const deleteCancel = $("wnDeleteCancel");
 const deleteConfirm = $("wnDeleteConfirm");
-
-/* RESUME FIELDS */
 
 const fields = {
   fullName: $("fullName"),
@@ -126,6 +86,418 @@ const fields = {
   experience: $("experience"),
   skills: $("skills")
 };
+
+/* INTERNATIONAL DICTIONARY */
+
+const translations = {
+
+  en: {
+    checking: "Checking your Worknely session...",
+    sessionError: "Unable to verify your session. Please try again.",
+    welcome: "Welcome back, {name}!",
+    user: "Worknely user",
+    loading: "Loading your resumes...",
+    loadError: "Unable to load resumes. Please try again.",
+    save: "Save Resume",
+    update: "Update Resume",
+    saving: "Saving...",
+    creating: "Creating...",
+    deleting: "Deleting...",
+    ready: "Ready to create a new resume.",
+    titleRequired: "Please enter a resume title.",
+    nameRequired: "Please enter a document name.",
+    saved: "Resume saved successfully.",
+    updated: "Resume updated successfully.",
+    savedRefresh: "Resume saved. Please refresh the dashboard.",
+    saveError: "Unable to save resume. Please try again.",
+    renamed: "Resume renamed successfully.",
+    renameError: "Unable to rename resume. Please try again.",
+    duplicated: "Resume duplicated successfully.",
+    duplicateError: "Unable to duplicate resume. Please try again.",
+    deleted: "Resume deleted successfully.",
+    deleteError: "Unable to delete resume. Please check permissions and try again.",
+    notFound: "Resume not found. Please refresh.",
+    untitled: "Untitled Resume",
+    unknownDate: "Unknown date",
+    date: "Updated {date}",
+    results: "{count} of {total} resumes",
+    edit: "Edit in Resume Builder",
+    editName: "Edit {name}",
+    more: "More actions for {name}",
+    rename: "Rename",
+    duplicate: "Duplicate",
+    download: "Download PDF",
+    delete: "Delete Resume",
+    saveName: "Save Name",
+    createCopy: "Create Copy",
+    copy: "Copy",
+    emptyTitle: "Your career starts here",
+    emptyDescription: "Create your first professional resume and keep your career documents organized in one place.",
+    firstResume: "Create Your First Resume",
+    browserError: "Please use an updated browser.",
+    popupError: "Please allow pop-ups to export your PDF.",
+    pdfReady: "PDF preview opened. Use Save / Print PDF.",
+    pdfError: "Unable to prepare PDF.",
+    print: "Save / Print PDF",
+    printHelp: "Choose Save as PDF in your browser, or use the iOS print and share options.",
+    summary: "Professional Summary",
+    experience: "Professional Experience",
+    education: "Education",
+    skills: "Skills",
+    signingOut: "Signing out...",
+    logoutError: "Unable to sign out. Please try again."
+  },
+
+  ro: {
+    checking: "Se verifică sesiunea Worknely...",
+    sessionError: "Sesiunea nu a putut fi verificată. Încearcă din nou.",
+    welcome: "Bine ai revenit, {name}!",
+    user: "Utilizator Worknely",
+    loading: "Se încarcă CV-urile tale...",
+    loadError: "CV-urile nu au putut fi încărcate. Încearcă din nou.",
+    save: "Salvează CV-ul",
+    update: "Actualizează CV-ul",
+    saving: "Se salvează...",
+    creating: "Se creează...",
+    deleting: "Se șterge...",
+    ready: "Poți crea un CV nou.",
+    titleRequired: "Introdu un titlu pentru CV.",
+    nameRequired: "Introdu un nume pentru document.",
+    saved: "CV-ul a fost salvat cu succes.",
+    updated: "CV-ul a fost actualizat cu succes.",
+    savedRefresh: "CV salvat. Reîncarcă panoul de control.",
+    saveError: "CV-ul nu a putut fi salvat. Încearcă din nou.",
+    renamed: "CV-ul a fost redenumit cu succes.",
+    renameError: "CV-ul nu a putut fi redenumit. Încearcă din nou.",
+    duplicated: "CV-ul a fost duplicat cu succes.",
+    duplicateError: "CV-ul nu a putut fi duplicat. Încearcă din nou.",
+    deleted: "CV-ul a fost șters cu succes.",
+    deleteError: "CV-ul nu a putut fi șters. Verifică permisiunile și încearcă din nou.",
+    notFound: "CV-ul nu a fost găsit. Reîncarcă pagina.",
+    untitled: "CV fără titlu",
+    unknownDate: "Dată necunoscută",
+    date: "Actualizat la {date}",
+    results: "{count} din {total} CV-uri",
+    edit: "Editează în editorul de CV",
+    editName: "Editează {name}",
+    more: "Mai multe acțiuni pentru {name}",
+    rename: "Redenumește",
+    duplicate: "Duplică",
+    download: "Descarcă PDF",
+    delete: "Șterge CV-ul",
+    saveName: "Salvează numele",
+    createCopy: "Creează o copie",
+    copy: "Copie",
+    emptyTitle: "Cariera ta începe aici",
+    emptyDescription: "Creează primul tău CV profesional și organizează toate documentele într-un singur loc.",
+    firstResume: "Creează primul CV",
+    browserError: "Folosește un browser actualizat.",
+    popupError: "Permite ferestrele pop-up pentru exportul PDF.",
+    pdfReady: "Previzualizarea PDF este deschisă. Folosește Salvare / Imprimare PDF.",
+    pdfError: "PDF-ul nu a putut fi pregătit.",
+    print: "Salvare / Imprimare PDF",
+    printHelp: "Alege Salvare ca PDF în browser sau utilizează opțiunile de imprimare și partajare iOS.",
+    summary: "Profil profesional",
+    experience: "Experiență profesională",
+    education: "Educație",
+    skills: "Competențe",
+    signingOut: "Se efectuează deconectarea...",
+    logoutError: "Deconectarea nu a reușit. Încearcă din nou."
+  },
+
+  it: {
+    checking: "Verifica della sessione Worknely...",
+    sessionError: "Impossibile verificare la sessione. Riprova.",
+    welcome: "Bentornato/a, {name}!",
+    user: "Utente Worknely",
+    loading: "Caricamento dei curriculum...",
+    loadError: "Impossibile caricare i curriculum. Riprova.",
+    save: "Salva curriculum",
+    update: "Aggiorna curriculum",
+    saving: "Salvataggio...",
+    creating: "Creazione...",
+    deleting: "Eliminazione...",
+    ready: "Puoi creare un nuovo curriculum.",
+    titleRequired: "Inserisci un titolo per il curriculum.",
+    nameRequired: "Inserisci un nome per il documento.",
+    saved: "Curriculum salvato correttamente.",
+    updated: "Curriculum aggiornato correttamente.",
+    savedRefresh: "Curriculum salvato. Aggiorna la dashboard.",
+    saveError: "Impossibile salvare il curriculum. Riprova.",
+    renamed: "Curriculum rinominato correttamente.",
+    renameError: "Impossibile rinominare il curriculum. Riprova.",
+    duplicated: "Curriculum duplicato correttamente.",
+    duplicateError: "Impossibile duplicare il curriculum. Riprova.",
+    deleted: "Curriculum eliminato correttamente.",
+    deleteError: "Impossibile eliminare il curriculum. Verifica i permessi e riprova.",
+    notFound: "Curriculum non trovato. Aggiorna la pagina.",
+    untitled: "Curriculum senza titolo",
+    unknownDate: "Data sconosciuta",
+    date: "Aggiornato il {date}",
+    results: "{count} di {total} curriculum",
+    edit: "Modifica nell'editor CV",
+    editName: "Modifica {name}",
+    more: "Altre azioni per {name}",
+    rename: "Rinomina",
+    duplicate: "Duplica",
+    download: "Scarica PDF",
+    delete: "Elimina curriculum",
+    saveName: "Salva nome",
+    createCopy: "Crea copia",
+    copy: "Copia",
+    emptyTitle: "La tua carriera inizia qui",
+    emptyDescription: "Crea il tuo primo curriculum professionale e organizza tutti i documenti in un unico posto.",
+    firstResume: "Crea il tuo primo CV",
+    browserError: "Utilizza un browser aggiornato.",
+    popupError: "Consenti le finestre pop-up per esportare il PDF.",
+    pdfReady: "Anteprima PDF aperta. Usa Salva / Stampa PDF.",
+    pdfError: "Impossibile preparare il PDF.",
+    print: "Salva / Stampa PDF",
+    printHelp: "Seleziona Salva come PDF nel browser oppure usa le opzioni di stampa e condivisione di iOS.",
+    summary: "Profilo professionale",
+    experience: "Esperienza professionale",
+    education: "Formazione",
+    skills: "Competenze",
+    signingOut: "Disconnessione...",
+    logoutError: "Impossibile disconnettersi. Riprova."
+  },
+
+  de: {
+    checking: "Worknely-Sitzung wird überprüft...",
+    sessionError: "Sitzung konnte nicht überprüft werden. Bitte erneut versuchen.",
+    welcome: "Willkommen zurück, {name}!",
+    user: "Worknely-Nutzer",
+    loading: "Lebensläufe werden geladen...",
+    loadError: "Lebensläufe konnten nicht geladen werden. Bitte erneut versuchen.",
+    save: "Lebenslauf speichern",
+    update: "Lebenslauf aktualisieren",
+    saving: "Wird gespeichert...",
+    creating: "Wird erstellt...",
+    deleting: "Wird gelöscht...",
+    ready: "Ein neuer Lebenslauf kann erstellt werden.",
+    titleRequired: "Bitte einen Titel eingeben.",
+    nameRequired: "Bitte einen Dokumentnamen eingeben.",
+    saved: "Lebenslauf erfolgreich gespeichert.",
+    updated: "Lebenslauf erfolgreich aktualisiert.",
+    savedRefresh: "Lebenslauf gespeichert. Bitte Dashboard aktualisieren.",
+    saveError: "Speichern fehlgeschlagen. Bitte erneut versuchen.",
+    renamed: "Lebenslauf erfolgreich umbenannt.",
+    renameError: "Umbenennen fehlgeschlagen. Bitte erneut versuchen.",
+    duplicated: "Lebenslauf erfolgreich dupliziert.",
+    duplicateError: "Duplizieren fehlgeschlagen. Bitte erneut versuchen.",
+    deleted: "Lebenslauf erfolgreich gelöscht.",
+    deleteError: "Löschen fehlgeschlagen. Bitte Berechtigungen prüfen und erneut versuchen.",
+    notFound: "Lebenslauf nicht gefunden. Bitte Seite aktualisieren.",
+    untitled: "Unbenannter Lebenslauf",
+    unknownDate: "Unbekanntes Datum",
+    date: "Aktualisiert am {date}",
+    results: "{count} von {total} Lebensläufen",
+    edit: "Im Lebenslauf-Editor bearbeiten",
+    editName: "{name} bearbeiten",
+    more: "Weitere Aktionen für {name}",
+    rename: "Umbenennen",
+    duplicate: "Duplizieren",
+    download: "PDF herunterladen",
+    delete: "Lebenslauf löschen",
+    saveName: "Namen speichern",
+    createCopy: "Kopie erstellen",
+    copy: "Kopie",
+    emptyTitle: "Deine Karriere beginnt hier",
+    emptyDescription: "Erstelle deinen ersten professionellen Lebenslauf und verwalte deine Dokumente an einem Ort.",
+    firstResume: "Ersten Lebenslauf erstellen",
+    browserError: "Bitte einen aktuellen Browser verwenden.",
+    popupError: "Bitte Pop-ups für den PDF-Export erlauben.",
+    pdfReady: "PDF-Vorschau geöffnet. PDF speichern oder drucken.",
+    pdfError: "PDF konnte nicht vorbereitet werden.",
+    print: "PDF speichern / drucken",
+    printHelp: "Wähle Als PDF speichern im Browser oder verwende die Druck- und Freigabeoptionen von iOS.",
+    summary: "Berufliches Profil",
+    experience: "Berufserfahrung",
+    education: "Ausbildung",
+    skills: "Fähigkeiten",
+    signingOut: "Abmeldung...",
+    logoutError: "Abmeldung fehlgeschlagen. Bitte erneut versuchen."
+  },
+
+  fr: {
+    checking: "Vérification de votre session Worknely...",
+    sessionError: "Impossible de vérifier la session. Réessayez.",
+    welcome: "Bon retour, {name} !",
+    user: "Utilisateur Worknely",
+    loading: "Chargement de vos CV...",
+    loadError: "Impossible de charger les CV. Réessayez.",
+    save: "Enregistrer le CV",
+    update: "Mettre à jour le CV",
+    saving: "Enregistrement...",
+    creating: "Création...",
+    deleting: "Suppression...",
+    ready: "Vous pouvez créer un nouveau CV.",
+    titleRequired: "Saisissez un titre pour le CV.",
+    nameRequired: "Saisissez un nom de document.",
+    saved: "CV enregistré avec succès.",
+    updated: "CV mis à jour avec succès.",
+    savedRefresh: "CV enregistré. Actualisez le tableau de bord.",
+    saveError: "Impossible d'enregistrer le CV. Réessayez.",
+    renamed: "CV renommé avec succès.",
+    renameError: "Impossible de renommer le CV. Réessayez.",
+    duplicated: "CV dupliqué avec succès.",
+    duplicateError: "Impossible de dupliquer le CV. Réessayez.",
+    deleted: "CV supprimé avec succès.",
+    deleteError: "Impossible de supprimer le CV. Vérifiez les autorisations et réessayez.",
+    notFound: "CV introuvable. Actualisez la page.",
+    untitled: "CV sans titre",
+    unknownDate: "Date inconnue",
+    date: "Mis à jour le {date}",
+    results: "{count} CV sur {total}",
+    edit: "Modifier dans l'éditeur de CV",
+    editName: "Modifier {name}",
+    more: "Plus d'actions pour {name}",
+    rename: "Renommer",
+    duplicate: "Dupliquer",
+    download: "Télécharger le PDF",
+    delete: "Supprimer le CV",
+    saveName: "Enregistrer le nom",
+    createCopy: "Créer une copie",
+    copy: "Copie",
+    emptyTitle: "Votre carrière commence ici",
+    emptyDescription: "Créez votre premier CV professionnel et organisez vos documents au même endroit.",
+    firstResume: "Créer votre premier CV",
+    browserError: "Utilisez un navigateur à jour.",
+    popupError: "Autorisez les fenêtres contextuelles pour exporter le PDF.",
+    pdfReady: "Aperçu PDF ouvert. Utilisez Enregistrer / Imprimer PDF.",
+    pdfError: "Impossible de préparer le PDF.",
+    print: "Enregistrer / Imprimer PDF",
+    printHelp: "Choisissez Enregistrer au format PDF dans le navigateur ou utilisez les options d'impression et de partage iOS.",
+    summary: "Profil professionnel",
+    experience: "Expérience professionnelle",
+    education: "Formation",
+    skills: "Compétences",
+    signingOut: "Déconnexion...",
+    logoutError: "Impossible de se déconnecter. Réessayez."
+  },
+
+  es: {
+    checking: "Verificando tu sesión de Worknely...",
+    sessionError: "No se pudo verificar la sesión. Inténtalo de nuevo.",
+    welcome: "¡Te damos la bienvenida, {name}!",
+    user: "Usuario de Worknely",
+    loading: "Cargando tus currículums...",
+    loadError: "No se pudieron cargar los currículums. Inténtalo de nuevo.",
+    save: "Guardar currículum",
+    update: "Actualizar currículum",
+    saving: "Guardando...",
+    creating: "Creando...",
+    deleting: "Eliminando...",
+    ready: "Puedes crear un nuevo currículum.",
+    titleRequired: "Introduce un título para el currículum.",
+    nameRequired: "Introduce un nombre para el documento.",
+    saved: "Currículum guardado correctamente.",
+    updated: "Currículum actualizado correctamente.",
+    savedRefresh: "Currículum guardado. Actualiza el panel.",
+    saveError: "No se pudo guardar el currículum. Inténtalo de nuevo.",
+    renamed: "Currículum renombrado correctamente.",
+    renameError: "No se pudo renombrar el currículum. Inténtalo de nuevo.",
+    duplicated: "Currículum duplicado correctamente.",
+    duplicateError: "No se pudo duplicar el currículum. Inténtalo de nuevo.",
+    deleted: "Currículum eliminado correctamente.",
+    deleteError: "No se pudo eliminar el currículum. Comprueba los permisos e inténtalo de nuevo.",
+    notFound: "Currículum no encontrado. Actualiza la página.",
+    untitled: "Currículum sin título",
+    unknownDate: "Fecha desconocida",
+    date: "Actualizado el {date}",
+    results: "{count} de {total} currículums",
+    edit: "Editar en el creador de CV",
+    editName: "Editar {name}",
+    more: "Más acciones para {name}",
+    rename: "Renombrar",
+    duplicate: "Duplicar",
+    download: "Descargar PDF",
+    delete: "Eliminar currículum",
+    saveName: "Guardar nombre",
+    createCopy: "Crear copia",
+    copy: "Copia",
+    emptyTitle: "Tu carrera comienza aquí",
+    emptyDescription: "Crea tu primer currículum profesional y organiza tus documentos en un solo lugar.",
+    firstResume: "Crear tu primer CV",
+    browserError: "Utiliza un navegador actualizado.",
+    popupError: "Permite las ventanas emergentes para exportar el PDF.",
+    pdfReady: "Vista previa PDF abierta. Usa Guardar / Imprimir PDF.",
+    pdfError: "No se pudo preparar el PDF.",
+    print: "Guardar / Imprimir PDF",
+    printHelp: "Selecciona Guardar como PDF en el navegador o utiliza las opciones de impresión y compartir de iOS.",
+    summary: "Perfil profesional",
+    experience: "Experiencia profesional",
+    education: "Formación",
+    skills: "Competencias",
+    signingOut: "Cerrando sesión...",
+    logoutError: "No se pudo cerrar la sesión. Inténtalo de nuevo."
+  }
+
+};
+
+const locales = {
+  en: "en-GB",
+  ro: "ro-RO",
+  it: "it-IT",
+  de: "de-DE",
+  fr: "fr-FR",
+  es: "es-ES"
+};
+
+function getLanguage() {
+
+  let language =
+    window.WorknelyLocalization?.getLanguage?.();
+
+  if (!language) {
+    try {
+      language = localStorage.getItem(
+        "worknely.language"
+      );
+    } catch {
+      language = document.documentElement.lang;
+    }
+  }
+
+  language = String(language || "en")
+    .toLowerCase()
+    .split("-")[0];
+
+  return translations[language]
+    ? language
+    : "en";
+
+}
+
+function t(key, variables = {}) {
+
+  const dictionary = translations[getLanguage()];
+
+  const value =
+    dictionary[key] ||
+    translations.en[key] ||
+    key;
+
+  return value.replace(
+    /\{([a-zA-Z0-9_]+)\}/g,
+    (match, name) =>
+      Object.prototype.hasOwnProperty.call(
+        variables, name
+      )
+        ? String(variables[name])
+        : match
+  );
+
+}
+
+function locale() {
+  return locales[getLanguage()];
+}
+
+function formatNumber(value) {
+  return new Intl.NumberFormat(locale())
+    .format(value);
+}
 
 /* APPLICATION STATE */
 
@@ -139,13 +511,21 @@ let selectedRenameId = null;
 let selectedDuplicateId = null;
 let selectedDeleteId = null;
 
-/* STATUS MANAGEMENT */
+let activeOperation = "";
+let loadingKey = "checking";
 
-function setStatus(message, type = "info") {
+const statusMessages = new Map();
 
-  resumeStatus.textContent = message;
+/* LOCALIZED STATUS MANAGEMENT */
 
-  if (message) {
+function setStatus(key = "", type = "info") {
+
+  statusMessages.set(resumeStatus, key);
+
+  resumeStatus.textContent =
+    key ? t(key) : "";
+
+  if (key) {
     resumeStatus.dataset.status = type;
   } else {
     delete resumeStatus.dataset.status;
@@ -153,25 +533,61 @@ function setStatus(message, type = "info") {
 
 }
 
-function setDialogStatus(element, message) {
+function setDialogStatus(element, key = "") {
 
-  if (element) {
-    element.textContent = message || "";
-  }
+  if (!element) return;
 
-}
+  statusMessages.set(element, key);
 
-function errorMessage(error) {
-
-  return error?.message || "Unknown error";
+  element.textContent =
+    key ? t(key) : "";
 
 }
 
-/* BUSY STATE */
+function reportError(operation, error) {
 
-function setBusy(busy) {
+  console.error(
+    "Worknely dashboard:",
+    operation,
+    error?.code || error?.name || "Error"
+  );
+
+}
+
+function updateActionLabels() {
+
+  saveButton.textContent = t(
+    activeOperation === "save"
+      ? "saving"
+      : editingResumeId
+        ? "update"
+        : "save"
+  );
+
+  renameConfirm.textContent = t(
+    activeOperation === "rename"
+      ? "saving"
+      : "saveName"
+  );
+
+  duplicateConfirm.textContent = t(
+    activeOperation === "duplicate"
+      ? "creating"
+      : "createCopy"
+  );
+
+  deleteConfirm.textContent = t(
+    activeOperation === "delete"
+      ? "deleting"
+      : "delete"
+  );
+
+}
+
+function setBusy(busy, operation = "") {
 
   isBusy = busy;
+  activeOperation = busy ? operation : "";
 
   const controls = [
     saveButton,
@@ -194,15 +610,10 @@ function setBusy(busy) {
   ];
 
   controls.forEach(element => {
-
-    if (element) {
-      element.disabled = busy;
-    }
-
+    if (element) element.disabled = busy;
   });
 
-  resumeList
-    .querySelectorAll("button")
+  resumeList.querySelectorAll("button")
     .forEach(button => {
       button.disabled = busy;
     });
@@ -211,6 +622,8 @@ function setBusy(busy) {
     "aria-busy",
     String(busy)
   );
+
+  updateActionLabels();
 
 }
 
@@ -223,10 +636,11 @@ function showApp() {
 
 }
 
-function showLoading(message) {
+function showLoading(key) {
 
+  loadingKey = key;
   loading.hidden = false;
-  loading.textContent = message;
+  loading.textContent = t(key);
   app.hidden = true;
 
 }
@@ -236,6 +650,39 @@ function redirectToLogin() {
   window.location.replace(
     SITE_URL + "#worknelyAccount"
   );
+
+}
+
+function clearSession() {
+
+  currentUser = null;
+  editingResumeId = null;
+  savedResumes = [];
+  resumesLoaded = false;
+
+  resumeForm.reset();
+  fillResumeForm({});
+
+  renameInput.value = "";
+  duplicateInput.value = "";
+  deleteResumeName.textContent = "";
+
+  [renameDialog, duplicateDialog, deleteDialog]
+    .forEach(dialog => {
+      if (dialog.open) dialog.close();
+    });
+
+  resumeList.replaceChildren();
+  welcome.textContent = "";
+  statusMessages.clear();
+
+  showLoading("signingOut");
+
+}
+
+function verifyOwner(userId) {
+
+  return currentUser?.id === userId;
 
 }
 
@@ -252,23 +699,23 @@ function findResume(id) {
 function getDocumentTitle(resume) {
 
   return String(
-    resume?.title || "Untitled Resume"
+    resume?.title || t("untitled")
   );
 
 }
 
 function formatDate(date) {
 
-  if (!date) return "Unknown date";
+  if (!date) return t("unknownDate");
 
   const parsed = new Date(date);
 
   if (Number.isNaN(parsed.getTime())) {
-    return "Unknown date";
+    return t("unknownDate");
   }
 
   return parsed.toLocaleDateString(
-    undefined,
+    locale(),
     {
       year: "numeric",
       month: "short",
@@ -306,8 +753,7 @@ const SVG_NS =
 function createIcon(name = "document") {
 
   const svg = document.createElementNS(
-    SVG_NS,
-    "svg"
+    SVG_NS, "svg"
   );
 
   const attributes = {
@@ -323,9 +769,7 @@ function createIcon(name = "document") {
 
   Object.entries(attributes)
     .forEach(([key, value]) => {
-
       svg.setAttribute(key, value);
-
     });
 
   const paths = {
@@ -371,28 +815,17 @@ function createIcon(name = "document") {
       "M12 3v12",
       "M7 10l5 5 5-5",
       "M4 17v4h16v-4"
-    ],
-
-    more: [
-      "M5 12h.01",
-      "M12 12h.01",
-      "M19 12h.01"
     ]
 
   };
-
-  const selected =
-    paths[name] || paths.document;
 
   if (name === "more") {
 
     [5, 12, 19].forEach(x => {
 
-      const circle =
-        document.createElementNS(
-          SVG_NS,
-          "circle"
-        );
+      const circle = document.createElementNS(
+        SVG_NS, "circle"
+      );
 
       circle.setAttribute("cx", x);
       circle.setAttribute("cy", "12");
@@ -408,18 +841,17 @@ function createIcon(name = "document") {
 
   }
 
-  selected.forEach(value => {
+  (paths[name] || paths.document)
+    .forEach(value => {
 
-    const path =
-      document.createElementNS(
-        SVG_NS,
-        "path"
+      const path = document.createElementNS(
+        SVG_NS, "path"
       );
 
-    path.setAttribute("d", value);
-    svg.appendChild(path);
+      path.setAttribute("d", value);
+      svg.appendChild(path);
 
-  });
+    });
 
   return svg;
 
@@ -435,40 +867,26 @@ function createButton(
   iconOnly = false
 ) {
 
-  const button =
-    document.createElement("button");
+  const button = document.createElement("button");
 
   button.type = "button";
   button.className = className;
   button.disabled = isBusy;
-
-  button.setAttribute(
-    "aria-label",
-    label
-  );
-
   button.title = label;
 
+  button.setAttribute("aria-label", label);
+
   if (iconName) {
-
-    button.appendChild(
-      createIcon(iconName)
-    );
-
+    button.appendChild(createIcon(iconName));
   }
 
   if (!iconOnly) {
-
     button.appendChild(
       document.createTextNode(label)
     );
-
   }
 
-  button.addEventListener(
-    "click",
-    handler
-  );
+  button.addEventListener("click", handler);
 
   return button;
 
@@ -480,13 +898,13 @@ function getResumeContent() {
 
   const content = {};
 
-  for (const [key, element] of
-    Object.entries(fields)) {
+  Object.entries(fields)
+    .forEach(([key, element]) => {
 
-    content[key] =
-      element?.value.trim() || "";
+      content[key] =
+        element?.value.trim() || "";
 
-  }
+    });
 
   return content;
 
@@ -494,21 +912,19 @@ function getResumeContent() {
 
 function fillResumeForm(content = {}) {
 
-  for (const [key, element] of
-    Object.entries(fields)) {
+  Object.entries(fields)
+    .forEach(([key, element]) => {
 
-    if (!element) continue;
+      if (!element) return;
 
-    element.value =
-      typeof content?.[key] === "string"
-        ? content[key]
-        : "";
+      element.value =
+        typeof content?.[key] === "string"
+          ? content[key]
+          : "";
 
-  }
+    });
 
 }
-
-/* QUICK CREATE RESET */
 
 function resetForm(options = {}) {
 
@@ -520,38 +936,25 @@ function resetForm(options = {}) {
   editingResumeId = null;
 
   resumeForm.reset();
-
   fillResumeForm({});
-
-  saveButton.textContent =
-    "Save Resume";
+  updateActionLabels();
 
   if (announce) {
-
-    setStatus(
-      "Ready to create a new resume.",
-      "info"
-    );
-
+    setStatus("ready");
   }
 
   if (focus) {
-
     quickCreate.open = true;
     resumeTitle.focus();
-
   }
 
 }
 
-/* RESUME BUILDER INTEGRATION */
+/* BUILDER INTEGRATION */
 
 function getBuilderEditURL(resumeId) {
 
-  const url = new URL(
-    "index.html",
-    SITE_URL
-  );
+  const url = new URL("index.html", SITE_URL);
 
   url.searchParams.set(
     "edit",
@@ -566,10 +969,7 @@ function getBuilderEditURL(resumeId) {
 
 function getNewResumeURL() {
 
-  const url = new URL(
-    "index.html",
-    SITE_URL
-  );
+  const url = new URL("index.html", SITE_URL);
 
   url.hash = "builder";
 
@@ -584,14 +984,8 @@ function openInResumeBuilder(id) {
   const resume = findResume(id);
 
   if (!resume) {
-
-    setStatus(
-      "Resume not found. Please refresh.",
-      "error"
-    );
-
+    setStatus("notFound", "error");
     return;
-
   }
 
   window.location.assign(
@@ -600,51 +994,41 @@ function openInResumeBuilder(id) {
 
 }
 
-/* SMART SEARCH */
+/* SMART SEARCH AND SORT */
 
 function getFilteredResumes() {
 
-  const query = normalizeSearch(
+  const words = normalizeSearch(
     searchInput.value
-  );
+  ).split(/\s+/).filter(Boolean);
 
-  const words = query
-    .split(/\s+/)
-    .filter(Boolean);
+  const results = savedResumes.filter(resume => {
 
-  let results = savedResumes.filter(
-    resume => {
+    if (!words.length) return true;
 
-      if (!words.length) return true;
+    const content = resume.content || {};
 
-      const content = resume.content || {};
+    const searchable = normalizeSearch(
+      [
+        resume.title,
+        content.fullName,
+        content.professionalTitle,
+        content.education,
+        content.summary,
+        content.experience,
+        content.skills
+      ].join(" ")
+    );
 
-      const searchable = normalizeSearch(
-        [
-          resume.title,
-          content.fullName,
-          content.professionalTitle,
-          content.education,
-          content.summary,
-          content.experience,
-          content.skills
-        ].join(" ")
-      );
+    return words.every(
+      word => searchable.includes(word)
+    );
 
-      return words.every(
-        word => searchable.includes(word)
-      );
-
-    }
-  );
-
-  /* SMART SORTING */
-
-  const sort = sortInput.value;
+  });
 
   results.sort((a, b) => {
 
-    switch (sort) {
+    switch (sortInput.value) {
 
       case "updated-asc":
 
@@ -669,7 +1053,7 @@ function getFilteredResumes() {
         return getDocumentTitle(a)
           .localeCompare(
             getDocumentTitle(b),
-            undefined,
+            locale(),
             { sensitivity: "base" }
           );
 
@@ -678,11 +1062,10 @@ function getFilteredResumes() {
         return getDocumentTitle(b)
           .localeCompare(
             getDocumentTitle(a),
-            undefined,
+            locale(),
             { sensitivity: "base" }
           );
 
-      case "updated-desc":
       default:
 
         return timestamp(
@@ -699,19 +1082,15 @@ function getFilteredResumes() {
 
 }
 
-/* CLEAR SEARCH */
-
 function clearDocumentSearch() {
 
   searchInput.value = "";
-
   renderResumes();
-
   searchInput.focus();
 
 }
 
-/* DOCUMENT MENU MANAGEMENT */
+/* DOCUMENT MENUS */
 
 function closeDocumentMenus(
   restoreFocus = false
@@ -729,16 +1108,14 @@ function closeDocumentMenus(
         ".wn-document-menu-button"
       );
 
-      const wasOpen =
-        panel && !panel.hidden;
+      const wasOpen = panel && !panel.hidden;
 
       if (panel) panel.hidden = true;
 
       if (button) {
 
         button.setAttribute(
-          "aria-expanded",
-          "false"
+          "aria-expanded", "false"
         );
 
         if (restoreFocus && wasOpen) {
@@ -753,27 +1130,21 @@ function closeDocumentMenus(
 
 function createDocumentMenu(resume) {
 
-  const wrapper =
-    document.createElement("div");
+  const wrapper = document.createElement("div");
 
-  wrapper.className =
-    "wn-document-menu";
+  wrapper.className = "wn-document-menu";
 
-  const panel =
-    document.createElement("div");
+  const panel = document.createElement("div");
 
-  panel.className =
-    "wn-document-menu-panel";
-
-  panel.id =
-    "wn-menu-" + String(resume.id);
-
+  panel.className = "wn-document-menu-panel";
+  panel.id = "wn-menu-" + String(resume.id);
   panel.hidden = true;
 
   const trigger = createButton(
     "outline wn-document-menu-button",
-    "More actions for " +
-      getDocumentTitle(resume),
+    t("more", {
+      name: getDocumentTitle(resume)
+    }),
     "more",
     event => {
 
@@ -790,14 +1161,10 @@ function createDocumentMenu(resume) {
         panel.hidden = false;
 
         trigger.setAttribute(
-          "aria-expanded",
-          "true"
+          "aria-expanded", "true"
         );
 
-        const first =
-          panel.querySelector("button");
-
-        first?.focus();
+        panel.querySelector("button")?.focus();
 
       }
 
@@ -805,26 +1172,16 @@ function createDocumentMenu(resume) {
     true
   );
 
-  trigger.setAttribute(
-    "aria-expanded",
-    "false"
-  );
-
-  trigger.setAttribute(
-    "aria-controls",
-    panel.id
-  );
+  trigger.setAttribute("aria-expanded", "false");
+  trigger.setAttribute("aria-controls", panel.id);
 
   function menuAction(
-    label,
-    icon,
-    handler,
-    danger = false
+    key, icon, handler, danger = false
   ) {
 
     return createButton(
       danger ? "wn-danger-action" : "",
-      label,
+      t(key),
       icon,
       () => {
 
@@ -836,48 +1193,40 @@ function createDocumentMenu(resume) {
 
   }
 
-  const rename = menuAction(
-    "Rename",
-    "rename",
-    openRenameDialog
-  );
+  const divider = document.createElement("div");
 
-  const duplicate = menuAction(
-    "Duplicate",
-    "duplicate",
-    openDuplicateDialog
-  );
-
-  const download = menuAction(
-    "Download PDF",
-    "download",
-    downloadResumePDF
-  );
-
-  const divider =
-    document.createElement("div");
-
-  divider.className =
-    "wn-document-menu-divider";
-
-  divider.setAttribute(
-    "aria-hidden",
-    "true"
-  );
-
-  const remove = menuAction(
-    "Delete resume",
-    "trash",
-    openDeleteDialog,
-    true
-  );
+  divider.className = "wn-document-menu-divider";
+  divider.setAttribute("aria-hidden", "true");
 
   panel.append(
-    rename,
-    duplicate,
-    download,
+
+    menuAction(
+      "rename",
+      "rename",
+      openRenameDialog
+    ),
+
+    menuAction(
+      "duplicate",
+      "duplicate",
+      openDuplicateDialog
+    ),
+
+    menuAction(
+      "download",
+      "download",
+      downloadResumePDF
+    ),
+
     divider,
-    remove
+
+    menuAction(
+      "delete",
+      "trash",
+      openDeleteDialog,
+      true
+    )
+
   );
 
   wrapper.append(trigger, panel);
@@ -886,88 +1235,69 @@ function createDocumentMenu(resume) {
 
 }
 
-/* V7.14 DOCUMENT CARDS */
+/* DOCUMENT CARDS */
 
 function createResumeCard(resume) {
 
-  const card =
-    document.createElement("article");
+  const card = document.createElement("article");
 
   card.className = "resume-item";
+  card.dataset.resumeId = String(resume.id);
 
-  card.dataset.resumeId =
-    String(resume.id);
-
-  const info =
-    document.createElement("div");
-
+  const info = document.createElement("div");
   info.className = "resume-info";
 
-  const icon =
-    document.createElement("span");
-
+  const icon = document.createElement("span");
   icon.className = "resume-icon";
+  icon.appendChild(createIcon("document"));
 
-  icon.appendChild(
-    createIcon("document")
-  );
-
-  const details =
-    document.createElement("div");
-
+  const details = document.createElement("div");
   details.className = "resume-details";
 
-  const title =
-    document.createElement("strong");
+  const title = document.createElement("strong");
+  title.textContent = getDocumentTitle(resume);
 
-  title.textContent =
-    getDocumentTitle(resume);
+  const date = document.createElement("small");
 
-  const date =
-    document.createElement("small");
-
-  date.textContent =
-    "Updated " +
-    formatDate(
-      resume.updated_at ||
-      resume.created_at
-    );
+  date.textContent = t("date", {
+    date: formatDate(
+      resume.updated_at || resume.created_at
+    )
+  });
 
   details.append(title, date);
   info.append(icon, details);
 
-  const actions =
-    document.createElement("div");
+  const actions = document.createElement("div");
 
   actions.className = "actions";
 
   const editButton = createButton(
     "outline resume-edit-button",
-    "Edit in Resume Builder ↗",
+    t("edit") + " ↗",
     null,
     () => openInResumeBuilder(resume.id)
   );
 
   editButton.setAttribute(
     "aria-label",
-    "Edit " + getDocumentTitle(resume)
+    t("editName", {
+      name: getDocumentTitle(resume)
+    })
   );
 
   const pdfButton = createButton(
     "outline wn-document-pdf-button",
-    "Download PDF",
+    t("download"),
     "download",
     () => downloadResumePDF(resume.id),
     true
   );
 
-  const documentMenu =
-    createDocumentMenu(resume);
-
   actions.append(
     editButton,
     pdfButton,
-    documentMenu
+    createDocumentMenu(resume)
   );
 
   card.append(info, actions);
@@ -980,54 +1310,38 @@ function createResumeCard(resume) {
 
 function createEmptyState() {
 
-  const empty =
-    document.createElement("div");
+  const empty = document.createElement("div");
 
   empty.className = "resume-empty";
 
-  const icon =
-    document.createElement("div");
+  const icon = document.createElement("div");
 
   icon.className = "resume-empty-icon";
+  icon.appendChild(createIcon("filePlus"));
 
-  icon.appendChild(
-    createIcon("filePlus")
-  );
+  const heading = document.createElement("h3");
 
-  const heading =
-    document.createElement("h3");
+  heading.textContent = t("emptyTitle");
 
-  heading.textContent =
-    "Your career starts here";
+  const description = document.createElement("p");
 
-  const description =
-    document.createElement("p");
+  description.textContent = t("emptyDescription");
 
-  description.textContent =
-    "Create your first professional resume " +
-    "and keep your career documents " +
-    "organized in one place.";
+  const link = document.createElement("a");
 
-  const createButton =
-    document.createElement("a");
+  link.className = "button";
+  link.href = getNewResumeURL();
 
-  createButton.className = "button";
-
-  createButton.href =
-    getNewResumeURL();
-
-  createButton.append(
+  link.append(
     createIcon("plus"),
-    document.createTextNode(
-      "Create Your First Resume"
-    )
+    document.createTextNode(t("firstResume"))
   );
 
   empty.append(
     icon,
     heading,
     description,
-    createButton
+    link
   );
 
   return empty;
@@ -1038,33 +1352,28 @@ function createEmptyState() {
 
 function updateResumeCounters() {
 
-  const count =
-    String(savedResumes.length);
+  const count = formatNumber(
+    savedResumes.length
+  );
 
   resumeCount.textContent = count;
-
-  workspaceResumeCount.textContent =
-    count;
+  workspaceResumeCount.textContent = count;
 
 }
 
-/* RENDER DOCUMENT WORKSPACE */
+/* RENDER WORKSPACE */
 
 function renderResumes() {
 
   closeDocumentMenus();
-
   resumeList.replaceChildren();
 
-  clearSearch.hidden =
-    !searchInput.value.length;
-
+  clearSearch.hidden = !searchInput.value.length;
   noSearchResults.hidden = true;
 
   if (!resumesLoaded) {
 
     searchResultCount.textContent = "";
-
     return;
 
   }
@@ -1073,11 +1382,13 @@ function renderResumes() {
 
   const filtered = getFilteredResumes();
 
-  searchResultCount.textContent =
-    filtered.length +
-    " of " +
-    savedResumes.length +
-    " resumes";
+  searchResultCount.textContent = t(
+    "results",
+    {
+      count: formatNumber(filtered.length),
+      total: formatNumber(savedResumes.length)
+    }
+  );
 
   if (!savedResumes.length) {
 
@@ -1092,13 +1403,11 @@ function renderResumes() {
   if (!filtered.length) {
 
     noSearchResults.hidden = false;
-
     return;
 
   }
 
-  const fragment =
-    document.createDocumentFragment();
+  const fragment = document.createDocumentFragment();
 
   filtered.forEach(resume => {
 
@@ -1114,24 +1423,22 @@ function renderResumes() {
 
 /* FETCH USER RESUMES */
 
+const DOCUMENT_COLUMNS =
+  "id,title,content,created_at,updated_at";
+
 async function loadResumes() {
 
   if (!currentUser) return false;
 
   const userId = currentUser.id;
 
-  setStatus(
-    "Loading your resumes...",
-    "info"
-  );
+  setStatus("loading");
 
   try {
 
     const { data, error } = await supabase
       .from("resumes")
-      .select(
-        "id,title,content,created_at,updated_at"
-      )
+      .select(DOCUMENT_COLUMNS)
       .eq("user_id", userId)
       .order("updated_at", {
         ascending: false
@@ -1139,27 +1446,23 @@ async function loadResumes() {
 
     if (error) throw error;
 
-    if (currentUser?.id !== userId) {
-      return false;
-    }
+    if (!verifyOwner(userId)) return false;
 
     savedResumes = data || [];
-
     resumesLoaded = true;
 
     renderResumes();
-
     setStatus("");
 
     return true;
 
   } catch (error) {
 
-    setStatus(
-      "Unable to load resumes: " +
-      errorMessage(error),
-      "error"
-    );
+    reportError("load", error);
+
+    if (verifyOwner(userId)) {
+      setStatus("loadError", "error");
+    }
 
     return false;
 
@@ -1179,19 +1482,15 @@ async function saveResume(event) {
 
   if (!title) {
 
-    setStatus(
-      "Please enter a resume title.",
-      "error"
-    );
-
+    setStatus("titleRequired", "error");
     resumeTitle.focus();
-
     return;
 
   }
 
-  const wasEditing =
-    Boolean(editingResumeId);
+  const userId = currentUser.id;
+  const documentId = editingResumeId;
+  const wasEditing = Boolean(documentId);
 
   const payload = {
     title,
@@ -1199,27 +1498,21 @@ async function saveResume(event) {
     updated_at: new Date().toISOString()
   };
 
-  setBusy(true);
-
-  setStatus(
-    "Saving your resume...",
-    "info"
-  );
+  setBusy(true, "save");
+  setStatus("saving");
 
   try {
 
     let result;
 
-    if (editingResumeId) {
+    if (documentId) {
 
       result = await supabase
         .from("resumes")
         .update(payload)
-        .eq("id", editingResumeId)
-        .eq("user_id", currentUser.id)
-        .select(
-          "id,title,content,created_at,updated_at"
-        )
+        .eq("id", documentId)
+        .eq("user_id", userId)
+        .select(DOCUMENT_COLUMNS)
         .single();
 
     } else {
@@ -1228,51 +1521,43 @@ async function saveResume(event) {
         .from("resumes")
         .insert({
           ...payload,
-          user_id: currentUser.id
+          user_id: userId
         })
-        .select(
-          "id,title,content,created_at,updated_at"
-        )
+        .select(DOCUMENT_COLUMNS)
         .single();
 
     }
 
     if (result.error) throw result.error;
 
+    if (!verifyOwner(userId)) return;
+
     if (!result.data?.id) {
-
-      throw new Error(
-        "Save confirmation was not received."
-      );
-
+      throw new Error("Missing save confirmation");
     }
 
     savedResumes = savedResumes.filter(
       item =>
-        String(item.id) !==
-        String(result.data.id)
+        String(item.id) !== String(result.data.id)
     );
 
     savedResumes.unshift(result.data);
 
+    resumesLoaded = true;
     editingResumeId = result.data.id;
-
-    saveButton.textContent =
-      "Update Resume";
 
     renderResumes();
 
-    const refreshed =
-      await loadResumes();
+    const refreshed = await loadResumes();
+
+    if (!verifyOwner(userId)) return;
 
     setStatus(
       refreshed
-        ? (
-          wasEditing
-            ? "Resume updated successfully."
-            : "Resume saved successfully."
-        )
-        : "Resume saved. Please refresh the dashboard.",
+        ? wasEditing
+          ? "updated"
+          : "saved"
+        : "savedRefresh",
       refreshed ? "success" : "info"
     );
 
@@ -1280,11 +1565,11 @@ async function saveResume(event) {
 
   } catch (error) {
 
-    setStatus(
-      "Unable to save resume: " +
-      errorMessage(error),
-      "error"
-    );
+    reportError("save", error);
+
+    if (verifyOwner(userId)) {
+      setStatus("saveError", "error");
+    }
 
   } finally {
 
@@ -1300,32 +1585,34 @@ function showDialog(dialog) {
 
   if (dialog.open) return true;
 
-  if (typeof dialog.showModal !== "function") {
+  try {
 
-    setStatus(
-      "Please use an updated browser.",
-      "error"
-    );
+    if (typeof dialog.showModal !== "function") {
+      throw new Error("Dialog unsupported");
+    }
+
+    dialog.showModal();
+
+    return true;
+
+  } catch (error) {
+
+    reportError("dialog", error);
+    setStatus("browserError", "error");
 
     return false;
 
   }
 
-  dialog.showModal();
-
-  return true;
-
 }
 
 function closeDialog(dialog) {
 
-  if (dialog.open) {
-    dialog.close();
-  }
+  if (dialog.open) dialog.close();
 
 }
 
-/* RENAME RESUME */
+/* RENAME DOCUMENT */
 
 function openRenameDialog(id) {
 
@@ -1337,10 +1624,9 @@ function openRenameDialog(id) {
 
   selectedRenameId = resume.id;
 
-  renameInput.value =
-    getDocumentTitle(resume);
+  renameInput.value = getDocumentTitle(resume);
 
-  setDialogStatus(renameStatus, "");
+  setDialogStatus(renameStatus);
 
   if (showDialog(renameDialog)) {
 
@@ -1362,26 +1648,21 @@ async function renameResume(event) {
   ) return;
 
   const id = selectedRenameId;
-
+  const userId = currentUser.id;
   const title = renameInput.value.trim();
 
   if (!title) {
 
     setDialogStatus(
-      renameStatus,
-      "Please enter a document name."
+      renameStatus, "nameRequired"
     );
 
     return;
 
   }
 
-  setBusy(true);
-
-  setDialogStatus(renameStatus, "");
-
-  renameConfirm.textContent =
-    "Saving...";
+  setBusy(true, "rename");
+  setDialogStatus(renameStatus);
 
   try {
 
@@ -1392,20 +1673,16 @@ async function renameResume(event) {
         updated_at: new Date().toISOString()
       })
       .eq("id", id)
-      .eq("user_id", currentUser.id)
-      .select(
-        "id,title,content,created_at,updated_at"
-      )
+      .eq("user_id", userId)
+      .select(DOCUMENT_COLUMNS)
       .single();
 
     if (error) throw error;
 
+    if (!verifyOwner(userId)) return;
+
     if (!data?.id) {
-
-      throw new Error(
-        "Rename confirmation was not received."
-      );
-
+      throw new Error("Missing rename confirmation");
     }
 
     savedResumes = savedResumes.map(
@@ -1415,12 +1692,8 @@ async function renameResume(event) {
           : item
     );
 
-    if (
-      String(editingResumeId) === String(id)
-    ) {
-
+    if (String(editingResumeId) === String(id)) {
       resumeTitle.value = title;
-
     }
 
     closeDialog(renameDialog);
@@ -1429,23 +1702,17 @@ async function renameResume(event) {
 
     renderResumes();
 
-    setStatus(
-      "Resume renamed successfully.",
-      "success"
-    );
+    setStatus("renamed", "success");
 
   } catch (error) {
 
-    setDialogStatus(
-      renameStatus,
-      "Unable to rename: " +
-      errorMessage(error)
-    );
+    reportError("rename", error);
+
+    if (verifyOwner(userId)) {
+      setDialogStatus(renameStatus, "renameError");
+    }
 
   } finally {
-
-    renameConfirm.textContent =
-      "Save Name";
 
     setBusy(false);
 
@@ -1453,7 +1720,7 @@ async function renameResume(event) {
 
 }
 
-/* DUPLICATE RESUME */
+/* DUPLICATE DOCUMENT */
 
 function openDuplicateDialog(id) {
 
@@ -1465,16 +1732,14 @@ function openDuplicateDialog(id) {
 
   selectedDuplicateId = resume.id;
 
-  const originalTitle =
-    getDocumentTitle(resume);
+  const suffix = " (" + t("copy") + ")";
 
   duplicateInput.value =
-    originalTitle.slice(0, 113) + " (Copy)";
+    getDocumentTitle(resume)
+      .slice(0, 120 - suffix.length) +
+    suffix;
 
-  setDialogStatus(
-    duplicateStatus,
-    ""
-  );
+  setDialogStatus(duplicateStatus);
 
   if (showDialog(duplicateDialog)) {
 
@@ -1495,17 +1760,18 @@ async function duplicateResume(event) {
     selectedDuplicateId === null
   ) return;
 
-  const original =
-    findResume(selectedDuplicateId);
+  const userId = currentUser.id;
 
-  const title =
-    duplicateInput.value.trim();
+  const original = findResume(
+    selectedDuplicateId
+  );
+
+  const title = duplicateInput.value.trim();
 
   if (!original) {
 
     setDialogStatus(
-      duplicateStatus,
-      "Original resume not found."
+      duplicateStatus, "notFound"
     );
 
     return;
@@ -1515,53 +1781,39 @@ async function duplicateResume(event) {
   if (!title) {
 
     setDialogStatus(
-      duplicateStatus,
-      "Please enter a document name."
+      duplicateStatus, "nameRequired"
     );
 
     return;
 
   }
 
-  setBusy(true);
-
-  setDialogStatus(
-    duplicateStatus,
-    ""
-  );
-
-  duplicateConfirm.textContent =
-    "Creating...";
+  setBusy(true, "duplicate");
+  setDialogStatus(duplicateStatus);
 
   try {
 
     const content = JSON.parse(
-      JSON.stringify(
-        original.content || {}
-      )
+      JSON.stringify(original.content || {})
     );
 
     const { data, error } = await supabase
       .from("resumes")
       .insert({
-        user_id: currentUser.id,
+        user_id: userId,
         title,
         content,
         updated_at: new Date().toISOString()
       })
-      .select(
-        "id,title,content,created_at,updated_at"
-      )
+      .select(DOCUMENT_COLUMNS)
       .single();
 
     if (error) throw error;
 
+    if (!verifyOwner(userId)) return;
+
     if (!data?.id) {
-
-      throw new Error(
-        "Copy confirmation was not received."
-      );
-
+      throw new Error("Missing copy confirmation");
     }
 
     savedResumes.unshift(data);
@@ -1569,28 +1821,26 @@ async function duplicateResume(event) {
     closeDialog(duplicateDialog);
 
     selectedDuplicateId = null;
-
     searchInput.value = "";
 
     renderResumes();
 
-    setStatus(
-      "Resume duplicated successfully.",
-      "success"
-    );
+    setStatus("duplicated", "success");
 
   } catch (error) {
 
-    setDialogStatus(
-      duplicateStatus,
-      "Unable to duplicate: " +
-      errorMessage(error)
-    );
+    reportError("duplicate", error);
+
+    if (verifyOwner(userId)) {
+
+      setDialogStatus(
+        duplicateStatus,
+        "duplicateError"
+      );
+
+    }
 
   } finally {
-
-    duplicateConfirm.textContent =
-      "Create Copy";
 
     setBusy(false);
 
@@ -1598,7 +1848,7 @@ async function duplicateResume(event) {
 
 }
 
-/* CUSTOM DELETE CONFIRMATION */
+/* SECURE DELETE CONFIRMATION */
 
 function openDeleteDialog(id) {
 
@@ -1613,12 +1863,10 @@ function openDeleteDialog(id) {
   deleteResumeName.textContent =
     getDocumentTitle(resume);
 
-  setDialogStatus(deleteStatus, "");
+  setDialogStatus(deleteStatus);
 
   if (showDialog(deleteDialog)) {
-
     deleteCancel.focus();
-
   }
 
 }
@@ -1632,13 +1880,10 @@ async function deleteResume() {
   ) return;
 
   const id = selectedDeleteId;
+  const userId = currentUser.id;
 
-  setBusy(true);
-
-  setDialogStatus(deleteStatus, "");
-
-  deleteConfirm.textContent =
-    "Deleting...";
+  setBusy(true, "delete");
+  setDialogStatus(deleteStatus);
 
   try {
 
@@ -1646,17 +1891,17 @@ async function deleteResume() {
       .from("resumes")
       .delete()
       .eq("id", id)
-      .eq("user_id", currentUser.id)
+      .eq("user_id", userId)
       .select("id");
 
     if (error) throw error;
 
-    if (!data?.length) {
+    if (!verifyOwner(userId)) return;
 
-      throw new Error(
-        "Resume was not deleted. Check permissions."
-      );
-
+    if (!data?.some(
+      item => String(item.id) === String(id)
+    )) {
+      throw new Error("Missing delete confirmation");
     }
 
     if (
@@ -1672,8 +1917,7 @@ async function deleteResume() {
     }
 
     savedResumes = savedResumes.filter(
-      item =>
-        String(item.id) !== String(id)
+      item => String(item.id) !== String(id)
     );
 
     closeDialog(deleteDialog);
@@ -1682,23 +1926,17 @@ async function deleteResume() {
 
     renderResumes();
 
-    setStatus(
-      "Resume deleted successfully.",
-      "success"
-    );
+    setStatus("deleted", "success");
 
   } catch (error) {
 
-    setDialogStatus(
-      deleteStatus,
-      "Unable to delete: " +
-      errorMessage(error)
-    );
+    reportError("delete", error);
+
+    if (verifyOwner(userId)) {
+      setDialogStatus(deleteStatus, "deleteError");
+    }
 
   } finally {
-
-    deleteConfirm.textContent =
-      "Delete Resume";
 
     setBusy(false);
 
@@ -1706,13 +1944,7 @@ async function deleteResume() {
 
 }
 
-/* PDF EXPORT — PRINTABLE RESUME */
-
-/*
- * Uses the browser's native print system.
- * No external PDF service.
- * Resume data remains in the browser.
- */
+/* PRINTABLE PDF EXPORT */
 
 function escapeHTML(value) {
 
@@ -1733,28 +1965,25 @@ function downloadResumePDF(id) {
 
   if (!resume) {
 
-    setStatus(
-      "Resume not found.",
-      "error"
-    );
-
+    setStatus("notFound", "error");
     return;
 
   }
 
   const content = resume.content || {};
+  const title = getDocumentTitle(resume);
 
-  const title =
-    getDocumentTitle(resume);
+  /*
+   * Preserve original resume content and
+   * English document section headings.
+   * Only the print interface is localized.
+   */
 
   const sections = [
 
     ["Professional Summary", content.summary],
-
     ["Professional Experience", content.experience],
-
     ["Education", content.education],
-
     ["Skills", content.skills]
 
   ];
@@ -1767,25 +1996,18 @@ function downloadResumePDF(id) {
     .map(([heading, value]) => `
       <section>
         <h2>${escapeHTML(heading)}</h2>
-        <div class="content">
-          ${escapeHTML(value.trim())}
-        </div>
+        <div class="content">${escapeHTML(
+          value.trim()
+        )}</div>
       </section>
     `)
     .join("");
 
-  const printWindow = window.open(
-    "",
-    "_blank"
-  );
+  const printWindow = window.open("", "_blank");
 
   if (!printWindow) {
 
-    setStatus(
-      "Please allow pop-ups to export your PDF.",
-      "error"
-    );
-
+    setStatus("popupError", "error");
     return;
 
   }
@@ -1798,7 +2020,7 @@ function downloadResumePDF(id) {
 
     printWindow.document.write(`
 <!doctype html>
-<html lang="en">
+<html lang="${getLanguage()}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport"
@@ -1948,13 +2170,10 @@ h2 {
 <div class="toolbar">
 
   <button id="printResume" type="button">
-    Save / Print PDF
+    ${escapeHTML(t("print"))}
   </button>
 
-  <p>
-    Choose Save as PDF in your browser,
-    or use the iOS print and share options.
-  </p>
+  <p>${escapeHTML(t("printHelp"))}</p>
 
 </div>
 
@@ -1962,19 +2181,15 @@ h2 {
 
   <header>
 
-    <h1>
-      ${escapeHTML(
-        content.fullName || title
-      )}
-    </h1>
+    <h1>${escapeHTML(
+      content.fullName || title
+    )}</h1>
 
     ${
       content.professionalTitle
         ? `
           <div class="professional-title">
-            ${escapeHTML(
-              content.professionalTitle
-            )}
+            ${escapeHTML(content.professionalTitle)}
           </div>
         `
         : ""
@@ -2009,32 +2224,105 @@ h2 {
         () => printWindow.print()
       );
 
-    setStatus(
-      "PDF preview opened. Use Save / Print PDF.",
-      "success"
-    );
+    setStatus("pdfReady", "success");
 
   } catch (error) {
 
+    reportError("pdf", error);
+
     printWindow.close();
 
-    setStatus(
-      "Unable to prepare PDF: " +
-      errorMessage(error),
-      "error"
-    );
+    setStatus("pdfError", "error");
 
   }
 
 }
 
-/* LOG OUT */
+/* INTERNATIONAL INTERFACE REFRESH */
+
+function refreshLanguage() {
+
+  if (currentUser) {
+
+    welcome.textContent = t(
+      "welcome",
+      {
+        name: currentUser.email || t("user")
+      }
+    );
+
+  }
+
+  if (!loading.hidden) {
+    loading.textContent = t(loadingKey);
+  }
+
+  statusMessages.forEach((key, element) => {
+
+    element.textContent =
+      key ? t(key) : "";
+
+  });
+
+  updateActionLabels();
+
+  renderResumes();
+
+  if (selectedDeleteId !== null) {
+
+    const resume = findResume(selectedDeleteId);
+
+    if (resume) {
+
+      deleteResumeName.textContent =
+        getDocumentTitle(resume);
+
+    }
+
+  }
+
+}
+
+/* LANGUAGE EVENTS */
+
+document.addEventListener(
+  "worknely:languagechange",
+  refreshLanguage
+);
+
+document.addEventListener(
+  "worknely:localizationready",
+  refreshLanguage
+);
+
+window.addEventListener(
+  "pageshow",
+  refreshLanguage
+);
+
+window.addEventListener(
+  "storage",
+  event => {
+
+    if (
+      event.key === "worknely.language" ||
+      event.key === null
+    ) {
+
+      refreshLanguage();
+
+    }
+
+  }
+);
+
+/* LOGOUT */
 
 async function logOut() {
 
   if (isBusy) return;
 
-  setBusy(true);
+  setBusy(true, "logout");
 
   try {
 
@@ -2043,39 +2331,29 @@ async function logOut() {
 
     if (error) throw error;
 
-    currentUser = null;
-    savedResumes = [];
-    resumesLoaded = false;
-
-    resumeList.replaceChildren();
-
-    showLoading("Signing out...");
+    clearSession();
 
     redirectToLogin();
 
   } catch (error) {
 
+    reportError("logout", error);
+
     setBusy(false);
 
-    const message =
-      "Unable to sign out: " +
-      errorMessage(error);
+    setStatus("logoutError", "error");
 
-    setStatus(message, "error");
-
-    window.alert(message);
+    window.alert(t("logoutError"));
 
   }
 
 }
 
-/* DASHBOARD INITIALIZATION */
+/* INITIALIZATION */
 
 async function initializeDashboard() {
 
-  showLoading(
-    "Checking your Worknely session..."
-  );
+  showLoading("checking");
 
   try {
 
@@ -2085,24 +2363,17 @@ async function initializeDashboard() {
     if (error || !data?.user) {
 
       redirectToLogin();
-
       return;
 
     }
 
     currentUser = data.user;
 
-    welcome.textContent =
-      "Welcome back, " +
-      (
-        currentUser.email ||
-        "Worknely user"
-      ) +
-      "!";
+    refreshLanguage();
 
     showApp();
 
-    setBusy(true);
+    setBusy(true, "load");
 
     try {
 
@@ -2116,68 +2387,57 @@ async function initializeDashboard() {
 
   } catch (error) {
 
-    showLoading(
-      "Unable to verify your session. " +
-      "Please try again."
-    );
+    reportError("session", error);
+
+    showLoading("sessionError");
 
   }
 
 }
 
-/* APPLICATION EVENTS */
+/* FORM EVENTS */
 
 resumeForm.addEventListener(
-  "submit",
-  saveResume
+  "submit", saveResume
 );
 
 newButton.addEventListener(
-  "click",
-  () => resetForm()
+  "click", () => resetForm()
 );
 
 logoutButton.addEventListener(
-  "click",
-  logOut
+  "click", logOut
 );
 
-/* SEARCH EVENTS */
+/* SEARCH AND SORT EVENTS */
 
 searchInput.addEventListener(
-  "input",
-  renderResumes
+  "input", renderResumes
 );
 
 sortInput.addEventListener(
-  "change",
-  renderResumes
+  "change", renderResumes
 );
 
 clearSearch.addEventListener(
-  "click",
-  clearDocumentSearch
+  "click", clearDocumentSearch
 );
 
 resetSearch.addEventListener(
-  "click",
-  clearDocumentSearch
+  "click", clearDocumentSearch
 );
 
 /* RENAME EVENTS */
 
 renameForm.addEventListener(
-  "submit",
-  renameResume
+  "submit", renameResume
 );
 
 renameCancel.addEventListener(
   "click",
   () => {
 
-    if (!isBusy) {
-      closeDialog(renameDialog);
-    }
+    if (!isBusy) closeDialog(renameDialog);
 
   }
 );
@@ -2187,11 +2447,7 @@ renameDialog.addEventListener(
   () => {
 
     selectedRenameId = null;
-
-    setDialogStatus(
-      renameStatus,
-      ""
-    );
+    setDialogStatus(renameStatus);
 
   }
 );
@@ -2199,17 +2455,14 @@ renameDialog.addEventListener(
 /* DUPLICATE EVENTS */
 
 duplicateForm.addEventListener(
-  "submit",
-  duplicateResume
+  "submit", duplicateResume
 );
 
 duplicateCancel.addEventListener(
   "click",
   () => {
 
-    if (!isBusy) {
-      closeDialog(duplicateDialog);
-    }
+    if (!isBusy) closeDialog(duplicateDialog);
 
   }
 );
@@ -2219,11 +2472,7 @@ duplicateDialog.addEventListener(
   () => {
 
     selectedDuplicateId = null;
-
-    setDialogStatus(
-      duplicateStatus,
-      ""
-    );
+    setDialogStatus(duplicateStatus);
 
   }
 );
@@ -2231,17 +2480,14 @@ duplicateDialog.addEventListener(
 /* DELETE EVENTS */
 
 deleteConfirm.addEventListener(
-  "click",
-  deleteResume
+  "click", deleteResume
 );
 
 deleteCancel.addEventListener(
   "click",
   () => {
 
-    if (!isBusy) {
-      closeDialog(deleteDialog);
-    }
+    if (!isBusy) closeDialog(deleteDialog);
 
   }
 );
@@ -2251,11 +2497,7 @@ deleteDialog.addEventListener(
   () => {
 
     selectedDeleteId = null;
-
-    setDialogStatus(
-      deleteStatus,
-      ""
-    );
+    setDialogStatus(deleteStatus);
 
   }
 );
@@ -2272,25 +2514,22 @@ deleteDialog.addEventListener(
     "cancel",
     event => {
 
-      if (isBusy) {
-        event.preventDefault();
-      }
+      if (isBusy) event.preventDefault();
 
     }
   );
 
 });
 
-/* CLOSE MENUS OUTSIDE DOCUMENT CARD */
+/* DOCUMENT MENU EVENTS */
 
 document.addEventListener(
   "click",
   event => {
 
     if (
-      !event.target.closest(
-        ".wn-document-menu"
-      )
+      event.target instanceof Element &&
+      !event.target.closest(".wn-document-menu")
     ) {
 
       closeDocumentMenus();
@@ -2321,33 +2560,45 @@ window.addEventListener(
 /* SUPABASE AUTH STATE */
 
 supabase.auth.onAuthStateChange(
-  event => {
+  (event, session) => {
 
     if (
       event === "SIGNED_OUT" &&
       currentUser
     ) {
 
-      currentUser = null;
-      savedResumes = [];
-      resumesLoaded = false;
-
-      resumeList.replaceChildren();
-
-      showLoading("Signing out...");
+      clearSession();
 
       redirectToLogin();
+
+      return;
+
+    }
+
+    if (
+      currentUser &&
+      session?.user &&
+      session.user.id !== currentUser.id
+    ) {
+
+      clearSession();
+
+      window.location.reload();
 
     }
 
   }
 );
 
-/* START WORKNELY V7.14 */
+/* START WORKNELY V7.15 */
 
 initializeDashboard();
 
+console.info(
+  "Worknely V7.15 International Dashboard initialized."
+);
+
 /*
- * END WORKNELY V7.14
- * ADVANCED DOCUMENT MANAGEMENT
+ * END WORKNELY V7.15
+ * INTERNATIONAL DASHBOARD ENGINE
  */
