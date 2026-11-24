@@ -1,1 +1,56 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#06B6D4"/><stop offset=".5" stop-color="#2563EB"/><stop offset="1" stop-color="#7C3AED"/></linearGradient></defs><rect width="64" height="64" rx="15" fill="#0B1F3B"/><path d="m9 18 13 29 10-23 10 23 13-29" fill="none" stroke="url(#g)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="128"
+     height="128"
+     viewBox="0 0 128 128"
+     preserveAspectRatio="xMidYMid meet"
+     role="img"
+     aria-label="Worknely">
+
+  <title>Worknely</title>
+
+  <defs>
+
+    <linearGradient
+      id="worknelyGradient"
+      x1="0%"
+      y1="0%"
+      x2="100%"
+      y2="100%">
+
+      <stop
+        offset="0%"
+        stop-color="#00CFFF"/>
+
+      <stop
+        offset="50%"
+        stop-color="#5424FF"/>
+
+      <stop
+        offset="100%"
+        stop-color="#EC22AD"/>
+
+    </linearGradient>
+
+  </defs>
+
+  <rect
+    width="128"
+    height="128"
+    rx="30"
+    fill="url(#worknelyGradient)"/>
+
+  <path
+    d="M26 36
+       L44 92
+       L64 54
+       L84 92
+       L102 36"
+    fill="none"
+    stroke="#FFFFFF"
+    stroke-width="13"
+    stroke-linecap="round"
+    stroke-linejoin="round"/>
+
+</svg>
+
