@@ -1,27 +1,23 @@
+
 /*
- * WORKNELY V7.14
- * Advanced Resume Persistence Engine
+ * WORKNELY V7.16.8
+ * Advanced Design & Account Persistence
  *
- * Persistent Document Naming
- * Smart Resume Updates
- * Duplicate Document Compatibility
- * Supabase Authentication
+ * Atomic Resume and Design Persistence
+ * International Status Messages
+ * Professional Template Restoration
  * Account Ownership Validation
- * Safe Resume Loading
- * Save Protection
+ * Session Change Protection
+ * Persistent Document Naming
  * Success Celebration Integration
  *
- * Compatible with:
- * - dashboard.html V7.14
- * - dashboard.css V7.14
- * - dashboard.js V7.14
- * - worknely-auth.js V7.6
- * - Worknely Resume Builder
- * - Worknely GitHub Pages
+ * Worknely — People Technology
  */
 
 import { createClient } from
   "https://esm.sh/@supabase/supabase-js@2";
+
+const VERSION = "7.16.8";
 
 /* SUPABASE CONFIGURATION */
 
@@ -45,6 +41,8 @@ const supabase =
     }
   );
 
+window.worknelySupabase = supabase;
+
 /* DOM ELEMENTS */
 
 const saveButton =
@@ -66,74 +64,268 @@ const builderFields = {
 /* APPLICATION STATE */
 
 const params =
-  new URLSearchParams(
-    window.location.search
-  );
+  new URLSearchParams(window.location.search);
 
 let editingResumeId =
   params.get("edit") || null;
 
 let editingResumeTitle = null;
-
 let editingOwnerId = null;
-
-let resumeLoaded =
-  !editingResumeId;
+let resumeLoaded = !editingResumeId;
 
 let isBusy = false;
-
 let isLoading = false;
-
 let initialized = false;
+
+let sessionGeneration = 0;
+let currentSessionOwner = null;
+let pendingReload = false;
+let activeStatus = null;
+
+const LANGUAGES = [
+  "en", "ro", "it", "de", "fr", "es"
+];
+
+/* INTERNATIONAL STATUS DICTIONARY */
+
+const translations = {
+
+  en: {
+    loading: "Loading your saved resume...",
+    loginOpen: "Please log in to open this saved resume.",
+    loaded: "Resume and design loaded successfully. Save to My Account to update your document.",
+    loadError: "Unable to open the saved resume. Please try again from My Dashboard.",
+    unsafeUpdate: "The saved resume has not been loaded. Reopen it from My Dashboard.",
+    empty: "Please complete your resume before saving.",
+    saving: "Saving your resume and design...",
+    updating: "Updating your resume and design...",
+    loginSave: "Please log in to save your resume.",
+    ownerError: "This document belongs to another session. Reopen it from My Dashboard.",
+    sessionChanged: "Your session has changed. Please log in again.",
+    savedSessionChanged: "The save was confirmed, but your session has changed. Reopen My Dashboard.",
+    saved: "Resume and design saved successfully!",
+    updated: "Resume and design updated successfully!",
+    saveError: "Unable to save your resume. Please try again.",
+    designError: "The Design Studio is unavailable. Reload Worknely before saving.",
+    signedOut: "Your session has ended. Please log in again.",
+    invalidId: "Invalid document identifier.",
+    resume: "Resume",
+    myResume: "My Resume"
+  },
+
+  ro: {
+    loading: "Se încarcă CV-ul salvat...",
+    loginOpen: "Autentifică-te pentru a deschide acest CV.",
+    loaded: "CV-ul și designul au fost încărcate. Salvează în cont pentru a actualiza documentul.",
+    loadError: "CV-ul nu a putut fi deschis. Încearcă din nou din panoul de control.",
+    unsafeUpdate: "CV-ul salvat nu a fost încărcat. Redeschide-l din panoul de control.",
+    empty: "Completează CV-ul înainte de salvare.",
+    saving: "Se salvează CV-ul și designul...",
+    updating: "Se actualizează CV-ul și designul...",
+    loginSave: "Autentifică-te pentru a salva CV-ul.",
+    ownerError: "Documentul aparține altei sesiuni. Redeschide-l din panoul de control.",
+    sessionChanged: "Sesiunea s-a schimbat. Autentifică-te din nou.",
+    savedSessionChanged: "Salvarea a fost confirmată, dar sesiunea s-a schimbat. Redeschide panoul de control.",
+    saved: "CV-ul și designul au fost salvate cu succes!",
+    updated: "CV-ul și designul au fost actualizate cu succes!",
+    saveError: "CV-ul nu a putut fi salvat. Încearcă din nou.",
+    designError: "Studioul de design nu este disponibil. Reîncarcă Worknely înainte de salvare.",
+    signedOut: "Sesiunea s-a încheiat. Autentifică-te din nou.",
+    invalidId: "Identificator de document invalid.",
+    resume: "CV",
+    myResume: "CV-ul meu"
+  },
+
+  it: {
+    loading: "Caricamento del curriculum salvato...",
+    loginOpen: "Accedi per aprire questo curriculum.",
+    loaded: "Curriculum e design caricati. Salva nel tuo account per aggiornare il documento.",
+    loadError: "Impossibile aprire il curriculum. Riprova dalla dashboard.",
+    unsafeUpdate: "Il curriculum non è stato caricato. Riaprilo dalla dashboard.",
+    empty: "Completa il curriculum prima di salvarlo.",
+    saving: "Salvataggio del curriculum e del design...",
+    updating: "Aggiornamento del curriculum e del design...",
+    loginSave: "Accedi per salvare il curriculum.",
+    ownerError: "Il documento appartiene a un'altra sessione. Riaprilo dalla dashboard.",
+    sessionChanged: "La sessione è cambiata. Accedi nuovamente.",
+    savedSessionChanged: "Salvataggio confermato, ma la sessione è cambiata. Riapri la dashboard.",
+    saved: "Curriculum e design salvati con successo!",
+    updated: "Curriculum e design aggiornati con successo!",
+    saveError: "Impossibile salvare il curriculum. Riprova.",
+    designError: "Lo studio di design non è disponibile. Ricarica Worknely.",
+    signedOut: "La sessione è terminata. Accedi nuovamente.",
+    invalidId: "Identificativo del documento non valido.",
+    resume: "CV",
+    myResume: "Il mio CV"
+  },
+
+  de: {
+    loading: "Gespeicherter Lebenslauf wird geladen...",
+    loginOpen: "Melde dich an, um diesen Lebenslauf zu öffnen.",
+    loaded: "Lebenslauf und Design wurden geladen. Speichere im Konto, um das Dokument zu aktualisieren.",
+    loadError: "Der Lebenslauf konnte nicht geöffnet werden. Versuche es erneut im Dashboard.",
+    unsafeUpdate: "Der Lebenslauf wurde nicht geladen. Öffne ihn erneut im Dashboard.",
+    empty: "Vervollständige deinen Lebenslauf vor dem Speichern.",
+    saving: "Lebenslauf und Design werden gespeichert...",
+    updating: "Lebenslauf und Design werden aktualisiert...",
+    loginSave: "Melde dich an, um deinen Lebenslauf zu speichern.",
+    ownerError: "Das Dokument gehört zu einer anderen Sitzung. Öffne es erneut im Dashboard.",
+    sessionChanged: "Die Sitzung wurde geändert. Melde dich erneut an.",
+    savedSessionChanged: "Speicherung bestätigt, aber die Sitzung wurde geändert. Öffne das Dashboard erneut.",
+    saved: "Lebenslauf und Design erfolgreich gespeichert!",
+    updated: "Lebenslauf und Design erfolgreich aktualisiert!",
+    saveError: "Der Lebenslauf konnte nicht gespeichert werden. Versuche es erneut.",
+    designError: "Das Designstudio ist nicht verfügbar. Lade Worknely erneut.",
+    signedOut: "Deine Sitzung wurde beendet. Melde dich erneut an.",
+    invalidId: "Ungültige Dokument-ID.",
+    resume: "Lebenslauf",
+    myResume: "Mein Lebenslauf"
+  },
+
+  fr: {
+    loading: "Chargement de votre CV enregistré...",
+    loginOpen: "Connectez-vous pour ouvrir ce CV.",
+    loaded: "CV et design chargés. Enregistrez dans votre compte pour actualiser le document.",
+    loadError: "Impossible d'ouvrir le CV. Réessayez depuis le tableau de bord.",
+    unsafeUpdate: "Le CV n'a pas été chargé. Rouvrez-le depuis le tableau de bord.",
+    empty: "Complétez votre CV avant de l'enregistrer.",
+    saving: "Enregistrement du CV et du design...",
+    updating: "Mise à jour du CV et du design...",
+    loginSave: "Connectez-vous pour enregistrer votre CV.",
+    ownerError: "Ce document appartient à une autre session. Rouvrez-le depuis le tableau de bord.",
+    sessionChanged: "Votre session a changé. Reconnectez-vous.",
+    savedSessionChanged: "Enregistrement confirmé, mais la session a changé. Rouvrez le tableau de bord.",
+    saved: "CV et design enregistrés avec succès !",
+    updated: "CV et design actualisés avec succès !",
+    saveError: "Impossible d'enregistrer le CV. Réessayez.",
+    designError: "Le studio de design est indisponible. Rechargez Worknely.",
+    signedOut: "Votre session est terminée. Reconnectez-vous.",
+    invalidId: "Identifiant de document invalide.",
+    resume: "CV",
+    myResume: "Mon CV"
+  },
+
+  es: {
+    loading: "Cargando tu currículum guardado...",
+    loginOpen: "Inicia sesión para abrir este currículum.",
+    loaded: "Currículum y diseño cargados. Guarda en tu cuenta para actualizar el documento.",
+    loadError: "No se pudo abrir el currículum. Inténtalo desde el panel de control.",
+    unsafeUpdate: "El currículum no se ha cargado. Ábrelo desde el panel de control.",
+    empty: "Completa tu currículum antes de guardarlo.",
+    saving: "Guardando tu currículum y diseño...",
+    updating: "Actualizando tu currículum y diseño...",
+    loginSave: "Inicia sesión para guardar tu currículum.",
+    ownerError: "El documento pertenece a otra sesión. Ábrelo desde el panel de control.",
+    sessionChanged: "Tu sesión ha cambiado. Inicia sesión nuevamente.",
+    savedSessionChanged: "Guardado confirmado, pero la sesión ha cambiado. Abre el panel de control.",
+    saved: "¡Currículum y diseño guardados correctamente!",
+    updated: "¡Currículum y diseño actualizados correctamente!",
+    saveError: "No se pudo guardar el currículum. Inténtalo de nuevo.",
+    designError: "El estudio de diseño no está disponible. Recarga Worknely.",
+    signedOut: "Tu sesión ha terminado. Inicia sesión nuevamente.",
+    invalidId: "Identificador de documento no válido.",
+    resume: "CV",
+    myResume: "Mi CV"
+  }
+
+};
+
+/* LANGUAGE MANAGEMENT */
+
+function getLanguage() {
+
+  let stored = null;
+
+  try {
+    stored = localStorage.getItem(
+      "worknely.language"
+    );
+  } catch {}
+
+  const language = String(
+    window.WorknelyLocalization
+      ?.getLanguage?.() ||
+    stored ||
+    document.documentElement.lang ||
+    "en"
+  ).toLowerCase().split("-")[0];
+
+  return LANGUAGES.includes(language)
+    ? language
+    : "en";
+
+}
+
+function t(key) {
+
+  return translations[getLanguage()]?.[key] ||
+    translations.en[key] ||
+    key;
+
+}
 
 /* STATUS MANAGEMENT */
 
-function showStatus(
-  message,
-  type = "info"
-) {
+function renderStatus() {
 
   if (!statusElement) return;
 
-  statusElement.textContent =
-    message || "";
+  if (!activeStatus) {
 
-  if (message) {
-
-    statusElement.dataset.status =
-      type;
-
-    statusElement.dataset.wnStatus =
-      type;
-
-  } else {
+    statusElement.textContent = "";
 
     delete statusElement.dataset.status;
-
     delete statusElement.dataset.wnStatus;
+
+    return;
 
   }
 
+  statusElement.dataset.status =
+    activeStatus.type;
+
+  statusElement.dataset.wnStatus =
+    activeStatus.type;
+
+  statusElement.textContent =
+    t(activeStatus.key);
+
 }
 
-function getErrorMessage(error) {
+function showStatus(key, type = "info") {
 
-  return error?.message ||
-    "Unknown error";
+  activeStatus = key
+    ? { key, type }
+    : null;
+
+  renderStatus();
 
 }
 
-/* SAVE BUTTON STATE */
+document.addEventListener(
+  "worknely:languagechange",
+  renderStatus
+);
+
+document.addEventListener(
+  "worknely:localizationready",
+  renderStatus
+);
+
+window.addEventListener(
+  "pageshow",
+  renderStatus
+);
+
+/* SAVE BUTTON PROTECTION */
 
 function syncSaveButton() {
 
   if (!saveButton) return;
 
-  const disabled =
-    isBusy || isLoading;
+  const disabled = isBusy || isLoading;
 
-  saveButton.disabled =
-    disabled;
+  saveButton.disabled = disabled;
 
   saveButton.setAttribute(
     "aria-busy",
@@ -142,7 +334,44 @@ function syncSaveButton() {
 
 }
 
-/* RESUME DATA COLLECTION */
+/* DOCUMENT ID VALIDATION */
+
+function validResumeId(value) {
+
+  return typeof value === "string" &&
+
+    /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+      .test(value);
+
+}
+
+/* RESUME CONTENT */
+
+function normalizeContent(content) {
+
+  const source =
+
+    content &&
+    typeof content === "object" &&
+    !Array.isArray(content)
+
+      ? content
+      : {};
+
+  const normalized = {};
+
+  for (const key of Object.keys(builderFields)) {
+
+    normalized[key] =
+      typeof source[key] === "string"
+        ? source[key]
+        : "";
+
+  }
+
+  return normalized;
+
+}
 
 function collectResume() {
 
@@ -155,27 +384,25 @@ function collectResume() {
       document.getElementById(id);
 
     content[key] =
-      input
-        ? input.value.trim()
-        : "";
+      input ? input.value.trim() : "";
 
   }
 
-  return content;
+  return normalizeContent(content);
 
 }
-
-/* VALIDATE RESUME CONTENT */
 
 function hasResumeContent(content) {
 
   return [
+
     content.fullName,
     content.professionalTitle,
     content.summary,
     content.experience,
     content.skills,
     content.education
+
   ].some(value =>
 
     typeof value === "string" &&
@@ -184,26 +411,6 @@ function hasResumeContent(content) {
   );
 
 }
-
-/* SAFE CONTENT NORMALIZATION */
-
-function normalizeContent(content) {
-
-  if (
-    !content ||
-    typeof content !== "object" ||
-    Array.isArray(content)
-  ) {
-
-    return {};
-
-  }
-
-  return content;
-
-}
-
-/* RESTORE SAVED RESUME */
 
 function fillBuilder(content = {}) {
 
@@ -218,24 +425,147 @@ function fillBuilder(content = {}) {
 
     if (!input) continue;
 
-    input.value =
-      typeof safeContent[key] === "string"
-        ? safeContent[key]
-        : "";
+    input.value = safeContent[key];
 
   }
 
+  notifyResumeChange();
+
 }
 
-/* DOCUMENT TITLE MANAGEMENT */
+/* DESIGN STUDIO INTEGRATION */
 
-/*
- * Document names and professional
- * resume titles are separate values.
- *
- * Existing document names are never
- * regenerated during content updates.
- */
+function getDesignEngine() {
+
+  return window.WorknelyTemplatePersistence ||
+    null;
+
+}
+
+function designEngineAvailable() {
+
+  const engine = getDesignEngine();
+
+  return Boolean(
+
+    engine &&
+    window.WorknelyTemplates &&
+    window.WorknelyLivePreview &&
+    window.WorknelyPDFExport &&
+
+    typeof engine.captureDesign === "function" &&
+    typeof engine.normalizeDesign === "function" &&
+    typeof engine.restoreDesign === "function"
+
+  );
+
+}
+
+function captureResumeDesign() {
+
+  if (!designEngineAvailable()) {
+
+    throw new Error("DESIGN_UNAVAILABLE");
+
+  }
+
+  const engine = getDesignEngine();
+
+  return engine.normalizeDesign(
+    engine.captureDesign()
+  );
+
+}
+
+function restoreResumeDesign(value) {
+
+  if (!designEngineAvailable()) {
+
+    throw new Error("DESIGN_UNAVAILABLE");
+
+  }
+
+  const engine = getDesignEngine();
+
+  const design =
+    engine.normalizeDesign(value);
+
+  /*
+   * Legacy documents may not contain
+   * an explicit document language.
+   *
+   * Use the current interface language
+   * rather than inheriting another CV's
+   * document language.
+   */
+
+  if (!design.documentLanguage) {
+
+    design.documentLanguage =
+      getLanguage();
+
+  }
+
+  const result = engine.restoreDesign(
+    design,
+    { persist: true }
+  );
+
+  if (result === false || result?.ok === false) {
+
+    throw new Error("DESIGN_UNAVAILABLE");
+
+  }
+
+  window.WorknelyColorCustomization
+    ?.refresh?.();
+
+  window.WorknelyPDFExport
+    ?.refresh?.();
+
+  return design;
+
+}
+
+/* PREVIEW SYNCHRONIZATION */
+
+function notifyResumeChange() {
+
+  document.dispatchEvent(
+
+    new CustomEvent(
+      "worknely:resumechange",
+      {
+        detail: {
+          source: "account-persistence",
+          version: VERSION
+        }
+      }
+    )
+
+  );
+
+  window.WorknelyLivePreview
+    ?.refresh?.();
+
+}
+
+function refreshResumePreview() {
+
+  const generateButton =
+    document.getElementById("buildResume");
+
+  if (generateButton) {
+
+    generateButton.click();
+
+  }
+
+  notifyResumeChange();
+
+}
+
+/* DOCUMENT NAMING */
 
 function generateDocumentTitle(content) {
 
@@ -249,21 +579,13 @@ function generateDocumentTitle(content) {
       content.fullName || ""
     ).trim();
 
-  let title;
+  const title =
 
-  if (professionalTitle) {
+    professionalTitle ||
 
-    title = professionalTitle;
-
-  } else if (fullName) {
-
-    title = fullName + " Resume";
-
-  } else {
-
-    title = "My Resume";
-
-  }
+    (fullName
+      ? fullName + " · " + t("resume")
+      : t("myResume"));
 
   return Array.from(title)
     .slice(0, 120)
@@ -290,7 +612,7 @@ function celebrateSaveSuccess() {
 
 }
 
-/* URL & DOCUMENT STATE */
+/* DOCUMENT IDENTITY */
 
 function setEditingResume(
   id,
@@ -325,9 +647,7 @@ function setEditingResume(
 
     } else {
 
-      url.searchParams.delete(
-        "edit"
-      );
+      url.searchParams.delete("edit");
 
     }
 
@@ -339,25 +659,22 @@ function setEditingResume(
       url.hash
     );
 
-  } catch (error) {
+  } catch {
 
     console.warn(
-      "Worknely URL update warning:",
-      error
+      "Worknely: URL synchronization unavailable."
     );
 
   }
 
 }
 
-/* AUTHENTICATED USER */
+/* AUTHENTICATION */
 
 async function getAuthenticatedUser() {
 
-  const {
-    data,
-    error
-  } = await supabase.auth.getUser();
+  const { data, error } =
+    await supabase.auth.getUser();
 
   if (error || !data?.user) {
 
@@ -369,20 +686,70 @@ async function getAuthenticatedUser() {
 
 }
 
-/* GENERATE RESUME PREVIEW */
+async function verifySession(
+  ownerId,
+  generation
+) {
 
-function refreshResumePreview() {
+  if (generation !== sessionGeneration) {
 
-  const generateButton =
-    document.getElementById(
-      "buildResume"
-    );
-
-  if (generateButton) {
-
-    generateButton.click();
+    return false;
 
   }
+
+  const user =
+    await getAuthenticatedUser();
+
+  return Boolean(
+
+    user &&
+    user.id === ownerId &&
+    generation === sessionGeneration
+
+  );
+
+}
+
+/* SESSION DATA CLEANUP */
+
+function clearPrivateDocument() {
+
+  resumeLoaded = !editingResumeId;
+
+  editingOwnerId = null;
+  editingResumeTitle = null;
+
+  fillBuilder({});
+
+  const preview =
+    document.getElementById("builderPreview");
+
+  if (preview) {
+
+    preview.textContent = "";
+
+  }
+
+  getDesignEngine()
+    ?.clearContext?.();
+
+  try {
+
+    if (designEngineAvailable()) {
+
+      restoreResumeDesign(null);
+
+    }
+
+  } catch {
+
+    console.warn(
+      "Worknely: design reset unavailable."
+    );
+
+  }
+
+  notifyResumeChange();
 
 }
 
@@ -396,25 +763,43 @@ async function loadExistingResume() {
     isBusy
   ) {
 
-    return;
+    return false;
+
+  }
+
+  if (!validResumeId(editingResumeId)) {
+
+    resumeLoaded = false;
+
+    showStatus(
+      "invalidId",
+      "error"
+    );
+
+    return false;
 
   }
 
   const requestedId =
     editingResumeId;
 
-  resumeLoaded = false;
+  const generation =
+    sessionGeneration;
 
+  resumeLoaded = false;
   isLoading = true;
 
   syncSaveButton();
 
-  showStatus(
-    "Loading your saved resume...",
-    "info"
-  );
+  showStatus("loading");
 
   try {
+
+    if (!designEngineAvailable()) {
+
+      throw new Error("DESIGN_UNAVAILABLE");
+
+    }
 
     const user =
       await getAuthenticatedUser();
@@ -422,83 +807,66 @@ async function loadExistingResume() {
     if (!user) {
 
       showStatus(
-        "Please log in to open this saved resume.",
+        "loginOpen",
         "error"
       );
 
-      return;
+      return false;
 
     }
 
-    const {
-      data,
-      error
-    } = await supabase
+    if (generation !== sessionGeneration) {
 
-      .from("resumes")
-
-      .select(
-        "id,title,content"
-      )
-
-      .eq(
-        "id",
-        requestedId
-      )
-
-      .eq(
-        "user_id",
-        user.id
-      )
-
-      .single();
-
-    if (error) {
-
-      throw error;
+      return false;
 
     }
+
+    const { data, error } =
+      await supabase
+
+        .from("resumes")
+
+        .select(
+          "id,title,content,design"
+        )
+
+        .eq("id", requestedId)
+
+        .eq("user_id", user.id)
+
+        .single();
+
+    if (error) throw error;
 
     if (!data?.id) {
 
-      throw new Error(
-        "Resume not found."
-      );
+      throw new Error("DOCUMENT_NOT_FOUND");
 
     }
 
     if (
-      editingResumeId !== requestedId
+
+      editingResumeId !== requestedId ||
+
+      !(await verifySession(
+        user.id,
+        generation
+      ))
+
     ) {
 
-      return;
+      return false;
 
     }
 
-    /* VERIFY SESSION AGAIN */
+    /*
+     * Restore design and content
+     * from the same database row.
+     */
 
-    const verifiedUser =
-      await getAuthenticatedUser();
+    restoreResumeDesign(data.design);
 
-    if (
-      !verifiedUser ||
-      verifiedUser.id !== user.id
-    ) {
-
-      throw new Error(
-        "Your session has changed. " +
-        "Please log in again."
-      );
-
-    }
-
-    /* RESTORE DOCUMENT CONTENT */
-
-    fillBuilder(
-      normalizeContent(data.content)
-    );
-
-    /* PRESERVE DOCUMENT IDENTITY */
+    fillBuilder(data.content);
 
     setEditingResume(
       data.id,
@@ -506,31 +874,57 @@ async function loadExistingResume() {
       user.id
     );
 
-    /* GENERATE BUILDER PREVIEW */
+    currentSessionOwner = user.id;
 
     refreshResumePreview();
 
     showStatus(
-      "Resume loaded successfully. " +
-      "Edit your information and select " +
-      "Save to My Account to update it.",
+      "loaded",
       "success"
     );
 
+    document.dispatchEvent(
+
+      new CustomEvent(
+        "worknely:accountresumeloaded",
+        {
+          detail: {
+            resumeId: data.id,
+            version: VERSION
+          }
+        }
+      )
+
+    );
+
+    return true;
+
   } catch (error) {
+
+    if (generation !== sessionGeneration) {
+
+      return false;
+
+    }
 
     resumeLoaded = false;
 
     console.error(
       "Worknely resume loading error:",
-      error
+      error?.code || error?.name || "Error"
     );
 
     showStatus(
-      "Unable to open resume: " +
-      getErrorMessage(error),
+
+      error?.message === "DESIGN_UNAVAILABLE"
+        ? "designError"
+        : "loadError",
+
       "error"
+
     );
+
+    return false;
 
   } finally {
 
@@ -538,146 +932,128 @@ async function loadExistingResume() {
 
     syncSaveButton();
 
+    processPendingReload();
+
   }
 
 }
 
-/* SAVE NEW DOCUMENT */
+/* ATOMIC DOCUMENT CREATION */
 
 async function createResume(
   userId,
-  content
+  content,
+  design
 ) {
-
-  const title =
-    generateDocumentTitle(content);
 
   const payload = {
 
     user_id: userId,
 
-    title,
+    title: generateDocumentTitle(content),
 
     content,
+
+    design,
 
     updated_at:
       new Date().toISOString()
 
   };
 
-  const result = await supabase
+  const { data, error } =
+    await supabase
 
-    .from("resumes")
+      .from("resumes")
 
-    .insert(payload)
+      .insert(payload)
 
-    .select(
-      "id,title"
-    )
+      .select("id,title")
 
-    .single();
+      .single();
 
-  if (result.error) {
+  if (error) throw error;
 
-    throw result.error;
-
-  }
-
-  if (!result.data?.id) {
+  if (!data?.id) {
 
     throw new Error(
-      "Save confirmation was not received."
+      "SAVE_CONFIRMATION_MISSING"
     );
 
   }
 
-  return result.data;
+  return data;
 
 }
 
-/* UPDATE EXISTING DOCUMENT */
+/* ATOMIC DOCUMENT UPDATE */
 
 /*
- * IMPORTANT V7.14:
+ * Existing document titles are
+ * deliberately excluded.
  *
- * The title column is deliberately
- * excluded from the update payload.
- *
- * This preserves:
- *
- * - Custom document names
- * - Renamed documents
- * - Duplicate document names
- * - Names changed in another tab
- *
- * Only resume content and the
- * updated_at timestamp are modified.
+ * Content and design are saved
+ * together in one database update.
  */
 
 async function updateResume(
   resumeId,
   userId,
-  content
+  content,
+  design
 ) {
+
+  if (!validResumeId(resumeId)) {
+
+    throw new Error("INVALID_DOCUMENT_ID");
+
+  }
 
   const payload = {
 
     content,
+
+    design,
 
     updated_at:
       new Date().toISOString()
 
   };
 
-  const result = await supabase
+  const { data, error } =
+    await supabase
 
-    .from("resumes")
+      .from("resumes")
 
-    .update(payload)
+      .update(payload)
 
-    .eq(
-      "id",
-      resumeId
-    )
+      .eq("id", resumeId)
 
-    .eq(
-      "user_id",
-      userId
-    )
+      .eq("user_id", userId)
 
-    .select(
-      "id,title"
-    )
+      .select("id,title")
 
-    .single();
+      .single();
 
-  if (result.error) {
+  if (error) throw error;
 
-    throw result.error;
-
-  }
-
-  if (!result.data?.id) {
+  if (!data?.id) {
 
     throw new Error(
-      "Update confirmation was not received."
+      "UPDATE_CONFIRMATION_MISSING"
     );
 
   }
 
-  return result.data;
+  return data;
 
 }
 
-/* SAVE OR UPDATE CONTROLLER */
+/* SAVE CONTROLLER */
 
 async function saveToAccount(event) {
 
-  if (event) {
-
-    event.preventDefault();
-
-  }
+  event?.preventDefault?.();
 
   if (
     !saveButton ||
@@ -685,62 +1061,86 @@ async function saveToAccount(event) {
     isLoading
   ) {
 
-    return;
+    return false;
 
   }
 
-  /* BLOCK UNSAFE UPDATES */
-
   if (
+
     editingResumeId &&
     !resumeLoaded
+
   ) {
 
     showStatus(
-      "The saved resume could not be loaded. " +
-      "Please return to My Dashboard " +
-      "and try again.",
+      "unsafeUpdate",
       "error"
     );
 
-    return;
+    return false;
 
   }
 
-  const content =
-    collectResume();
+  if (
+
+    editingResumeId &&
+    !validResumeId(editingResumeId)
+
+  ) {
+
+    showStatus(
+      "invalidId",
+      "error"
+    );
+
+    return false;
+
+  }
+
+  const content = collectResume();
 
   if (!hasResumeContent(content)) {
 
-    showStatus(
-      "Please complete your resume before saving.",
-      "error"
-    );
+    showStatus("empty", "error");
 
-    return;
+    return false;
 
   }
 
-  const targetId =
-    editingResumeId;
+  if (!designEngineAvailable()) {
 
-  const wasEditing =
-    Boolean(targetId);
+    showStatus(
+      "designError",
+      "error"
+    );
+
+    return false;
+
+  }
+
+  const targetId = editingResumeId;
+
+  const wasEditing = Boolean(targetId);
+
+  const generation = sessionGeneration;
 
   isBusy = true;
 
   syncSaveButton();
 
   showStatus(
-    wasEditing
-      ? "Updating your resume..."
-      : "Saving your resume...",
-    "info"
+    wasEditing ? "updating" : "saving"
   );
 
   try {
 
-    /* VERIFY AUTHENTICATION */
+    /*
+     * Capture a consistent snapshot
+     * of content and design.
+     */
+
+    const design =
+      captureResumeDesign();
 
     const user =
       await getAuthenticatedUser();
@@ -748,82 +1148,88 @@ async function saveToAccount(event) {
     if (!user) {
 
       showStatus(
-        "Please log in to save your resume. " +
-        "Open My Account to sign in.",
+        "loginSave",
         "error"
       );
 
-      return;
+      return false;
 
     }
 
-    /* VERIFY DOCUMENT OWNERSHIP */
-
     if (
+
       wasEditing &&
       editingOwnerId !== user.id
+
     ) {
 
       showStatus(
-        "This resume belongs to a different " +
-        "session. Please reopen it from " +
-        "My Dashboard.",
+        "ownerError",
         "error"
       );
 
-      return;
+      return false;
 
     }
-
-    let savedDocument;
-
-    /* EXISTING DOCUMENT */
-
-    if (wasEditing) {
-
-      savedDocument =
-        await updateResume(
-          targetId,
-          user.id,
-          content
-        );
-
-    } else {
-
-      /* NEW DOCUMENT */
-
-      savedDocument =
-        await createResume(
-          user.id,
-          content
-        );
-
-    }
-
-    /* VERIFY SESSION AFTER SAVE */
-
-    const verifiedUser =
-      await getAuthenticatedUser();
 
     if (
-      !verifiedUser ||
-      verifiedUser.id !== user.id
+
+      targetId !== editingResumeId ||
+
+      !(await verifySession(
+        user.id,
+        generation
+      ))
+
     ) {
 
-      resumeLoaded = false;
+      if (generation === sessionGeneration) {
 
-      showStatus(
-        "The save was confirmed, but your " +
-        "session has changed. Please reopen " +
-        "My Dashboard.",
-        "info"
-      );
+        showStatus(
+          "sessionChanged",
+          "error"
+        );
 
-      return;
+      }
+
+      return false;
 
     }
 
-    /* STORE CONFIRMED DOCUMENT IDENTITY */
+    const savedDocument = wasEditing
+
+      ? await updateResume(
+          targetId,
+          user.id,
+          content,
+          design
+        )
+
+      : await createResume(
+          user.id,
+          content,
+          design
+        );
+
+    if (!(await verifySession(
+      user.id,
+      generation
+    ))) {
+
+      if (generation === sessionGeneration) {
+
+        resumeLoaded = false;
+
+        showStatus(
+          "savedSessionChanged",
+          "info"
+        );
+
+      }
+
+      return false;
+
+    }
 
     setEditingResume(
       savedDocument.id,
@@ -831,48 +1237,104 @@ async function saveToAccount(event) {
       user.id
     );
 
-    /* SUCCESS STATUS */
+    currentSessionOwner = user.id;
 
-    if (wasEditing) {
+    showStatus(
 
-      showStatus(
-        "Resume updated successfully! " +
-        "Open My Dashboard to view your changes.",
-        "success"
-      );
+      wasEditing
+        ? "updated"
+        : "saved",
 
-    } else {
+      "success"
 
-      showStatus(
-        "Resume saved successfully! " +
-        "Open My Dashboard to view it.",
-        "success"
-      );
+    );
 
-    }
+    document.dispatchEvent(
 
-    /* CELEBRATION ANIMATION */
+      new CustomEvent(
+        "worknely:accountresumesaved",
+        {
+          detail: {
+            resumeId: savedDocument.id,
+            updated: wasEditing,
+            version: VERSION
+          }
+        }
+      )
+
+    );
 
     celebrateSaveSuccess();
 
+    return true;
+
   } catch (error) {
+
+    if (generation !== sessionGeneration) {
+
+      return false;
+
+    }
 
     console.error(
       "Worknely resume save error:",
-      error
+      error?.code || error?.name || "Error"
     );
 
     showStatus(
-      "Unable to save resume: " +
-      getErrorMessage(error),
+
+      error?.message === "DESIGN_UNAVAILABLE"
+        ? "designError"
+        : "saveError",
+
       "error"
+
     );
+
+    return false;
 
   } finally {
 
     isBusy = false;
 
     syncSaveButton();
+
+    processPendingReload();
+
+  }
+
+}
+
+/* DEFERRED SESSION RELOAD */
+
+function processPendingReload() {
+
+  if (
+
+    !pendingReload ||
+    isLoading ||
+    isBusy
+
+  ) {
+
+    return;
+
+  }
+
+  pendingReload = false;
+
+  if (
+
+    editingResumeId &&
+    !resumeLoaded &&
+    currentSessionOwner
+
+  ) {
+
+    window.setTimeout(
+      loadExistingResume,
+      0
+    );
 
   }
 
@@ -882,60 +1344,81 @@ async function saveToAccount(event) {
 
 supabase.auth.onAuthStateChange(
 
-  event => {
+  (event, session) => {
+
+    const nextOwner =
+      session?.user?.id || null;
 
     if (event === "SIGNED_OUT") {
 
-      if (editingResumeId) {
+      sessionGeneration++;
 
-        resumeLoaded = false;
+      currentSessionOwner = null;
 
-        editingOwnerId = null;
+      pendingReload = false;
 
-        editingResumeTitle = null;
+      clearPrivateDocument();
 
-        fillBuilder({});
+      showStatus(
+        "signedOut",
+        "info"
+      );
 
-        const preview =
-          document.getElementById(
-            "builderPreview"
-          );
-
-        if (preview) {
-
-          preview.textContent = "";
-
-        }
-
-        showStatus(
-          "Your session has ended. " +
-          "Please log in to reopen this resume.",
-          "info"
-        );
-
-      }
+      return;
 
     }
 
-    /*
-     * Defer the database request outside
-     * the Supabase authentication callback.
-     */
-
     if (
-      event === "SIGNED_IN" &&
-      editingResumeId &&
-      !resumeLoaded &&
-      !isLoading &&
-      !isBusy
+
+      nextOwner &&
+      currentSessionOwner &&
+      nextOwner !== currentSessionOwner
+
     ) {
 
+      sessionGeneration++;
+
+      clearPrivateDocument();
+
+    }
+
+    if (
+
+      nextOwner &&
+      editingOwnerId &&
+      nextOwner !== editingOwnerId
+
+    ) {
+
+      sessionGeneration++;
+
+      clearPrivateDocument();
+
+    }
+
+    if (nextOwner) {
+
+      currentSessionOwner = nextOwner;
+
+    }
+
+    if (
+
+      (
+        event === "SIGNED_IN" ||
+        event === "INITIAL_SESSION"
+      ) &&
+
+      nextOwner &&
+      editingResumeId &&
+      !resumeLoaded
+
+    ) {
+
+      pendingReload = true;
+
       window.setTimeout(
-        () => {
-
-          loadExistingResume();
-
-        },
+        processPendingReload,
         0
       );
 
@@ -945,15 +1428,42 @@ supabase.auth.onAuthStateChange(
 
 );
 
+/* PUBLIC ACCOUNT PERSISTENCE API */
+
+window.WorknelyAccountPersistence =
+  Object.freeze({
+
+    version: VERSION,
+
+    save: saveToAccount,
+
+    reload: loadExistingResume,
+
+    getState: () => ({
+
+      version: VERSION,
+
+      resumeId: editingResumeId,
+
+      resumeTitle: editingResumeTitle,
+
+      loaded: resumeLoaded,
+
+      busy: isBusy,
+
+      loading: isLoading,
+
+      editing: Boolean(editingResumeId)
+
+    })
+
+  });
+
 /* INITIALIZATION */
 
 function initializePersistenceEngine() {
 
-  if (initialized) {
-
-    return;
-
-  }
+  if (initialized) return;
 
   initialized = true;
 
@@ -968,26 +1478,41 @@ function initializePersistenceEngine() {
 
   syncSaveButton();
 
+  getDesignEngine()
+    ?.bindAuthentication?.();
+
   if (editingResumeId) {
 
     loadExistingResume();
 
   }
 
+  document.dispatchEvent(
+
+    new CustomEvent(
+      "worknely:accountpersistenceready",
+      {
+        detail: {
+          version: VERSION
+        }
+      }
+    )
+
+  );
+
+  console.info(
+    "Worknely V" + VERSION +
+    " Advanced Account Persistence ready."
+  );
+
 }
 
-/* START WORKNELY V7.14 */
-
-if (
-  document.readyState === "loading"
-) {
+if (document.readyState === "loading") {
 
   document.addEventListener(
     "DOMContentLoaded",
     initializePersistenceEngine,
-    {
-      once: true
-    }
+    { once: true }
   );
 
 } else {
@@ -997,9 +1522,9 @@ if (
 }
 
 /*
- * END WORKNELY V7.14
+ * END WORKNELY V7.16.8
  *
- * Advanced Resume Persistence Engine
- * Persistent Document Naming
- * People Technology
+ * Advanced Design & Account Persistence
+ * International SaaS Architecture
+ * Worknely — People Technology
  */
