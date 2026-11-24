@@ -1,1675 +1,1668 @@
 <!doctype html>
 <html lang="en">
 <head>
-
-  <meta charset="utf-8">
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#5424ff">
-  <meta name="robots" content="noindex,nofollow">
-  <meta name="color-scheme" content="light">
-  <meta name="application-name" content="Worknely">
-  <meta name="apple-mobile-web-app-title" content="Worknely">
-
-  <title>My Dashboard | Worknely</title>
-
-  <link rel="icon"
-        type="image/svg+xml"
-        href="worknely-favicon.svg">
-
-  <!--
-    WORKNELY V7.14
-    Advanced Document Management
-
-    Responsive SaaS Dashboard
-    Resume Search
-    Smart Sorting
-    Document Actions
-    Rename Resume
-    Duplicate Resume
-    PDF Download
-    Secure Delete Confirmation
-    Compact Quick Create
-    Supabase Account Integration
-  -->
-
-  <link rel="stylesheet"
-        href="dashboard.css?v=7.14">
-
-  <link rel="stylesheet"
-        href="worknely-compact.css?v=7.12"
-        media="screen">
-
-  <style>
-
-    :root {
-      --wn-purple:#5424ff;
-      --wn-pink:#ec22ad;
-      --wn-cyan:#00cfff;
-      --wn-ink:#261449;
-      --wn-muted:#746c85;
-      --wn-border:#e9e2f4;
-      --wn-danger:#b42332;
-      --wn-gradient:linear-gradient(
-        105deg,#5424ff,#a326e8,#ec22ad
-      );
-    }
-
-    [hidden] {
-      display:none!important;
-    }
-
-    .wn-view {
-      min-width:0;
-    }
-
-    .wn-view:focus {
-      outline:none;
-    }
-
-    .wn-sr-only {
-      position:absolute;
-      width:1px;
-      height:1px;
-      padding:0;
-      margin:-1px;
-      overflow:hidden;
-      clip:rect(0,0,0,0);
-      white-space:nowrap;
-      border:0;
-    }
-
-    button:focus-visible,
-    a:focus-visible,
-    summary:focus-visible,
-    input:focus-visible,
-    select:focus-visible,
-    textarea:focus-visible {
-      outline:3px solid #6a3bff;
-      outline-offset:3px;
-    }
-
-    /* HEADER */
-
-    body .topbar {
-      gap:8px;
-    }
-
-    body .topbar .brand {
-      gap:8px;
-      min-width:0;
-    }
-
-    body .topbar .brand img {
-      box-sizing:border-box;
-      display:block;
-      flex:0 0 36px;
-      width:36px;
-      height:36px;
-      padding:4px;
-      border-radius:10px;
-      object-fit:contain;
-      background:linear-gradient(
-        135deg,#00cfff,#5424ff,#ec22ad
-      );
-    }
-
-    body .topbar #logout {
-      min-height:36px;
-      padding:8px 12px;
-      border-radius:9px;
-      font-size:12px;
-      line-height:1.3;
-    }
-
-    /* DASHBOARD CONTENT */
-
-    #dashboardMain,
-    #dashboardMain .hero,
-    #dashboardMain .panel {
-      min-width:0;
-    }
-
-    /* OVERVIEW */
-
-    #overview .metrics {
-      gap:10px;
-      margin-top:14px;
-      margin-bottom:14px;
-    }
-
-    #overview .metrics > div {
-      min-width:0;
-      padding:12px;
-      border-radius:12px;
-    }
-
-    #overview .metrics strong {
-      font-size:25px;
-      line-height:1.2;
-    }
-
-    #overview .metrics span {
-      font-size:12px;
-    }
-
-    #overview #welcome {
-      overflow-wrap:anywhere;
-    }
-
-    #overview .wn-dashboard-actions {
-      display:flex;
-      flex-wrap:wrap;
-      align-items:center;
-      gap:8px;
-      margin-top:12px;
-    }
-
-    #overview .wn-dashboard-actions a {
-      min-width:0;
-      min-height:40px;
-      padding:9px 13px;
-      border-radius:10px;
-      font-size:13px;
-      line-height:1.35;
-      text-align:center;
-    }
-
-    /* MY RESUMES */
-
-    #resumes .section-title {
-      gap:10px;
-      margin-bottom:14px;
-    }
-
-    #resumes .section-title > div {
-      min-width:0;
-    }
-
-    #resumes .section-title .button {
-      min-height:40px;
-      padding:9px 12px;
-      border-radius:10px;
-      font-size:13px;
-      line-height:1.3;
-    }
-
-    #resumes .section-title .button svg {
-      flex-shrink:0;
-      width:17px;
-      height:17px;
-    }
-
-    /* WORKSPACE METRICS */
-
-    #resumes .workspace-metrics {
-      display:grid;
-      grid-template-columns:repeat(2,minmax(0,1fr));
-      gap:8px;
-      margin-bottom:12px;
-    }
-
-    #resumes .workspace-metric {
-      min-width:0;
-      padding:10px 12px;
-      border-radius:11px;
-    }
-
-    #resumes .workspace-metric span {
-      font-size:12px;
-    }
-
-    #resumes .workspace-metric strong {
-      font-size:23px;
-      line-height:1.25;
-    }
-
-    /* DOCUMENT TOOLBAR */
-
-    #wnDocumentToolbar {
-      display:grid;
-      grid-template-columns:minmax(0,1fr) 165px;
-      align-items:center;
-      gap:8px;
-      margin:16px 0 12px;
-      min-width:0;
-    }
-
-    #wnDocumentToolbar .wn-search-box {
-      position:relative;
-      min-width:0;
-    }
-
-    #wnDocumentToolbar .wn-search-icon {
-      position:absolute;
-      top:50%;
-      left:12px;
-      width:18px;
-      height:18px;
-      transform:translateY(-50%);
-      color:var(--wn-muted);
-      pointer-events:none;
-    }
-
-    #wnResumeSearch,
-    #wnResumeSort {
-      box-sizing:border-box;
-      width:100%;
-      min-width:0;
-      height:44px;
-      margin:0;
-      border:1px solid var(--wn-border);
-      border-radius:10px;
-      background:#fff;
-      color:var(--wn-ink);
-      font-family:inherit;
-      font-size:13px;
-      line-height:1.4;
-    }
-
-    #wnResumeSearch {
-      padding:10px 36px 10px 39px;
-    }
-
-    #wnResumeSearch::placeholder {
-      color:#91879f;
-    }
-
-    #wnResumeSearch::-webkit-search-cancel-button {
-      -webkit-appearance:none;
-    }
-
-    #wnResumeSort {
-      padding:8px 10px;
-      cursor:pointer;
-    }
-
-    #wnResumeSearch:focus,
-    #wnResumeSort:focus {
-      border-color:var(--wn-purple);
-      outline:2px solid rgba(84,36,255,.12);
-      outline-offset:1px;
-    }
-
-    #wnClearSearch {
-      position:absolute;
-      top:50%;
-      right:5px;
-      transform:translateY(-50%);
-      display:grid;
-      place-items:center;
-      box-sizing:border-box;
-      width:30px;
-      min-width:30px;
-      height:34px;
-      min-height:34px;
-      padding:0;
-      border:0;
-      border-radius:7px;
-      background:#f3efff;
-      color:var(--wn-purple);
-      font-size:20px;
-      cursor:pointer;
-    }
-
-    #wnClearSearch[hidden] {
-      display:none!important;
-    }
-
-    /* SAVED DOCUMENTS HEADER */
-
-    #resumes .resume-list-header {
-      gap:8px;
-      margin-top:14px;
-      margin-bottom:9px;
-    }
-
-    #resumes .resume-list-header h2 {
-      font-size:16px;
-      line-height:1.35;
-    }
-
-    #resumes .resume-list-header span {
-      font-size:11px;
-    }
-
-    #wnSearchResultCount {
-      color:var(--wn-muted);
-      text-align:right;
-    }
-
-    /* DOCUMENT CARDS */
-
-    #resumeList {
-      gap:8px;
-    }
-
-    #resumeList .resume-item {
-      position:relative;
-      min-width:0;
-      padding:12px;
-      border-radius:12px;
-    }
-
-    #resumeList .resume-info {
-      min-width:0;
-      gap:9px;
-    }
-
-    #resumeList .resume-details {
-      min-width:0;
-    }
-
-    #resumeList .resume-details strong {
-      font-size:14px;
-      line-height:1.35;
-      overflow-wrap:anywhere;
-    }
-
-    #resumeList .resume-details small {
-      font-size:11px;
-      line-height:1.4;
-    }
-
-    #resumeList .resume-icon {
-      flex-shrink:0;
-      width:34px;
-      height:38px;
-      border-radius:9px;
-    }
-
-    #resumeList .resume-icon svg {
-      width:19px;
-      height:19px;
-    }
-
-    #resumeList .actions {
-      gap:7px;
-    }
-
-    #resumeList .resume-edit-button {
-      min-width:0;
-      min-height:40px;
-      padding:8px 12px;
-      border-radius:9px;
-      font-size:12px;
-      font-weight:700;
-      line-height:1.3;
-      white-space:normal;
-      text-align:center;
-    }
-
-    #resumeList .resume-delete-button,
-    #resumeList .wn-document-menu-button,
-    #resumeList .wn-document-pdf-button {
-      box-sizing:border-box;
-      flex:0 0 40px;
-      width:40px;
-      min-width:40px;
-      max-width:40px;
-      height:40px;
-      min-height:40px;
-      padding:0;
-      border-radius:9px;
-      font-size:0;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-    }
-
-    #resumeList .resume-delete-button svg,
-    #resumeList .wn-document-menu-button svg,
-    #resumeList .wn-document-pdf-button svg {
-      width:18px;
-      height:18px;
-      flex-shrink:0;
-    }
-
-    /* DOCUMENT ACTION MENU */
-
-    #resumeList .wn-document-menu {
-      position:relative;
-      flex-shrink:0;
-    }
-
-    #resumeList .wn-document-menu-panel {
-      position:absolute;
-      top:calc(100% + 7px);
-      right:0;
-      z-index:100;
-      box-sizing:border-box;
-      width:190px;
-      max-width:calc(100vw - 40px);
-      padding:5px;
-      border:1px solid var(--wn-border);
-      border-radius:12px;
-      background:#fff;
-      box-shadow:0 12px 32px rgba(38,20,73,.16);
-    }
-
-    #resumeList .wn-document-menu-panel button {
-      display:flex;
-      align-items:center;
-      justify-content:flex-start;
-      gap:9px;
-      box-sizing:border-box;
-      width:100%;
-      min-width:0;
-      min-height:40px;
-      height:auto;
-      padding:9px 10px;
-      border:0;
-      border-radius:8px;
-      background:transparent;
-      color:var(--wn-ink);
-      font-family:inherit;
-      font-size:12px;
-      font-weight:600;
-      text-align:left;
-      cursor:pointer;
-      box-shadow:none;
-    }
-
-    #resumeList .wn-document-menu-panel button:hover {
-      background:#f3efff;
-    }
-
-    #resumeList .wn-document-menu-panel button svg {
-      width:16px;
-      height:16px;
-      flex-shrink:0;
-    }
-
-    #resumeList .wn-document-menu-panel .wn-danger-action {
-      color:var(--wn-danger);
-    }
-
-    #resumeList .wn-document-menu-panel .wn-danger-action:hover {
-      background:#fff1f2;
-    }
-
-    #resumeList .wn-document-menu-panel[hidden],
-    #resumeList .wn-document-menu-button[hidden],
-    #resumeList .wn-document-pdf-button[hidden] {
-      display:none!important;
-    }
-
-    /* STATUS MESSAGES */
-
-    #resumeStatus {
-      margin:9px 0;
-      padding:9px 11px;
-      border-radius:9px;
-      font-size:12px;
-      line-height:1.5;
-      overflow-wrap:anywhere;
-    }
-
-    #resumeStatus:empty {
-      display:none;
-    }
-
-    #resumeStatus[data-status="success"] {
-      color:#08784c;
-      background:#ecfdf4;
-      border:1px solid #b7efd1;
-    }
-
-    #resumeStatus[data-status="error"] {
-      color:#b42332;
-      background:#fff1f2;
-      border:1px solid #fecdd3;
-    }
-
-    /* EMPTY SEARCH STATE */
-
-    #wnNoSearchResults {
-      padding:24px 14px;
-      margin:10px 0;
-      border:1px dashed #dcd2f2;
-      border-radius:12px;
-      background:#faf8ff;
-      text-align:center;
-    }
-
-    #wnNoSearchResults strong {
-      display:block;
-      color:var(--wn-ink);
-      font-size:15px;
-    }
-
-    #wnNoSearchResults p {
-      margin:7px 0 12px;
-      color:var(--wn-muted);
-      font-size:13px;
-      line-height:1.5;
-    }
-
-    #wnResetSearch {
-      min-height:40px;
-      padding:8px 14px;
-      font-size:12px;
-    }
-
-    /* QUICK CREATE */
-
-    #quickCreate {
-      margin-top:12px;
-      border-radius:12px;
-    }
-
-    #quickCreate > summary {
-      min-height:44px;
-      padding:11px 12px;
-      gap:9px;
-    }
-
-    #quickCreate .quick-create-icon {
-      flex-shrink:0;
-      width:34px;
-      height:34px;
-      border-radius:9px;
-    }
-
-    #quickCreate .quick-create-icon svg {
-      width:19px;
-      height:19px;
-    }
-
-    #quickCreate .quick-create-heading {
-      min-width:0;
-    }
-
-    #quickCreate .quick-create-heading strong {
-      font-size:14px;
-      line-height:1.35;
-    }
-
-    #quickCreate .quick-create-heading small {
-      font-size:11px;
-      line-height:1.4;
-    }
-
-    #quickCreate .quick-create-chevron {
-      flex-shrink:0;
-      width:17px;
-      height:17px;
-    }
-
-    #quickCreate .quick-create-body {
-      padding:12px;
-    }
-
-    #quickCreate .quick-create-body > p {
-      margin:0 0 12px;
-      font-size:12px;
-      line-height:1.5;
-    }
-
-    /* QUICK CREATE FORM */
-
-    #resumeForm {
-      min-width:0;
-    }
-
-    #resumeForm .fields {
-      gap:10px;
-    }
-
-    #resumeForm label {
-      min-width:0;
-      font-size:12px;
-      line-height:1.4;
-    }
-
-    #resumeForm input,
-    #resumeForm textarea {
-      box-sizing:border-box;
-      width:100%;
-      min-width:0;
-      padding:9px 11px;
-      border-radius:9px;
-      font-size:14px;
-      line-height:1.5;
-    }
-
-    #resumeForm input {
-      min-height:42px;
-    }
-
-    #resumeForm textarea {
-      min-height:68px;
-      resize:vertical;
-    }
-
-    #resumeForm .actions {
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-      margin-top:12px;
-    }
-
-    #resumeForm .actions button {
-      min-width:0;
-      min-height:40px;
-      padding:9px 13px;
-      border-radius:9px;
-      font-size:13px;
-      line-height:1.3;
-    }
-
-    /* DOCUMENT MANAGEMENT DIALOGS */
-
-    body dialog.wn-document-dialog {
-      box-sizing:border-box;
-      position:fixed;
-      inset:0;
-      margin:auto;
-      width:400px;
-      max-width:calc(100vw - 28px);
-      max-height:calc(100vh - 28px);
-      max-height:calc(100dvh - 28px);
-      padding:0;
-      border:1px solid var(--wn-border);
-      border-radius:17px;
-      background:#fff;
-      color:var(--wn-ink);
-      box-shadow:0 20px 60px rgba(38,20,73,.22);
-      overflow:auto;
-    }
-
-    body dialog.wn-document-dialog:not([open]) {
-      display:none!important;
-    }
-
-    .wn-document-dialog::backdrop {
-      background:rgba(24,12,54,.55);
-      backdrop-filter:blur(4px);
-    }
-
-    .wn-document-dialog .wn-dialog-content {
-      padding:20px;
-    }
-
-    .wn-document-dialog .wn-dialog-icon {
-      display:grid;
-      place-items:center;
-      width:46px;
-      height:46px;
-      margin-bottom:13px;
-      border-radius:13px;
-      color:var(--wn-purple);
-      background:#f1ebff;
-    }
-
-    .wn-document-dialog .wn-dialog-icon svg {
-      width:23px;
-      height:23px;
-    }
-
-    .wn-document-dialog .wn-dialog-icon-danger {
-      background:#fff1f2;
-      color:var(--wn-danger);
-    }
-
-    .wn-document-dialog h2 {
-      margin:0 0 8px;
-      font-size:21px;
-      font-weight:800;
-      line-height:1.3;
-    }
-
-    .wn-document-dialog p {
-      margin:0 0 15px;
-      color:var(--wn-muted);
-      font-size:13px;
-      line-height:1.6;
-      overflow-wrap:anywhere;
-    }
-
-    .wn-document-dialog label {
-      display:block;
-      margin:0 0 6px;
-      font-size:12px;
-      font-weight:700;
-    }
-
-    .wn-document-dialog input {
-      box-sizing:border-box;
-      width:100%;
-      min-width:0;
-      height:44px;
-      padding:10px 12px;
-      border:1px solid var(--wn-border);
-      border-radius:9px;
-      background:#faf9ff;
-      color:var(--wn-ink);
-      font-family:inherit;
-      font-size:16px;
-    }
-
-    .wn-document-dialog .wn-dialog-actions {
-      display:grid;
-      grid-template-columns:repeat(2,minmax(0,1fr));
-      gap:8px;
-      margin-top:18px;
-    }
-
-    .wn-document-dialog .wn-dialog-actions button {
-      box-sizing:border-box;
-      width:100%;
-      min-width:0;
-      min-height:44px;
-      padding:9px 12px;
-      border-radius:10px;
-      font-family:inherit;
-      font-size:13px;
-      font-weight:750;
-      line-height:1.4;
-      cursor:pointer;
-    }
-
-    .wn-document-dialog .wn-dialog-cancel {
-      background:#fff;
-      border:1px solid var(--wn-border);
-      color:var(--wn-ink);
-    }
-
-    .wn-document-dialog .wn-dialog-confirm {
-      border:0;
-      background:var(--wn-gradient);
-      color:#fff;
-    }
-
-    .wn-document-dialog .wn-dialog-delete {
-      border:0;
-      background:#c72d40;
-      color:#fff;
-    }
-
-    .wn-document-dialog button:disabled {
-      opacity:.6;
-      cursor:not-allowed;
-    }
-
-    .wn-document-dialog .wn-dialog-status {
-      margin:10px 0 0;
-      color:var(--wn-danger);
-      font-size:12px;
-      overflow-wrap:anywhere;
-    }
-
-    .wn-document-dialog .wn-dialog-status:empty {
-      display:none;
-    }
-
-    /* WORKNELY PRO */
-
-    #pro {
-      min-width:0;
-    }
-
-    #pro h1 {
-      margin-bottom:8px;
-    }
-
-    #pro p {
-      font-size:14px;
-      line-height:1.55;
-      margin-bottom:14px;
-    }
-
-    #pro .outline {
-      min-height:40px;
-      max-width:100%;
-      padding:9px 12px;
-      border-radius:9px;
-      font-size:12px;
-      white-space:normal;
-    }
-
-    #pro .outline:disabled {
-      cursor:not-allowed;
-    }
-
-    #dashboardMain footer {
-      padding:12px 0 16px;
-      font-size:11px;
-      line-height:1.5;
-    }
-
-    /* MOBILE RESPONSIVE */
-
-    @media(max-width:700px) {
-
-      body .topbar .brand img {
-        flex-basis:34px;
-        width:34px;
-        height:34px;
-      }
-
-      body .topbar #logout {
-        min-height:44px;
-        padding:8px 10px;
-        font-size:12px;
-      }
-
-      body .layout .sidebar {
-        gap:6px;
-      }
-
-      body .layout .sidebar a {
-        min-height:44px;
-        padding:8px 10px;
-        font-size:12px;
-        border-radius:9px;
-      }
-
-      #overview .metrics {
-        gap:8px;
-        margin-top:12px;
-        margin-bottom:12px;
-      }
-
-      #overview .metrics > div {
-        padding:10px;
-      }
-
-      #overview .metrics strong {
-        font-size:23px;
-      }
-
-      #overview .wn-dashboard-actions {
-        gap:7px;
-      }
-
-      #overview .wn-dashboard-actions a {
-        flex:1 1 130px;
-        min-height:44px;
-        padding:8px 10px;
-        font-size:12px;
-      }
-
-      #resumes .section-title {
-        gap:8px;
-        margin-bottom:12px;
-      }
-
-      #resumes .section-title .button {
-        min-height:44px;
-        padding:8px 10px;
-        font-size:12px;
-      }
-
-      #resumes .workspace-metric {
-        padding:10px;
-      }
-
-      #resumes .workspace-metric strong {
-        font-size:21px;
-      }
-
-      #wnDocumentToolbar {
-        grid-template-columns:minmax(0,1fr) 125px;
-        gap:7px;
-      }
-
-      #wnResumeSearch,
-      #wnResumeSort {
-        font-size:16px;
-      }
-
-      #resumeList .resume-item {
-        padding:10px;
-      }
-
-      #resumeList .resume-details strong {
-        font-size:13px;
-      }
-
-      #resumeList .resume-details small {
-        font-size:11px;
-      }
-
-      #resumeList .resume-item .actions {
-        display:flex;
-        flex-wrap:wrap;
-        align-items:center;
-        gap:7px;
-      }
-
-      #resumeList .resume-edit-button {
-        flex:1 1 120px;
-        min-height:44px;
-        padding:8px 10px;
-        font-size:12px;
-      }
-
-      #resumeList .resume-delete-button,
-      #resumeList .wn-document-menu-button,
-      #resumeList .wn-document-pdf-button {
-        flex-basis:44px;
-        width:44px;
-        min-width:44px;
-        max-width:44px;
-        height:44px;
-        min-height:44px;
-      }
-
-      #resumeList .wn-document-menu-panel button {
-        min-height:44px;
-      }
-
-      #quickCreate > summary {
-        padding:10px;
-      }
-
-      #quickCreate .quick-create-body {
-        padding:11px;
-      }
-
-      #resumeForm .fields {
-        grid-template-columns:minmax(0,1fr);
-        gap:9px;
-      }
-
-      #resumeForm input,
-      #resumeForm textarea {
-        font-size:16px;
-      }
-
-      #resumeForm input {
-        min-height:44px;
-      }
-
-      #resumeForm textarea {
-        min-height:65px;
-      }
-
-      #resumeForm .actions button {
-        flex:1 1 110px;
-        min-height:44px;
-        padding:8px 10px;
-        font-size:12px;
-      }
-
-      .wn-document-dialog .wn-dialog-content {
-        padding:17px;
-      }
-
-      #pro .outline {
-        min-height:44px;
-      }
-
-    }
-
-    @media(max-width:390px) {
-
-      #resumeList .resume-item {
-        padding:9px;
-      }
-
-      #resumeList .resume-info {
-        gap:7px;
-      }
-
-      #resumeList .resume-icon {
-        width:32px;
-        height:36px;
-      }
-
-      #quickCreate .quick-create-body {
-        padding:10px;
-      }
-
-      #overview .wn-dashboard-actions a {
-        flex-basis:110px;
-      }
-
-      #wnDocumentToolbar {
-        grid-template-columns:minmax(0,1fr);
-      }
-
-    }
-
-    @media(max-width:340px) {
-
-      #overview .wn-dashboard-actions a,
-      #resumeForm .actions button {
-        flex-basis:100%;
-      }
-
-      .wn-document-dialog .wn-dialog-actions {
-        grid-template-columns:minmax(0,1fr);
-      }
-
-    }
-
-    @media(prefers-reduced-motion:reduce) {
-
-      html {
-        scroll-behavior:auto;
-      }
-
-      .wn-document-dialog *,
-      #resumeList * {
-        transition:none!important;
-        animation:none!important;
-      }
-
-    }
-
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#5424ff">
+<meta name="robots" content="noindex,nofollow">
+<meta name="color-scheme" content="light">
+<meta name="application-name" content="Worknely">
+<meta name="apple-mobile-web-app-title" content="Worknely">
+
+<title>My Dashboard | Worknely</title>
+
+<link rel="icon" type="image/svg+xml" href="worknely-favicon.svg">
+
+<!--
+WORKNELY V7.15
+International Dashboard
+Advanced Document Management
+Six Language Interface
+Persistent Language Preferences
+Supabase Account Integration
+-->
+
+<link rel="stylesheet" href="dashboard.css?v=7.14">
+<link rel="stylesheet" href="worknely-compact.css?v=7.12" media="screen">
+
+<style>
+
+:root {
+  --wn-purple:#5424ff;
+  --wn-pink:#ec22ad;
+  --wn-cyan:#00cfff;
+  --wn-ink:#261449;
+  --wn-muted:#746c85;
+  --wn-border:#e9e2f4;
+  --wn-danger:#b42332;
+  --wn-gradient:linear-gradient(105deg,#5424ff,#a326e8,#ec22ad);
+}
+
+[hidden] {
+  display:none!important;
+}
+
+.wn-view {
+  min-width:0;
+}
+
+.wn-view:focus {
+  outline:none;
+}
+
+.wn-sr-only {
+  position:absolute;
+  width:1px;
+  height:1px;
+  padding:0;
+  margin:-1px;
+  overflow:hidden;
+  clip:rect(0,0,0,0);
+  white-space:nowrap;
+  border:0;
+}
+
+button:focus-visible,
+a:focus-visible,
+summary:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline:3px solid #6a3bff;
+  outline-offset:3px;
+}
+
+/* HEADER */
+
+body .topbar {
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+body .topbar .brand {
+  gap:8px;
+  min-width:0;
+  flex:1 1 auto;
+}
+
+body .topbar .brand img {
+  box-sizing:border-box;
+  display:block;
+  flex:0 0 36px;
+  width:36px;
+  height:36px;
+  padding:4px;
+  border-radius:10px;
+  object-fit:contain;
+  background:linear-gradient(135deg,#00cfff,#5424ff,#ec22ad);
+}
+
+.wn-dashboard-header-tools {
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:7px;
+  min-width:0;
+}
+
+body .topbar #logout {
+  min-height:36px;
+  padding:8px 12px;
+  border-radius:9px;
+  font-size:12px;
+  line-height:1.3;
+  white-space:normal;
+}
+
+/* INTERNATIONAL LANGUAGE SELECTOR */
+
+.wn-dashboard-language {
+  position:relative;
+  display:grid;
+  place-items:center;
+  flex:0 0 44px;
+  width:44px;
+  height:44px;
+}
+
+.wn-dashboard-language-flag {
+  display:grid;
+  place-items:center;
+  width:36px;
+  height:36px;
+  border:1px solid var(--wn-border);
+  border-radius:9px;
+  background:#fff;
+  font-size:21px;
+  pointer-events:none;
+}
+
+#language {
+  position:absolute;
+  inset:0;
+  width:44px;
+  height:44px;
+  margin:0;
+  padding:0;
+  opacity:0;
+  cursor:pointer;
+  font-size:16px;
+}
+
+.wn-dashboard-language:focus-within {
+  outline:3px solid #6a3bff;
+  outline-offset:2px;
+  border-radius:10px;
+}
+
+/* DASHBOARD CONTENT */
+
+#dashboardMain,
+#dashboardMain .hero,
+#dashboardMain .panel {
+  min-width:0;
+}
+
+#overview .metrics {
+  gap:10px;
+  margin-top:14px;
+  margin-bottom:14px;
+}
+
+#overview .metrics > div {
+  min-width:0;
+  padding:12px;
+  border-radius:12px;
+}
+
+#overview .metrics strong {
+  font-size:25px;
+  line-height:1.2;
+}
+
+#overview .metrics span {
+  font-size:12px;
+}
+
+#overview #welcome {
+  overflow-wrap:anywhere;
+}
+
+#overview .wn-dashboard-actions {
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:8px;
+  margin-top:12px;
+}
+
+#overview .wn-dashboard-actions a {
+  min-width:0;
+  min-height:40px;
+  padding:9px 13px;
+  border-radius:10px;
+  font-size:13px;
+  line-height:1.35;
+  text-align:center;
+}
+
+/* MY RESUMES */
+
+#resumes .section-title {
+  gap:10px;
+  margin-bottom:14px;
+}
+
+#resumes .section-title > div {
+  min-width:0;
+}
+
+#resumes .section-title .button {
+  min-height:40px;
+  padding:9px 12px;
+  border-radius:10px;
+  font-size:13px;
+  line-height:1.3;
+}
+
+#resumes .section-title .button svg {
+  flex-shrink:0;
+  width:17px;
+  height:17px;
+}
+
+#resumes .workspace-metrics {
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:8px;
+  margin-bottom:12px;
+}
+
+#resumes .workspace-metric {
+  min-width:0;
+  padding:10px 12px;
+  border-radius:11px;
+}
+
+#resumes .workspace-metric span {
+  font-size:12px;
+}
+
+#resumes .workspace-metric strong {
+  font-size:23px;
+  line-height:1.25;
+}
+
+/* DOCUMENT TOOLBAR */
+
+#wnDocumentToolbar {
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 165px;
+  align-items:center;
+  gap:8px;
+  margin:16px 0 12px;
+  min-width:0;
+}
+
+#wnDocumentToolbar .wn-search-box {
+  position:relative;
+  min-width:0;
+}
+
+#wnDocumentToolbar .wn-search-icon {
+  position:absolute;
+  top:50%;
+  left:12px;
+  width:18px;
+  height:18px;
+  transform:translateY(-50%);
+  color:var(--wn-muted);
+  pointer-events:none;
+}
+
+#wnResumeSearch,
+#wnResumeSort {
+  box-sizing:border-box;
+  width:100%;
+  min-width:0;
+  height:44px;
+  margin:0;
+  border:1px solid var(--wn-border);
+  border-radius:10px;
+  background:#fff;
+  color:var(--wn-ink);
+  font-family:inherit;
+  font-size:13px;
+  line-height:1.4;
+}
+
+#wnResumeSearch {
+  padding:10px 36px 10px 39px;
+}
+
+#wnResumeSearch::placeholder {
+  color:#91879f;
+}
+
+#wnResumeSearch::-webkit-search-cancel-button {
+  -webkit-appearance:none;
+}
+
+#wnResumeSort {
+  padding:8px 10px;
+  cursor:pointer;
+}
+
+#wnResumeSearch:focus,
+#wnResumeSort:focus {
+  border-color:var(--wn-purple);
+  outline:2px solid rgba(84,36,255,.12);
+  outline-offset:1px;
+}
+
+#wnClearSearch {
+  position:absolute;
+  top:50%;
+  right:5px;
+  transform:translateY(-50%);
+  display:grid;
+  place-items:center;
+  box-sizing:border-box;
+  width:30px;
+  min-width:30px;
+  height:34px;
+  min-height:34px;
+  padding:0;
+  border:0;
+  border-radius:7px;
+  background:#f3efff;
+  color:var(--wn-purple);
+  font-size:20px;
+  cursor:pointer;
+}
+
+/* SAVED DOCUMENTS */
+
+#resumes .resume-list-header {
+  gap:8px;
+  margin-top:14px;
+  margin-bottom:9px;
+}
+
+#resumes .resume-list-header h2 {
+  font-size:16px;
+  line-height:1.35;
+}
+
+#resumes .resume-list-header span {
+  font-size:11px;
+}
+
+#wnSearchResultCount {
+  color:var(--wn-muted);
+  text-align:right;
+}
+
+#resumeList {
+  gap:8px;
+  overflow:visible;
+}
+
+#resumeList .resume-item {
+  position:relative;
+  min-width:0;
+  padding:12px;
+  border-radius:12px;
+  overflow:visible;
+}
+
+#resumeList .resume-item:focus-within {
+  z-index:5;
+}
+
+#resumeList .resume-info {
+  min-width:0;
+  gap:9px;
+}
+
+#resumeList .resume-details {
+  min-width:0;
+}
+
+#resumeList .resume-details strong {
+  font-size:14px;
+  line-height:1.35;
+  overflow-wrap:anywhere;
+}
+
+#resumeList .resume-details small {
+  font-size:11px;
+  line-height:1.4;
+}
+
+#resumeList .resume-icon {
+  flex-shrink:0;
+  width:34px;
+  height:38px;
+  border-radius:9px;
+}
+
+#resumeList .resume-icon svg {
+  width:19px;
+  height:19px;
+}
+
+#resumeList .actions {
+  gap:7px;
+}
+
+#resumeList .resume-edit-button {
+  min-width:0;
+  min-height:40px;
+  padding:8px 12px;
+  border-radius:9px;
+  font-size:12px;
+  font-weight:700;
+  line-height:1.3;
+  white-space:normal;
+  text-align:center;
+}
+
+#resumeList .resume-delete-button,
+#resumeList .wn-document-menu-button,
+#resumeList .wn-document-pdf-button {
+  box-sizing:border-box;
+  flex:0 0 40px;
+  width:40px;
+  min-width:40px;
+  max-width:40px;
+  height:40px;
+  min-height:40px;
+  padding:0;
+  border-radius:9px;
+  font-size:0;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+}
+
+#resumeList .resume-delete-button svg,
+#resumeList .wn-document-menu-button svg,
+#resumeList .wn-document-pdf-button svg {
+  width:18px;
+  height:18px;
+  flex-shrink:0;
+}
+
+#resumeList .wn-document-menu {
+  position:relative;
+  flex-shrink:0;
+}
+
+#resumeList .wn-document-menu-panel {
+  position:absolute;
+  top:calc(100% + 7px);
+  right:0;
+  z-index:100;
+  box-sizing:border-box;
+  width:210px;
+  max-width:calc(100vw - 40px);
+  padding:5px;
+  border:1px solid var(--wn-border);
+  border-radius:12px;
+  background:#fff;
+  box-shadow:0 12px 32px rgba(38,20,73,.16);
+}
+
+#resumeList .wn-document-menu-panel button {
+  display:flex;
+  align-items:center;
+  justify-content:flex-start;
+  gap:9px;
+  box-sizing:border-box;
+  width:100%;
+  min-width:0;
+  min-height:40px;
+  height:auto;
+  padding:9px 10px;
+  border:0;
+  border-radius:8px;
+  background:transparent;
+  color:var(--wn-ink);
+  font-family:inherit;
+  font-size:12px;
+  font-weight:600;
+  text-align:left;
+  white-space:normal;
+  cursor:pointer;
+  box-shadow:none;
+}
+
+#resumeList .wn-document-menu-panel button:hover {
+  background:#f3efff;
+}
+
+#resumeList .wn-document-menu-panel button svg {
+  width:16px;
+  height:16px;
+  flex-shrink:0;
+}
+
+#resumeList .wn-document-menu-panel .wn-danger-action {
+  color:var(--wn-danger);
+}
+
+#resumeList .wn-document-menu-panel .wn-danger-action:hover {
+  background:#fff1f2;
+}
+
+#resumeList .wn-document-menu-panel[hidden],
+#resumeList .wn-document-menu-button[hidden],
+#resumeList .wn-document-pdf-button[hidden] {
+  display:none!important;
+}
+
+/* STATUS MESSAGES */
+
+#resumeStatus {
+  margin:9px 0;
+  padding:9px 11px;
+  border-radius:9px;
+  font-size:12px;
+  line-height:1.5;
+  overflow-wrap:anywhere;
+}
+
+#resumeStatus:empty {
+  display:none;
+}
+
+#resumeStatus[data-status="success"] {
+  color:#08784c;
+  background:#ecfdf4;
+  border:1px solid #b7efd1;
+}
+
+#resumeStatus[data-status="error"] {
+  color:#b42332;
+  background:#fff1f2;
+  border:1px solid #fecdd3;
+}
+
+/* EMPTY SEARCH STATE */
+
+#wnNoSearchResults {
+  padding:24px 14px;
+  margin:10px 0;
+  border:1px dashed #dcd2f2;
+  border-radius:12px;
+  background:#faf8ff;
+  text-align:center;
+}
+
+#wnNoSearchResults strong {
+  display:block;
+  color:var(--wn-ink);
+  font-size:15px;
+}
+
+#wnNoSearchResults p {
+  margin:7px 0 12px;
+  color:var(--wn-muted);
+  font-size:13px;
+  line-height:1.5;
+}
+
+#wnResetSearch {
+  min-height:40px;
+  padding:8px 14px;
+  font-size:12px;
+}
+
+/* QUICK CREATE */
+
+#quickCreate {
+  margin-top:12px;
+  border-radius:12px;
+}
+
+#quickCreate > summary {
+  min-height:44px;
+  padding:11px 12px;
+  gap:9px;
+}
+
+#quickCreate .quick-create-icon {
+  flex-shrink:0;
+  width:34px;
+  height:34px;
+  border-radius:9px;
+}
+
+#quickCreate .quick-create-icon svg {
+  width:19px;
+  height:19px;
+}
+
+#quickCreate .quick-create-heading {
+  min-width:0;
+}
+
+#quickCreate .quick-create-heading strong {
+  font-size:14px;
+  line-height:1.35;
+}
+
+#quickCreate .quick-create-heading small {
+  font-size:11px;
+  line-height:1.4;
+}
+
+#quickCreate .quick-create-chevron {
+  flex-shrink:0;
+  width:17px;
+  height:17px;
+}
+
+#quickCreate .quick-create-body {
+  padding:12px;
+}
+
+#quickCreate .quick-create-body > p {
+  margin:0 0 12px;
+  font-size:12px;
+  line-height:1.5;
+}
+
+#resumeForm {
+  min-width:0;
+}
+
+#resumeForm .fields {
+  gap:10px;
+}
+
+#resumeForm label {
+  min-width:0;
+  font-size:12px;
+  line-height:1.4;
+}
+
+#resumeForm input,
+#resumeForm textarea {
+  box-sizing:border-box;
+  width:100%;
+  min-width:0;
+  padding:9px 11px;
+  border-radius:9px;
+  font-size:14px;
+  line-height:1.5;
+}
+
+#resumeForm input {
+  min-height:42px;
+}
+
+#resumeForm textarea {
+  min-height:68px;
+  resize:vertical;
+}
+
+#resumeForm .actions {
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:12px;
+}
+
+#resumeForm .actions button {
+  min-width:0;
+  min-height:40px;
+  padding:9px 13px;
+  border-radius:9px;
+  font-size:13px;
+  line-height:1.3;
+}
+
+/* DOCUMENT DIALOGS */
+
+body dialog.wn-document-dialog {
+  box-sizing:border-box;
+  position:fixed;
+  inset:0;
+  margin:auto;
+  width:400px;
+  max-width:calc(100vw - 28px);
+  max-height:calc(100vh - 28px);
+  max-height:calc(100dvh - 28px);
+  padding:0;
+  border:1px solid var(--wn-border);
+  border-radius:17px;
+  background:#fff;
+  color:var(--wn-ink);
+  box-shadow:0 20px 60px rgba(38,20,73,.22);
+  overflow:auto;
+}
+
+body dialog.wn-document-dialog:not([open]) {
+  display:none!important;
+}
+
+.wn-document-dialog::backdrop {
+  background:rgba(24,12,54,.55);
+  backdrop-filter:blur(4px);
+}
+
+.wn-document-dialog .wn-dialog-content {
+  padding:20px;
+}
+
+.wn-document-dialog .wn-dialog-icon {
+  display:grid;
+  place-items:center;
+  width:46px;
+  height:46px;
+  margin-bottom:13px;
+  border-radius:13px;
+  color:var(--wn-purple);
+  background:#f1ebff;
+}
+
+.wn-document-dialog .wn-dialog-icon svg {
+  width:23px;
+  height:23px;
+}
+
+.wn-document-dialog .wn-dialog-icon-danger {
+  background:#fff1f2;
+  color:var(--wn-danger);
+}
+
+.wn-document-dialog h2 {
+  margin:0 0 8px;
+  font-size:21px;
+  font-weight:800;
+  line-height:1.3;
+}
+
+.wn-document-dialog p {
+  margin:0 0 15px;
+  color:var(--wn-muted);
+  font-size:13px;
+  line-height:1.6;
+  overflow-wrap:anywhere;
+}
+
+.wn-document-dialog label {
+  display:block;
+  margin:0 0 6px;
+  font-size:12px;
+  font-weight:700;
+}
+
+.wn-document-dialog input {
+  box-sizing:border-box;
+  width:100%;
+  min-width:0;
+  height:44px;
+  padding:10px 12px;
+  border:1px solid var(--wn-border);
+  border-radius:9px;
+  background:#faf9ff;
+  color:var(--wn-ink);
+  font-family:inherit;
+  font-size:16px;
+}
+
+.wn-document-dialog .wn-dialog-actions {
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:8px;
+  margin-top:18px;
+}
+
+.wn-document-dialog .wn-dialog-actions button {
+  box-sizing:border-box;
+  width:100%;
+  min-width:0;
+  min-height:44px;
+  padding:9px 12px;
+  border-radius:10px;
+  font-family:inherit;
+  font-size:13px;
+  font-weight:750;
+  line-height:1.4;
+  cursor:pointer;
+}
+
+.wn-document-dialog .wn-dialog-cancel {
+  background:#fff;
+  border:1px solid var(--wn-border);
+  color:var(--wn-ink);
+}
+
+.wn-document-dialog .wn-dialog-confirm {
+  border:0;
+  background:var(--wn-gradient);
+  color:#fff;
+}
+
+.wn-document-dialog .wn-dialog-delete {
+  border:0;
+  background:#c72d40;
+  color:#fff;
+}
+
+.wn-document-dialog button:disabled {
+  opacity:.6;
+  cursor:not-allowed;
+}
+
+.wn-document-dialog .wn-dialog-status {
+  margin:10px 0 0;
+  color:var(--wn-danger);
+  font-size:12px;
+  overflow-wrap:anywhere;
+}
+
+.wn-document-dialog .wn-dialog-status:empty {
+  display:none;
+}
+
+/* WORKNELY PRO */
+
+#pro {
+  min-width:0;
+}
+
+#pro h1 {
+  margin-bottom:8px;
+}
+
+#pro p {
+  font-size:14px;
+  line-height:1.55;
+  margin-bottom:14px;
+}
+
+#pro .outline {
+  min-height:40px;
+  max-width:100%;
+  padding:9px 12px;
+  border-radius:9px;
+  font-size:12px;
+  white-space:normal;
+}
+
+#pro .outline:disabled {
+  cursor:not-allowed;
+}
+
+#dashboardMain footer {
+  padding:12px 0 16px;
+  font-size:11px;
+  line-height:1.5;
+}
+
+/* MOBILE RESPONSIVE */
+
+@media(max-width:700px) {
+
+  body .topbar .brand img {
+    flex-basis:34px;
+    width:34px;
+    height:34px;
+  }
+
+  body .topbar #logout {
+    min-height:44px;
+    padding:8px 10px;
+    font-size:12px;
+  }
+
+  body .layout .sidebar {
+    gap:6px;
+  }
+
+  body .layout .sidebar a {
+    min-height:44px;
+    padding:8px 10px;
+    font-size:12px;
+    border-radius:9px;
+  }
+
+  #overview .metrics {
+    gap:8px;
+    margin-top:12px;
+    margin-bottom:12px;
+  }
+
+  #overview .metrics > div {
+    padding:10px;
+  }
+
+  #overview .metrics strong {
+    font-size:23px;
+  }
+
+  #overview .wn-dashboard-actions {
+    gap:7px;
+  }
+
+  #overview .wn-dashboard-actions a {
+    flex:1 1 130px;
+    min-height:44px;
+    padding:8px 10px;
+    font-size:12px;
+  }
+
+  #resumes .section-title {
+    gap:8px;
+    margin-bottom:12px;
+  }
+
+  #resumes .section-title .button {
+    min-height:44px;
+    padding:8px 10px;
+    font-size:12px;
+  }
+
+  #resumes .workspace-metric {
+    padding:10px;
+  }
+
+  #resumes .workspace-metric strong {
+    font-size:21px;
+  }
+
+  #wnDocumentToolbar {
+    grid-template-columns:minmax(0,1fr) 125px;
+    gap:7px;
+  }
+
+  #wnResumeSearch,
+  #wnResumeSort {
+    font-size:16px;
+  }
+
+  #resumeList .resume-item {
+    padding:10px;
+  }
+
+  #resumeList .resume-details strong {
+    font-size:13px;
+  }
+
+  #resumeList .resume-details small {
+    font-size:11px;
+  }
+
+  #resumeList .resume-item .actions {
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    gap:7px;
+  }
+
+  #resumeList .resume-edit-button {
+    flex:1 1 120px;
+    min-height:44px;
+    padding:8px 10px;
+    font-size:12px;
+  }
+
+  #resumeList .resume-delete-button,
+  #resumeList .wn-document-menu-button,
+  #resumeList .wn-document-pdf-button {
+    flex-basis:44px;
+    width:44px;
+    min-width:44px;
+    max-width:44px;
+    height:44px;
+    min-height:44px;
+  }
+
+  #resumeList .wn-document-menu-panel button {
+    min-height:44px;
+  }
+
+  #quickCreate > summary {
+    padding:10px;
+  }
+
+  #quickCreate .quick-create-body {
+    padding:11px;
+  }
+
+  #resumeForm .fields {
+    grid-template-columns:minmax(0,1fr);
+    gap:9px;
+  }
+
+  #resumeForm input,
+  #resumeForm textarea {
+    font-size:16px;
+  }
+
+  #resumeForm input {
+    min-height:44px;
+  }
+
+  #resumeForm textarea {
+    min-height:65px;
+  }
+
+  #resumeForm .actions button {
+    flex:1 1 110px;
+    min-height:44px;
+    padding:8px 10px;
+    font-size:12px;
+  }
+
+  .wn-document-dialog .wn-dialog-content {
+    padding:17px;
+  }
+
+  #pro .outline {
+    min-height:44px;
+  }
+
+}
+
+@media(max-width:480px) {
+
+  html:not([lang="en"]) body .topbar {
+    row-gap:6px;
+  }
+
+  html:not([lang="en"]) #wnDocumentToolbar {
+    grid-template-columns:minmax(0,1fr);
+  }
+
+}
+
+@media(max-width:390px) {
+
+  #resumeList .resume-item {
+    padding:9px;
+  }
+
+  #resumeList .resume-info {
+    gap:7px;
+  }
+
+  #resumeList .resume-icon {
+    width:32px;
+    height:36px;
+  }
+
+  #quickCreate .quick-create-body {
+    padding:10px;
+  }
+
+  #overview .wn-dashboard-actions a {
+    flex-basis:110px;
+  }
+
+  #wnDocumentToolbar {
+    grid-template-columns:minmax(0,1fr);
+  }
+
+}
+
+@media(max-width:340px) {
+
+  #overview .wn-dashboard-actions a,
+  #resumeForm .actions button {
+    flex-basis:100%;
+  }
+
+  .wn-document-dialog .wn-dialog-actions {
+    grid-template-columns:minmax(0,1fr);
+  }
+
+}
+
+@media(prefers-reduced-motion:reduce) {
+
+  html {
+    scroll-behavior:auto;
+  }
+
+  .wn-document-dialog *,
+  #resumeList * {
+    transition:none!important;
+    animation:none!important;
+  }
+
+}
+
+</style>
 
 </head>
 
 <body>
 
-  <!-- SESSION LOADING -->
+<div id="loading"
+     role="status"
+     data-wn-dashboard-text="checking">
+  Checking your Worknely session…
+</div>
 
-  <div id="loading" role="status">
-    Checking your Worknely session…
+<div id="app" hidden>
+
+<header class="topbar">
+
+  <a class="brand"
+     href="./"
+     aria-label="Worknely home"
+     data-wn-dashboard-aria="home">
+
+    <img src="worknely-mark.svg"
+         width="36"
+         height="36"
+         alt="">
+
+    <span>
+      Worknely
+      <small>PEOPLE TECHNOLOGY</small>
+    </span>
+
+  </a>
+
+  <div class="wn-dashboard-header-tools">
+
+    <div class="wn-dashboard-language">
+
+      <label for="language"
+             class="wn-sr-only"
+             data-wn-i18n="common.language">
+        Language
+      </label>
+
+      <span id="wnLanguageFlag"
+            class="wn-dashboard-language-flag"
+            aria-hidden="true">🇬🇧</span>
+
+      <select id="language"
+              data-wn-language
+              data-wn-i18n-aria="common.language"
+              aria-label="Language">
+
+        <option value="en">English</option>
+        <option value="ro">Română</option>
+        <option value="it">Italiano</option>
+        <option value="de">Deutsch</option>
+        <option value="fr">Français</option>
+        <option value="es">Español</option>
+
+      </select>
+
+    </div>
+
+    <button id="logout"
+            class="outline"
+            type="button"
+            data-wn-i18n="auth.logout">
+      Log Out
+    </button>
+
   </div>
 
-  <!-- AUTHENTICATED APPLICATION -->
+</header>
+
+<div class="layout">
+
+<nav class="sidebar"
+     aria-label="Dashboard navigation"
+     data-wn-dashboard-aria="navigation">
+
+  <a href="#overview"
+     data-wn-view="overview"
+     data-wn-i18n="nav.overview">
+    Overview
+  </a>
+
+  <a href="#resumes"
+     data-wn-view="resumes"
+     data-wn-i18n="nav.resumes">
+    My Resumes
+  </a>
+
+  <a href="#pro"
+     data-wn-view="pro"
+     data-wn-dashboard-text="upgrade">
+    Upgrade to Pro
+  </a>
+
+  <a href="./#builder"
+     data-wn-dashboard-text="builderLink">
+    Resume Builder ↗
+  </a>
 
-  <div id="app" hidden>
+  <a href="./#comparison"
+     data-wn-dashboard-text="analysisLink">
+    Career Analysis ↗
+  </a>
+
+</nav>
+
+<main id="dashboardMain">
+
+<!-- OVERVIEW -->
+
+<section id="overview"
+         class="hero wn-view"
+         data-view="overview"
+         aria-labelledby="overviewTitle"
+         tabindex="-1">
+
+  <span class="eyebrow"
+        data-wn-dashboard-text="workspace">
+    YOUR WORKNELY WORKSPACE
+  </span>
 
-    <header class="topbar">
+  <h1 id="overviewTitle"
+      data-wn-i18n="nav.dashboard">
+    My Dashboard
+  </h1>
 
-      <a class="brand"
-         href="./"
-         aria-label="Worknely home">
+  <p id="welcome">
+    Your career documents, in one place.
+  </p>
 
-        <img src="worknely-mark.svg"
-             width="36"
-             height="36"
-             alt="">
+  <div class="metrics">
 
-        <span>
-          Worknely
-          <small>PEOPLE TECHNOLOGY</small>
-        </span>
+    <div>
+      <strong id="resumeCount">—</strong>
+      <span data-wn-i18n="dashboard.saved">
+        Saved resumes
+      </span>
+    </div>
 
-      </a>
+    <div>
+      <strong data-wn-i18n="plan.free">Free</strong>
+      <span data-wn-i18n="dashboard.plan">
+        Current plan
+      </span>
+    </div>
 
-      <button id="logout"
-              class="outline"
-              type="button">
-        Log Out
-      </button>
+  </div>
 
-    </header>
+  <div class="wn-dashboard-actions">
 
-    <div class="layout">
+    <a class="button"
+       href="#resumes"
+       data-wn-dashboard-text="manage">
+      Manage My Resumes
+    </a>
 
-      <!-- DASHBOARD NAVIGATION -->
+    <a class="outline"
+       href="./index.html#builder"
+       data-wn-dashboard-text="create">
+      Create New Resume
+    </a>
 
-      <nav class="sidebar"
-           aria-label="Dashboard navigation">
+  </div>
 
-        <a href="#overview"
-           data-wn-view="overview">
-          Overview
-        </a>
+</section>
 
-        <a href="#resumes"
-           data-wn-view="resumes">
-          My Resumes
-        </a>
+<!-- MY RESUMES -->
 
-        <a href="#pro"
-           data-wn-view="pro">
-          Upgrade to Pro
-        </a>
+<section id="resumes"
+         class="panel wn-view"
+         data-view="resumes"
+         aria-labelledby="resumesTitle"
+         tabindex="-1"
+         hidden>
 
-        <a href="./#builder">
-          Resume Builder ↗
-        </a>
+  <div class="section-title">
 
-        <a href="./#comparison">
-          Career Analysis ↗
-        </a>
+    <div>
 
-      </nav>
+      <span class="eyebrow"
+            data-wn-dashboard-text="documents">
+        YOUR DOCUMENT WORKSPACE
+      </span>
 
-      <main id="dashboardMain">
+      <h1 id="resumesTitle"
+          data-wn-i18n="nav.resumes">
+        My Resumes
+      </h1>
 
-        <!-- VIEW 1: OVERVIEW -->
+      <p data-wn-dashboard-text="documentsIntro">
+        Create, organize and manage your professional resumes in one place.
+      </p>
 
-        <section id="overview"
-                 class="hero wn-view"
-                 data-view="overview"
-                 aria-labelledby="overviewTitle"
-                 tabindex="-1">
+    </div>
 
-          <span class="eyebrow">
-            YOUR WORKNELY WORKSPACE
-          </span>
+    <a class="button"
+       href="./index.html#builder">
 
-          <h1 id="overviewTitle">
-            My Dashboard
-          </h1>
+      <svg viewBox="0 0 24 24"
+           fill="none"
+           stroke="currentColor"
+           stroke-width="2"
+           stroke-linecap="round"
+           stroke-linejoin="round"
+           aria-hidden="true"
+           focusable="false">
 
-          <p id="welcome">
-            Your career documents, in one place.
-          </p>
+        <path d="M12 5v14"></path>
+        <path d="M5 12h14"></path>
 
-          <div class="metrics">
+      </svg>
 
-            <div>
-              <strong id="resumeCount">—</strong>
-              <span>Saved resumes</span>
-            </div>
+      <span data-wn-dashboard-text="create">
+        Create New Resume
+      </span>
 
-            <div>
-              <strong>Free</strong>
-              <span>Current plan</span>
-            </div>
+    </a>
 
-          </div>
+  </div>
 
-          <div class="wn-dashboard-actions">
+  <div class="workspace-metrics">
 
-            <a class="button"
-               href="#resumes">
-              Manage My Resumes
-            </a>
+    <div class="workspace-metric">
 
-            <a class="outline"
-               href="./index.html#builder">
-              Create New Resume
-            </a>
+      <span data-wn-i18n="dashboard.saved">
+        Saved resumes
+      </span>
 
-          </div>
+      <strong id="workspaceResumeCount">—</strong>
 
-        </section>
+    </div>
 
-        <!-- VIEW 2: ADVANCED DOCUMENT MANAGEMENT -->
+    <div class="workspace-metric">
 
-        <section id="resumes"
-                 class="panel wn-view"
-                 data-view="resumes"
-                 aria-labelledby="resumesTitle"
-                 tabindex="-1"
-                 hidden>
+      <span data-wn-i18n="dashboard.plan">
+        Current plan
+      </span>
 
-          <div class="section-title">
+      <strong data-wn-i18n="plan.free">Free</strong>
 
-            <div>
+    </div>
 
-              <span class="eyebrow">
-                YOUR DOCUMENT WORKSPACE
-              </span>
+  </div>
 
-              <h1 id="resumesTitle">
-                My Resumes
-              </h1>
+  <p id="resumeStatus"
+     role="status"
+     aria-live="polite"></p>
 
-              <p>
-                Create, organize and manage your
-                professional resumes in one place.
-              </p>
+  <!-- SEARCH AND SORT -->
 
-            </div>
+  <div id="wnDocumentToolbar"
+       aria-label="Document search and sorting"
+       data-wn-dashboard-aria="toolbar">
 
-            <a class="button"
-               href="./index.html#builder">
+    <div class="wn-search-box">
 
-              <svg viewBox="0 0 24 24"
-                   fill="none"
-                   stroke="currentColor"
-                   stroke-width="2"
-                   stroke-linecap="round"
-                   stroke-linejoin="round"
-                   aria-hidden="true"
-                   focusable="false">
+      <label for="wnResumeSearch"
+             class="wn-sr-only"
+             data-wn-dashboard-text="searchLabel">
+        Search saved resumes
+      </label>
 
-                <path d="M12 5v14"></path>
-                <path d="M5 12h14"></path>
+      <svg class="wn-search-icon"
+           viewBox="0 0 24 24"
+           fill="none"
+           stroke="currentColor"
+           stroke-width="1.8"
+           stroke-linecap="round"
+           stroke-linejoin="round"
+           aria-hidden="true">
 
-              </svg>
+        <circle cx="11" cy="11" r="7"></circle>
+        <path d="m20 20-4-4"></path>
 
-              Create New Resume
+      </svg>
 
-            </a>
+      <input id="wnResumeSearch"
+             type="search"
+             placeholder="Search resumes..."
+             data-wn-i18n-placeholder="document.search"
+             autocomplete="off"
+             maxlength="120">
 
-          </div>
+      <button id="wnClearSearch"
+              type="button"
+              aria-label="Clear search"
+              data-wn-i18n-aria="document.clearSearch"
+              hidden>×</button>
 
-          <!-- WORKSPACE METRICS -->
+    </div>
 
-          <div class="workspace-metrics">
+    <div class="wn-sort-box">
 
-            <div class="workspace-metric">
+      <label for="wnResumeSort"
+             class="wn-sr-only"
+             data-wn-dashboard-text="sortLabel">
+        Sort resumes
+      </label>
 
-              <span>Saved resumes</span>
+      <select id="wnResumeSort">
 
-              <strong id="workspaceResumeCount">
-                —
-              </strong>
+        <option value="updated-desc"
+                data-wn-i18n="sort.updatedDesc">
+          Recently updated
+        </option>
 
-            </div>
+        <option value="updated-asc"
+                data-wn-i18n="sort.updatedAsc">
+          Least recently updated
+        </option>
 
-            <div class="workspace-metric">
+        <option value="created-desc"
+                data-wn-i18n="sort.createdDesc">
+          Newest first
+        </option>
 
-              <span>Current plan</span>
+        <option value="created-asc"
+                data-wn-i18n="sort.createdAsc">
+          Oldest first
+        </option>
 
-              <strong>Free</strong>
+        <option value="title-asc"
+                data-wn-i18n="sort.titleAsc">
+          Name A–Z
+        </option>
 
-            </div>
+        <option value="title-desc"
+                data-wn-i18n="sort.titleDesc">
+          Name Z–A
+        </option>
 
-          </div>
+      </select>
 
-          <!-- STATUS -->
+    </div>
 
-          <p id="resumeStatus"
-             role="status"
-             aria-live="polite"></p>
+  </div>
 
-          <!-- V7.14 SEARCH AND SORT TOOLBAR -->
+  <div class="resume-list-header">
 
-          <div id="wnDocumentToolbar"
-               aria-label="Document search and sorting">
+    <h2 id="savedResumesTitle"
+        data-wn-i18n="dashboard.saved">
+      Saved resumes
+    </h2>
 
-            <div class="wn-search-box">
+    <span id="wnSearchResultCount"
+          role="status"
+          aria-live="polite">
+      Recently updated
+    </span>
 
-              <label for="wnResumeSearch"
-                     class="wn-sr-only">
-                Search saved resumes
-              </label>
+  </div>
 
-              <svg class="wn-search-icon"
-                   viewBox="0 0 24 24"
-                   fill="none"
-                   stroke="currentColor"
-                   stroke-width="1.8"
-                   stroke-linecap="round"
-                   stroke-linejoin="round"
-                   aria-hidden="true">
+  <div id="resumeList"
+       class="resume-list"
+       aria-labelledby="savedResumesTitle">
+  </div>
 
-                <circle cx="11" cy="11" r="7"></circle>
-                <path d="m20 20-4-4"></path>
+  <div id="wnNoSearchResults" hidden>
 
-              </svg>
+    <strong data-wn-i18n="document.noResults">
+      No matching resumes
+    </strong>
 
-              <input id="wnResumeSearch"
-                     type="search"
-                     placeholder="Search resumes..."
-                     autocomplete="off"
-                     maxlength="120">
+    <p data-wn-dashboard-text="noResultsIntro">
+      Try another search or clear your current search to view all documents.
+    </p>
 
-              <button id="wnClearSearch"
-                      type="button"
-                      aria-label="Clear search"
-                      hidden>
-                ×
-              </button>
+    <button id="wnResetSearch"
+            class="outline"
+            type="button"
+            data-wn-i18n="document.clearSearch">
+      Clear Search
+    </button>
 
-            </div>
+  </div>
 
-            <div class="wn-sort-box">
+  <!-- QUICK CREATE -->
 
-              <label for="wnResumeSort"
-                     class="wn-sr-only">
-                Sort resumes
-              </label>
+  <details id="quickCreate"
+           class="quick-create">
 
-              <select id="wnResumeSort">
+    <summary>
 
-                <option value="updated-desc">
-                  Newest updated
-                </option>
+      <span class="quick-create-icon">
 
-                <option value="updated-asc">
-                  Oldest updated
-                </option>
+        <svg viewBox="0 0 24 24"
+             fill="none"
+             stroke="currentColor"
+             stroke-width="1.7"
+             stroke-linecap="round"
+             stroke-linejoin="round"
+             aria-hidden="true"
+             focusable="false">
 
-                <option value="created-desc">
-                  Newest created
-                </option>
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"></path>
+          <path d="M14 2v6h6"></path>
+          <path d="M12 11v6"></path>
+          <path d="M9 14h6"></path>
 
-                <option value="created-asc">
-                  Oldest created
-                </option>
+        </svg>
 
-                <option value="title-asc">
-                  Name A–Z
-                </option>
+      </span>
 
-                <option value="title-desc">
-                  Name Z–A
-                </option>
+      <span class="quick-create-heading">
 
-              </select>
+        <strong data-wn-i18n="dashboard.quickCreate">
+          Quick Create Resume
+        </strong>
 
-            </div>
+        <small data-wn-dashboard-text="quickSubtitle">
+          Create a resume directly from your dashboard.
+        </small>
 
-          </div>
+      </span>
 
-          <!-- DOCUMENT LIST HEADER -->
+      <svg class="quick-create-chevron"
+           viewBox="0 0 24 24"
+           fill="none"
+           stroke="currentColor"
+           stroke-width="2"
+           stroke-linecap="round"
+           stroke-linejoin="round"
+           aria-hidden="true"
+           focusable="false">
 
-          <div class="resume-list-header">
+        <path d="m6 9 6 6 6-6"></path>
 
-            <h2 id="savedResumesTitle">
-              Saved resumes
-            </h2>
+      </svg>
 
-            <span id="wnSearchResultCount"
-                  role="status"
-                  aria-live="polite">
-              Recently updated
+    </summary>
+
+    <div class="quick-create-body">
+
+      <p data-wn-dashboard-text="quickIntro">
+        Add your professional information and save your resume directly to your Worknely account.
+      </p>
+
+      <form id="resumeForm">
+
+        <label for="resumeTitle"
+               data-wn-dashboard-text="resumeTitle">
+          Resume title
+        </label>
+
+        <input id="resumeTitle"
+               type="text"
+               maxlength="120"
+               required
+               placeholder="e.g. Customer Support CV"
+               data-wn-dashboard-placeholder="titlePlaceholder">
+
+        <div class="fields">
+
+          <label for="fullName">
+
+            <span data-wn-dashboard-text="fullName">
+              Full name
             </span>
 
-          </div>
+            <input id="fullName"
+                   type="text"
+                   maxlength="200"
+                   autocomplete="name"
+                   placeholder="Your full name"
+                   data-wn-dashboard-placeholder="namePlaceholder">
 
-          <!-- DYNAMIC DOCUMENT LIST -->
+          </label>
 
-          <div id="resumeList"
-               class="resume-list"
-               aria-labelledby="savedResumesTitle">
-          </div>
+          <label for="professionalTitle">
 
-          <!-- NO SEARCH RESULTS -->
+            <span data-wn-dashboard-text="professionalTitle">
+              Professional title
+            </span>
 
-          <div id="wnNoSearchResults" hidden>
+            <input id="professionalTitle"
+                   type="text"
+                   maxlength="200"
+                   placeholder="Your professional role"
+                   data-wn-dashboard-placeholder="rolePlaceholder">
 
-            <strong>No matching resumes</strong>
+          </label>
 
-            <p>
-              Try another search or clear your
-              current search to view all documents.
-            </p>
+          <label for="contact">
 
-            <button id="wnResetSearch"
-                    class="outline"
-                    type="button">
-              Clear Search
-            </button>
+            <span data-wn-dashboard-text="contact">
+              Contact
+            </span>
 
-          </div>
+            <textarea id="contact"
+                      rows="2"
+                      placeholder="Email, city, LinkedIn"
+                      data-wn-dashboard-placeholder="contactPlaceholder"></textarea>
 
-          <!-- QUICK CREATE RESUME -->
+          </label>
 
-          <details id="quickCreate"
-                   class="quick-create">
+          <label for="education">
 
-            <summary>
+            <span data-wn-dashboard-text="education">
+              Education
+            </span>
 
-              <span class="quick-create-icon">
+            <textarea id="education"
+                      rows="3"
+                      placeholder="Degrees and qualifications"
+                      data-wn-dashboard-placeholder="educationPlaceholder"></textarea>
 
-                <svg viewBox="0 0 24 24"
-                     fill="none"
-                     stroke="currentColor"
-                     stroke-width="1.7"
-                     stroke-linecap="round"
-                     stroke-linejoin="round"
-                     aria-hidden="true"
-                     focusable="false">
+          </label>
 
-                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"></path>
+          <label for="summary">
 
-                  <path d="M14 2v6h6"></path>
-                  <path d="M12 11v6"></path>
-                  <path d="M9 14h6"></path>
+            <span data-wn-dashboard-text="summary">
+              Professional summary
+            </span>
 
-                </svg>
+            <textarea id="summary"
+                      rows="3"
+                      placeholder="Your professional background"
+                      data-wn-dashboard-placeholder="summaryPlaceholder"></textarea>
 
-              </span>
+          </label>
 
-              <span class="quick-create-heading">
+          <label for="experience">
 
-                <strong>
-                  Quick Create Resume
-                </strong>
+            <span data-wn-dashboard-text="experience">
+              Experience
+            </span>
 
-                <small>
-                  Create a resume directly
-                  from your dashboard.
-                </small>
+            <textarea id="experience"
+                      rows="4"
+                      placeholder="Roles, employers and achievements"
+                      data-wn-dashboard-placeholder="experiencePlaceholder"></textarea>
 
-              </span>
+          </label>
 
-              <svg class="quick-create-chevron"
-                   viewBox="0 0 24 24"
-                   fill="none"
-                   stroke="currentColor"
-                   stroke-width="2"
-                   stroke-linecap="round"
-                   stroke-linejoin="round"
-                   aria-hidden="true"
-                   focusable="false">
+          <label for="skills">
 
-                <path d="m6 9 6 6 6-6"></path>
+            <span data-wn-dashboard-text="skills">
+              Skills
+            </span>
 
-              </svg>
+            <textarea id="skills"
+                      rows="3"
+                      placeholder="Your verified skills"
+                      data-wn-dashboard-placeholder="skillsPlaceholder"></textarea>
 
-            </summary>
+          </label>
 
-            <div class="quick-create-body">
+        </div>
 
-              <p>
-                Add your professional information
-                and save your resume directly
-                to your Worknely account.
-              </p>
+        <div class="actions">
 
-              <form id="resumeForm">
-
-                <label for="resumeTitle">
-                  Resume title
-                </label>
-
-                <input id="resumeTitle"
-                       type="text"
-                       maxlength="120"
-                       required
-                       placeholder="e.g. Customer Support CV">
-
-                <div class="fields">
-
-                  <label for="fullName">
-
-                    Full name
-
-                    <input id="fullName"
-                           type="text"
-                           maxlength="200"
-                           autocomplete="name"
-                           placeholder="Your full name">
-
-                  </label>
-
-                  <label for="professionalTitle">
-
-                    Professional title
-
-                    <input id="professionalTitle"
-                           type="text"
-                           maxlength="200"
-                           placeholder="Your professional role">
-
-                  </label>
-
-                  <label for="contact">
-
-                    Contact
-
-                    <textarea id="contact"
-                              rows="2"
-                              placeholder="Email, city, LinkedIn"></textarea>
-
-                  </label>
-
-                  <label for="education">
-
-                    Education
-
-                    <textarea id="education"
-                              rows="3"
-                              placeholder="Degrees and qualifications"></textarea>
-
-                  </label>
-
-                  <label for="summary">
-
-                    Professional summary
-
-                    <textarea id="summary"
-                              rows="3"
-                              placeholder="Your professional background"></textarea>
-
-                  </label>
-
-                  <label for="experience">
-
-                    Experience
-
-                    <textarea id="experience"
-                              rows="4"
-                              placeholder="Roles, employers and achievements"></textarea>
-
-                  </label>
-
-                  <label for="skills">
-
-                    Skills
-
-                    <textarea id="skills"
-                              rows="3"
-                              placeholder="Your verified skills"></textarea>
-
-                  </label>
-
-                </div>
-
-                <div class="actions">
-
-                  <button class="button"
-                          type="submit"
-                          id="saveResume">
-                    Save Resume
-                  </button>
-
-                  <button class="outline"
-                          type="button"
-                          id="newResume">
-                    New / Clear
-                  </button>
-
-                </div>
-
-              </form>
-
-            </div>
-
-          </details>
-
-        </section>
-
-        <!-- VIEW 3: WORKNELY PRO -->
-
-        <section id="pro"
-                 class="panel pro wn-view"
-                 data-view="pro"
-                 aria-labelledby="proTitle"
-                 tabindex="-1"
-                 hidden>
-
-          <span class="eyebrow">
-            COMING LATER
-          </span>
-
-          <h1 id="proTitle">
-            Worknely Pro
-          </h1>
-
-          <p>
-            Premium features and subscriptions
-            are not active yet.
-          </p>
+          <button class="button"
+                  type="submit"
+                  id="saveResume">
+            Save Resume
+          </button>
 
           <button class="outline"
                   type="button"
-                  disabled>
-            Upgrade to Pro — Coming soon
-          </button>
-
-        </section>
-
-        <footer>
-          © 2026 Worknely · People Technology
-        </footer>
-
-      </main>
-
-    </div>
-
-  </div>
-
-  <!-- V7.14 RENAME DOCUMENT DIALOG -->
-
-  <dialog id="wnRenameDialog"
-          class="wn-document-dialog"
-          aria-labelledby="wnRenameHeading"
-          aria-describedby="wnRenameDescription">
-
-    <div class="wn-dialog-content">
-
-      <div class="wn-dialog-icon">
-
-        <svg viewBox="0 0 24 24"
-             fill="none"
-             stroke="currentColor"
-             stroke-width="1.8"
-             stroke-linecap="round"
-             stroke-linejoin="round"
-             aria-hidden="true">
-
-          <path d="m16 3 5 5"></path>
-          <path d="M4 20l4-1 13-13a2 2 0 0 0-4-4L4 15Z"></path>
-
-        </svg>
-
-      </div>
-
-      <h2 id="wnRenameHeading">
-        Rename resume
-      </h2>
-
-      <p id="wnRenameDescription">
-        Choose a new name for your document.
-        Your resume content will remain unchanged.
-      </p>
-
-      <form id="wnRenameForm">
-
-        <label for="wnRenameInput">
-          Document name
-        </label>
-
-        <input id="wnRenameInput"
-               type="text"
-               maxlength="120"
-               required
-               autocomplete="off">
-
-        <p id="wnRenameStatus"
-           class="wn-dialog-status"
-           role="status"
-           aria-live="polite"></p>
-
-        <div class="wn-dialog-actions">
-
-          <button id="wnRenameCancel"
-                  class="wn-dialog-cancel"
-                  type="button">
-            Cancel
-          </button>
-
-          <button id="wnRenameConfirm"
-                  class="wn-dialog-confirm"
-                  type="submit">
-            Save Name
+                  id="newResume"
+                  data-wn-dashboard-text="newResume">
+            New / Clear
           </button>
 
         </div>
@@ -1678,278 +1671,1004 @@
 
     </div>
 
-  </dialog>
+  </details>
 
-  <!-- V7.14 DUPLICATE DOCUMENT DIALOG -->
+</section>
 
-  <dialog id="wnDuplicateDialog"
-          class="wn-document-dialog"
-          aria-labelledby="wnDuplicateHeading"
-          aria-describedby="wnDuplicateDescription">
+<!-- WORKNELY PRO -->
 
-    <div class="wn-dialog-content">
+<section id="pro"
+         class="panel pro wn-view"
+         data-view="pro"
+         aria-labelledby="proTitle"
+         tabindex="-1"
+         hidden>
 
-      <div class="wn-dialog-icon">
+  <span class="eyebrow"
+        data-wn-dashboard-text="comingLater">
+    COMING LATER
+  </span>
 
-        <svg viewBox="0 0 24 24"
-             fill="none"
-             stroke="currentColor"
-             stroke-width="1.8"
-             stroke-linecap="round"
-             stroke-linejoin="round"
-             aria-hidden="true">
+  <h1 id="proTitle">Worknely Pro</h1>
 
-          <rect x="8" y="8"
-                width="12" height="12"
-                rx="2"></rect>
+  <p data-wn-dashboard-text="proIntro">
+    Premium features and subscriptions are not active yet.
+  </p>
 
-          <path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"></path>
+  <button class="outline"
+          type="button"
+          data-wn-dashboard-text="proButton"
+          disabled>
+    Upgrade to Pro — Coming soon
+  </button>
 
-        </svg>
+</section>
 
-      </div>
+<footer>
+  © 2026 Worknely · People Technology
+</footer>
 
-      <h2 id="wnDuplicateHeading">
-        Duplicate resume
-      </h2>
+</main>
 
-      <p id="wnDuplicateDescription">
-        Create an independent copy of your resume.
-        Changes to the copy will not affect the original.
-      </p>
+</div>
 
-      <form id="wnDuplicateForm">
+</div>
 
-        <label for="wnDuplicateInput">
-          New document name
-        </label>
+<!-- RENAME DOCUMENT -->
 
-        <input id="wnDuplicateInput"
-               type="text"
-               maxlength="120"
-               required
-               autocomplete="off">
+<dialog id="wnRenameDialog"
+        class="wn-document-dialog"
+        aria-labelledby="wnRenameHeading"
+        aria-describedby="wnRenameDescription">
 
-        <p id="wnDuplicateStatus"
-           class="wn-dialog-status"
-           role="status"
-           aria-live="polite"></p>
+  <div class="wn-dialog-content">
 
-        <div class="wn-dialog-actions">
+    <div class="wn-dialog-icon">
 
-          <button id="wnDuplicateCancel"
-                  class="wn-dialog-cancel"
-                  type="button">
-            Cancel
-          </button>
+      <svg viewBox="0 0 24 24"
+           fill="none"
+           stroke="currentColor"
+           stroke-width="1.8"
+           stroke-linecap="round"
+           stroke-linejoin="round"
+           aria-hidden="true">
 
-          <button id="wnDuplicateConfirm"
-                  class="wn-dialog-confirm"
-                  type="submit">
-            Create Copy
-          </button>
+        <path d="m16 3 5 5"></path>
+        <path d="M4 20l4-1 13-13a2 2 0 0 0-4-4L4 15Z"></path>
 
-        </div>
-
-      </form>
+      </svg>
 
     </div>
 
-  </dialog>
+    <h2 id="wnRenameHeading"
+        data-wn-i18n="document.rename">
+      Rename resume
+    </h2>
 
-  <!-- V7.14 SECURE DELETE CONFIRMATION -->
+    <p id="wnRenameDescription"
+       data-wn-dashboard-text="renameIntro">
+      Choose a new name for your document. Your resume content will remain unchanged.
+    </p>
 
-  <dialog id="wnDeleteDialog"
-          class="wn-document-dialog"
-          aria-labelledby="wnDeleteHeading"
-          aria-describedby="wnDeleteDescription">
+    <form id="wnRenameForm">
 
-    <div class="wn-dialog-content">
+      <label for="wnRenameInput"
+             data-wn-i18n="document.title">
+        Document name
+      </label>
 
-      <div class="wn-dialog-icon wn-dialog-icon-danger">
+      <input id="wnRenameInput"
+             type="text"
+             maxlength="120"
+             required
+             autocomplete="off">
 
-        <svg viewBox="0 0 24 24"
-             fill="none"
-             stroke="currentColor"
-             stroke-width="1.8"
-             stroke-linecap="round"
-             stroke-linejoin="round"
-             aria-hidden="true">
-
-          <path d="M3 6h18"></path>
-          <path d="M8 6V4h8v2"></path>
-          <path d="M5 6l1 14h12l1-14"></path>
-          <path d="M10 10v6"></path>
-          <path d="M14 10v6"></path>
-
-        </svg>
-
-      </div>
-
-      <h2 id="wnDeleteHeading">
-        Delete resume?
-      </h2>
-
-      <p id="wnDeleteDescription">
-
-        You are about to permanently delete
-
-        <strong id="wnDeleteResumeName">
-          this resume
-        </strong>.
-
-        This action cannot be undone.
-
-      </p>
-
-      <p id="wnDeleteStatus"
+      <p id="wnRenameStatus"
          class="wn-dialog-status"
          role="status"
          aria-live="polite"></p>
 
       <div class="wn-dialog-actions">
 
-        <button id="wnDeleteCancel"
+        <button id="wnRenameCancel"
                 class="wn-dialog-cancel"
                 type="button"
-                autofocus>
+                data-wn-i18n="common.cancel">
           Cancel
         </button>
 
-        <button id="wnDeleteConfirm"
-                class="wn-dialog-delete"
-                type="button">
-          Delete Resume
+        <button id="wnRenameConfirm"
+                class="wn-dialog-confirm"
+                type="submit"
+                data-wn-dashboard-text="saveName">
+          Save Name
         </button>
 
       </div>
 
+    </form>
+
+  </div>
+
+</dialog>
+
+<!-- DUPLICATE DOCUMENT -->
+
+<dialog id="wnDuplicateDialog"
+        class="wn-document-dialog"
+        aria-labelledby="wnDuplicateHeading"
+        aria-describedby="wnDuplicateDescription">
+
+  <div class="wn-dialog-content">
+
+    <div class="wn-dialog-icon">
+
+      <svg viewBox="0 0 24 24"
+           fill="none"
+           stroke="currentColor"
+           stroke-width="1.8"
+           stroke-linecap="round"
+           stroke-linejoin="round"
+           aria-hidden="true">
+
+        <rect x="8" y="8"
+              width="12" height="12"
+              rx="2"></rect>
+
+        <path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"></path>
+
+      </svg>
+
     </div>
 
-  </dialog>
+    <h2 id="wnDuplicateHeading"
+        data-wn-i18n="document.duplicate">
+      Duplicate resume
+    </h2>
 
-  <!-- DASHBOARD APPLICATION -->
+    <p id="wnDuplicateDescription"
+       data-wn-dashboard-text="duplicateIntro">
+      Create an independent copy of your resume. Changes to the copy will not affect the original.
+    </p>
 
-  <script type="module"
-          src="dashboard.js?v=7.14"></script>
+    <form id="wnDuplicateForm">
 
-  <!-- DASHBOARD SECTION NAVIGATION -->
+      <label for="wnDuplicateInput"
+             data-wn-dashboard-text="newDocumentName">
+        New document name
+      </label>
 
-  <script>
+      <input id="wnDuplicateInput"
+             type="text"
+             maxlength="120"
+             required
+             autocomplete="off">
 
-    (() => {
+      <p id="wnDuplicateStatus"
+         class="wn-dialog-status"
+         role="status"
+         aria-live="polite"></p>
 
-      "use strict";
+      <div class="wn-dialog-actions">
 
-      const validViews = [
-        "overview",
-        "resumes",
-        "pro"
-      ];
+        <button id="wnDuplicateCancel"
+                class="wn-dialog-cancel"
+                type="button"
+                data-wn-i18n="common.cancel">
+          Cancel
+        </button>
 
-      function getRequestedView() {
+        <button id="wnDuplicateConfirm"
+                class="wn-dialog-confirm"
+                type="submit"
+                data-wn-dashboard-text="createCopy">
+          Create Copy
+        </button>
 
-        const hash = window.location.hash
-          .replace("#", "")
-          .toLowerCase();
+      </div>
 
-        return validViews.includes(hash)
-          ? hash
-          : "overview";
+    </form>
+
+  </div>
+
+</dialog>
+
+<!-- DELETE CONFIRMATION -->
+
+<dialog id="wnDeleteDialog"
+        class="wn-document-dialog"
+        aria-labelledby="wnDeleteHeading"
+        aria-describedby="wnDeleteDescription">
+
+  <div class="wn-dialog-content">
+
+    <div class="wn-dialog-icon wn-dialog-icon-danger">
+
+      <svg viewBox="0 0 24 24"
+           fill="none"
+           stroke="currentColor"
+           stroke-width="1.8"
+           stroke-linecap="round"
+           stroke-linejoin="round"
+           aria-hidden="true">
+
+        <path d="M3 6h18"></path>
+        <path d="M8 6V4h8v2"></path>
+        <path d="M5 6l1 14h12l1-14"></path>
+        <path d="M10 10v6"></path>
+        <path d="M14 10v6"></path>
+
+      </svg>
+
+    </div>
+
+    <h2 id="wnDeleteHeading"
+        data-wn-dashboard-text="deleteHeading">
+      Delete resume?
+    </h2>
+
+    <p id="wnDeleteDescription">
+
+      <span data-wn-dashboard-text="deleteIntro">
+        You are about to permanently delete:
+      </span>
+
+      <strong id="wnDeleteResumeName">
+        this resume
+      </strong>.
+
+      <span data-wn-i18n="document.deleteWarning">
+        This action cannot be undone.
+      </span>
+
+    </p>
+
+    <p id="wnDeleteStatus"
+       class="wn-dialog-status"
+       role="status"
+       aria-live="polite"></p>
+
+    <div class="wn-dialog-actions">
+
+      <button id="wnDeleteCancel"
+              class="wn-dialog-cancel"
+              type="button"
+              data-wn-i18n="common.cancel"
+              autofocus>
+        Cancel
+      </button>
+
+      <button id="wnDeleteConfirm"
+              class="wn-dialog-delete"
+              type="button"
+              data-wn-i18n="document.delete">
+        Delete Resume
+      </button>
+
+    </div>
+
+  </div>
+
+</dialog>
+
+<!-- V7.15 SHARED LOCALIZATION ENGINE -->
+
+<script defer src="worknely-localization.js?v=7.15"></script>
+
+<!-- DASHBOARD APPLICATION -->
+
+<script type="module" src="dashboard.js?v=7.14"></script>
+
+<!-- INTERNATIONAL DASHBOARD DICTIONARY -->
+
+<script>
+
+(() => {
+
+  "use strict";
+
+  const translations = {
+
+    en: {
+
+      checking:"Checking your Worknely session…",
+      home:"Worknely home",
+      navigation:"Dashboard navigation",
+      upgrade:"Upgrade to Pro",
+      builderLink:"Resume Builder ↗",
+      analysisLink:"Career Analysis ↗",
+      workspace:"YOUR WORKNELY WORKSPACE",
+      manage:"Manage My Resumes",
+      create:"Create New Resume",
+      documents:"YOUR DOCUMENT WORKSPACE",
+      documentsIntro:"Create, organize and manage your professional resumes in one place.",
+      toolbar:"Document search and sorting",
+      searchLabel:"Search saved resumes",
+      sortLabel:"Sort resumes",
+      noResultsIntro:"Try another search or clear your current search to view all documents.",
+      quickSubtitle:"Create a resume directly from your dashboard.",
+      quickIntro:"Add your professional information and save your resume directly to your Worknely account.",
+      resumeTitle:"Resume title",
+      titlePlaceholder:"e.g. Customer Support CV",
+      fullName:"Full name",
+      namePlaceholder:"Your full name",
+      professionalTitle:"Professional title",
+      rolePlaceholder:"Your professional role",
+      contact:"Contact",
+      contactPlaceholder:"Email, city, LinkedIn",
+      education:"Education",
+      educationPlaceholder:"Degrees and qualifications",
+      summary:"Professional summary",
+      summaryPlaceholder:"Your professional background",
+      experience:"Experience",
+      experiencePlaceholder:"Roles, employers and achievements",
+      skills:"Skills",
+      skillsPlaceholder:"Your verified skills",
+      saveResume:"Save Resume",
+      updateResume:"Update Resume",
+      newResume:"New / Clear",
+      comingLater:"COMING LATER",
+      proIntro:"Premium features and subscriptions are not active yet.",
+      proButton:"Upgrade to Pro — Coming soon",
+      renameIntro:"Choose a new name for your document. Your resume content will remain unchanged.",
+      saveName:"Save Name",
+      duplicateIntro:"Create an independent copy of your resume. Changes to the copy will not affect the original.",
+      newDocumentName:"New document name",
+      createCopy:"Create Copy",
+      deleteHeading:"Delete resume?",
+      deleteIntro:"You are about to permanently delete:",
+      welcomeDefault:"Your career documents, in one place."
+
+    },
+
+    ro: {
+
+      checking:"Se verifică sesiunea Worknely…",
+      home:"Pagina principală Worknely",
+      navigation:"Navigare în panoul de control",
+      upgrade:"Treci la Pro",
+      builderLink:"Creator de CV-uri ↗",
+      analysisLink:"Analiză de carieră ↗",
+      workspace:"SPAȚIUL TĂU WORKNELY",
+      manage:"Gestionează CV-urile",
+      create:"Creează un CV nou",
+      documents:"SPAȚIUL TĂU DE DOCUMENTE",
+      documentsIntro:"Creează, organizează și gestionează CV-urile profesionale într-un singur loc.",
+      toolbar:"Căutare și sortare documente",
+      searchLabel:"Caută CV-uri salvate",
+      sortLabel:"Sortează CV-urile",
+      noResultsIntro:"Încearcă o altă căutare sau șterge căutarea pentru a vedea toate documentele.",
+      quickSubtitle:"Creează un CV direct din panoul de control.",
+      quickIntro:"Adaugă informațiile profesionale și salvează CV-ul direct în contul Worknely.",
+      resumeTitle:"Titlul CV-ului",
+      titlePlaceholder:"Ex. CV Relații cu clienții",
+      fullName:"Nume complet",
+      namePlaceholder:"Numele tău complet",
+      professionalTitle:"Titlu profesional",
+      rolePlaceholder:"Rolul tău profesional",
+      contact:"Contact",
+      contactPlaceholder:"Email, oraș, LinkedIn",
+      education:"Educație",
+      educationPlaceholder:"Studii și calificări",
+      summary:"Rezumat profesional",
+      summaryPlaceholder:"Profilul tău profesional",
+      experience:"Experiență",
+      experiencePlaceholder:"Roluri, angajatori și realizări",
+      skills:"Competențe",
+      skillsPlaceholder:"Competențele tale reale",
+      saveResume:"Salvează CV-ul",
+      updateResume:"Actualizează CV-ul",
+      newResume:"Nou / Golește",
+      comingLater:"ÎN CURÂND",
+      proIntro:"Funcțiile premium și abonamentele nu sunt încă active.",
+      proButton:"Treci la Pro — În curând",
+      renameIntro:"Alege un nume nou pentru document. Conținutul CV-ului va rămâne neschimbat.",
+      saveName:"Salvează numele",
+      duplicateIntro:"Creează o copie independentă a CV-ului. Modificările copiei nu vor afecta originalul.",
+      newDocumentName:"Noul nume al documentului",
+      createCopy:"Creează copia",
+      deleteHeading:"Ștergi CV-ul?",
+      deleteIntro:"Urmează să ștergi definitiv:",
+      welcomeDefault:"Documentele tale profesionale, într-un singur loc."
+
+    },
+
+    it: {
+
+      checking:"Verifica della sessione Worknely…",
+      home:"Pagina iniziale Worknely",
+      navigation:"Navigazione della dashboard",
+      upgrade:"Passa a Pro",
+      builderLink:"Crea curriculum ↗",
+      analysisLink:"Analisi della carriera ↗",
+      workspace:"IL TUO SPAZIO WORKNELY",
+      manage:"Gestisci i miei CV",
+      create:"Crea un nuovo CV",
+      documents:"IL TUO SPAZIO DOCUMENTI",
+      documentsIntro:"Crea, organizza e gestisci i tuoi curriculum professionali in un unico posto.",
+      toolbar:"Ricerca e ordinamento documenti",
+      searchLabel:"Cerca curriculum salvati",
+      sortLabel:"Ordina curriculum",
+      noResultsIntro:"Prova un'altra ricerca o cancellala per visualizzare tutti i documenti.",
+      quickSubtitle:"Crea un curriculum direttamente dalla dashboard.",
+      quickIntro:"Aggiungi le tue informazioni professionali e salva il curriculum nel tuo account Worknely.",
+      resumeTitle:"Titolo del curriculum",
+      titlePlaceholder:"Es. CV Assistenza clienti",
+      fullName:"Nome completo",
+      namePlaceholder:"Il tuo nome completo",
+      professionalTitle:"Titolo professionale",
+      rolePlaceholder:"Il tuo ruolo professionale",
+      contact:"Contatti",
+      contactPlaceholder:"Email, città, LinkedIn",
+      education:"Formazione",
+      educationPlaceholder:"Titoli di studio e qualifiche",
+      summary:"Profilo professionale",
+      summaryPlaceholder:"Il tuo percorso professionale",
+      experience:"Esperienza",
+      experiencePlaceholder:"Ruoli, aziende e risultati",
+      skills:"Competenze",
+      skillsPlaceholder:"Le tue competenze effettive",
+      saveResume:"Salva curriculum",
+      updateResume:"Aggiorna curriculum",
+      newResume:"Nuovo / Svuota",
+      comingLater:"PROSSIMAMENTE",
+      proIntro:"Le funzionalità premium e gli abbonamenti non sono ancora attivi.",
+      proButton:"Passa a Pro — Prossimamente",
+      renameIntro:"Scegli un nuovo nome per il documento. Il contenuto del curriculum rimarrà invariato.",
+      saveName:"Salva nome",
+      duplicateIntro:"Crea una copia indipendente del curriculum. Le modifiche alla copia non influiranno sull'originale.",
+      newDocumentName:"Nuovo nome del documento",
+      createCopy:"Crea copia",
+      deleteHeading:"Eliminare il curriculum?",
+      deleteIntro:"Stai per eliminare definitivamente:",
+      welcomeDefault:"I tuoi documenti professionali, in un unico posto."
+
+    },
+
+    de: {
+
+      checking:"Worknely-Sitzung wird überprüft…",
+      home:"Worknely-Startseite",
+      navigation:"Dashboard-Navigation",
+      upgrade:"Auf Pro upgraden",
+      builderLink:"Lebenslauf erstellen ↗",
+      analysisLink:"Karriereanalyse ↗",
+      workspace:"DEIN WORKNELY-ARBEITSBEREICH",
+      manage:"Lebensläufe verwalten",
+      create:"Neuen Lebenslauf erstellen",
+      documents:"DEIN DOKUMENTENBEREICH",
+      documentsIntro:"Erstelle, organisiere und verwalte deine beruflichen Lebensläufe an einem Ort.",
+      toolbar:"Dokumentensuche und Sortierung",
+      searchLabel:"Gespeicherte Lebensläufe suchen",
+      sortLabel:"Lebensläufe sortieren",
+      noResultsIntro:"Versuche eine andere Suche oder lösche die Suche, um alle Dokumente anzuzeigen.",
+      quickSubtitle:"Erstelle einen Lebenslauf direkt im Dashboard.",
+      quickIntro:"Füge deine beruflichen Informationen hinzu und speichere den Lebenslauf in deinem Worknely-Konto.",
+      resumeTitle:"Lebenslauftitel",
+      titlePlaceholder:"Z. B. Lebenslauf Kundenservice",
+      fullName:"Vollständiger Name",
+      namePlaceholder:"Dein vollständiger Name",
+      professionalTitle:"Berufsbezeichnung",
+      rolePlaceholder:"Deine berufliche Position",
+      contact:"Kontakt",
+      contactPlaceholder:"E-Mail, Stadt, LinkedIn",
+      education:"Ausbildung",
+      educationPlaceholder:"Abschlüsse und Qualifikationen",
+      summary:"Berufliches Profil",
+      summaryPlaceholder:"Dein beruflicher Hintergrund",
+      experience:"Berufserfahrung",
+      experiencePlaceholder:"Positionen, Arbeitgeber und Erfolge",
+      skills:"Fähigkeiten",
+      skillsPlaceholder:"Deine tatsächlichen Fähigkeiten",
+      saveResume:"Lebenslauf speichern",
+      updateResume:"Lebenslauf aktualisieren",
+      newResume:"Neu / Leeren",
+      comingLater:"DEMNÄCHST",
+      proIntro:"Premium-Funktionen und Abonnements sind noch nicht aktiv.",
+      proButton:"Pro-Upgrade — Demnächst",
+      renameIntro:"Wähle einen neuen Dokumentennamen. Der Inhalt des Lebenslaufs bleibt unverändert.",
+      saveName:"Namen speichern",
+      duplicateIntro:"Erstelle eine unabhängige Kopie. Änderungen an der Kopie wirken sich nicht auf das Original aus.",
+      newDocumentName:"Neuer Dokumentenname",
+      createCopy:"Kopie erstellen",
+      deleteHeading:"Lebenslauf löschen?",
+      deleteIntro:"Du bist dabei, Folgendes dauerhaft zu löschen:",
+      welcomeDefault:"Deine beruflichen Dokumente an einem Ort."
+
+    },
+
+    fr: {
+
+      checking:"Vérification de votre session Worknely…",
+      home:"Accueil Worknely",
+      navigation:"Navigation du tableau de bord",
+      upgrade:"Passer à Pro",
+      builderLink:"Créateur de CV ↗",
+      analysisLink:"Analyse de carrière ↗",
+      workspace:"VOTRE ESPACE WORKNELY",
+      manage:"Gérer mes CV",
+      create:"Créer un nouveau CV",
+      documents:"VOTRE ESPACE DOCUMENTS",
+      documentsIntro:"Créez, organisez et gérez vos CV professionnels au même endroit.",
+      toolbar:"Recherche et tri des documents",
+      searchLabel:"Rechercher des CV enregistrés",
+      sortLabel:"Trier les CV",
+      noResultsIntro:"Essayez une autre recherche ou effacez-la pour afficher tous les documents.",
+      quickSubtitle:"Créez un CV directement depuis votre tableau de bord.",
+      quickIntro:"Ajoutez vos informations professionnelles et enregistrez votre CV dans votre compte Worknely.",
+      resumeTitle:"Titre du CV",
+      titlePlaceholder:"Ex. CV Service client",
+      fullName:"Nom complet",
+      namePlaceholder:"Votre nom complet",
+      professionalTitle:"Titre professionnel",
+      rolePlaceholder:"Votre poste professionnel",
+      contact:"Coordonnées",
+      contactPlaceholder:"Email, ville, LinkedIn",
+      education:"Formation",
+      educationPlaceholder:"Diplômes et qualifications",
+      summary:"Profil professionnel",
+      summaryPlaceholder:"Votre parcours professionnel",
+      experience:"Expérience",
+      experiencePlaceholder:"Postes, employeurs et réalisations",
+      skills:"Compétences",
+      skillsPlaceholder:"Vos compétences réelles",
+      saveResume:"Enregistrer le CV",
+      updateResume:"Mettre à jour le CV",
+      newResume:"Nouveau / Effacer",
+      comingLater:"PROCHAINEMENT",
+      proIntro:"Les fonctionnalités premium et les abonnements ne sont pas encore actifs.",
+      proButton:"Passer à Pro — Bientôt",
+      renameIntro:"Choisissez un nouveau nom pour votre document. Le contenu du CV restera inchangé.",
+      saveName:"Enregistrer le nom",
+      duplicateIntro:"Créez une copie indépendante du CV. Les modifications de la copie n'affecteront pas l'original.",
+      newDocumentName:"Nouveau nom du document",
+      createCopy:"Créer une copie",
+      deleteHeading:"Supprimer le CV ?",
+      deleteIntro:"Vous êtes sur le point de supprimer définitivement :",
+      welcomeDefault:"Vos documents professionnels au même endroit."
+
+    },
+
+    es: {
+
+      checking:"Comprobando tu sesión de Worknely…",
+      home:"Inicio de Worknely",
+      navigation:"Navegación del panel",
+      upgrade:"Pasar a Pro",
+      builderLink:"Creador de currículums ↗",
+      analysisLink:"Análisis profesional ↗",
+      workspace:"TU ESPACIO WORKNELY",
+      manage:"Gestionar mis CV",
+      create:"Crear un nuevo CV",
+      documents:"TU ESPACIO DE DOCUMENTOS",
+      documentsIntro:"Crea, organiza y gestiona tus currículums profesionales en un solo lugar.",
+      toolbar:"Búsqueda y ordenación de documentos",
+      searchLabel:"Buscar currículums guardados",
+      sortLabel:"Ordenar currículums",
+      noResultsIntro:"Prueba otra búsqueda o bórrala para ver todos los documentos.",
+      quickSubtitle:"Crea un currículum directamente desde tu panel.",
+      quickIntro:"Añade tu información profesional y guarda el currículum en tu cuenta de Worknely.",
+      resumeTitle:"Título del currículum",
+      titlePlaceholder:"Ej. CV Atención al cliente",
+      fullName:"Nombre completo",
+      namePlaceholder:"Tu nombre completo",
+      professionalTitle:"Título profesional",
+      rolePlaceholder:"Tu puesto profesional",
+      contact:"Contacto",
+      contactPlaceholder:"Correo, ciudad, LinkedIn",
+      education:"Formación",
+      educationPlaceholder:"Títulos y cualificaciones",
+      summary:"Perfil profesional",
+      summaryPlaceholder:"Tu trayectoria profesional",
+      experience:"Experiencia",
+      experiencePlaceholder:"Puestos, empresas y logros",
+      skills:"Competencias",
+      skillsPlaceholder:"Tus competencias reales",
+      saveResume:"Guardar currículum",
+      updateResume:"Actualizar currículum",
+      newResume:"Nuevo / Limpiar",
+      comingLater:"PRÓXIMAMENTE",
+      proIntro:"Las funciones premium y las suscripciones aún no están activas.",
+      proButton:"Pasar a Pro — Próximamente",
+      renameIntro:"Elige un nuevo nombre para el documento. El contenido del currículum no cambiará.",
+      saveName:"Guardar nombre",
+      duplicateIntro:"Crea una copia independiente del currículum. Los cambios en la copia no afectarán al original.",
+      newDocumentName:"Nuevo nombre del documento",
+      createCopy:"Crear copia",
+      deleteHeading:"¿Eliminar currículum?",
+      deleteIntro:"Estás a punto de eliminar permanentemente:",
+      welcomeDefault:"Tus documentos profesionales en un solo lugar."
+
+    }
+
+  };
+
+  const flags = {
+
+    en:"🇬🇧",
+    ro:"🇷🇴",
+    it:"🇮🇹",
+    de:"🇩🇪",
+    fr:"🇫🇷",
+    es:"🇪🇸"
+
+  };
+
+  function getLanguage() {
+
+    const engine = window.WorknelyLocalization;
+
+    if (engine) {
+
+      const language = engine.getLanguage();
+
+      return translations[language] ? language : "en";
+
+    }
+
+    try {
+
+      const language =
+        localStorage.getItem("worknely.language");
+
+      return translations[language] ? language : "en";
+
+    } catch {
+
+      return "en";
+
+    }
+
+  }
+
+  function translate(key) {
+
+    const language = getLanguage();
+
+    return translations[language]?.[key]
+      || translations.en[key]
+      || key;
+
+  }
+
+  function setText(element, value) {
+
+    if (element && element.textContent !== value) {
+
+      element.textContent = value;
+
+    }
+
+  }
+
+  function applyDashboardTranslations() {
+
+    const language = getLanguage();
+
+    document.documentElement.lang = language;
+
+    const selector = document.getElementById("language");
+
+    if (selector) {
+
+      selector.value = language;
+
+    }
+
+    setText(
+      document.getElementById("wnLanguageFlag"),
+      flags[language]
+    );
+
+    document.querySelectorAll(
+      "[data-wn-dashboard-text]"
+    ).forEach(element => {
+
+      setText(
+        element,
+        translate(element.dataset.wnDashboardText)
+      );
+
+    });
+
+    document.querySelectorAll(
+      "[data-wn-dashboard-placeholder]"
+    ).forEach(element => {
+
+      element.placeholder = translate(
+        element.dataset.wnDashboardPlaceholder
+      );
+
+    });
+
+    document.querySelectorAll(
+      "[data-wn-dashboard-aria]"
+    ).forEach(element => {
+
+      element.setAttribute(
+        "aria-label",
+        translate(element.dataset.wnDashboardAria)
+      );
+
+    });
+
+    const welcome =
+      document.getElementById("welcome");
+
+    if (welcome) {
+
+      const current = welcome.textContent.trim();
+
+      const isDefault = Object.values(
+        translations
+      ).some(dictionary => {
+
+        return dictionary.welcomeDefault === current;
+
+      });
+
+      if (isDefault) {
+
+        setText(
+          welcome,
+          translate("welcomeDefault")
+        );
 
       }
 
-      function showView() {
+    }
 
-        const activeView = getRequestedView();
+    if (window.WorknelyLocalization) {
 
-        document.querySelectorAll(
-          ".wn-view"
-        ).forEach(section => {
+      window.WorknelyLocalization.apply();
 
-          section.hidden =
-            section.dataset.view !== activeView;
+    }
 
-        });
+    updatePageTitle();
 
-        document.querySelectorAll(
-          ".sidebar [data-wn-view]"
-        ).forEach(link => {
+  }
 
-          if (link.dataset.wnView === activeView) {
+  function updatePageTitle() {
 
-            link.setAttribute(
-              "aria-current",
-              "page"
+    const hash = window.location.hash
+      .replace("#","")
+      .toLowerCase();
+
+    const engine = window.WorknelyLocalization;
+
+    const t = key => {
+
+      return engine ? engine.t(key) : {
+
+        "nav.dashboard":"My Dashboard",
+        "nav.resumes":"My Resumes"
+
+      }[key] || key;
+
+    };
+
+    if (hash === "resumes") {
+
+      document.title =
+        t("nav.resumes") + " | Worknely";
+
+    } else if (hash === "pro") {
+
+      document.title =
+        "Worknely Pro | Worknely";
+
+    } else {
+
+      document.title =
+        t("nav.dashboard") + " | Worknely";
+
+    }
+
+  }
+
+  /*
+   * Public dashboard translation API.
+   * Used by the next dashboard.js V7.15 update.
+   */
+
+  window.WorknelyDashboardLocalization = Object.freeze({
+
+    version:"7.15",
+    getLanguage,
+    t:translate,
+    apply:applyDashboardTranslations
+
+  });
+
+  function initialize() {
+
+    const selector =
+      document.getElementById("language");
+
+    if (selector) {
+
+      selector.addEventListener("change", () => {
+
+        const language = selector.value;
+
+        if (window.WorknelyLocalization) {
+
+          window.WorknelyLocalization.setLanguage(
+            language,
+            {source:selector}
+          );
+
+        } else {
+
+          try {
+
+            localStorage.setItem(
+              "worknely.language",
+              language
             );
 
-          } else {
-
-            link.removeAttribute("aria-current");
-
-          }
-
-        });
-
-        document.title = {
-
-          overview:
-            "My Dashboard | Worknely",
-
-          resumes:
-            "My Resumes | Worknely",
-
-          pro:
-            "Worknely Pro | Worknely"
-
-        }[activeView];
-
-        const activeSection =
-          document.getElementById(activeView);
-
-        const app =
-          document.getElementById("app");
-
-        if (
-          activeSection &&
-          app &&
-          !app.hidden
-        ) {
-
-          activeSection.focus({
-            preventScroll:true
-          });
+          } catch {}
 
         }
 
-        window.scrollTo(0,0);
+        applyDashboardTranslations();
 
-      }
+      });
 
-      window.addEventListener(
-        "hashchange",
-        showView
-      );
+    }
 
-      if (document.readyState === "loading") {
+    applyDashboardTranslations();
 
-        document.addEventListener(
-          "DOMContentLoaded",
-          showView,
-          { once:true }
+  }
+
+  document.addEventListener(
+    "worknely:languagechange",
+    applyDashboardTranslations
+  );
+
+  document.addEventListener(
+    "worknely:localizationready",
+    applyDashboardTranslations
+  );
+
+  window.addEventListener(
+    "pageshow",
+    applyDashboardTranslations
+  );
+
+  window.addEventListener(
+    "hashchange",
+    updatePageTitle
+  );
+
+  if (document.readyState === "loading") {
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      initialize,
+      {once:true}
+    );
+
+  } else {
+
+    initialize();
+
+  }
+
+})();
+
+</script>
+
+<!-- DASHBOARD SECTION NAVIGATION -->
+
+<script>
+
+(() => {
+
+  "use strict";
+
+  const validViews = [
+    "overview",
+    "resumes",
+    "pro"
+  ];
+
+  function getRequestedView() {
+
+    const hash = window.location.hash
+      .replace("#","")
+      .toLowerCase();
+
+    return validViews.includes(hash)
+      ? hash
+      : "overview";
+
+  }
+
+  function showView() {
+
+    const activeView = getRequestedView();
+
+    document.querySelectorAll(
+      ".wn-view"
+    ).forEach(section => {
+
+      section.hidden =
+        section.dataset.view !== activeView;
+
+    });
+
+    document.querySelectorAll(
+      ".sidebar [data-wn-view]"
+    ).forEach(link => {
+
+      if (link.dataset.wnView === activeView) {
+
+        link.setAttribute(
+          "aria-current",
+          "page"
         );
 
       } else {
 
-        showView();
+        link.removeAttribute("aria-current");
 
       }
 
-    })();
+    });
 
-  </script>
+    const activeSection =
+      document.getElementById(activeView);
 
-  <!-- END WORKNELY V7.14 DASHBOARD -->
+    const app =
+      document.getElementById("app");
+
+    if (
+      activeSection &&
+      app &&
+      !app.hidden
+    ) {
+
+      activeSection.focus({
+        preventScroll:true
+      });
+
+    }
+
+    if (window.WorknelyDashboardLocalization) {
+
+      window.WorknelyDashboardLocalization.apply();
+
+    }
+
+    window.scrollTo(0,0);
+
+  }
+
+  window.addEventListener(
+    "hashchange",
+    showView
+  );
+
+  if (document.readyState === "loading") {
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      showView,
+      {once:true}
+    );
+
+  } else {
+
+    showView();
+
+  }
+
+})();
+
+</script>
+
+<!-- END WORKNELY V7.15 INTERNATIONAL DASHBOARD -->
 
 </body>
 </html>
