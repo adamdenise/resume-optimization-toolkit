@@ -1,17 +1,20 @@
 
 /*
- * WORKNELY V7.12.1
- * Global Compact Authentication UI Hotfix
+ * WORKNELY V7.13.4
+ * Authentication Visibility Fix
  *
- * Compact Login / Signup / Password Recovery
- * Fixed Button Dimensions
+ * Compact Authentication UI
+ * Login / Signup / Password Recovery
+ * Authentication Visibility Protection
  * Responsive Authentication Modal
- * Authentication Status Colors
+ * Account Navigation
  * Premium Conversion Banner
+ * Account Deep Link Support
  *
  * Compatible with:
  * worknely-auth.js V7.6
  * worknely-compact.css V7.12
+ * Worknely V7.13 Landing Experience
  *
  * Preserves original Supabase event handlers.
  */
@@ -50,11 +53,11 @@
 
     }
 
-    /* GLOBAL COMPACT AUTHENTICATION STYLES */
+    /* AUTHENTICATION UI STYLES */
 
     const style = document.createElement("style");
 
-    style.id = "wn-auth-layout-v7121";
+    style.id = "wn-auth-layout-v7134";
 
     style.textContent = `
 
@@ -64,7 +67,7 @@
         display:flex;
         align-items:center;
         justify-content:flex-end;
-        flex-wrap:wrap;
+        flex-wrap:nowrap;
         gap:6px;
         margin-left:auto;
         min-width:0;
@@ -91,24 +94,27 @@
         white-space:nowrap;
       }
 
-      .wn-login {
-        color:#5424ff;
-        background:#fff;
-        border:1px solid #ded7ff;
+      body .wn-auth-nav .wn-login {
+        color:#5424ff!important;
+        background:#fff!important;
+        border:1px solid #ded7ff!important;
+        -webkit-text-fill-color:#5424ff!important;
       }
 
-      .wn-signup {
-        color:#fff;
+      body .wn-auth-nav .wn-signup {
+        color:#fff!important;
         background:linear-gradient(
           105deg,#5424ff,#ff24a8
-        );
-        border:0;
+        )!important;
+        border:0!important;
+        -webkit-text-fill-color:#fff!important;
       }
 
-      .wn-account {
-        color:#5424ff;
-        background:#f1edff;
-        border:1px solid #ddd2ff;
+      body .wn-auth-nav .wn-account {
+        color:#5424ff!important;
+        background:#f1edff!important;
+        border:1px solid #ddd2ff!important;
+        -webkit-text-fill-color:#5424ff!important;
       }
 
       .wn-account-menu {
@@ -119,7 +125,7 @@
         position:absolute;
         top:calc(100% + 7px);
         right:0;
-        z-index:100;
+        z-index:1000;
         min-width:185px;
         max-width:calc(100vw - 24px);
         padding:6px;
@@ -167,12 +173,14 @@
         font-weight:750!important;
       }
 
-      .wn-auth-nav [hidden],
-      .wn-menu-panel[hidden] {
+      body .wn-auth-nav [hidden],
+      body .wn-auth-nav .wn-auth-btn[hidden],
+      body .wn-auth-nav .wn-account-menu[hidden],
+      body .wn-menu-panel[hidden] {
         display:none!important;
       }
 
-      /* COMPACT PREMIUM CONVERSION BANNER */
+      /* PREMIUM CONVERSION BANNER */
 
       body .wn-pro-banner {
         box-sizing:border-box;
@@ -284,6 +292,7 @@
           105deg,#5424ff,#ff24a8
         );
         color:#fff!important;
+        -webkit-text-fill-color:#fff!important;
         font-size:12px;
         font-weight:750;
         line-height:1.3;
@@ -297,7 +306,7 @@
         outline-offset:3px;
       }
 
-      /* COMPACT AUTHENTICATION MODAL */
+      /* AUTHENTICATION MODAL */
 
       body dialog#wnAuthDialog.wn-dialog {
         box-sizing:border-box!important;
@@ -330,7 +339,15 @@
         overscroll-behavior:contain;
       }
 
-      dialog#wnAuthDialog.wn-dialog:not([open]) {
+      body dialog#wnAuthDialog.wn-dialog[open] {
+        display:block!important;
+        visibility:visible!important;
+        opacity:1!important;
+        pointer-events:auto!important;
+        transform:none!important;
+      }
+
+      body dialog#wnAuthDialog.wn-dialog:not([open]) {
         display:none!important;
       }
 
@@ -367,7 +384,8 @@
       }
 
       body #wnAuthDialog .wn-dialog-brand {
-        color:#5424ff;
+        color:#5424ff!important;
+        -webkit-text-fill-color:#5424ff!important;
         font-size:19px;
         font-weight:850;
         letter-spacing:-.5px;
@@ -387,28 +405,39 @@
         border-radius:9px!important;
         background:#f1edff!important;
         color:#5424ff!important;
+        -webkit-text-fill-color:#5424ff!important;
         font-size:23px!important;
         line-height:1!important;
         cursor:pointer;
       }
 
-      /* ACCOUNT CONTENT */
+      /* ACCOUNT CONTENT VISIBILITY FIX */
 
-      body #wnAuthDialog #worknelyAccount.workspace {
+      body #wnAuthDialog #worknelyAccount {
         display:block!important;
+        visibility:visible!important;
+        opacity:1!important;
+        pointer-events:auto!important;
         position:static!important;
+
         width:100%!important;
         max-width:100%!important;
         min-width:0!important;
+
         height:auto!important;
         min-height:0!important;
+
         margin:0!important;
         padding:16px!important;
+
         border:0!important;
         border-radius:0!important;
         box-shadow:none!important;
+
         background:#fff!important;
+        color:#261449!important;
         overflow:visible!important;
+        transform:none!important;
       }
 
       body #wnAuthDialog .section-head {
@@ -432,7 +461,8 @@
 
       body #wnAuthDialog #accountTitle {
         margin:0 0 5px!important;
-        color:#261449;
+        color:#261449!important;
+        -webkit-text-fill-color:#261449!important;
         font-size:clamp(23px,6vw,28px);
         font-weight:800;
         line-height:1.2;
@@ -441,18 +471,22 @@
 
       body #wnAuthDialog .section-head p {
         margin:0!important;
-        color:#706780;
+        color:#706780!important;
         font-size:13px;
         line-height:1.5;
       }
 
-      /* COMPACT AUTHENTICATION FORM */
+      /* AUTHENTICATION FORM */
 
       body #wnAuthDialog #worknelyAuthForm {
         display:grid!important;
+        visibility:visible!important;
+        opacity:1!important;
+
         grid-template-columns:minmax(0,1fr)!important;
         grid-template-rows:none!important;
         grid-auto-rows:auto!important;
+
         align-content:start!important;
         align-items:start!important;
         gap:10px!important;
@@ -478,7 +512,7 @@
         min-height:0!important;
         margin:0!important;
         padding:0!important;
-        color:#261449;
+        color:#261449!important;
         font-size:13px;
         font-weight:650;
       }
@@ -508,6 +542,8 @@
 
         background:#fbfbfe!important;
         color:#261449!important;
+        -webkit-text-fill-color:#261449!important;
+        caret-color:#5424ff;
 
         font-family:inherit!important;
         font-size:16px!important;
@@ -568,6 +604,7 @@
 
         background:transparent!important;
         color:#5424ff!important;
+        -webkit-text-fill-color:#5424ff!important;
 
         box-shadow:none!important;
 
@@ -585,7 +622,7 @@
         display:none!important;
       }
 
-      /* CRITICAL V7.12.1 BUTTON CONTAINER FIX */
+      /* AUTHENTICATION BUTTON CONTAINER */
 
       body #wnAuthDialog #worknelyAuthForm > .actions {
         display:flex!important;
@@ -612,16 +649,7 @@
         padding:0!important;
       }
 
-      /*
-       * CRITICAL AUTH BUTTON HOTFIX
-       *
-       * Prevents oversized login, signup
-       * and password update buttons.
-       *
-       * Fixed height: 44px
-       * Flex growth: disabled
-       * Flex shrink: disabled
-       */
+      /* FIXED AUTHENTICATION BUTTON DIMENSIONS */
 
       body #wnAuthDialog #worknelyAuthForm #authLogin,
       body #wnAuthDialog #worknelyAuthForm #authSignUp,
@@ -667,6 +695,8 @@
         )!important;
 
         color:#fff!important;
+        -webkit-text-fill-color:#fff!important;
+
         box-shadow:none!important;
 
         font-family:inherit!important;
@@ -730,6 +760,7 @@
         border:0!important;
         background:transparent!important;
         color:#5424ff!important;
+        -webkit-text-fill-color:#5424ff!important;
         box-shadow:none!important;
         font-family:inherit!important;
         font-size:12px!important;
@@ -808,11 +839,6 @@
 
       @media(max-width:600px) {
 
-        body .top {
-          flex-wrap:wrap;
-          gap:7px;
-        }
-
         body .wn-auth-nav {
           gap:5px;
         }
@@ -872,7 +898,7 @@
           max-height:44px!important;
         }
 
-        body #wnAuthDialog #worknelyAccount.workspace {
+        body #wnAuthDialog #worknelyAccount {
           padding:14px!important;
         }
 
@@ -890,7 +916,7 @@
 
       @media(max-width:360px) {
 
-        body #wnAuthDialog #worknelyAccount.workspace {
+        body #wnAuthDialog #worknelyAccount {
           padding:12px!important;
         }
 
@@ -908,6 +934,16 @@
           animation:none!important;
         }
 
+      }
+
+      /* FINAL AUTHENTICATION VISIBILITY PROTECTION */
+
+      body #wnAuthDialog #worknelyAuthForm > label[hidden],
+      body #wnAuthDialog #worknelyAuthForm input[hidden],
+      body #wnAuthDialog #worknelyAuthForm .actions[hidden],
+      body #wnAuthDialog .wn-auth-support[hidden],
+      body #wnAuthDialog .wn-auth-switch[hidden] {
+        display:none!important;
       }
 
     `;
@@ -1170,10 +1206,20 @@
 
     banner.append(copy, cta);
 
-    header.insertAdjacentElement(
-      "afterend",
-      banner
-    );
+    const premiumSlot = $("wnPremiumSlot");
+
+    if (premiumSlot) {
+
+      premiumSlot.appendChild(banner);
+
+    } else {
+
+      header.insertAdjacentElement(
+        "afterend",
+        banner
+      );
+
+    }
 
     /* AUTHENTICATION MODAL */
 
@@ -1216,12 +1262,46 @@
       closeBtn
     );
 
+    /* REMOVE LANDING VISIBILITY CONFLICTS */
+
+    function restoreAccountVisibility() {
+
+      section.hidden = false;
+
+      section.classList.remove(
+        "hidden",
+        "wn-tool-view"
+      );
+
+      section.removeAttribute("data-wn-view");
+      section.removeAttribute("aria-hidden");
+      section.removeAttribute("inert");
+
+      section.style.removeProperty("display");
+      section.style.removeProperty("visibility");
+      section.style.removeProperty("opacity");
+
+      form.hidden = false;
+
+      form.classList.remove("hidden");
+
+      form.removeAttribute("aria-hidden");
+      form.removeAttribute("inert");
+
+      form.style.removeProperty("display");
+      form.style.removeProperty("visibility");
+      form.style.removeProperty("opacity");
+
+    }
+
     dialog.append(
       dialogHead,
       section
     );
 
     document.body.appendChild(dialog);
+
+    restoreAccountVisibility();
 
     const intro = section.querySelector(
       ".section-head p"
@@ -1281,6 +1361,10 @@
         "afterend",
         forgotRow
       );
+
+    } else {
+
+      form.appendChild(forgotRow);
 
     }
 
@@ -1432,6 +1516,10 @@
 
         }
 
+        login.hidden = true;
+
+        signup.hidden = true;
+
         forgotRow.hidden = true;
 
         support.hidden = true;
@@ -1443,6 +1531,29 @@
       } else {
 
         setMode(mode);
+
+      }
+
+    }
+
+    /* SAFE MODAL OPENING */
+
+    function showAuthDialog() {
+
+      restoreAccountVisibility();
+
+      if (dialog.open) return;
+
+      try {
+
+        dialog.showModal();
+
+      } catch (error) {
+
+        console.error(
+          "Worknely: Unable to open authentication modal.",
+          error
+        );
 
       }
 
@@ -1460,9 +1571,9 @@
 
         syncSecurity();
 
-        if (isRecovery() && !dialog.open) {
+        if (isRecovery()) {
 
-          dialog.showModal();
+          showAuthDialog();
 
         }
 
@@ -1489,9 +1600,9 @@
 
         observeRecovery();
 
-        if (isRecovery() && !dialog.open) {
+        if (isRecovery()) {
 
-          dialog.showModal();
+          showAuthDialog();
 
         }
 
@@ -1532,6 +1643,8 @@
 
       closeMenu();
 
+      restoreAccountVisibility();
+
       if (isRecovery()) {
 
         syncSecurity();
@@ -1542,11 +1655,7 @@
 
       }
 
-      if (!dialog.open) {
-
-        dialog.showModal();
-
-      }
+      showAuthDialog();
 
     }
 
@@ -1575,6 +1684,39 @@
       if (!authenticated) {
 
         closeMenu();
+
+        if (!isRecovery()) {
+
+          setMode(mode);
+
+        }
+
+      }
+
+    }
+
+    /* ACCOUNT DEEP LINK SUPPORT */
+
+    function handleAccountLink() {
+
+      const hash =
+        window.location.hash.toLowerCase();
+
+      if (hash !== "#worknelyaccount") return;
+
+      if (isRecovery()) {
+
+        syncSecurity();
+
+        showAuthDialog();
+
+        return;
+
+      }
+
+      if (logout.hidden) {
+
+        openAuth("login");
 
       }
 
@@ -1671,6 +1813,37 @@
 
     });
 
+    window.addEventListener(
+      "hashchange",
+      handleAccountLink
+    );
+
+    document.addEventListener("click", event => {
+
+      const target = event.target;
+
+      if (!(target instanceof Element)) return;
+
+      const link = target.closest(
+        'a[href="#worknelyAccount"]'
+      );
+
+      if (!link) return;
+
+      event.preventDefault();
+
+      if (logout.hidden || isRecovery()) {
+
+        openAuth("login");
+
+      } else {
+
+        window.location.href = "dashboard.html";
+
+      }
+
+    });
+
     new MutationObserver(syncAuth).observe(logout, {
 
       attributes:true,
@@ -1691,13 +1864,21 @@
 
     updateAuthStatus();
 
-    if (isRecovery() && !dialog.open) {
+    if (isRecovery()) {
 
       syncSecurity();
 
-      dialog.showModal();
+      showAuthDialog();
+
+    } else {
+
+      handleAccountLink();
 
     }
+
+    console.info(
+      "Worknely V7.13.4 Authentication UI initialized."
+    );
 
   }
 
@@ -1721,4 +1902,4 @@
 
 })();
 
-/* END WORKNELY V7.12.1 AUTHENTICATION HOTFIX */
+/* END WORKNELY V7.13.4 AUTHENTICATION VISIBILITY FIX */
