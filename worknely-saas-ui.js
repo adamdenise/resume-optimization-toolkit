@@ -1,31 +1,281 @@
 
 /*
- * WORKNELY V7.13.4
- * Authentication Visibility Fix
- *
- * Compact Authentication UI
- * Login / Signup / Password Recovery
- * Authentication Visibility Protection
+ * WORKNELY V7.15
+ * International SaaS Interface
+ * Six International Languages
+ * Authentication & Account Navigation
  * Responsive Authentication Modal
- * Account Navigation
  * Premium Conversion Banner
- * Account Deep Link Support
+ * Persistent Localization Integration
  *
  * Compatible with:
- * worknely-auth.js V7.6
+ * worknely-auth.js V7.15
+ * worknely-localization.js V7.15
  * worknely-compact.css V7.12
  * Worknely V7.13 Landing Experience
  *
- * Preserves original Supabase event handlers.
+ * WORKNELY — PEOPLE TECHNOLOGY
  */
 
 (() => {
 
   "use strict";
 
+  const VERSION = "7.15";
+
+  const keys = [
+    "login",
+    "signup",
+    "logout",
+    "account",
+    "dashboard",
+    "resumes",
+    "builder",
+    "pricing",
+    "upgrade",
+    "welcome",
+    "createAccount",
+    "loginIntro",
+    "signupIntro",
+    "noAccount",
+    "hasAccount",
+    "confirmationHelp",
+    "recoveryTitle",
+    "recoveryIntro",
+    "close",
+    "navigation",
+    "accountDialog",
+    "proTitle",
+    "proSubtitle",
+    "proCta",
+    "proLabel",
+    "accountOverline"
+  ];
+
+  const dictionary = {
+
+    en: [
+      "Log In",
+      "Sign Up",
+      "Log Out",
+      "My Account",
+      "My Dashboard",
+      "My Resumes",
+      "Resume Builder",
+      "Pricing & Plans",
+      "Upgrade to Pro",
+      "Welcome back",
+      "Create your account",
+      "Sign in to access your saved resumes.",
+      "Create your account to save and manage your resumes.",
+      "Don't have an account?",
+      "Already have an account?",
+      "Didn't receive your confirmation email?",
+      "Set a new password",
+      "Enter your new password to finish account recovery.",
+      "Close",
+      "Account navigation",
+      "Worknely account",
+      "Unlock more possibilities for your career",
+      "Explore upcoming Pro & Premium features. No payment required.",
+      "Explore Pro Plans",
+      "Explore Worknely Pro plans",
+      "YOUR WORKNELY ACCOUNT"
+    ],
+
+    ro: [
+      "Autentificare",
+      "Înregistrare",
+      "Deconectare",
+      "Contul meu",
+      "Panoul meu",
+      "CV-urile mele",
+      "Creator de CV",
+      "Prețuri și abonamente",
+      "Treci la Pro",
+      "Bine ai revenit",
+      "Creează-ți contul",
+      "Autentifică-te pentru a accesa CV-urile salvate.",
+      "Creează-ți un cont pentru a salva și gestiona CV-urile tale.",
+      "Nu ai un cont?",
+      "Ai deja un cont?",
+      "Nu ai primit e-mailul de confirmare?",
+      "Setează o parolă nouă",
+      "Introdu noua parolă pentru a finaliza recuperarea contului.",
+      "Închide",
+      "Navigarea contului",
+      "Cont Worknely",
+      "Descoperă mai multe oportunități pentru cariera ta",
+      "Explorează viitoarele funcții Pro și Premium. Nu este necesară nicio plată.",
+      "Explorează planurile Pro",
+      "Explorează abonamentele Worknely Pro",
+      "CONTUL TĂU WORKNELY"
+    ],
+
+    it: [
+      "Accedi",
+      "Registrati",
+      "Esci",
+      "Il mio account",
+      "La mia dashboard",
+      "I miei CV",
+      "Crea CV",
+      "Prezzi e piani",
+      "Passa a Pro",
+      "Bentornato",
+      "Crea il tuo account",
+      "Accedi per consultare i tuoi CV salvati.",
+      "Crea il tuo account per salvare e gestire i tuoi CV.",
+      "Non hai un account?",
+      "Hai già un account?",
+      "Non hai ricevuto l’e-mail di conferma?",
+      "Imposta una nuova password",
+      "Inserisci la nuova password per completare il recupero dell’account.",
+      "Chiudi",
+      "Navigazione account",
+      "Account Worknely",
+      "Scopri nuove possibilità per la tua carriera",
+      "Esplora le prossime funzionalità Pro e Premium. Nessun pagamento richiesto.",
+      "Esplora i piani Pro",
+      "Esplora i piani Worknely Pro",
+      "IL TUO ACCOUNT WORKNELY"
+    ],
+
+    de: [
+      "Anmelden",
+      "Registrieren",
+      "Abmelden",
+      "Mein Konto",
+      "Mein Dashboard",
+      "Meine Lebensläufe",
+      "Lebenslauf erstellen",
+      "Preise und Tarife",
+      "Zu Pro wechseln",
+      "Willkommen zurück",
+      "Erstelle dein Konto",
+      "Melde dich an, um deine gespeicherten Lebensläufe aufzurufen.",
+      "Erstelle ein Konto, um deine Lebensläufe zu speichern und zu verwalten.",
+      "Noch kein Konto?",
+      "Du hast bereits ein Konto?",
+      "Keine Bestätigungs-E-Mail erhalten?",
+      "Neues Passwort festlegen",
+      "Gib dein neues Passwort ein, um die Kontowiederherstellung abzuschließen.",
+      "Schließen",
+      "Kontonavigation",
+      "Worknely-Konto",
+      "Entdecke neue Möglichkeiten für deine Karriere",
+      "Entdecke kommende Pro- und Premium-Funktionen. Keine Zahlung erforderlich.",
+      "Pro-Tarife entdecken",
+      "Worknely Pro-Tarife entdecken",
+      "DEIN WORKNELY-KONTO"
+    ],
+
+    fr: [
+      "Connexion",
+      "Inscription",
+      "Déconnexion",
+      "Mon compte",
+      "Mon tableau de bord",
+      "Mes CV",
+      "Créer un CV",
+      "Tarifs et offres",
+      "Passer à Pro",
+      "Bon retour",
+      "Créez votre compte",
+      "Connectez-vous pour accéder à vos CV enregistrés.",
+      "Créez votre compte pour enregistrer et gérer vos CV.",
+      "Vous n’avez pas de compte ?",
+      "Vous avez déjà un compte ?",
+      "Vous n’avez pas reçu l’e-mail de confirmation ?",
+      "Définir un nouveau mot de passe",
+      "Saisissez votre nouveau mot de passe pour terminer la récupération du compte.",
+      "Fermer",
+      "Navigation du compte",
+      "Compte Worknely",
+      "Découvrez de nouvelles possibilités pour votre carrière",
+      "Découvrez les prochaines fonctionnalités Pro et Premium. Aucun paiement requis.",
+      "Découvrir les offres Pro",
+      "Découvrir les offres Worknely Pro",
+      "VOTRE COMPTE WORKNELY"
+    ],
+
+    es: [
+      "Iniciar sesión",
+      "Registrarse",
+      "Cerrar sesión",
+      "Mi cuenta",
+      "Mi panel",
+      "Mis currículums",
+      "Crear currículum",
+      "Precios y planes",
+      "Pasar a Pro",
+      "Bienvenido de nuevo",
+      "Crea tu cuenta",
+      "Inicia sesión para acceder a tus currículums guardados.",
+      "Crea tu cuenta para guardar y gestionar tus currículums.",
+      "¿No tienes una cuenta?",
+      "¿Ya tienes una cuenta?",
+      "¿No has recibido el correo de confirmación?",
+      "Establece una nueva contraseña",
+      "Introduce tu nueva contraseña para completar la recuperación de la cuenta.",
+      "Cerrar",
+      "Navegación de la cuenta",
+      "Cuenta Worknely",
+      "Descubre nuevas posibilidades para tu carrera",
+      "Explora las próximas funciones Pro y Premium. No se requiere ningún pago.",
+      "Explorar planes Pro",
+      "Explorar los planes Worknely Pro",
+      "TU CUENTA WORKNELY"
+    ]
+
+  };
+
+  function getLanguage() {
+
+    const value =
+      window.WorknelyLocalization?.getLanguage() ||
+      document.getElementById("language")?.value ||
+      document.documentElement.lang ||
+      "en";
+
+    const language = String(value)
+      .toLowerCase()
+      .split("-")[0];
+
+    return Object.prototype.hasOwnProperty.call(
+      dictionary,
+      language
+    ) ? language : "en";
+
+  }
+
+  function t(key) {
+
+    const index = keys.indexOf(key);
+
+    if (index < 0) return key;
+
+    return dictionary[getLanguage()][index] ||
+      dictionary.en[index];
+
+  }
+
+  function setText(element, value) {
+
+    if (
+      element &&
+      element.textContent !== value
+    ) {
+      element.textContent = value;
+    }
+
+  }
+
   function initialize() {
 
-    if (document.getElementById("wnAuthDialog")) return;
+    if (document.getElementById("wnAuthDialog")) {
+      return;
+    }
 
     const $ = id => document.getElementById(id);
 
@@ -53,11 +303,11 @@
 
     }
 
-    /* AUTHENTICATION UI STYLES */
+    /* INTERNATIONAL AUTHENTICATION STYLES */
 
     const style = document.createElement("style");
 
-    style.id = "wn-auth-layout-v7134";
+    style.id = "wn-auth-layout-v715";
 
     style.textContent = `
 
@@ -119,6 +369,7 @@
 
       .wn-account-menu {
         position:relative;
+        min-width:0;
       }
 
       body .wn-menu-panel {
@@ -154,6 +405,8 @@
         font-size:12px;
         line-height:1.4;
         text-decoration:none;
+        white-space:normal;
+        overflow-wrap:anywhere;
         cursor:pointer;
       }
 
@@ -173,10 +426,15 @@
         font-weight:750!important;
       }
 
+      /* HIGH SPECIFICITY VISIBILITY PROTECTION */
+
       body .wn-auth-nav [hidden],
       body .wn-auth-nav .wn-auth-btn[hidden],
       body .wn-auth-nav .wn-account-menu[hidden],
-      body .wn-menu-panel[hidden] {
+      body .wn-menu-panel[hidden],
+      body .shell header.top .wn-auth-nav .wn-auth-btn[hidden],
+      body .shell header.top .wn-auth-nav .wn-account-menu[hidden],
+      body .shell header.top .wn-auth-nav .wn-menu-panel[hidden] {
         display:none!important;
       }
 
@@ -196,10 +454,7 @@
         border:1px solid rgba(116,71,255,.2);
         border-radius:13px;
         background:linear-gradient(
-          115deg,
-          #faf8ff 0%,
-          #f1eaff 52%,
-          #ffeaf9 100%
+          115deg,#faf8ff 0%,#f1eaff 52%,#ffeaf9 100%
         );
         box-shadow:0 5px 18px rgba(84,36,255,.06);
         overflow:hidden;
@@ -213,9 +468,7 @@
         height:120px;
         border-radius:50%;
         background:radial-gradient(
-          circle,
-          rgba(233,40,200,.16),
-          transparent 70%
+          circle,rgba(233,40,200,.16),transparent 70%
         );
         top:-65px;
         right:50px;
@@ -265,6 +518,7 @@
         font-size:14px;
         font-weight:800;
         line-height:1.35;
+        overflow-wrap:anywhere;
       }
 
       body .wn-pro-subtitle {
@@ -273,6 +527,7 @@
         color:#6f6384;
         font-size:11px;
         line-height:1.45;
+        overflow-wrap:anywhere;
       }
 
       body .wn-pro-cta {
@@ -282,9 +537,9 @@
         justify-content:center;
         flex:0 0 auto;
         gap:6px;
-        height:40px;
+        height:auto;
         min-height:40px;
-        max-height:40px;
+        max-width:100%;
         padding:8px 12px;
         border:0;
         border-radius:9px;
@@ -296,8 +551,9 @@
         font-size:12px;
         font-weight:750;
         line-height:1.3;
+        text-align:center;
         text-decoration:none!important;
-        white-space:nowrap;
+        white-space:normal;
         box-shadow:0 4px 12px rgba(84,36,255,.14);
       }
 
@@ -313,29 +569,21 @@
         position:fixed!important;
         inset:0!important;
         margin:auto!important;
-
         width:400px!important;
         max-width:calc(100vw - 24px)!important;
         min-width:0!important;
-
         height:fit-content!important;
         min-height:0!important;
-
         max-height:calc(100vh - 28px)!important;
         max-height:calc(100dvh - 28px)!important;
-
         padding:0!important;
         border:0!important;
         border-radius:16px!important;
-
         overflow-x:hidden!important;
         overflow-y:auto!important;
-
         background:#fff!important;
         color:#261449!important;
-
         box-shadow:0 18px 60px #1d104d45!important;
-
         overscroll-behavior:contain;
       }
 
@@ -411,7 +659,7 @@
         cursor:pointer;
       }
 
-      /* ACCOUNT CONTENT VISIBILITY FIX */
+      /* ACCOUNT CONTENT VISIBILITY */
 
       body #wnAuthDialog #worknelyAccount {
         display:block!important;
@@ -419,21 +667,16 @@
         opacity:1!important;
         pointer-events:auto!important;
         position:static!important;
-
         width:100%!important;
         max-width:100%!important;
         min-width:0!important;
-
         height:auto!important;
         min-height:0!important;
-
         margin:0!important;
         padding:16px!important;
-
         border:0!important;
         border-radius:0!important;
         box-shadow:none!important;
-
         background:#fff!important;
         color:#261449!important;
         overflow:visible!important;
@@ -467,6 +710,7 @@
         font-weight:800;
         line-height:1.2;
         letter-spacing:-.6px;
+        overflow-wrap:anywhere;
       }
 
       body #wnAuthDialog .section-head p {
@@ -482,22 +726,17 @@
         display:grid!important;
         visibility:visible!important;
         opacity:1!important;
-
         grid-template-columns:minmax(0,1fr)!important;
         grid-template-rows:none!important;
         grid-auto-rows:auto!important;
-
         align-content:start!important;
         align-items:start!important;
         gap:10px!important;
-
         width:100%!important;
         max-width:100%!important;
-
         height:auto!important;
         min-height:0!important;
         max-height:none!important;
-
         margin:0!important;
         padding:0!important;
       }
@@ -523,35 +762,26 @@
       body #wnAuthDialog #authPassword {
         display:block!important;
         box-sizing:border-box!important;
-
         width:100%!important;
         max-width:100%!important;
         min-width:0!important;
-
         height:44px!important;
         min-height:44px!important;
         max-height:44px!important;
-
         flex:0 0 44px!important;
-
         margin:0!important;
         padding:9px 12px!important;
-
         border:1px solid #dedfee!important;
         border-radius:9px!important;
-
         background:#fbfbfe!important;
         color:#261449!important;
         -webkit-text-fill-color:#261449!important;
         caret-color:#5424ff;
-
         font-family:inherit!important;
         font-size:16px!important;
         font-weight:400!important;
         line-height:1.4!important;
-
         box-shadow:none!important;
-
         -webkit-appearance:none;
         appearance:none;
       }
@@ -563,7 +793,7 @@
         outline-offset:1px;
       }
 
-      /* PASSWORD RECOVERY LINK */
+      /* PASSWORD RECOVERY */
 
       body #wnAuthDialog .wn-forgot-row {
         display:flex!important;
@@ -585,35 +815,27 @@
         display:inline-flex!important;
         align-items:center!important;
         justify-content:center!important;
-
         flex:0 0 auto!important;
-
         width:auto!important;
         max-width:100%!important;
         min-width:0!important;
-
         height:auto!important;
         min-height:32px!important;
         max-height:none!important;
-
         margin:0!important;
         padding:5px 2px!important;
-
         border:0!important;
         border-radius:0!important;
-
         background:transparent!important;
         color:#5424ff!important;
         -webkit-text-fill-color:#5424ff!important;
-
         box-shadow:none!important;
-
         font-family:inherit!important;
         font-size:12px!important;
         font-weight:700!important;
         line-height:1.4!important;
-
         text-align:center!important;
+        white-space:normal!important;
         cursor:pointer;
       }
 
@@ -622,93 +844,66 @@
         display:none!important;
       }
 
-      /* AUTHENTICATION BUTTON CONTAINER */
+      /* AUTHENTICATION ACTIONS */
 
       body #wnAuthDialog #worknelyAuthForm > .actions {
         display:flex!important;
         flex-direction:column!important;
-
         flex:0 0 auto!important;
-
         align-items:stretch!important;
         align-content:start!important;
         justify-content:flex-start!important;
         align-self:start!important;
-
         gap:8px!important;
-
         width:100%!important;
         max-width:100%!important;
         min-width:0!important;
-
         height:auto!important;
         min-height:0!important;
         max-height:none!important;
-
         margin:0!important;
         padding:0!important;
       }
-
-      /* FIXED AUTHENTICATION BUTTON DIMENSIONS */
 
       body #wnAuthDialog #worknelyAuthForm #authLogin,
       body #wnAuthDialog #worknelyAuthForm #authSignUp,
       body #wnAuthDialog #worknelyAuthForm #wnUpdatePassword,
       body #wnAuthDialog #worknelyAuthForm #authLogout {
-
         display:flex!important;
-
         align-items:center!important;
         justify-content:center!important;
         align-self:stretch!important;
-
         box-sizing:border-box!important;
-
         flex:0 0 44px!important;
         flex-grow:0!important;
         flex-shrink:0!important;
         flex-basis:44px!important;
-
         width:100%!important;
         max-width:100%!important;
         min-width:0!important;
-
         height:44px!important;
         min-height:44px!important;
         max-height:44px!important;
-
         block-size:44px!important;
         min-block-size:44px!important;
         max-block-size:44px!important;
-
         margin:0!important;
         padding:0 14px!important;
-
         border:0!important;
         border-radius:10px!important;
-
         background:linear-gradient(
-          105deg,
-          #5424ff,
-          #a326e8,
-          #ff24a8
+          105deg,#5424ff,#a326e8,#ff24a8
         )!important;
-
         color:#fff!important;
         -webkit-text-fill-color:#fff!important;
-
         box-shadow:none!important;
-
         font-family:inherit!important;
         font-size:14px!important;
         font-weight:750!important;
         line-height:1.2!important;
-
         text-align:center!important;
         white-space:normal!important;
-
         transform:none!important;
-
         cursor:pointer;
       }
 
@@ -731,7 +926,7 @@
         display:contents!important;
       }
 
-      /* LOGIN / SIGNUP SWITCH */
+      /* LOGIN AND SIGNUP SWITCH */
 
       body #wnAuthDialog .wn-auth-switch {
         display:flex;
@@ -785,7 +980,7 @@
         line-height:1.5;
       }
 
-      /* AUTHENTICATION STATUS MESSAGES */
+      /* INTERNATIONAL STATUS MESSAGES */
 
       body #wnAuthDialog #authStatus {
         box-sizing:border-box!important;
@@ -875,9 +1070,8 @@
 
         body .wn-pro-cta {
           width:100%;
-          height:44px;
+          height:auto;
           min-height:44px;
-          max-height:44px;
         }
 
         body dialog#wnAuthDialog.wn-dialog {
@@ -914,6 +1108,32 @@
 
       }
 
+      /* LONG INTERNATIONAL LABELS */
+
+      @media(max-width:480px) {
+
+        html:not([lang="en"]) body .shell header.top {
+          flex-wrap:wrap!important;
+          row-gap:5px!important;
+        }
+
+        html:not([lang="en"]) body .shell header.top > .brand {
+          order:0!important;
+          flex:1 1 calc(100% - 55px)!important;
+        }
+
+        html:not([lang="en"]) body .shell header.top > .header-tools {
+          order:1!important;
+        }
+
+        html:not([lang="en"]) body .shell header.top > .wn-auth-nav {
+          order:2!important;
+          flex:1 1 100%!important;
+          justify-content:flex-end!important;
+        }
+
+      }
+
       @media(max-width:360px) {
 
         body #wnAuthDialog #worknelyAccount {
@@ -936,7 +1156,7 @@
 
       }
 
-      /* FINAL AUTHENTICATION VISIBILITY PROTECTION */
+      /* FINAL VISIBILITY PROTECTION */
 
       body #wnAuthDialog #worknelyAuthForm > label[hidden],
       body #wnAuthDialog #worknelyAuthForm input[hidden],
@@ -950,7 +1170,10 @@
 
     document.head.appendChild(style);
 
-    /* AUTHENTICATION STATUS CLASSIFICATION */
+    /* LANGUAGE-INDEPENDENT STATUS CLASSIFICATION */
+
+    status.setAttribute("role", "status");
+    status.setAttribute("aria-live", "polite");
 
     function updateAuthStatus() {
 
@@ -962,6 +1185,23 @@
         return;
 
       }
+
+      const explicitType =
+        status.dataset.wnAuthType;
+
+      if (
+        ["success", "error", "info"]
+          .includes(explicitType)
+      ) {
+
+        status.dataset.wnAuthStatus =
+          explicitType;
+
+        return;
+
+      }
+
+      /* Legacy authentication compatibility */
 
       const errorPattern =
         /error|failed|invalid|incorrect|unable|cannot|could not|expired|not confirmed|not successful|denied|too many|rate limit|please enter|must be|required|at least|not match/i;
@@ -993,7 +1233,9 @@
 
       childList:true,
       characterData:true,
-      subtree:true
+      subtree:true,
+      attributes:true,
+      attributeFilter:["data-wn-auth-type"]
 
     });
 
@@ -1007,15 +1249,19 @@
 
     nav.setAttribute(
       "aria-label",
-      "Account navigation"
+      t("navigation")
     );
 
     const makeButton = (label, className) => {
 
-      const button = document.createElement("button");
+      const button =
+        document.createElement("button");
 
       button.type = "button";
-      button.className = "wn-auth-btn " + className;
+
+      button.className =
+        "wn-auth-btn " + className;
+
       button.textContent = label;
 
       return button;
@@ -1023,22 +1269,25 @@
     };
 
     const loginBtn = makeButton(
-      "Log In",
+      t("login"),
       "wn-login"
     );
 
     const signupBtn = makeButton(
-      "Sign Up",
+      t("signup"),
       "wn-signup"
     );
 
-    const accountWrap = document.createElement("div");
+    const accountWrap =
+      document.createElement("div");
 
-    accountWrap.className = "wn-account-menu";
+    accountWrap.className =
+      "wn-account-menu";
+
     accountWrap.hidden = true;
 
     const accountBtn = makeButton(
-      "My Account ▾",
+      t("account") + " ▾",
       "wn-account"
     );
 
@@ -1048,16 +1297,17 @@
     );
 
     accountBtn.setAttribute(
-      "aria-haspopup",
-      "true"
+      "aria-controls",
+      "wnAccountMenu"
     );
 
     const menu = document.createElement("div");
 
+    menu.id = "wnAccountMenu";
     menu.className = "wn-menu-panel";
     menu.hidden = true;
 
-    const closeMenu = () => {
+    function closeMenu() {
 
       menu.hidden = true;
 
@@ -1066,14 +1316,21 @@
         "false"
       );
 
-    };
+    }
 
-    function menuLink(label, href, className = "") {
+    function menuLink(
+      key,
+      href,
+      className = ""
+    ) {
 
-      const link = document.createElement("a");
+      const link =
+        document.createElement("a");
 
-      link.textContent = label;
+      link.textContent = t(key);
       link.href = href;
+
+      link.dataset.wnSaasKey = key;
 
       if (className) {
 
@@ -1081,47 +1338,56 @@
 
       }
 
-      link.addEventListener("click", closeMenu);
+      link.addEventListener(
+        "click",
+        closeMenu
+      );
 
       return link;
 
     }
 
-    const divider = document.createElement("div");
+    const divider =
+      document.createElement("div");
 
     divider.className = "wn-menu-divider";
 
-    divider.setAttribute("role", "separator");
+    divider.setAttribute(
+      "role",
+      "separator"
+    );
 
-    const logoutBtn = document.createElement("button");
+    const logoutBtn =
+      document.createElement("button");
 
     logoutBtn.type = "button";
-    logoutBtn.textContent = "Log Out";
+
+    logoutBtn.textContent = t("logout");
 
     menu.append(
 
       menuLink(
-        "My Dashboard",
+        "dashboard",
         "dashboard.html"
       ),
 
       menuLink(
-        "My Resumes",
+        "resumes",
         "dashboard.html#resumes"
       ),
 
       menuLink(
-        "Resume Builder",
+        "builder",
         "index.html#builder"
       ),
 
       menuLink(
-        "Pricing & Plans",
+        "pricing",
         "pricing.html"
       ),
 
       menuLink(
-        "Upgrade to Pro",
+        "upgrade",
         "pricing.html",
         "wn-menu-pro"
       ),
@@ -1131,7 +1397,10 @@
 
     );
 
-    accountWrap.append(accountBtn, menu);
+    accountWrap.append(
+      accountBtn,
+      menu
+    );
 
     nav.append(
       loginBtn,
@@ -1143,50 +1412,57 @@
 
     /* PREMIUM CONVERSION BANNER */
 
-    const banner = document.createElement("aside");
+    const banner =
+      document.createElement("aside");
 
     banner.className = "wn-pro-banner";
 
     banner.setAttribute(
       "aria-label",
-      "Explore Worknely Pro plans"
+      t("proLabel")
     );
 
-    const copy = document.createElement("div");
+    const copy =
+      document.createElement("div");
 
     copy.className = "wn-pro-copy";
 
-    const icon = document.createElement("span");
+    const icon =
+      document.createElement("span");
 
     icon.className = "wn-pro-icon";
 
-    icon.setAttribute("aria-hidden", "true");
+    icon.setAttribute(
+      "aria-hidden",
+      "true"
+    );
 
     icon.textContent = "✦";
 
-    const textWrap = document.createElement("div");
+    const textWrap =
+      document.createElement("div");
 
     textWrap.className = "wn-pro-text";
 
-    const kicker = document.createElement("span");
+    const kicker =
+      document.createElement("span");
 
     kicker.className = "wn-pro-kicker";
-
     kicker.textContent = "WORKNELY PRO";
 
-    const title = document.createElement("strong");
+    const title =
+      document.createElement("strong");
 
     title.className = "wn-pro-title";
+    title.textContent = t("proTitle");
 
-    title.textContent =
-      "Unlock more possibilities for your career";
-
-    const subtitle = document.createElement("span");
+    const subtitle =
+      document.createElement("span");
 
     subtitle.className = "wn-pro-subtitle";
 
     subtitle.textContent =
-      "Explore upcoming Pro & Premium features. No payment required.";
+      t("proSubtitle");
 
     textWrap.append(
       kicker,
@@ -1194,19 +1470,27 @@
       subtitle
     );
 
-    copy.append(icon, textWrap);
+    copy.append(
+      icon,
+      textWrap
+    );
 
-    const cta = document.createElement("a");
+    const cta =
+      document.createElement("a");
 
     cta.className = "wn-pro-cta";
-
     cta.href = "pricing.html";
 
-    cta.textContent = "Explore Pro Plans →";
+    cta.textContent =
+      t("proCta") + " →";
 
-    banner.append(copy, cta);
+    banner.append(
+      copy,
+      cta
+    );
 
-    const premiumSlot = $("wnPremiumSlot");
+    const premiumSlot =
+      $("wnPremiumSlot");
 
     if (premiumSlot) {
 
@@ -1223,7 +1507,8 @@
 
     /* AUTHENTICATION MODAL */
 
-    const dialog = document.createElement("dialog");
+    const dialog =
+      document.createElement("dialog");
 
     dialog.id = "wnAuthDialog";
 
@@ -1231,20 +1516,24 @@
 
     dialog.setAttribute(
       "aria-label",
-      "Worknely account"
+      t("accountDialog")
     );
 
-    const dialogHead = document.createElement("div");
+    const dialogHead =
+      document.createElement("div");
 
-    dialogHead.className = "wn-dialog-head";
+    dialogHead.className =
+      "wn-dialog-head";
 
-    const brand = document.createElement("strong");
+    const brand =
+      document.createElement("strong");
 
     brand.className = "wn-dialog-brand";
 
     brand.textContent = "✦ Worknely";
 
-    const closeBtn = document.createElement("button");
+    const closeBtn =
+      document.createElement("button");
 
     closeBtn.type = "button";
 
@@ -1254,7 +1543,7 @@
 
     closeBtn.setAttribute(
       "aria-label",
-      "Close"
+      t("close")
     );
 
     dialogHead.append(
@@ -1262,7 +1551,7 @@
       closeBtn
     );
 
-    /* REMOVE LANDING VISIBILITY CONFLICTS */
+    /* RESTORE ACCOUNT VISIBILITY */
 
     function restoreAccountVisibility() {
 
@@ -1273,24 +1562,51 @@
         "wn-tool-view"
       );
 
-      section.removeAttribute("data-wn-view");
-      section.removeAttribute("aria-hidden");
-      section.removeAttribute("inert");
+      section.removeAttribute(
+        "data-wn-view"
+      );
 
-      section.style.removeProperty("display");
-      section.style.removeProperty("visibility");
-      section.style.removeProperty("opacity");
+      section.removeAttribute(
+        "aria-hidden"
+      );
+
+      section.removeAttribute(
+        "inert"
+      );
+
+      section.style.removeProperty(
+        "display"
+      );
+
+      section.style.removeProperty(
+        "visibility"
+      );
+
+      section.style.removeProperty(
+        "opacity"
+      );
 
       form.hidden = false;
 
       form.classList.remove("hidden");
 
-      form.removeAttribute("aria-hidden");
+      form.removeAttribute(
+        "aria-hidden"
+      );
+
       form.removeAttribute("inert");
 
-      form.style.removeProperty("display");
-      form.style.removeProperty("visibility");
-      form.style.removeProperty("opacity");
+      form.style.removeProperty(
+        "display"
+      );
+
+      form.style.removeProperty(
+        "visibility"
+      );
+
+      form.style.removeProperty(
+        "opacity"
+      );
 
     }
 
@@ -1307,15 +1623,23 @@
       ".section-head p"
     );
 
+    const overline = section.querySelector(
+      ".section-head .overline"
+    );
+
     /* AUTHENTICATION MODE SWITCH */
 
-    const switchRow = document.createElement("div");
+    const switchRow =
+      document.createElement("div");
 
-    switchRow.className = "wn-auth-switch";
+    switchRow.className =
+      "wn-auth-switch";
 
-    const switchText = document.createElement("span");
+    const switchText =
+      document.createElement("span");
 
-    const switchButton = document.createElement("button");
+    const switchButton =
+      document.createElement("button");
 
     switchButton.type = "button";
 
@@ -1326,14 +1650,17 @@
 
     /* CONFIRMATION EMAIL SUPPORT */
 
-    const support = document.createElement("div");
+    const support =
+      document.createElement("div");
 
-    support.className = "wn-auth-support";
+    support.className =
+      "wn-auth-support";
 
-    const supportText = document.createElement("p");
+    const supportText =
+      document.createElement("p");
 
     supportText.textContent =
-      "Didn't receive your confirmation email?";
+      t("confirmationHelp");
 
     support.appendChild(supportText);
 
@@ -1349,11 +1676,15 @@
 
     /* PASSWORD RECOVERY ROW */
 
-    const forgotRow = document.createElement("div");
+    const forgotRow =
+      document.createElement("div");
 
-    forgotRow.className = "wn-forgot-row";
+    forgotRow.className =
+      "wn-forgot-row";
 
-    const passwordLabel = password.closest("label");
+    const passwordLabel =
+      password.closest("label") ||
+      password.labels?.[0];
 
     if (passwordLabel) {
 
@@ -1374,12 +1705,175 @@
 
     let recoveryObserver = null;
 
+    let translationScheduled = false;
+
     function isRecovery() {
 
-      const update = $("wnUpdatePassword");
+      const update =
+        $("wnUpdatePassword");
 
       return !!(
         update && !update.hidden
+      );
+
+    }
+
+    /* LOCALIZED MODAL CONTENT */
+
+    function translateModalContent() {
+
+      setText(
+        overline,
+        t("accountOverline")
+      );
+
+      if (isRecovery()) {
+
+        setText(
+          heading,
+          t("recoveryTitle")
+        );
+
+        setText(
+          intro,
+          t("recoveryIntro")
+        );
+
+      } else {
+
+        setText(
+          heading,
+          mode === "signup"
+            ? t("createAccount")
+            : t("welcome")
+        );
+
+        setText(
+          intro,
+          mode === "signup"
+            ? t("signupIntro")
+            : t("loginIntro")
+        );
+
+      }
+
+      setText(
+        switchText,
+        mode === "login"
+          ? t("noAccount")
+          : t("hasAccount")
+      );
+
+      setText(
+        switchButton,
+        mode === "login"
+          ? t("signup")
+          : t("login")
+      );
+
+      setText(
+        supportText,
+        t("confirmationHelp")
+      );
+
+    }
+
+    /* INTERNATIONAL SAAS LOCALIZATION */
+
+    function translateInterface() {
+
+      translationScheduled = false;
+
+      setText(
+        loginBtn,
+        t("login")
+      );
+
+      setText(
+        signupBtn,
+        t("signup")
+      );
+
+      setText(
+        accountBtn,
+        t("account") + " ▾"
+      );
+
+      setText(
+        logoutBtn,
+        t("logout")
+      );
+
+      menu.querySelectorAll(
+        "[data-wn-saas-key]"
+      ).forEach(element => {
+
+        setText(
+          element,
+          t(element.dataset.wnSaasKey)
+        );
+
+      });
+
+      nav.setAttribute(
+        "aria-label",
+        t("navigation")
+      );
+
+      dialog.setAttribute(
+        "aria-label",
+        t("accountDialog")
+      );
+
+      closeBtn.setAttribute(
+        "aria-label",
+        t("close")
+      );
+
+      banner.setAttribute(
+        "aria-label",
+        t("proLabel")
+      );
+
+      /*
+       * The existing landing localization owns
+       * the banner text inside wnPremiumSlot.
+       * Avoid competing translation observers.
+       */
+
+      if (!premiumSlot) {
+
+        setText(
+          title,
+          t("proTitle")
+        );
+
+        setText(
+          subtitle,
+          t("proSubtitle")
+        );
+
+        setText(
+          cta,
+          t("proCta") + " →"
+        );
+
+      }
+
+      translateModalContent();
+
+      updateAuthStatus();
+
+    }
+
+    function scheduleTranslation() {
+
+      if (translationScheduled) return;
+
+      translationScheduled = true;
+
+      queueMicrotask(
+        translateInterface
       );
 
     }
@@ -1392,67 +1886,68 @@
         ? "signup"
         : "login";
 
-      if (isRecovery()) return;
+      if (isRecovery()) {
 
-      if (heading) {
+        translateModalContent();
 
-        heading.textContent = mode === "signup"
-          ? "Create your account"
-          : "Welcome back";
+        return;
 
       }
 
-      if (intro) {
+      const authenticated =
+        !logout.hidden;
 
-        intro.textContent = mode === "signup"
-          ? "Create your account to save and manage your resumes."
-          : "Sign in to access your saved resumes.";
+      if (!authenticated) {
 
-      }
+        login.hidden =
+          mode !== "login";
 
-      if (logout.hidden) {
-
-        login.hidden = mode !== "login";
-
-        signup.hidden = mode !== "signup";
+        signup.hidden =
+          mode !== "signup";
 
       }
 
-      const forgot = $("wnResetPassword");
+      const forgot =
+        $("wnResetPassword");
 
-      const resend = $("wnResendConfirmation");
+      const resend =
+        $("wnResendConfirmation");
 
       if (forgot) {
 
-        forgot.hidden = mode !== "login";
+        forgot.hidden =
+          authenticated ||
+          mode !== "login";
 
       }
 
       if (resend) {
 
-        resend.hidden = mode !== "login";
+        resend.hidden =
+          authenticated ||
+          mode !== "login";
 
       }
 
       forgotRow.hidden =
-        mode !== "login" || !forgot;
+        authenticated ||
+        mode !== "login" ||
+        !forgot;
 
       support.hidden =
-        mode !== "login" || !resend;
+        authenticated ||
+        mode !== "login" ||
+        !resend;
 
-      switchRow.hidden = false;
+      switchRow.hidden =
+        authenticated;
 
-      switchText.textContent = mode === "login"
-        ? "Don't have an account?"
-        : "Already have an account?";
+      password.autocomplete =
+        mode === "signup"
+          ? "new-password"
+          : "current-password";
 
-      switchButton.textContent = mode === "login"
-        ? "Sign Up"
-        : "Log In";
-
-      password.autocomplete = mode === "signup"
-        ? "new-password"
-        : "current-password";
+      translateModalContent();
 
     }
 
@@ -1460,23 +1955,35 @@
 
     function positionSecurityControls() {
 
-      const security = $("wnSecurityActions");
+      const security =
+        $("wnSecurityActions");
 
-      const forgot = $("wnResetPassword");
+      const forgot =
+        $("wnResetPassword");
 
-      const resend = $("wnResendConfirmation");
+      const resend =
+        $("wnResendConfirmation");
 
-      const update = $("wnUpdatePassword");
+      const update =
+        $("wnUpdatePassword");
 
-      if (!security || !forgot || !resend || !update) {
+      if (
+        !security ||
+        !forgot ||
+        !resend ||
+        !update
+      ) {
 
         return false;
 
       }
 
-      const actions = form.querySelector(
-        ":scope > .actions"
-      );
+      const actions =
+        Array.from(form.children)
+          .find(element =>
+            element.classList.contains("actions") &&
+            element.id !== "wnSecurityActions"
+          );
 
       if (!actions) return false;
 
@@ -1498,23 +2005,11 @@
 
     function syncSecurity() {
 
-      if (!positionSecurityControls()) return;
+      if (!positionSecurityControls()) {
+        return;
+      }
 
       if (isRecovery()) {
-
-        if (heading) {
-
-          heading.textContent =
-            "Set a new password";
-
-        }
-
-        if (intro) {
-
-          intro.textContent =
-            "Enter your new password to finish account recovery.";
-
-        }
 
         login.hidden = true;
 
@@ -1526,7 +2021,10 @@
 
         switchRow.hidden = true;
 
-        password.autocomplete = "new-password";
+        password.autocomplete =
+          "new-password";
+
+        translateModalContent();
 
       } else {
 
@@ -1541,6 +2039,8 @@
     function showAuthDialog() {
 
       restoreAccountVisibility();
+
+      translateInterface();
 
       if (dialog.open) return;
 
@@ -1563,52 +2063,66 @@
 
     function observeRecovery() {
 
-      const update = $("wnUpdatePassword");
+      const update =
+        $("wnUpdatePassword");
 
-      if (!update || recoveryObserver) return;
+      if (
+        !update ||
+        recoveryObserver
+      ) return;
 
-      recoveryObserver = new MutationObserver(() => {
+      recoveryObserver =
+        new MutationObserver(() => {
 
-        syncSecurity();
+          syncSecurity();
 
-        if (isRecovery()) {
+          syncAuth();
 
-          showAuthDialog();
+          if (isRecovery()) {
+
+            showAuthDialog();
+
+          }
+
+        });
+
+      recoveryObserver.observe(
+        update,
+        {
+
+          attributes:true,
+
+          attributeFilter:[
+            "hidden"
+          ]
 
         }
-
-      });
-
-      recoveryObserver.observe(update, {
-
-        attributes:true,
-        attributeFilter:["hidden"]
-
-      });
+      );
 
     }
 
     /* ASYNCHRONOUS SECURITY CONTROLS */
 
-    const securityObserver = new MutationObserver(() => {
+    const securityObserver =
+      new MutationObserver(() => {
 
-      if (positionSecurityControls()) {
+        if (positionSecurityControls()) {
 
-        securityObserver.disconnect();
+          securityObserver.disconnect();
 
-        syncSecurity();
+          syncSecurity();
 
-        observeRecovery();
+          observeRecovery();
 
-        if (isRecovery()) {
+          if (isRecovery()) {
 
-          showAuthDialog();
+            showAuthDialog();
+
+          }
 
         }
 
-      }
-
-    });
+      });
 
     securityObserver.observe(form, {
 
@@ -1659,22 +2173,29 @@
 
     }
 
-    /* SESSION UI */
+    /* AUTHENTICATED SESSION UI */
 
     function syncAuth() {
 
-      const authenticated = !logout.hidden;
+      const recovering =
+        isRecovery();
 
-      loginBtn.hidden = authenticated;
+      const authenticated =
+        !logout.hidden &&
+        !recovering;
 
-      signupBtn.hidden = authenticated;
+      loginBtn.hidden =
+        authenticated || recovering;
 
-      accountWrap.hidden = !authenticated;
+      signupBtn.hidden =
+        authenticated || recovering;
+
+      accountWrap.hidden =
+        !authenticated;
 
       if (
         authenticated &&
-        dialog.open &&
-        !isRecovery()
+        dialog.open
       ) {
 
         closeDialog();
@@ -1685,7 +2206,7 @@
 
         closeMenu();
 
-        if (!isRecovery()) {
+        if (!recovering) {
 
           setMode(mode);
 
@@ -1693,16 +2214,24 @@
 
       }
 
+      if (recovering) {
+
+        syncSecurity();
+
+      }
+
     }
 
-    /* ACCOUNT DEEP LINK SUPPORT */
+    /* ACCOUNT DEEP LINKS */
 
     function handleAccountLink() {
 
       const hash =
         window.location.hash.toLowerCase();
 
-      if (hash !== "#worknelyaccount") return;
+      if (
+        hash !== "#worknelyaccount"
+      ) return;
 
       if (isRecovery()) {
 
@@ -1722,129 +2251,185 @@
 
     }
 
-    /* EVENTS */
+    /* AUTHENTICATION EVENTS */
 
-    loginBtn.addEventListener("click", () => {
+    loginBtn.addEventListener(
+      "click",
+      () => {
 
-      openAuth("login");
+        openAuth("login");
 
-    });
+      }
+    );
 
-    signupBtn.addEventListener("click", () => {
+    signupBtn.addEventListener(
+      "click",
+      () => {
 
-      openAuth("signup");
+        openAuth("signup");
 
-    });
+      }
+    );
 
-    switchButton.addEventListener("click", () => {
+    switchButton.addEventListener(
+      "click",
+      () => {
 
-      setMode(
-        mode === "login"
-          ? "signup"
-          : "login"
-      );
+        if (
+          form.getAttribute("aria-busy") === "true"
+        ) return;
 
-    });
+        setMode(
+          mode === "login"
+            ? "signup"
+            : "login"
+        );
+
+      }
+    );
 
     closeBtn.addEventListener(
       "click",
       closeDialog
     );
 
-    dialog.addEventListener("click", event => {
+    dialog.addEventListener(
+      "click",
+      event => {
 
-      if (event.target !== dialog) return;
+        if (
+          event.target !== dialog
+        ) return;
 
-      const rect = dialog.getBoundingClientRect();
+        const rect =
+          dialog.getBoundingClientRect();
 
-      const outside =
+        const outside =
 
-        event.clientX < rect.left ||
-        event.clientX > rect.right ||
-        event.clientY < rect.top ||
-        event.clientY > rect.bottom;
+          event.clientX < rect.left ||
+          event.clientX > rect.right ||
+          event.clientY < rect.top ||
+          event.clientY > rect.bottom;
 
-      if (outside) {
+        if (outside) {
 
-        closeDialog();
+          closeDialog();
+
+        }
 
       }
+    );
 
-    });
+    accountBtn.addEventListener(
+      "click",
+      () => {
 
-    accountBtn.addEventListener("click", () => {
+        const opening =
+          menu.hidden;
 
-      const opening = menu.hidden;
+        menu.hidden =
+          !opening;
 
-      menu.hidden = !opening;
+        accountBtn.setAttribute(
+          "aria-expanded",
+          String(opening)
+        );
 
-      accountBtn.setAttribute(
-        "aria-expanded",
-        String(opening)
-      );
+      }
+    );
 
-    });
-
-    logoutBtn.addEventListener("click", () => {
-
-      closeMenu();
-
-      logout.click();
-
-    });
-
-    document.addEventListener("click", event => {
-
-      if (!accountWrap.contains(event.target)) {
+    logoutBtn.addEventListener(
+      "click",
+      () => {
 
         closeMenu();
 
-      }
-
-    });
-
-    document.addEventListener("keydown", event => {
-
-      if (event.key === "Escape") {
-
-        closeMenu();
+        logout.click();
 
       }
+    );
 
-    });
+    document.addEventListener(
+      "click",
+      event => {
+
+        if (
+          !accountWrap.contains(
+            event.target
+          )
+        ) {
+
+          closeMenu();
+
+        }
+
+      }
+    );
+
+    document.addEventListener(
+      "keydown",
+      event => {
+
+        if (
+          event.key === "Escape" &&
+          !menu.hidden
+        ) {
+
+          closeMenu();
+
+          accountBtn.focus();
+
+        }
+
+      }
+    );
 
     window.addEventListener(
       "hashchange",
       handleAccountLink
     );
 
-    document.addEventListener("click", event => {
+    document.addEventListener(
+      "click",
+      event => {
 
-      const target = event.target;
+        const target =
+          event.target;
 
-      if (!(target instanceof Element)) return;
+        if (
+          !(target instanceof Element)
+        ) return;
 
-      const link = target.closest(
-        'a[href="#worknelyAccount"]'
-      );
+        const link = target.closest(
+          'a[href="#worknelyAccount"]'
+        );
 
-      if (!link) return;
+        if (!link) return;
 
-      event.preventDefault();
+        event.preventDefault();
 
-      if (logout.hidden || isRecovery()) {
+        if (
+          logout.hidden ||
+          isRecovery()
+        ) {
 
-        openAuth("login");
+          openAuth("login");
 
-      } else {
+        } else {
 
-        window.location.href = "dashboard.html";
+          window.location.href =
+            "dashboard.html";
+
+        }
 
       }
+    );
 
-    });
+    /* SESSION STATE OBSERVER */
 
-    new MutationObserver(syncAuth).observe(logout, {
+    new MutationObserver(
+      syncAuth
+    ).observe(logout, {
 
       attributes:true,
 
@@ -1856,11 +2441,48 @@
 
     });
 
+    /* INTERNATIONAL LANGUAGE EVENTS */
+
+    document.addEventListener(
+      "worknely:languagechange",
+      scheduleTranslation
+    );
+
+    document.addEventListener(
+      "worknely:localizationready",
+      scheduleTranslation
+    );
+
+    document.addEventListener(
+      "change",
+      event => {
+
+        if (
+          event.target instanceof HTMLSelectElement &&
+          event.target.matches(
+            "#language, [data-wn-language]"
+          )
+        ) {
+
+          scheduleTranslation();
+
+        }
+
+      }
+    );
+
+    window.addEventListener(
+      "pageshow",
+      scheduleTranslation
+    );
+
     /* INITIALIZATION */
 
     setMode("login");
 
     syncAuth();
+
+    translateInterface();
 
     updateAuthStatus();
 
@@ -1877,21 +2499,21 @@
     }
 
     console.info(
-      "Worknely V7.13.4 Authentication UI initialized."
+      "Worknely V" +
+      VERSION +
+      " International SaaS Interface initialized."
     );
 
   }
 
-  if (document.readyState === "loading") {
+  if (
+    document.readyState === "loading"
+  ) {
 
     document.addEventListener(
-
       "DOMContentLoaded",
-
       initialize,
-
       { once:true }
-
     );
 
   } else {
@@ -1902,4 +2524,8 @@
 
 })();
 
-/* END WORKNELY V7.13.4 AUTHENTICATION VISIBILITY FIX */
+/*
+ * END WORKNELY V7.15
+ * INTERNATIONAL SAAS INTERFACE
+ * WORKNELY — PEOPLE TECHNOLOGY
+ */
