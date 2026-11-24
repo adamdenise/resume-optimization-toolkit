@@ -1,15 +1,13 @@
 
 /*
- * WORKNELY V7.10
- * Premium SaaS Dashboard
+ * WORKNELY V7.11
+ * Premium Resume Workspace
  *
- * Mobile First Refinement
- * Responsive Desktop Layout
- * Brand: Electric Purple / Pink
- *
- * Compatible with:
- * dashboard.html V7.9.2
- * dashboard.js V7.9.2
+ * Mobile First Design
+ * Professional Document Management
+ * Quick Create Resume
+ * Empty State Experience
+ * Electric Purple / Pink Identity
  */
 
 :root {
@@ -26,7 +24,7 @@
   --wn-muted: #706782;
   --wn-surface: #ffffff;
   --wn-soft: #f5f1ff;
-  --wn-shadow: 0 12px 35px rgba(55, 25, 130, .055);
+  --wn-shadow: 0 12px 35px rgba(55,25,130,.055);
 }
 
 * {
@@ -49,7 +47,8 @@ textarea {
 }
 
 button,
-a {
+a,
+summary {
   touch-action: manipulation;
 }
 
@@ -58,7 +57,8 @@ a {
   text-decoration: none;
 }
 
-button {
+button,
+summary {
   cursor: pointer;
 }
 
@@ -89,9 +89,7 @@ button:disabled {
   justify-content: space-between;
   align-items: center;
   gap: 12px;
-
-  padding: 18px clamp(16px, 4vw, 48px);
-
+  padding: 18px clamp(16px,4vw,48px);
   background: #fff;
   border-bottom: 1px solid var(--wn-border);
 }
@@ -115,7 +113,7 @@ button:disabled {
 
 .layout {
   display: grid;
-  grid-template-columns: 210px minmax(0, 1fr);
+  grid-template-columns: 210px minmax(0,1fr);
   max-width: 1350px;
   margin: auto;
 }
@@ -132,7 +130,6 @@ button:disabled {
   border-radius: 12px;
   font-weight: 650;
   color: #563b8e;
-
   transition:
     background .2s ease,
     color .2s ease;
@@ -150,7 +147,7 @@ button:disabled {
 
 main {
   min-width: 0;
-  padding: 25px clamp(16px, 3vw, 40px);
+  padding: 25px clamp(16px,3vw,40px);
 }
 
 /* DEDICATED VIEWS */
@@ -171,17 +168,15 @@ main {
   color: #716987;
 }
 
-/* PREMIUM CARDS */
+/* PREMIUM PANELS */
 
 .hero,
 .panel {
   background: var(--wn-surface);
   border: 1px solid var(--wn-border);
   border-radius: 24px;
-
-  padding: clamp(20px, 3vw, 35px);
+  padding: clamp(20px,3vw,35px);
   margin-bottom: 22px;
-
   box-shadow: var(--wn-shadow);
 }
 
@@ -207,13 +202,13 @@ main {
 }
 
 h1 {
-  font-size: clamp(30px, 5vw, 52px);
+  font-size: clamp(30px,5vw,52px);
   margin: 14px 0;
   letter-spacing: -.035em;
 }
 
 h2 {
-  font-size: clamp(23px, 3vw, 29px);
+  font-size: clamp(23px,3vw,29px);
   margin: 20px 0 15px;
   letter-spacing: -.025em;
 }
@@ -240,7 +235,6 @@ p {
   background: #ffffffb8;
   border: 1px solid #e6def7;
   border-radius: 16px;
-
   padding: 18px 25px;
   min-width: 150px;
 }
@@ -279,6 +273,10 @@ p {
   flex-wrap: wrap;
 }
 
+.section-title p {
+  margin-bottom: 0;
+}
+
 /* BUTTONS */
 
 .button,
@@ -287,7 +285,6 @@ p {
   justify-content: center;
   align-items: center;
   gap: 8px;
-
   border-radius: 13px;
   padding: 13px 19px;
   font-weight: 750;
@@ -307,7 +304,7 @@ p {
     #ec22ad
   );
 
-  color: white;
+  color: #fff;
   border: 0;
 }
 
@@ -322,6 +319,72 @@ p {
 
 .outline:hover:not(:disabled) {
   background: #ebe5ff;
+}
+
+.button svg,
+.outline svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+/* V7.11 WORKSPACE METRICS */
+
+.workspace-metrics {
+  display: grid;
+  grid-template-columns:
+    repeat(2,minmax(0,1fr));
+  gap: 14px;
+  margin: 25px 0;
+}
+
+.workspace-metric {
+  min-width: 0;
+  padding: 18px;
+  border: 1px solid var(--wn-border);
+  border-radius: 17px;
+  background: linear-gradient(
+    135deg,
+    #fff,
+    #f6f2ff
+  );
+}
+
+.workspace-metric span {
+  display: block;
+  color: var(--wn-muted);
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.workspace-metric strong {
+  display: block;
+  margin-top: 7px;
+  color: var(--wn-purple);
+  font-size: 29px;
+  font-weight: 800;
+  overflow-wrap: anywhere;
+}
+
+/* DOCUMENT LIST HEADER */
+
+.resume-list-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 28px 0 16px;
+}
+
+.resume-list-header h2 {
+  margin: 0;
+}
+
+.resume-list-header span {
+  font-size: 12px;
+  font-weight: 650;
+  color: var(--wn-muted);
 }
 
 /* RESUME FORM */
@@ -342,12 +405,9 @@ textarea {
   display: block;
   width: 100%;
   margin-top: 7px;
-
   padding: 13px 14px;
-
   border: 1px solid #dcd5ee;
   border-radius: 12px;
-
   background: #fcfbff;
   color: #281746;
   min-width: 0;
@@ -360,8 +420,7 @@ textarea {
 .fields {
   display: grid;
   grid-template-columns:
-    repeat(2, minmax(0, 1fr));
-
+    repeat(2,minmax(0,1fr));
   gap: 4px 18px;
 }
 
@@ -384,9 +443,9 @@ textarea {
 }
 
 .resume-item {
-  padding: 17px 18px;
+  padding: 18px;
   border: 1px solid #e5ddf5;
-  border-radius: 17px;
+  border-radius: 18px;
   background: #fff;
 
   display: flex;
@@ -395,7 +454,8 @@ textarea {
   align-items: center;
   flex-wrap: wrap;
 
-  box-shadow: 0 4px 16px rgba(64, 30, 135, .025);
+  box-shadow:
+    0 4px 16px rgba(64,30,135,.025);
 
   transition:
     border-color .2s ease,
@@ -404,12 +464,52 @@ textarea {
 
 .resume-item:hover {
   border-color: #cbbcf8;
-  box-shadow: 0 8px 24px rgba(64, 30, 135, .065);
+  box-shadow:
+    0 8px 24px rgba(64,30,135,.065);
 }
 
 .resume-item > div:first-child {
   flex: 1 1 190px;
   min-width: 0;
+}
+
+/* PROFESSIONAL DOCUMENT ICON */
+
+.resume-info {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  min-width: 0;
+}
+
+.resume-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 48px;
+  height: 52px;
+  flex: 0 0 48px;
+
+  background: linear-gradient(
+    145deg,
+    #eee7ff,
+    #fce8fa
+  );
+
+  color: var(--wn-purple);
+  border: 1px solid #e8dcff;
+  border-radius: 13px;
+}
+
+.resume-icon svg {
+  width: 25px;
+  height: 25px;
+}
+
+.resume-details {
+  min-width: 0;
+  flex: 1;
 }
 
 .resume-item strong {
@@ -439,7 +539,7 @@ textarea {
   font-size: 13px;
   line-height: 1.3;
   border-radius: 11px;
-  min-height: 42px;
+  min-height: 44px;
 }
 
 /* PRIMARY RESUME EDIT ACTION */
@@ -475,6 +575,150 @@ textarea {
   border-color: #f0cbd3;
 }
 
+/* V7.11 EMPTY STATE */
+
+.resume-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 12px;
+
+  padding: 40px 20px;
+  border: 1px dashed #d9ccfa;
+  border-radius: 20px;
+
+  background: linear-gradient(
+    145deg,
+    #fff,
+    #f8f4ff
+  );
+}
+
+.resume-empty-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 74px;
+  height: 74px;
+  border-radius: 22px;
+  background: #eee7ff;
+  color: var(--wn-purple);
+}
+
+.resume-empty-icon svg {
+  width: 35px;
+  height: 35px;
+}
+
+.resume-empty h3 {
+  margin: 5px 0 0;
+  font-size: 21px;
+  letter-spacing: -.025em;
+}
+
+.resume-empty p {
+  max-width: 340px;
+  margin: 0 0 7px;
+  font-size: 14px;
+}
+
+.resume-empty .button {
+  min-height: 46px;
+}
+
+/* V7.11 QUICK CREATE WORKSPACE */
+
+.quick-create {
+  margin-top: 28px;
+  border: 1px solid var(--wn-border);
+  border-radius: 18px;
+  background: #fcfbff;
+}
+
+.quick-create > summary {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 18px;
+  list-style: none;
+  border-radius: 18px;
+}
+
+.quick-create > summary::-webkit-details-marker {
+  display: none;
+}
+
+.quick-create > summary:hover {
+  background: #f5f1ff;
+}
+
+.quick-create-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 42px;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: #eee7ff;
+  color: var(--wn-purple);
+}
+
+.quick-create-icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.quick-create-heading {
+  flex: 1;
+  min-width: 0;
+}
+
+.quick-create-heading strong {
+  display: block;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.quick-create-heading small {
+  display: block;
+  margin-top: 5px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--wn-muted);
+}
+
+.quick-create-chevron {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  color: var(--wn-muted);
+  transition: transform .2s ease;
+}
+
+.quick-create[open] .quick-create-chevron {
+  transform: rotate(180deg);
+}
+
+.quick-create[open] > summary {
+  border-bottom: 1px solid var(--wn-border);
+  border-radius: 18px 18px 0 0;
+}
+
+.quick-create-body {
+  padding: 18px;
+}
+
+.quick-create-body form {
+  margin-top: 0;
+}
+
+.quick-create-body > p {
+  font-size: 13px;
+  margin: 0 0 15px;
+}
+
 /* PRO PAGE */
 
 .pro {
@@ -485,12 +729,41 @@ textarea {
   );
 }
 
-/* STATUS AND FOOTER */
+/* STATUS MESSAGES */
 
 #resumeStatus {
-  min-height: 24px;
   overflow-wrap: anywhere;
+  font-size: 13px;
+  font-weight: 650;
+  line-height: 1.5;
 }
+
+#resumeStatus:empty {
+  display: none;
+}
+
+#resumeStatus:not(:empty) {
+  padding: 13px 15px;
+  margin: 16px 0;
+  background: #f4efff;
+  border: 1px solid #e5dcff;
+  border-radius: 12px;
+  color: #5424ff;
+}
+
+#resumeStatus[data-status="success"] {
+  background: #ecfdf4;
+  color: #08784c;
+  border-color: #b7efd1;
+}
+
+#resumeStatus[data-status="error"] {
+  background: #fff1f2;
+  color: #b42332;
+  border-color: #fecdd3;
+}
+
+/* FOOTER */
 
 footer {
   padding: 20px 0;
@@ -510,13 +783,10 @@ footer {
     flex-direction: row;
     overflow-x: auto;
     overscroll-behavior-x: contain;
-
     padding: 12px 15px;
     gap: 8px;
-
     white-space: nowrap;
     -webkit-overflow-scrolling: touch;
-
     scrollbar-width: none;
   }
 
@@ -532,7 +802,7 @@ footer {
 
   .sidebar a[aria-current="page"] {
     background: var(--wn-purple);
-    color: white;
+    color: #fff;
   }
 
   .fields {
@@ -575,6 +845,7 @@ footer {
 
   .section-title .button {
     width: 100%;
+    min-height: 48px;
   }
 
   .metrics {
@@ -587,7 +858,27 @@ footer {
     padding: 16px;
   }
 
-  /* COMPACT MOBILE RESUME CARDS */
+  .workspace-metrics {
+    gap: 10px;
+    margin: 20px 0;
+  }
+
+  .workspace-metric {
+    padding: 15px;
+    border-radius: 14px;
+  }
+
+  .workspace-metric strong {
+    font-size: 25px;
+  }
+
+  .workspace-metric span {
+    font-size: 12px;
+  }
+
+  .resume-list-header {
+    margin-top: 24px;
+  }
 
   .resume-list {
     gap: 11px;
@@ -615,6 +906,50 @@ footer {
   .resume-item .actions button:last-child {
     flex: 0 0 auto;
   }
+
+  .resume-icon {
+    width: 44px;
+    height: 48px;
+    flex-basis: 44px;
+  }
+
+  .quick-create {
+    margin-top: 22px;
+  }
+
+  .quick-create > summary {
+    padding: 14px;
+    gap: 10px;
+  }
+
+  .quick-create-body {
+    padding: 14px;
+  }
+
+  .quick-create-body .actions {
+    display: grid;
+    grid-template-columns:
+      repeat(2,minmax(0,1fr));
+  }
+
+  .quick-create-body .actions button {
+    min-width: 0;
+    padding: 12px 8px;
+    font-size: 13px;
+  }
+
+  .resume-empty {
+    padding: 30px 15px;
+  }
+
+  .resume-empty .button {
+    width: 100%;
+  }
+
+  input,
+  textarea {
+    font-size: 16px;
+  }
 }
 
 /* SMALL IPHONE SCREENS */
@@ -638,7 +973,8 @@ footer {
 
   .resume-item .actions {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-columns:
+      minmax(0,1fr) auto;
     gap: 8px;
   }
 
@@ -647,9 +983,24 @@ footer {
     padding: 10px;
     font-size: 12px;
   }
+
+  .resume-list-header span {
+    font-size: 11px;
+  }
+
+  .quick-create-heading strong {
+    font-size: 14px;
+  }
+
+  .quick-create-heading small {
+    font-size: 11px;
+  }
 }
 
+/* ACCESSIBILITY */
+
 @media (prefers-reduced-motion: reduce) {
+
   html {
     scroll-behavior: auto;
   }
@@ -657,7 +1008,8 @@ footer {
   .sidebar a,
   .button,
   .outline,
-  .resume-item {
+  .resume-item,
+  .quick-create-chevron {
     transition: none;
   }
 }
