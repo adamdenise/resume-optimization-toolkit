@@ -2,6 +2,7 @@
 <!doctype html>
 <html lang="en">
 <head>
+
   <meta charset="utf-8">
 
   <meta name="viewport"
@@ -16,6 +17,12 @@
   <meta name="color-scheme"
         content="light">
 
+  <meta name="application-name"
+        content="Worknely">
+
+  <meta name="apple-mobile-web-app-title"
+        content="Worknely">
+
   <title>My Dashboard | Worknely</title>
 
   <link rel="icon"
@@ -23,19 +30,861 @@
         href="worknely-favicon.svg">
 
   <!--
-    WORKNELY V7.11.1
-    Premium Resume Workspace
-    Compact UI Edition
+    WORKNELY V7.12
+    Global Compact Dashboard Edition
 
-    Mobile First Experience
-    Compact Resume Cards
+    Mobile First SaaS Workspace
+    Compact Overview
+    Compact Resume Management
     Icon Only Delete Action
-    Quick Create Resume
-    Supabase Integration
+    Compact Quick Create Resume
+    Premium Subscription Preview
+
+    Compatible with:
+    Dashboard JS V7.11.1
+    Supabase Authentication
+    Resume Save & Edit V7.9
+    Global Compact Design System
   -->
 
+  <!-- DASHBOARD CORE DESIGN -->
+
   <link rel="stylesheet"
-        href="dashboard.css?v=7.11.1">
+        href="dashboard.css?v=7.12">
+
+  <!-- GLOBAL COMPACT DESIGN SYSTEM -->
+
+  <link rel="stylesheet"
+        href="worknely-compact.css?v=7.12"
+        media="screen">
+
+  <!-- DASHBOARD SPECIFIC COMPACT RULES -->
+
+  <style>
+
+    /*
+     * WORKNELY V7.12
+     * Dashboard Layout Refinements
+     */
+
+    [hidden] {
+      display:none !important;
+    }
+
+    .wn-view {
+      min-width:0;
+    }
+
+    .wn-view:focus {
+      outline:none;
+    }
+
+    button:focus-visible,
+    a:focus-visible,
+    summary:focus-visible,
+    input:focus-visible,
+    textarea:focus-visible {
+
+      outline:3px solid #6a3bff;
+      outline-offset:3px;
+
+    }
+
+    /* COMPACT HEADER */
+
+    body .topbar {
+
+      gap:8px;
+
+    }
+
+    body .topbar .brand {
+
+      gap:8px;
+
+    }
+
+    body .topbar .brand img {
+
+      width:36px;
+      height:36px;
+
+    }
+
+    body .topbar #logout {
+
+      min-height:36px;
+      padding:8px 12px;
+      border-radius:9px;
+      font-size:12px;
+      line-height:1.3;
+
+    }
+
+    /* DASHBOARD CONTENT */
+
+    #dashboardMain {
+
+      min-width:0;
+
+    }
+
+    #dashboardMain .hero,
+    #dashboardMain .panel {
+
+      min-width:0;
+
+    }
+
+    /* OVERVIEW */
+
+    #overview .metrics {
+
+      gap:10px;
+      margin-top:14px;
+      margin-bottom:14px;
+
+    }
+
+    #overview .metrics > div {
+
+      min-width:0;
+      padding:12px;
+      border-radius:12px;
+
+    }
+
+    #overview .metrics strong {
+
+      font-size:25px;
+      line-height:1.2;
+
+    }
+
+    #overview .metrics span {
+
+      font-size:12px;
+
+    }
+
+    #overview #welcome {
+
+      overflow-wrap:anywhere;
+
+    }
+
+    #overview .wn-dashboard-actions {
+
+      display:flex;
+      flex-wrap:wrap;
+      align-items:center;
+      gap:8px;
+      margin-top:12px;
+
+    }
+
+    #overview .wn-dashboard-actions a {
+
+      min-width:0;
+      min-height:40px;
+      padding:9px 13px;
+      border-radius:10px;
+      font-size:13px;
+      line-height:1.35;
+      text-align:center;
+
+    }
+
+    /* MY RESUMES */
+
+    #resumes .section-title {
+
+      gap:10px;
+      margin-bottom:14px;
+
+    }
+
+    #resumes .section-title > div {
+
+      min-width:0;
+
+    }
+
+    #resumes .section-title .button {
+
+      min-height:40px;
+      padding:9px 12px;
+      border-radius:10px;
+      font-size:13px;
+      line-height:1.3;
+
+    }
+
+    #resumes .section-title .button svg {
+
+      flex-shrink:0;
+      width:17px;
+      height:17px;
+
+    }
+
+    /* COMPACT WORKSPACE METRICS */
+
+    #resumes .workspace-metrics {
+
+      display:grid;
+      grid-template-columns:
+        repeat(2,minmax(0,1fr));
+
+      gap:8px;
+      margin-bottom:12px;
+
+    }
+
+    #resumes .workspace-metric {
+
+      min-width:0;
+      padding:10px 12px;
+      border-radius:11px;
+
+    }
+
+    #resumes .workspace-metric span {
+
+      font-size:12px;
+
+    }
+
+    #resumes .workspace-metric strong {
+
+      font-size:23px;
+      line-height:1.25;
+
+    }
+
+    /* SAVED RESUMES HEADER */
+
+    #resumes .resume-list-header {
+
+      gap:8px;
+      margin-top:14px;
+      margin-bottom:9px;
+
+    }
+
+    #resumes .resume-list-header h2 {
+
+      font-size:16px;
+      line-height:1.35;
+
+    }
+
+    #resumes .resume-list-header span {
+
+      font-size:11px;
+
+    }
+
+    /* COMPACT DOCUMENT CARDS */
+
+    #resumeList {
+
+      gap:8px;
+
+    }
+
+    #resumeList .resume-item {
+
+      min-width:0;
+      padding:12px;
+      border-radius:12px;
+
+    }
+
+    #resumeList .resume-info {
+
+      min-width:0;
+      gap:9px;
+
+    }
+
+    #resumeList .resume-details {
+
+      min-width:0;
+
+    }
+
+    #resumeList .resume-details strong {
+
+      font-size:14px;
+      line-height:1.35;
+      overflow-wrap:anywhere;
+
+    }
+
+    #resumeList .resume-details small {
+
+      font-size:11px;
+      line-height:1.4;
+
+    }
+
+    #resumeList .resume-icon {
+
+      flex-shrink:0;
+      width:34px;
+      height:38px;
+      border-radius:9px;
+
+    }
+
+    #resumeList .resume-icon svg {
+
+      width:19px;
+      height:19px;
+
+    }
+
+    #resumeList .actions {
+
+      gap:7px;
+
+    }
+
+    /* COMPACT EDIT BUTTON */
+
+    #resumeList .resume-edit-button {
+
+      min-width:0;
+      min-height:40px;
+      padding:8px 12px;
+      border-radius:9px;
+
+      font-size:12px;
+      font-weight:700;
+      line-height:1.3;
+
+      white-space:normal;
+      text-align:center;
+
+    }
+
+    /* ICON ONLY DELETE BUTTON */
+
+    #resumeList .resume-delete-button {
+
+      flex:0 0 40px;
+
+      width:40px;
+      min-width:40px;
+      max-width:40px;
+
+      height:40px;
+      min-height:40px;
+
+      padding:0;
+      border-radius:9px;
+      font-size:0;
+
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+
+    }
+
+    #resumeList .resume-delete-button svg {
+
+      width:18px;
+      height:18px;
+      flex-shrink:0;
+
+    }
+
+    /* STATUS MESSAGES */
+
+    #resumeStatus {
+
+      margin:9px 0;
+      padding:9px 11px;
+      border-radius:9px;
+      font-size:12px;
+      line-height:1.5;
+      overflow-wrap:anywhere;
+
+    }
+
+    #resumeStatus:empty {
+
+      display:none;
+
+    }
+
+    /* QUICK CREATE RESUME */
+
+    #quickCreate {
+
+      margin-top:12px;
+      border-radius:12px;
+
+    }
+
+    #quickCreate > summary {
+
+      min-height:44px;
+      padding:11px 12px;
+      gap:9px;
+
+    }
+
+    #quickCreate .quick-create-icon {
+
+      flex-shrink:0;
+      width:34px;
+      height:34px;
+      border-radius:9px;
+
+    }
+
+    #quickCreate .quick-create-icon svg {
+
+      width:19px;
+      height:19px;
+
+    }
+
+    #quickCreate .quick-create-heading {
+
+      min-width:0;
+
+    }
+
+    #quickCreate .quick-create-heading strong {
+
+      font-size:14px;
+      line-height:1.35;
+
+    }
+
+    #quickCreate .quick-create-heading small {
+
+      font-size:11px;
+      line-height:1.4;
+
+    }
+
+    #quickCreate .quick-create-chevron {
+
+      flex-shrink:0;
+      width:17px;
+      height:17px;
+
+    }
+
+    #quickCreate .quick-create-body {
+
+      padding:12px;
+
+    }
+
+    #quickCreate .quick-create-body > p {
+
+      margin:0 0 12px;
+      font-size:12px;
+      line-height:1.5;
+
+    }
+
+    /* COMPACT RESUME FORM */
+
+    #resumeForm {
+
+      min-width:0;
+
+    }
+
+    #resumeForm .fields {
+
+      gap:10px;
+
+    }
+
+    #resumeForm label {
+
+      min-width:0;
+      font-size:12px;
+      line-height:1.4;
+
+    }
+
+    #resumeForm input,
+    #resumeForm textarea {
+
+      box-sizing:border-box;
+      width:100%;
+      min-width:0;
+
+      padding:9px 11px;
+      border-radius:9px;
+
+      font-size:14px;
+      line-height:1.5;
+
+    }
+
+    #resumeForm input {
+
+      min-height:42px;
+
+    }
+
+    #resumeForm textarea {
+
+      min-height:68px;
+      resize:vertical;
+
+    }
+
+    #resumeForm .actions {
+
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:12px;
+
+    }
+
+    #resumeForm .actions button {
+
+      min-width:0;
+      min-height:40px;
+
+      padding:9px 13px;
+      border-radius:9px;
+
+      font-size:13px;
+      line-height:1.3;
+
+    }
+
+    /* WORKNELY PRO PREVIEW */
+
+    #pro {
+
+      min-width:0;
+
+    }
+
+    #pro h1 {
+
+      margin-bottom:8px;
+
+    }
+
+    #pro p {
+
+      font-size:14px;
+      line-height:1.55;
+      margin-bottom:14px;
+
+    }
+
+    #pro .outline {
+
+      min-height:40px;
+      max-width:100%;
+      padding:9px 12px;
+      border-radius:9px;
+      font-size:12px;
+      white-space:normal;
+
+    }
+
+    #pro .outline:disabled {
+
+      cursor:not-allowed;
+
+    }
+
+    /* FOOTER */
+
+    #dashboardMain footer {
+
+      padding:12px 0 16px;
+      font-size:11px;
+      line-height:1.5;
+
+    }
+
+    /* MOBILE COMPACT DASHBOARD */
+
+    @media(max-width:700px) {
+
+      body .topbar .brand img {
+
+        width:34px;
+        height:34px;
+
+      }
+
+      body .topbar #logout {
+
+        min-height:44px;
+        padding:8px 10px;
+        font-size:12px;
+
+      }
+
+      body .layout .sidebar {
+
+        gap:6px;
+
+      }
+
+      body .layout .sidebar a {
+
+        min-height:44px;
+        padding:8px 10px;
+        font-size:12px;
+        border-radius:9px;
+
+      }
+
+      #overview .metrics {
+
+        gap:8px;
+        margin-top:12px;
+        margin-bottom:12px;
+
+      }
+
+      #overview .metrics > div {
+
+        padding:10px;
+
+      }
+
+      #overview .metrics strong {
+
+        font-size:23px;
+
+      }
+
+      #overview .wn-dashboard-actions {
+
+        gap:7px;
+
+      }
+
+      #overview .wn-dashboard-actions a {
+
+        flex:1 1 130px;
+        min-height:44px;
+        padding:8px 10px;
+        font-size:12px;
+
+      }
+
+      #resumes .section-title {
+
+        gap:8px;
+        margin-bottom:12px;
+
+      }
+
+      #resumes .section-title .button {
+
+        min-height:44px;
+        padding:8px 10px;
+        font-size:12px;
+
+      }
+
+      #resumes .workspace-metric {
+
+        padding:10px;
+
+      }
+
+      #resumes .workspace-metric strong {
+
+        font-size:21px;
+
+      }
+
+      #resumeList .resume-item {
+
+        padding:10px;
+
+      }
+
+      #resumeList .resume-details strong {
+
+        font-size:13px;
+
+      }
+
+      #resumeList .resume-details small {
+
+        font-size:11px;
+
+      }
+
+      #resumeList .resume-item .actions {
+
+        display:grid;
+
+        grid-template-columns:
+          minmax(0,1fr) 44px;
+
+        gap:7px;
+
+      }
+
+      #resumeList .resume-edit-button {
+
+        width:100%;
+        min-height:44px;
+        padding:8px 10px;
+        font-size:12px;
+
+      }
+
+      #resumeList .resume-delete-button {
+
+        width:44px;
+        min-width:44px;
+        max-width:44px;
+
+        height:44px;
+        min-height:44px;
+
+      }
+
+      #quickCreate > summary {
+
+        padding:10px;
+
+      }
+
+      #quickCreate .quick-create-body {
+
+        padding:11px;
+
+      }
+
+      #resumeForm .fields {
+
+        grid-template-columns:
+          minmax(0,1fr);
+
+        gap:9px;
+
+      }
+
+      #resumeForm input,
+      #resumeForm textarea {
+
+        font-size:16px;
+
+      }
+
+      #resumeForm input {
+
+        min-height:44px;
+
+      }
+
+      #resumeForm textarea {
+
+        min-height:65px;
+
+      }
+
+      #resumeForm .actions button {
+
+        flex:1 1 110px;
+        min-height:44px;
+        padding:8px 10px;
+        font-size:12px;
+
+      }
+
+      #pro .outline {
+
+        min-height:44px;
+
+      }
+
+    }
+
+    /* SMALL IPHONE SCREENS */
+
+    @media(max-width:390px) {
+
+      #resumeList .resume-item {
+
+        padding:9px;
+
+      }
+
+      #resumeList .resume-info {
+
+        gap:7px;
+
+      }
+
+      #resumeList .resume-icon {
+
+        width:32px;
+        height:36px;
+
+      }
+
+      #quickCreate .quick-create-body {
+
+        padding:10px;
+
+      }
+
+      #overview .wn-dashboard-actions a {
+
+        flex-basis:110px;
+
+      }
+
+    }
+
+    /* EXTRA NARROW SCREENS */
+
+    @media(max-width:340px) {
+
+      #overview .wn-dashboard-actions a {
+
+        flex-basis:100%;
+
+      }
+
+      #resumeForm .actions button {
+
+        flex-basis:100%;
+
+      }
+
+    }
+
+    /* REDUCED MOTION */
+
+    @media(prefers-reduced-motion:reduce) {
+
+      html {
+
+        scroll-behavior:auto;
+
+      }
+
+    }
+
+  </style>
 
 </head>
 
@@ -44,14 +893,16 @@
   <!-- SESSION LOADING -->
 
   <div id="loading" role="status">
+
     Checking your Worknely session…
+
   </div>
 
   <!-- AUTHENTICATED APPLICATION -->
 
   <div id="app" hidden>
 
-    <!-- HEADER -->
+    <!-- COMPACT HEADER -->
 
     <header class="topbar">
 
@@ -60,13 +911,16 @@
          aria-label="Worknely home">
 
         <img src="worknely-mark.svg"
-             width="38"
-             height="38"
+             width="36"
+             height="36"
              alt="">
 
         <span>
+
           Worknely
+
           <small>PEOPLE TECHNOLOGY</small>
+
         </span>
 
       </a>
@@ -74,7 +928,9 @@
       <button id="logout"
               class="outline"
               type="button">
+
         Log Out
+
       </button>
 
     </header>
@@ -83,39 +939,49 @@
 
     <div class="layout">
 
-      <!-- NAVIGATION -->
+      <!-- COMPACT DASHBOARD NAVIGATION -->
 
       <nav class="sidebar"
            aria-label="Dashboard navigation">
 
         <a href="#overview"
            data-wn-view="overview">
+
           Overview
+
         </a>
 
         <a href="#resumes"
            data-wn-view="resumes">
+
           My Resumes
+
         </a>
 
         <a href="#pro"
            data-wn-view="pro">
+
           Upgrade to Pro
+
         </a>
 
         <a href="./#builder">
+
           Resume Builder ↗
+
         </a>
 
         <a href="./#comparison">
+
           Career Analysis ↗
+
         </a>
 
       </nav>
 
       <main id="dashboardMain">
 
-        <!-- VIEW 1: OVERVIEW -->
+        <!-- VIEW 1: COMPACT OVERVIEW -->
 
         <section id="overview"
                  class="hero wn-view"
@@ -124,29 +990,41 @@
                  tabindex="-1">
 
           <span class="eyebrow">
+
             YOUR WORKNELY WORKSPACE
+
           </span>
 
           <h1 id="overviewTitle">
+
             My Dashboard
+
           </h1>
 
           <p id="welcome">
+
             Your career documents, in one place.
+
           </p>
 
-          <!-- OVERVIEW METRICS -->
+          <!-- COMPACT OVERVIEW METRICS -->
 
           <div class="metrics">
 
             <div>
+
               <strong id="resumeCount">—</strong>
+
               <span>Saved resumes</span>
+
             </div>
 
             <div>
+
               <strong>Free</strong>
+
               <span>Current plan</span>
+
             </div>
 
           </div>
@@ -189,22 +1067,28 @@
             <div>
 
               <span class="eyebrow">
+
                 YOUR DOCUMENT WORKSPACE
+
               </span>
 
               <h1 id="resumesTitle">
+
                 My Resumes
+
               </h1>
 
               <p>
+
                 Create, organize and manage
                 your professional resumes
                 in one place.
+
               </p>
 
             </div>
 
-            <!-- PRIMARY CREATION ACTION -->
+            <!-- CREATE RESUME ACTION -->
 
             <a class="button"
                href="./index.html#builder">
@@ -219,6 +1103,7 @@
                    focusable="false">
 
                 <path d="M12 5v14"></path>
+
                 <path d="M5 12h14"></path>
 
               </svg>
@@ -229,18 +1114,22 @@
 
           </div>
 
-          <!-- WORKSPACE METRICS -->
+          <!-- COMPACT WORKSPACE METRICS -->
 
           <div class="workspace-metrics">
 
             <div class="workspace-metric">
 
               <span>
+
                 Saved resumes
+
               </span>
 
               <strong id="workspaceResumeCount">
+
                 —
+
               </strong>
 
             </div>
@@ -248,11 +1137,15 @@
             <div class="workspace-metric">
 
               <span>
+
                 Current plan
+
               </span>
 
               <strong>
+
                 Free
+
               </strong>
 
             </div>
@@ -270,28 +1163,34 @@
           <div class="resume-list-header">
 
             <h2 id="savedResumesTitle">
+
               Saved resumes
+
             </h2>
 
             <span>
+
               Recently updated
+
             </span>
 
           </div>
 
           <!--
-            DYNAMIC COMPACT RESUME LIST
+            DYNAMIC RESUME LIST
 
-            Resume cards are generated by
-            dashboard.js V7.11.1.
+            Generated by dashboard.js V7.11.1.
 
-            Includes:
-            - Compact document icons
-            - Resume title and update date
-            - Compact edit button
-            - Icon only delete button
-            - Accessible action labels
+            Preserved functionality:
+
+            - Saved resume loading
+            - Resume counters
+            - Compact document cards
+            - Edit in Resume Builder
+            - Icon only delete action
+            - Accessible delete labels
             - Delete confirmation
+            - Supabase persistence
           -->
 
           <div id="resumeList"
@@ -300,14 +1199,12 @@
 
           </div>
 
-          <!-- QUICK CREATE RESUME -->
+          <!-- COMPACT QUICK CREATE RESUME -->
 
           <details id="quickCreate"
                    class="quick-create">
 
             <summary>
-
-              <!-- QUICK CREATE ICON -->
 
               <span class="quick-create-icon">
 
@@ -325,29 +1222,31 @@
                   </path>
 
                   <path d="M14 2v6h6"></path>
+
                   <path d="M12 11v6"></path>
+
                   <path d="M9 14h6"></path>
 
                 </svg>
 
               </span>
 
-              <!-- QUICK CREATE TITLE -->
-
               <span class="quick-create-heading">
 
                 <strong>
+
                   Quick Create Resume
+
                 </strong>
 
                 <small>
+
                   Create a resume directly
                   from your dashboard.
+
                 </small>
 
               </span>
-
-              <!-- EXPAND / COLLAPSE ICON -->
 
               <svg class="quick-create-chevron"
                    viewBox="0 0 24 24"
@@ -365,22 +1264,26 @@
 
             </summary>
 
-            <!-- QUICK CREATE FORM BODY -->
+            <!-- QUICK CREATE FORM -->
 
             <div class="quick-create-body">
 
               <p>
+
                 Add your professional information
                 and save your resume directly
                 to your Worknely account.
+
               </p>
 
               <form id="resumeForm">
 
-                <!-- RESUME TITLE -->
+                <!-- DOCUMENT TITLE -->
 
                 <label for="resumeTitle">
+
                   Resume title
+
                 </label>
 
                 <input id="resumeTitle"
@@ -389,7 +1292,7 @@
                        required
                        placeholder="e.g. Customer Support CV">
 
-                <!-- RESUME FIELDS -->
+                <!-- PROFESSIONAL INFORMATION -->
 
                 <div class="fields">
 
@@ -468,7 +1371,7 @@
 
                 </div>
 
-                <!-- QUICK CREATE ACTIONS -->
+                <!-- COMPACT QUICK CREATE ACTIONS -->
 
                 <div class="actions">
 
@@ -508,16 +1411,22 @@
                  hidden>
 
           <span class="eyebrow">
+
             COMING LATER
+
           </span>
 
           <h1 id="proTitle">
+
             Worknely Pro
+
           </h1>
 
           <p>
+
             Premium features and subscriptions
             are not active yet.
+
           </p>
 
           <button class="outline"
@@ -533,7 +1442,9 @@
         <!-- FOOTER -->
 
         <footer>
+
           © 2026 Worknely · People Technology
+
         </footer>
 
       </main>
@@ -544,7 +1455,12 @@
 
   <!--
     SUPABASE AND RESUME WORKSPACE
-    V7.11.1 COMPACT UI EDITION
+
+    Dashboard JS V7.11.1 preserved.
+
+    Authentication, resume loading,
+    saving, editing and deleting
+    remain unchanged.
   -->
 
   <script type="module"
@@ -553,13 +1469,17 @@
   <!-- DASHBOARD SECTION NAVIGATION -->
 
   <script>
+
     (() => {
+
       "use strict";
 
       const validViews = [
+
         "overview",
         "resumes",
         "pro"
+
       ];
 
       function getRequestedView() {
@@ -569,8 +1489,11 @@
           .toLowerCase();
 
         return validViews.includes(hash)
+
           ? hash
+
           : "overview";
+
       }
 
       function showView() {
@@ -579,31 +1502,42 @@
           getRequestedView();
 
         document.querySelectorAll(
+
           ".wn-view"
+
         ).forEach(section => {
 
           section.hidden =
+
             section.dataset.view !== activeView;
 
         });
 
         document.querySelectorAll(
+
           ".sidebar [data-wn-view]"
+
         ).forEach(link => {
 
           if (
+
             link.dataset.wnView === activeView
+
           ) {
 
             link.setAttribute(
+
               "aria-current",
               "page"
+
             );
 
           } else {
 
             link.removeAttribute(
+
               "aria-current"
+
             );
 
           }
@@ -624,39 +1558,52 @@
         }[activeView];
 
         const activeSection =
+
           document.getElementById(activeView);
 
         const app =
+
           document.getElementById("app");
 
         if (
+
           activeSection &&
           app &&
           !app.hidden
+
         ) {
 
           activeSection.focus({
-            preventScroll: true
+
+            preventScroll:true
+
           });
 
         }
 
-        window.scrollTo(0, 0);
+        window.scrollTo(0,0);
+
       }
 
       window.addEventListener(
+
         "hashchange",
         showView
+
       );
 
       if (
+
         document.readyState === "loading"
+
       ) {
 
         document.addEventListener(
+
           "DOMContentLoaded",
           showView,
-          { once: true }
+          { once:true }
+
         );
 
       } else {
@@ -666,7 +1613,10 @@
       }
 
     })();
+
   </script>
+
+  <!-- END WORKNELY V7.12 -->
 
 </body>
 </html>
