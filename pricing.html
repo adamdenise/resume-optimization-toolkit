@@ -4,19 +4,11 @@
 <head>
 
 <meta charset="UTF-8">
-
 <meta name="viewport"
       content="width=device-width,initial-scale=1">
-
-<meta name="theme-color"
-      content="#5424ff">
-
-<meta name="color-scheme"
-      content="light">
-
-<meta name="application-name"
-      content="Worknely">
-
+<meta name="theme-color" content="#5424ff">
+<meta name="color-scheme" content="light">
+<meta name="application-name" content="Worknely">
 <meta name="description"
       content="Compare Worknely Free, Pro and Premium memberships.">
 
@@ -26,961 +18,696 @@
       type="image/svg+xml"
       href="worknely-favicon.svg">
 
-<!-- WORKNELY V7.12 GLOBAL COMPACT DESIGN -->
-
 <link rel="stylesheet"
       href="worknely-compact.css?v=7.12"
       media="screen">
 
-<style>
+<!--
+  WORKNELY V7.15
+  International Pricing & Membership
 
-/*
- * WORKNELY V7.12
- * Compact Pricing & Membership Edition
- *
- * Mobile First
- * Electric Purple Branding
- * Compact Membership Cards
- * Monthly / Yearly Pricing
- * Future Monetization Ready
- *
- * No active payments.
- * No active paid subscriptions.
- */
+  Six Language Localization
+  Global Language Persistence
+  Responsive Membership Cards
+  Monthly / Yearly Billing Preview
+  International Accessibility
+  Future Monetization Ready
+
+  No active payments.
+  No active paid subscriptions.
+-->
+
+<style>
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 
 :root {
-
   --purple:#5424ff;
   --pink:#ff24a8;
   --ink:#241442;
   --muted:#706780;
   --border:#e9e3f5;
   --surface:#ffffff;
-
-  --pricing-gradient:
-    linear-gradient(
-      105deg,
-      #5424ff,
-      #ff24a8
-    );
-
+  --pricing-gradient:linear-gradient(
+    105deg,#5424ff,#ff24a8
+  );
   --pricing-radius:14px;
   --pricing-button:40px;
-
 }
 
 * {
-
   box-sizing:border-box;
-
 }
 
 html {
-
   scroll-behavior:smooth;
-
 }
 
 body.wn-pricing-page {
-
   margin:0;
   min-height:100vh;
-
   background:linear-gradient(
-    180deg,
-    #faf8ff,
-    #ffffff 75%
+    180deg,#faf8ff,#ffffff 75%
   );
-
   color:var(--ink);
-
-  font-family:Inter,
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    sans-serif;
-
+  font-family:Inter,-apple-system,
+    BlinkMacSystemFont,"Segoe UI",sans-serif;
   -webkit-font-smoothing:antialiased;
-
 }
 
 [hidden] {
-
-  display:none !important;
-
+  display:none!important;
 }
 
 a {
-
   text-decoration:none;
-
-}
-
-button {
-
-  font:inherit;
-
 }
 
 button,
-a {
+select {
+  font:inherit;
+}
 
+button,
+a,
+select {
   -webkit-tap-highlight-color:transparent;
   touch-action:manipulation;
-
 }
 
 button:focus-visible,
-a:focus-visible {
-
+a:focus-visible,
+select:focus-visible {
   outline:3px solid var(--purple);
   outline-offset:3px;
-
 }
 
-/* COMPACT PAGE CONTAINER */
+/* PAGE CONTAINER */
 
 .wn-pricing-page .container {
-
   width:100%;
   max-width:1140px;
-
   margin:0 auto;
   padding:0 18px;
-
 }
 
-/* COMPACT HEADER */
+/* HEADER */
 
 .wn-pricing-page header {
-
   background:#fff;
-
-  border-bottom:
-    1px solid var(--border);
-
+  border-bottom:1px solid var(--border);
 }
 
 .wn-pricing-page .header-inner {
-
   min-height:58px;
-
   display:flex;
   justify-content:space-between;
   align-items:center;
-
+  flex-wrap:wrap;
   gap:10px;
-
+  padding-top:7px;
+  padding-bottom:7px;
 }
 
 .wn-pricing-page .brand {
-
   display:inline-flex;
   align-items:center;
-
   min-width:0;
   gap:8px;
-
   color:var(--purple);
-
   font-size:21px;
   font-weight:850;
   line-height:1.2;
-
 }
 
 .wn-pricing-page .brand img {
-
   width:34px;
   height:34px;
   flex-shrink:0;
+}
 
+.wn-pricing-page .header-actions {
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  flex-wrap:wrap;
+  gap:10px;
+  min-width:0;
 }
 
 .wn-pricing-page .back {
-
   display:inline-flex;
   align-items:center;
-
   min-height:40px;
-
   padding:8px 0;
-
   color:var(--purple);
-
   font-size:12px;
   font-weight:750;
   line-height:1.3;
-
 }
 
-/* COMPACT PRICING HERO */
+/* INTERNATIONAL LANGUAGE SELECTOR */
+
+.wn-pricing-page #language {
+  box-sizing:border-box;
+  width:auto;
+  max-width:150px;
+  min-width:76px;
+  min-height:40px;
+  margin:0;
+  padding:7px 9px;
+  border:1px solid var(--border);
+  border-radius:9px;
+  background:#fff;
+  color:var(--purple);
+  font-size:12px;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.wn-pricing-page .sr-only {
+  position:absolute;
+  width:1px;
+  height:1px;
+  padding:0;
+  margin:-1px;
+  overflow:hidden;
+  clip:rect(0,0,0,0);
+  white-space:nowrap;
+  border:0;
+}
+
+/* PRICING HERO */
 
 .wn-pricing-page .pricing-hero {
-
   padding:30px 0 16px;
-
   text-align:center;
-
 }
 
 .wn-pricing-page .eyebrow {
-
   color:var(--purple);
-
   font-size:10px;
   font-weight:850;
   letter-spacing:1.6px;
   line-height:1.4;
-
 }
 
 .wn-pricing-page h1 {
-
   max-width:740px;
-
   margin:10px auto;
-
-  font-size:clamp(
-    29px,
-    4.5vw,
-    43px
-  );
-
+  font-size:clamp(29px,4.5vw,43px);
   font-weight:850;
   line-height:1.15;
   letter-spacing:-1.2px;
-
+  overflow-wrap:break-word;
 }
 
 .wn-pricing-page .gradient {
-
   background:var(--pricing-gradient);
-
   -webkit-background-clip:text;
   background-clip:text;
-
   color:transparent;
-
 }
 
 .wn-pricing-page .pricing-hero p {
-
   max-width:570px;
-
   margin:0 auto;
-
   color:var(--muted);
-
   font-size:14px;
   line-height:1.55;
-
 }
 
-/* COMPACT BILLING SELECTOR */
+/* BILLING SELECTOR */
 
 .wn-pricing-page .billing {
-
   display:flex;
   justify-content:center;
   align-items:center;
   flex-wrap:wrap;
-
   gap:8px;
-
   margin-top:17px;
-
 }
 
 .wn-pricing-page .billing-switch {
-
   display:flex;
   align-items:center;
-
   padding:3px;
-
   border:1px solid var(--border);
   border-radius:100px;
-
   background:#fff;
-
 }
 
 .wn-pricing-page .billing-switch button {
-
   min-height:36px;
-
   padding:7px 15px;
-
   border:0;
   border-radius:100px;
-
   background:transparent;
-
   color:var(--muted);
-
   font-size:12px;
   font-weight:750;
-
   cursor:pointer;
-
 }
 
 .wn-pricing-page
 .billing-switch
 button[aria-pressed="true"] {
-
   background:var(--purple);
-
   color:#fff;
-
 }
 
 .wn-pricing-page .savings {
-
   padding:5px 9px;
-
   border-radius:100px;
-
   background:#f0eaff;
-
   color:var(--purple);
-
   font-size:11px;
   font-weight:750;
   line-height:1.4;
-
 }
 
-/* COMPACT MEMBERSHIP GRID */
+/* MEMBERSHIP GRID */
 
 .wn-pricing-page .plans {
-
   display:grid;
-
   grid-template-columns:
     repeat(3,minmax(0,1fr));
-
   align-items:stretch;
-
   gap:12px;
-
   margin:22px auto 25px;
-
 }
-
-/* COMPACT PLAN CARD */
 
 .wn-pricing-page .plan {
-
   position:relative;
-
   display:flex;
   flex-direction:column;
-
   min-width:0;
-
   padding:18px 16px;
-
   background:var(--surface);
-
   border:1px solid var(--border);
   border-radius:var(--pricing-radius);
-
-  box-shadow:
-    0 6px 20px rgba(40,20,90,.035);
-
+  box-shadow:0 6px 20px rgba(40,20,90,.035);
 }
 
-/* RECOMMENDED PRO CARD */
-
 .wn-pricing-page .plan.featured {
-
   border:2px solid var(--purple);
-
-  box-shadow:
-    0 8px 25px rgba(84,36,255,.10);
-
+  box-shadow:0 8px 25px rgba(84,36,255,.10);
 }
 
 .wn-pricing-page .popular {
-
   position:absolute;
-
   top:-12px;
   left:50%;
-
   transform:translateX(-50%);
-
   padding:5px 11px;
-
   border-radius:100px;
-
   background:var(--pricing-gradient);
-
   color:#fff;
-
   font-size:9px;
   font-weight:800;
   letter-spacing:.3px;
-
   white-space:nowrap;
-
 }
 
-/* PLAN ICONS */
-
 .wn-pricing-page .plan-icon {
-
   display:grid;
   place-items:center;
-
   width:34px;
   height:34px;
-
   border-radius:9px;
-
   background:#f1ecff;
-
   color:var(--purple);
-
   font-size:19px;
-
 }
 
 .wn-pricing-page .plan h2 {
-
   margin:10px 0 4px;
-
   font-size:21px;
   font-weight:800;
   line-height:1.25;
-
 }
 
 .wn-pricing-page .description {
-
   min-height:36px;
-
   margin:0;
-
   color:var(--muted);
-
   font-size:12px;
   line-height:1.5;
-
 }
 
-/* COMPACT PRICING */
+/* PRICES */
 
 .wn-pricing-page .price {
-
   display:flex;
   align-items:baseline;
   flex-wrap:wrap;
-
   gap:4px;
-
   margin:12px 0 2px;
-
 }
 
 .wn-pricing-page .amount {
-
   font-size:34px;
   font-weight:850;
   letter-spacing:-1.3px;
   line-height:1.15;
-
   font-variant-numeric:tabular-nums;
-
 }
 
 .wn-pricing-page .period {
-
   color:var(--muted);
-
   font-size:12px;
-
 }
 
 .wn-pricing-page .billing-note {
-
   min-height:18px;
-
   margin:0 0 10px;
-
   color:var(--muted);
-
   font-size:11px;
   line-height:1.4;
-
 }
 
-/* COMPACT PLAN ACTIONS */
+/* PLAN ACTIONS */
 
 .wn-pricing-page .action {
-
   display:flex;
   justify-content:center;
   align-items:center;
-
   width:100%;
   min-width:0;
-
   min-height:var(--pricing-button);
-
   padding:9px 11px;
-
   border:0;
   border-radius:9px;
-
   font-size:12px;
   font-weight:750;
   line-height:1.35;
-
   text-align:center;
-
+  white-space:normal;
 }
 
 .wn-pricing-page .action-free {
-
   background:var(--pricing-gradient);
-
   color:#fff;
-
 }
 
 .wn-pricing-page .action-free:hover {
-
   filter:brightness(1.04);
-
 }
 
 .wn-pricing-page .action-disabled {
-
   background:#f1eff5;
-
   color:#756d85;
-
   cursor:not-allowed;
-
 }
 
 .wn-pricing-page .action:disabled {
-
   opacity:1;
-
 }
 
-/* COMPACT MEMBERSHIP BENEFITS */
+/* MEMBERSHIP BENEFITS */
 
 .wn-pricing-page .plan ul {
-
   display:grid;
-
   gap:8px;
-
   margin:14px 0 0;
   padding:0;
-
   list-style:none;
-
 }
 
 .wn-pricing-page .plan li {
-
   display:flex;
   align-items:flex-start;
-
   gap:7px;
-
   font-size:12px;
   line-height:1.45;
+}
 
+.wn-pricing-page .plan li span:last-child {
+  min-width:0;
+  overflow-wrap:break-word;
 }
 
 .wn-pricing-page .check {
-
   flex-shrink:0;
-
   color:var(--purple);
-
   font-weight:850;
-
 }
 
 .wn-pricing-page .note {
-
   margin:auto 0 0;
-
   padding-top:14px;
-
   color:var(--muted);
-
   font-size:11px;
   line-height:1.5;
-
 }
 
-/* COMPACT DEVELOPMENT NOTICE */
+/* DEVELOPMENT NOTICE */
 
 .wn-pricing-page .notice {
-
   max-width:780px;
-
   margin:0 auto 25px;
   padding:13px 15px;
-
   border:1px solid #e9ddff;
   border-radius:12px;
-
   background:#f6f2ff;
-
   color:#665b80;
-
   text-align:center;
-
   font-size:12px;
   line-height:1.55;
-
 }
 
 .wn-pricing-page .notice p {
-
   margin:5px 0 0;
-
 }
 
-/* COMPACT FOOTER */
+/* FOOTER */
 
 .wn-pricing-page footer {
-
   padding:15px 12px;
-
   border-top:1px solid var(--border);
-
   color:var(--muted);
-
   text-align:center;
-
   font-size:11px;
   line-height:1.5;
-
 }
 
 .wn-pricing-page footer p {
-
   margin:4px 0 0;
-
 }
 
-/* TABLET OPTIMIZATION */
+/* TABLET */
 
 @media(max-width:850px) {
 
   .wn-pricing-page .plans {
-
     grid-template-columns:
       repeat(2,minmax(0,1fr));
-
     max-width:720px;
-
     gap:16px;
-
   }
 
   .wn-pricing-page .plan:last-child {
-
     grid-column:1 / -1;
-
   }
 
   .wn-pricing-page .pricing-hero {
-
     padding:25px 0 14px;
-
   }
 
 }
 
-/* IPHONE COMPACT EXPERIENCE */
+/* MOBILE */
 
 @media(max-width:600px) {
 
   .wn-pricing-page .container {
-
-    padding:0 14px;
-
+    padding-left:14px;
+    padding-right:14px;
   }
 
   .wn-pricing-page .header-inner {
-
     min-height:56px;
-
   }
 
   .wn-pricing-page .brand {
-
     font-size:20px;
-
   }
 
   .wn-pricing-page .brand img {
-
     width:32px;
     height:32px;
+  }
 
+  .wn-pricing-page .header-actions {
+    gap:7px;
   }
 
   .wn-pricing-page .back {
-
     min-height:44px;
-
     font-size:11px;
+  }
 
+  .wn-pricing-page #language {
+    min-height:44px;
+    font-size:16px;
+    max-width:115px;
   }
 
   .wn-pricing-page .pricing-hero {
-
     padding:23px 0 12px;
-
   }
 
   .wn-pricing-page h1 {
-
     margin:8px auto;
-
-    font-size:clamp(
-      27px,
-      7vw,
-      36px
-    );
-
+    font-size:clamp(27px,7vw,36px);
     letter-spacing:-.9px;
-
   }
 
   .wn-pricing-page .pricing-hero p {
-
     font-size:13px;
     line-height:1.5;
-
   }
 
   .wn-pricing-page .billing {
-
     margin-top:13px;
-
     gap:7px;
-
   }
 
-  .wn-pricing-page
-  .billing-switch button {
-
+  .wn-pricing-page .billing-switch button {
     min-height:44px;
-
     padding:7px 13px;
-
     font-size:12px;
-
   }
 
   .wn-pricing-page .savings {
-
     font-size:10px;
-
   }
 
   .wn-pricing-page .plans {
-
-    grid-template-columns:
-      minmax(0,1fr);
-
+    grid-template-columns:minmax(0,1fr);
     max-width:470px;
-
     gap:17px;
-
     margin:17px auto 19px;
-
   }
 
   .wn-pricing-page .plan:last-child {
-
     grid-column:auto;
-
   }
 
   .wn-pricing-page .plan {
-
     padding:15px 14px;
-
     border-radius:13px;
-
   }
 
   .wn-pricing-page .plan-icon {
-
     width:32px;
     height:32px;
-
     font-size:18px;
-
   }
 
   .wn-pricing-page .plan h2 {
-
     margin:8px 0 4px;
-
     font-size:20px;
-
   }
 
   .wn-pricing-page .description {
-
     min-height:0;
-
     font-size:12px;
-
   }
 
   .wn-pricing-page .price {
-
     margin:10px 0 2px;
-
   }
 
   .wn-pricing-page .amount {
-
     font-size:32px;
-
   }
 
   .wn-pricing-page .action {
-
     min-height:44px;
-
     padding:8px 10px;
-
     font-size:12px;
-
   }
 
   .wn-pricing-page .plan ul {
-
     gap:7px;
-
     margin-top:12px;
-
   }
 
   .wn-pricing-page .plan li {
-
     font-size:12px;
-
   }
 
   .wn-pricing-page .note {
-
     padding-top:12px;
-
   }
 
   .wn-pricing-page .notice {
-
     margin-bottom:18px;
-
     padding:12px;
-
     font-size:11px;
-
   }
 
 }
-
-/* SMALL IPHONE SCREENS */
 
 @media(max-width:380px) {
 
   .wn-pricing-page .container {
-
-    padding:0 11px;
-
+    padding-left:11px;
+    padding-right:11px;
   }
 
   .wn-pricing-page .brand {
-
     font-size:18px;
-
   }
 
   .wn-pricing-page .brand img {
-
     width:30px;
     height:30px;
-
   }
 
   .wn-pricing-page .back {
-
     font-size:10px;
-
   }
 
   .wn-pricing-page .plan {
-
     padding:13px 12px;
-
   }
 
   .wn-pricing-page .amount {
-
     font-size:30px;
-
   }
 
 }
-
-/* EXTRA NARROW SCREENS */
 
 @media(max-width:340px) {
 
   .wn-pricing-page .billing {
-
     flex-direction:column;
-
   }
 
   .wn-pricing-page .header-inner {
-
     gap:6px;
+  }
 
+  .wn-pricing-page .header-actions {
+    width:100%;
+    justify-content:space-between;
   }
 
   .wn-pricing-page .brand {
-
     gap:5px;
-
   }
 
 }
-
-/* ACCESSIBILITY */
 
 @media(prefers-reduced-motion:reduce) {
 
   html {
-
     scroll-behavior:auto;
-
   }
 
 }
-
-/* END WORKNELY V7.12 PRICING DESIGN */
 
 </style>
 
@@ -988,14 +715,13 @@ button[aria-pressed="true"] {
 
 <body class="wn-pricing-page">
 
-<!-- COMPACT HEADER -->
-
 <header>
 
   <div class="container header-inner">
 
     <a class="brand"
        href="index.html"
+       data-pricing-aria="home"
        aria-label="Worknely home">
 
       <img src="worknely-mark.svg"
@@ -1007,12 +733,37 @@ button[aria-pressed="true"] {
 
     </a>
 
-    <a class="back"
-       href="index.html">
+    <div class="header-actions">
 
-      ← Back to Worknely
+      <label for="language"
+             class="sr-only"
+             data-pricing="language">
+        Language
+      </label>
 
-    </a>
+      <select id="language"
+              data-wn-language
+              data-pricing-aria="language"
+              aria-label="Language">
+
+        <option value="en">🇬🇧 EN</option>
+        <option value="ro">🇷🇴 RO</option>
+        <option value="it">🇮🇹 IT</option>
+        <option value="de">🇩🇪 DE</option>
+        <option value="fr">🇫🇷 FR</option>
+        <option value="es">🇪🇸 ES</option>
+
+      </select>
+
+      <a class="back"
+         href="index.html"
+         data-pricing="back">
+
+        ← Back to Worknely
+
+      </a>
+
+    </div>
 
   </div>
 
@@ -1020,12 +771,11 @@ button[aria-pressed="true"] {
 
 <main class="container">
 
-  <!-- COMPACT MEMBERSHIP HERO -->
-
   <section class="pricing-hero"
            aria-labelledby="pricingTitle">
 
-    <span class="eyebrow">
+    <span class="eyebrow"
+          data-pricing="membership">
 
       WORKNELY MEMBERSHIP
 
@@ -1033,9 +783,12 @@ button[aria-pressed="true"] {
 
     <h1 id="pricingTitle">
 
-      Your career deserves
+      <span data-pricing="heroTitle">
+        Your career deserves
+      </span>
 
-      <span class="gradient">
+      <span class="gradient"
+            data-pricing="heroGradient">
 
         more possibilities.
 
@@ -1043,7 +796,7 @@ button[aria-pressed="true"] {
 
     </h1>
 
-    <p>
+    <p data-pricing="heroDescription">
 
       Start free. Explore what's next.
       Choose the career tools that fit
@@ -1051,16 +804,16 @@ button[aria-pressed="true"] {
 
     </p>
 
-    <!-- MONTHLY / YEARLY SELECTOR -->
-
     <div class="billing">
 
       <div class="billing-switch"
            role="group"
+           data-pricing-aria="billingPeriod"
            aria-label="Billing period">
 
         <button id="monthly"
                 type="button"
+                data-pricing="monthly"
                 aria-pressed="true">
 
           Monthly
@@ -1069,6 +822,7 @@ button[aria-pressed="true"] {
 
         <button id="yearly"
                 type="button"
+                data-pricing="yearly"
                 aria-pressed="false">
 
           Yearly
@@ -1077,7 +831,8 @@ button[aria-pressed="true"] {
 
       </div>
 
-      <span class="savings">
+      <span class="savings"
+            data-pricing="savings">
 
         Save up to 17% yearly
 
@@ -1087,25 +842,21 @@ button[aria-pressed="true"] {
 
   </section>
 
-  <!-- MEMBERSHIP PLANS -->
-
   <section class="plans"
+           data-pricing-aria="plans"
            aria-label="Membership plans">
 
-    <!-- FREE MEMBERSHIP -->
+    <!-- FREE PLAN -->
 
     <article class="plan">
 
       <div class="plan-icon"
-           aria-hidden="true">
+           aria-hidden="true">✦</div>
 
-        ✦
+      <h2 data-pricing="free">Free</h2>
 
-      </div>
-
-      <h2>Free</h2>
-
-      <p class="description">
+      <p class="description"
+         data-pricing="freeDescription">
 
         Your first step toward
         a stronger resume.
@@ -1116,18 +867,21 @@ button[aria-pressed="true"] {
 
         <span class="amount">$0</span>
 
-        <span class="period">/ month</span>
+        <span class="period"
+              id="freePeriod">/ month</span>
 
       </div>
 
-      <p class="billing-note">
+      <p class="billing-note"
+         data-pricing="freeForever">
 
         Free forever
 
       </p>
 
       <a class="action action-free"
-         href="index.html#builder">
+         href="index.html#builder"
+         data-pricing="getStarted">
 
         Get Started Free
 
@@ -1138,36 +892,47 @@ button[aria-pressed="true"] {
         <li>
           <span class="check"
                 aria-hidden="true">✓</span>
-          Resume Builder
+          <span data-pricing="free1">
+            Resume Builder
+          </span>
         </li>
 
         <li>
           <span class="check"
                 aria-hidden="true">✓</span>
-          Basic Writing Studio
+          <span data-pricing="free2">
+            Basic Writing Studio
+          </span>
         </li>
 
         <li>
           <span class="check"
                 aria-hidden="true">✓</span>
-          Career Compatibility Analysis
+          <span data-pricing="free3">
+            Career Compatibility Analysis
+          </span>
         </li>
 
         <li>
           <span class="check"
                 aria-hidden="true">✓</span>
-          PDF Resume Export
+          <span data-pricing="free4">
+            PDF Resume Export
+          </span>
         </li>
 
         <li>
           <span class="check"
                 aria-hidden="true">✓</span>
-          Account Registration
+          <span data-pricing="free5">
+            Account Registration
+          </span>
         </li>
 
       </ul>
 
-      <p class="note">
+      <p class="note"
+         data-pricing="freeNote">
 
         Available with the current
         Worknely tools.
@@ -1176,26 +941,24 @@ button[aria-pressed="true"] {
 
     </article>
 
-    <!-- PRO MEMBERSHIP -->
+    <!-- PRO PLAN -->
 
     <article class="plan featured">
 
-      <span class="popular">
+      <span class="popular"
+            data-pricing="recommended">
 
         RECOMMENDED
 
       </span>
 
       <div class="plan-icon"
-           aria-hidden="true">
-
-        ✧
-
-      </div>
+           aria-hidden="true">✧</div>
 
       <h2>Pro</h2>
 
-      <p class="description">
+      <p class="description"
+         data-pricing="proDescription">
 
         More powerful tools
         for ambitious professionals.
@@ -1207,18 +970,10 @@ button[aria-pressed="true"] {
            aria-atomic="true">
 
         <span class="amount"
-              id="proPrice">
-
-          $9
-
-        </span>
+              id="proPrice">$9</span>
 
         <span class="period"
-              id="proPeriod">
-
-          / month
-
-        </span>
+              id="proPeriod">/ month</span>
 
       </div>
 
@@ -1231,6 +986,7 @@ button[aria-pressed="true"] {
 
       <button class="action action-disabled"
               type="button"
+              data-pricing="comingSoon"
               disabled>
 
         Coming Soon
@@ -1242,36 +998,47 @@ button[aria-pressed="true"] {
         <li>
           <span class="check"
                 aria-hidden="true">✓</span>
-          Everything in Free
+          <span data-pricing="pro1">
+            Everything in Free
+          </span>
         </li>
 
         <li>
           <span class="check"
                 aria-hidden="true">✓</span>
-          Planned advanced writing tools
+          <span data-pricing="pro2">
+            Planned advanced writing tools
+          </span>
         </li>
 
         <li>
           <span class="check"
                 aria-hidden="true">✓</span>
-          Planned extended CV analysis
+          <span data-pricing="pro3">
+            Planned extended CV analysis
+          </span>
         </li>
 
         <li>
           <span class="check"
                 aria-hidden="true">✓</span>
-          Planned expanded resume storage
+          <span data-pricing="pro4">
+            Planned expanded resume storage
+          </span>
         </li>
 
         <li>
           <span class="check"
                 aria-hidden="true">✓</span>
-          Planned premium templates
+          <span data-pricing="pro5">
+            Planned premium templates
+          </span>
         </li>
 
       </ul>
 
-      <p class="note">
+      <p class="note"
+         data-pricing="paidNote">
 
         Features in development.
         No subscription available yet.
@@ -1280,20 +1047,17 @@ button[aria-pressed="true"] {
 
     </article>
 
-    <!-- PREMIUM MEMBERSHIP -->
+    <!-- PREMIUM PLAN -->
 
     <article class="plan">
 
       <div class="plan-icon"
-           aria-hidden="true">
-
-        ✺
-
-      </div>
+           aria-hidden="true">✺</div>
 
       <h2>Premium</h2>
 
-      <p class="description">
+      <p class="description"
+         data-pricing="premiumDescription">
 
         A complete career workspace
         for your future.
@@ -1305,18 +1069,10 @@ button[aria-pressed="true"] {
            aria-atomic="true">
 
         <span class="amount"
-              id="premiumPrice">
-
-          $19
-
-        </span>
+              id="premiumPrice">$19</span>
 
         <span class="period"
-              id="premiumPeriod">
-
-          / month
-
-        </span>
+              id="premiumPeriod">/ month</span>
 
       </div>
 
@@ -1329,6 +1085,7 @@ button[aria-pressed="true"] {
 
       <button class="action action-disabled"
               type="button"
+              data-pricing="comingSoon"
               disabled>
 
         Coming Soon
@@ -1340,36 +1097,47 @@ button[aria-pressed="true"] {
         <li>
           <span class="check"
                 aria-hidden="true">✓</span>
-          Everything planned for Pro
+          <span data-pricing="premium1">
+            Everything planned for Pro
+          </span>
         </li>
 
         <li>
           <span class="check"
                 aria-hidden="true">✓</span>
-          Planned complete career dashboard
+          <span data-pricing="premium2">
+            Planned complete career dashboard
+          </span>
         </li>
 
         <li>
           <span class="check"
                 aria-hidden="true">✓</span>
-          Planned advanced resume insights
+          <span data-pricing="premium3">
+            Planned advanced resume insights
+          </span>
         </li>
 
         <li>
           <span class="check"
                 aria-hidden="true">✓</span>
-          Planned career document tools
+          <span data-pricing="premium4">
+            Planned career document tools
+          </span>
         </li>
 
         <li>
           <span class="check"
                 aria-hidden="true">✓</span>
-          Planned premium experience
+          <span data-pricing="premium5">
+            Planned premium experience
+          </span>
         </li>
 
       </ul>
 
-      <p class="note">
+      <p class="note"
+         data-pricing="paidNote">
 
         Features in development.
         No subscription available yet.
@@ -1380,18 +1148,16 @@ button[aria-pressed="true"] {
 
   </section>
 
-  <!-- TRANSPARENT DEVELOPMENT NOTICE -->
-
   <aside class="notice">
 
-    <strong>
+    <strong data-pricing="noticeTitle">
 
       We're building the next chapter
       of Worknely.
 
     </strong>
 
-    <p>
+    <p data-pricing="noticeDescription">
 
       Pro and Premium are planned memberships.
       Prices and benefits may change before launch.
@@ -1403,13 +1169,11 @@ button[aria-pressed="true"] {
 
 </main>
 
-<!-- COMPACT FOOTER -->
-
 <footer>
 
   © 2026 Worknely · People Technology
 
-  <p>
+  <p data-pricing="footer">
 
     Build. Improve. Grow.
 
@@ -1417,7 +1181,13 @@ button[aria-pressed="true"] {
 
 </footer>
 
-<!-- MEMBERSHIP BILLING CONTROLLER -->
+<!-- GLOBAL LOCALIZATION ENGINE -->
+
+<script defer
+        src="worknely-localization.js?v=7.15">
+</script>
+
+<!-- INTERNATIONAL PRICING ENGINE -->
 
 <script>
 
@@ -1425,84 +1195,758 @@ button[aria-pressed="true"] {
 
   "use strict";
 
+  const VERSION = "7.15";
+
+  const STORAGE_KEY = "worknely.language";
+
+  const LANGUAGES = [
+    "en","ro","it","de","fr","es"
+  ];
+
+  const LOCALES = {
+    en:"en-US",
+    ro:"ro-RO",
+    it:"it-IT",
+    de:"de-DE",
+    fr:"fr-FR",
+    es:"es-ES"
+  };
+
+  /* INTERNATIONAL PRICING DICTIONARY */
+
+  const translations = {
+
+    en: {
+
+      pageTitle:"Pricing & Membership | Worknely",
+      metaDescription:"Compare Worknely Free, Pro and Premium memberships.",
+      home:"Worknely home",
+      language:"Language",
+      back:"← Back to Worknely",
+      membership:"WORKNELY MEMBERSHIP",
+      heroTitle:"Your career deserves",
+      heroGradient:"more possibilities.",
+      heroDescription:"Start free. Explore what's next. Choose the career tools that fit your ambitions.",
+      billingPeriod:"Billing period",
+      monthly:"Monthly",
+      yearly:"Yearly",
+      savings:"Save up to 17% yearly",
+      plans:"Membership plans",
+      free:"Free",
+      freeDescription:"Your first step toward a stronger resume.",
+      freeForever:"Free forever",
+      getStarted:"Get Started Free",
+      free1:"Resume Builder",
+      free2:"Basic Writing Studio",
+      free3:"Career Compatibility Analysis",
+      free4:"PDF Resume Export",
+      free5:"Account Registration",
+      freeNote:"Available with the current Worknely tools.",
+      recommended:"RECOMMENDED",
+      proDescription:"More powerful tools for ambitious professionals.",
+      comingSoon:"Coming Soon",
+      pro1:"Everything in Free",
+      pro2:"Planned advanced writing tools",
+      pro3:"Planned extended CV analysis",
+      pro4:"Planned expanded resume storage",
+      pro5:"Planned premium templates",
+      paidNote:"Features in development. No subscription available yet.",
+      premiumDescription:"A complete career workspace for your future.",
+      premium1:"Everything planned for Pro",
+      premium2:"Planned complete career dashboard",
+      premium3:"Planned advanced resume insights",
+      premium4:"Planned career document tools",
+      premium5:"Planned premium experience",
+      noticeTitle:"We're building the next chapter of Worknely.",
+      noticeDescription:"Pro and Premium are planned memberships. Prices and benefits may change before launch. No payments are collected on this page.",
+      footer:"Build. Improve. Grow.",
+      perMonth:"/ month",
+      perYear:"/ year",
+      billedMonthly:"Billed monthly",
+      billedYearly:"Billed yearly · Save {amount}"
+
+    },
+
+    ro: {
+
+      pageTitle:"Prețuri și abonamente | Worknely",
+      metaDescription:"Compară abonamentele Worknely Free, Pro și Premium.",
+      home:"Pagina principală Worknely",
+      language:"Limbă",
+      back:"← Înapoi la Worknely",
+      membership:"ABONAMENTE WORKNELY",
+      heroTitle:"Cariera ta merită",
+      heroGradient:"mai multe posibilități.",
+      heroDescription:"Începe gratuit. Descoperă ce urmează. Alege instrumentele profesionale potrivite ambițiilor tale.",
+      billingPeriod:"Perioada de facturare",
+      monthly:"Lunar",
+      yearly:"Anual",
+      savings:"Economisești până la 17% anual",
+      plans:"Planuri de abonament",
+      free:"Gratuit",
+      freeDescription:"Primul pas către un CV mai competitiv.",
+      freeForever:"Gratuit pentru totdeauna",
+      getStarted:"Începe gratuit",
+      free1:"Creator de CV-uri",
+      free2:"Studio de redactare de bază",
+      free3:"Analiza compatibilității profesionale",
+      free4:"Export CV în format PDF",
+      free5:"Înregistrarea contului",
+      freeNote:"Disponibil prin instrumentele Worknely actuale.",
+      recommended:"RECOMANDAT",
+      proDescription:"Instrumente mai performante pentru profesioniști ambițioși.",
+      comingSoon:"În curând",
+      pro1:"Toate beneficiile planului gratuit",
+      pro2:"Instrumente avansate de redactare planificate",
+      pro3:"Analiză extinsă a CV-ului planificată",
+      pro4:"Capacitate extinsă de stocare a CV-urilor planificată",
+      pro5:"Șabloane premium planificate",
+      paidNote:"Funcționalități în dezvoltare. Abonamentul nu este încă disponibil.",
+      premiumDescription:"Un spațiu profesional complet pentru viitorul tău.",
+      premium1:"Toate beneficiile planificate pentru Pro",
+      premium2:"Dashboard profesional complet planificat",
+      premium3:"Analize avansate ale CV-ului planificate",
+      premium4:"Instrumente pentru documente profesionale planificate",
+      premium5:"Experiență premium planificată",
+      noticeTitle:"Construim următorul capitol Worknely.",
+      noticeDescription:"Pro și Premium sunt abonamente planificate. Prețurile și beneficiile se pot modifica înainte de lansare. Nu se colectează plăți pe această pagină.",
+      footer:"Construiește. Îmbunătățește. Evoluează.",
+      perMonth:"/ lună",
+      perYear:"/ an",
+      billedMonthly:"Facturare lunară",
+      billedYearly:"Facturare anuală · Economisești {amount}"
+
+    },
+
+    it: {
+
+      pageTitle:"Prezzi e abbonamenti | Worknely",
+      metaDescription:"Confronta gli abbonamenti Worknely Free, Pro e Premium.",
+      home:"Pagina iniziale Worknely",
+      language:"Lingua",
+      back:"← Torna a Worknely",
+      membership:"ABBONAMENTI WORKNELY",
+      heroTitle:"La tua carriera merita",
+      heroGradient:"più possibilità.",
+      heroDescription:"Inizia gratuitamente. Scopri le prossime novità. Scegli gli strumenti professionali adatti alle tue ambizioni.",
+      billingPeriod:"Periodo di fatturazione",
+      monthly:"Mensile",
+      yearly:"Annuale",
+      savings:"Risparmia fino al 17% all'anno",
+      plans:"Piani di abbonamento",
+      free:"Gratuito",
+      freeDescription:"Il primo passo verso un curriculum più efficace.",
+      freeForever:"Gratis per sempre",
+      getStarted:"Inizia gratuitamente",
+      free1:"Creazione curriculum",
+      free2:"Studio di scrittura di base",
+      free3:"Analisi della compatibilità professionale",
+      free4:"Esportazione curriculum in PDF",
+      free5:"Registrazione account",
+      freeNote:"Disponibile con gli attuali strumenti Worknely.",
+      recommended:"CONSIGLIATO",
+      proDescription:"Strumenti più potenti per professionisti ambiziosi.",
+      comingSoon:"Prossimamente",
+      pro1:"Tutti i vantaggi del piano gratuito",
+      pro2:"Strumenti avanzati di scrittura previsti",
+      pro3:"Analisi approfondita del CV prevista",
+      pro4:"Spazio di archiviazione CV ampliato previsto",
+      pro5:"Modelli premium previsti",
+      paidNote:"Funzionalità in sviluppo. Abbonamento non ancora disponibile.",
+      premiumDescription:"Uno spazio professionale completo per il tuo futuro.",
+      premium1:"Tutti i vantaggi previsti per Pro",
+      premium2:"Dashboard professionale completa prevista",
+      premium3:"Analisi avanzate del curriculum previste",
+      premium4:"Strumenti per documenti professionali previsti",
+      premium5:"Esperienza premium prevista",
+      noticeTitle:"Stiamo costruendo il prossimo capitolo di Worknely.",
+      noticeDescription:"Pro e Premium sono abbonamenti pianificati. Prezzi e vantaggi possono cambiare prima del lancio. Nessun pagamento viene riscosso su questa pagina.",
+      footer:"Crea. Migliora. Cresci.",
+      perMonth:"/ mese",
+      perYear:"/ anno",
+      billedMonthly:"Fatturazione mensile",
+      billedYearly:"Fatturazione annuale · Risparmia {amount}"
+
+    },
+
+    de: {
+
+      pageTitle:"Preise und Mitgliedschaften | Worknely",
+      metaDescription:"Vergleiche die Worknely-Mitgliedschaften Free, Pro und Premium.",
+      home:"Worknely Startseite",
+      language:"Sprache",
+      back:"← Zurück zu Worknely",
+      membership:"WORKNELY MITGLIEDSCHAFT",
+      heroTitle:"Deine Karriere verdient",
+      heroGradient:"mehr Möglichkeiten.",
+      heroDescription:"Starte kostenlos. Entdecke kommende Funktionen. Wähle die Karrierewerkzeuge, die zu deinen Zielen passen.",
+      billingPeriod:"Abrechnungszeitraum",
+      monthly:"Monatlich",
+      yearly:"Jährlich",
+      savings:"Spare jährlich bis zu 17 %",
+      plans:"Mitgliedschaftsmodelle",
+      free:"Kostenlos",
+      freeDescription:"Dein erster Schritt zu einem überzeugenden Lebenslauf.",
+      freeForever:"Dauerhaft kostenlos",
+      getStarted:"Kostenlos starten",
+      free1:"Lebenslauf-Editor",
+      free2:"Basis-Schreibstudio",
+      free3:"Analyse der beruflichen Eignung",
+      free4:"Lebenslauf als PDF exportieren",
+      free5:"Kontoregistrierung",
+      freeNote:"Mit den aktuellen Worknely-Werkzeugen verfügbar.",
+      recommended:"EMPFOHLEN",
+      proDescription:"Leistungsstärkere Werkzeuge für ambitionierte Fachkräfte.",
+      comingSoon:"Demnächst verfügbar",
+      pro1:"Alle Vorteile des kostenlosen Tarifs",
+      pro2:"Geplante erweiterte Schreibwerkzeuge",
+      pro3:"Geplante umfassende Lebenslaufanalyse",
+      pro4:"Geplanter erweiterter Speicherplatz für Lebensläufe",
+      pro5:"Geplante Premium-Vorlagen",
+      paidNote:"Funktionen in Entwicklung. Noch kein Abonnement verfügbar.",
+      premiumDescription:"Ein umfassender Karriere-Arbeitsbereich für deine Zukunft.",
+      premium1:"Alle geplanten Vorteile von Pro",
+      premium2:"Geplantes umfassendes Karriere-Dashboard",
+      premium3:"Geplante vertiefte Lebenslaufanalysen",
+      premium4:"Geplante Werkzeuge für Karrieredokumente",
+      premium5:"Geplantes Premium-Erlebnis",
+      noticeTitle:"Wir entwickeln das nächste Kapitel von Worknely.",
+      noticeDescription:"Pro und Premium sind geplante Mitgliedschaften. Preise und Leistungen können sich vor der Einführung ändern. Auf dieser Seite werden keine Zahlungen erhoben.",
+      footer:"Erstellen. Verbessern. Wachsen.",
+      perMonth:"/ Monat",
+      perYear:"/ Jahr",
+      billedMonthly:"Monatliche Abrechnung",
+      billedYearly:"Jährliche Abrechnung · Spare {amount}"
+
+    },
+
+    fr: {
+
+      pageTitle:"Tarifs et abonnements | Worknely",
+      metaDescription:"Comparez les abonnements Worknely Free, Pro et Premium.",
+      home:"Accueil Worknely",
+      language:"Langue",
+      back:"← Retour à Worknely",
+      membership:"ABONNEMENTS WORKNELY",
+      heroTitle:"Votre carrière mérite",
+      heroGradient:"plus de possibilités.",
+      heroDescription:"Commencez gratuitement. Découvrez les prochaines nouveautés. Choisissez les outils adaptés à vos ambitions.",
+      billingPeriod:"Période de facturation",
+      monthly:"Mensuel",
+      yearly:"Annuel",
+      savings:"Économisez jusqu'à 17 % par an",
+      plans:"Formules d'abonnement",
+      free:"Gratuit",
+      freeDescription:"Votre premier pas vers un CV plus convaincant.",
+      freeForever:"Gratuit pour toujours",
+      getStarted:"Commencer gratuitement",
+      free1:"Créateur de CV",
+      free2:"Studio de rédaction de base",
+      free3:"Analyse de compatibilité professionnelle",
+      free4:"Exportation du CV en PDF",
+      free5:"Création de compte",
+      freeNote:"Disponible avec les outils Worknely actuels.",
+      recommended:"RECOMMANDÉ",
+      proDescription:"Des outils plus puissants pour les professionnels ambitieux.",
+      comingSoon:"Bientôt disponible",
+      pro1:"Tous les avantages de l'offre gratuite",
+      pro2:"Outils avancés de rédaction prévus",
+      pro3:"Analyse approfondie du CV prévue",
+      pro4:"Capacité de stockage des CV étendue prévue",
+      pro5:"Modèles premium prévus",
+      paidNote:"Fonctionnalités en développement. Abonnement non disponible actuellement.",
+      premiumDescription:"Un espace professionnel complet pour votre avenir.",
+      premium1:"Tous les avantages prévus pour Pro",
+      premium2:"Tableau de bord professionnel complet prévu",
+      premium3:"Analyses avancées du CV prévues",
+      premium4:"Outils pour documents professionnels prévus",
+      premium5:"Expérience premium prévue",
+      noticeTitle:"Nous construisons le prochain chapitre de Worknely.",
+      noticeDescription:"Pro et Premium sont des abonnements prévus. Les prix et avantages peuvent évoluer avant le lancement. Aucun paiement n'est collecté sur cette page.",
+      footer:"Créer. Améliorer. Évoluer.",
+      perMonth:"/ mois",
+      perYear:"/ an",
+      billedMonthly:"Facturation mensuelle",
+      billedYearly:"Facturation annuelle · Économisez {amount}"
+
+    },
+
+    es: {
+
+      pageTitle:"Precios y suscripciones | Worknely",
+      metaDescription:"Compara las suscripciones Worknely Free, Pro y Premium.",
+      home:"Inicio de Worknely",
+      language:"Idioma",
+      back:"← Volver a Worknely",
+      membership:"SUSCRIPCIONES WORKNELY",
+      heroTitle:"Tu carrera merece",
+      heroGradient:"más posibilidades.",
+      heroDescription:"Empieza gratis. Descubre las próximas novedades. Elige las herramientas profesionales que se adapten a tus ambiciones.",
+      billingPeriod:"Período de facturación",
+      monthly:"Mensual",
+      yearly:"Anual",
+      savings:"Ahorra hasta un 17 % al año",
+      plans:"Planes de suscripción",
+      free:"Gratis",
+      freeDescription:"Tu primer paso hacia un currículum más competitivo.",
+      freeForever:"Gratis para siempre",
+      getStarted:"Empezar gratis",
+      free1:"Creador de currículums",
+      free2:"Estudio básico de redacción",
+      free3:"Análisis de compatibilidad profesional",
+      free4:"Exportación del currículum en PDF",
+      free5:"Registro de cuenta",
+      freeNote:"Disponible con las herramientas actuales de Worknely.",
+      recommended:"RECOMENDADO",
+      proDescription:"Herramientas más potentes para profesionales ambiciosos.",
+      comingSoon:"Próximamente",
+      pro1:"Todas las ventajas del plan gratuito",
+      pro2:"Herramientas avanzadas de redacción previstas",
+      pro3:"Análisis ampliado del CV previsto",
+      pro4:"Mayor capacidad de almacenamiento de CV prevista",
+      pro5:"Plantillas premium previstas",
+      paidNote:"Funciones en desarrollo. Suscripción aún no disponible.",
+      premiumDescription:"Un espacio profesional completo para tu futuro.",
+      premium1:"Todas las ventajas previstas para Pro",
+      premium2:"Panel profesional completo previsto",
+      premium3:"Análisis avanzados del currículum previstos",
+      premium4:"Herramientas para documentos profesionales previstas",
+      premium5:"Experiencia premium prevista",
+      noticeTitle:"Estamos construyendo el próximo capítulo de Worknely.",
+      noticeDescription:"Pro y Premium son suscripciones planificadas. Los precios y beneficios pueden cambiar antes del lanzamiento. No se realizan cobros en esta página.",
+      footer:"Crea. Mejora. Crece.",
+      perMonth:"/ mes",
+      perYear:"/ año",
+      billedMonthly:"Facturación mensual",
+      billedYearly:"Facturación anual · Ahorra {amount}"
+
+    }
+
+  };
+
+  /* APPLICATION STATE */
+
   const $ = id =>
     document.getElementById(id);
 
-  const monthly = $("monthly");
-  const yearly = $("yearly");
+  let currentLanguage = "en";
 
-  function setBilling(period) {
+  let currentBilling = "monthly";
 
-    const annual =
-      period === "yearly";
+  let initialized = false;
 
-    monthly.setAttribute(
+  /* LANGUAGE UTILITIES */
 
-      "aria-pressed",
-      String(!annual)
+  function normalizeLanguage(value) {
 
-    );
+    const code = String(value || "")
+      .toLowerCase()
+      .split("-")[0];
 
-    yearly.setAttribute(
-
-      "aria-pressed",
-      String(annual)
-
-    );
-
-    $("proPrice").textContent =
-
-      annual ? "$90" : "$9";
-
-    $("premiumPrice").textContent =
-
-      annual ? "$190" : "$19";
-
-    $("proPeriod").textContent =
-
-      annual ? "/ year" : "/ month";
-
-    $("premiumPeriod").textContent =
-
-      annual ? "/ year" : "/ month";
-
-    $("proBilling").textContent =
-
-      annual
-        ? "Billed yearly · Save $18"
-        : "Billed monthly";
-
-    $("premiumBilling").textContent =
-
-      annual
-        ? "Billed yearly · Save $38"
-        : "Billed monthly";
+    return LANGUAGES.includes(code)
+      ? code
+      : "en";
 
   }
 
-  monthly.addEventListener(
+  function getSavedLanguage() {
 
-    "click",
+    const engine =
+      window.WorknelyLocalization;
 
-    () => setBilling("monthly")
+    if (
+      engine &&
+      typeof engine.getLanguage === "function"
+    ) {
 
-  );
+      return normalizeLanguage(
+        engine.getLanguage()
+      );
 
-  yearly.addEventListener(
+    }
 
-    "click",
+    try {
 
-    () => setBilling("yearly")
+      return normalizeLanguage(
+        localStorage.getItem(STORAGE_KEY)
+      );
 
-  );
+    } catch {
 
-  setBilling("monthly");
+      return "en";
+
+    }
+
+  }
+
+  function translate(key, variables = {}) {
+
+    let value =
+
+      translations[currentLanguage]?.[key] ||
+
+      translations.en[key] ||
+
+      key;
+
+    Object.entries(variables)
+      .forEach(([name,replacement]) => {
+
+        value = value
+          .split("{" + name + "}")
+          .join(String(replacement));
+
+      });
+
+    return value;
+
+  }
+
+  /* INTERNATIONAL USD FORMATTING */
+
+  function formatPrice(amount) {
+
+    try {
+
+      return new Intl.NumberFormat(
+        LOCALES[currentLanguage],
+        {
+          style:"currency",
+          currency:"USD",
+          currencyDisplay:"narrowSymbol",
+          minimumFractionDigits:0,
+          maximumFractionDigits:0
+        }
+      ).format(amount);
+
+    } catch {
+
+      return "$" + amount;
+
+    }
+
+  }
+
+  /* BILLING CONTROLLER */
+
+  function renderBilling() {
+
+    const annual =
+      currentBilling === "yearly";
+
+    $("monthly").setAttribute(
+      "aria-pressed",
+      String(!annual)
+    );
+
+    $("yearly").setAttribute(
+      "aria-pressed",
+      String(annual)
+    );
+
+    $("proPrice").textContent =
+      formatPrice(annual ? 90 : 9);
+
+    $("premiumPrice").textContent =
+      formatPrice(annual ? 190 : 19);
+
+    const freeAmount =
+      document.querySelector(
+        ".plan:first-child .amount"
+      );
+
+    if (freeAmount) {
+
+      freeAmount.textContent =
+        formatPrice(0);
+
+    }
+
+    const period = translate(
+      annual ? "perYear" : "perMonth"
+    );
+
+    $("freePeriod").textContent = period;
+
+    $("proPeriod").textContent = period;
+
+    $("premiumPeriod").textContent = period;
+
+    $("proBilling").textContent = annual
+
+      ? translate("billedYearly", {
+          amount:formatPrice(18)
+        })
+
+      : translate("billedMonthly");
+
+    $("premiumBilling").textContent = annual
+
+      ? translate("billedYearly", {
+          amount:formatPrice(38)
+        })
+
+      : translate("billedMonthly");
+
+  }
+
+  function setBilling(period) {
+
+    currentBilling =
+      period === "yearly"
+        ? "yearly"
+        : "monthly";
+
+    renderBilling();
+
+  }
+
+  /* INTERNATIONAL PAGE RENDERING */
+
+  function renderLanguage() {
+
+    document.documentElement.lang =
+      currentLanguage;
+
+    document.title =
+      translate("pageTitle");
+
+    const metaDescription =
+      document.querySelector(
+        'meta[name="description"]'
+      );
+
+    if (metaDescription) {
+
+      metaDescription.setAttribute(
+        "content",
+        translate("metaDescription")
+      );
+
+    }
+
+    document.querySelectorAll(
+      "[data-pricing]"
+    ).forEach(element => {
+
+      const key =
+        element.dataset.pricing;
+
+      const value = translate(key);
+
+      if (element.textContent !== value) {
+
+        element.textContent = value;
+
+      }
+
+    });
+
+    document.querySelectorAll(
+      "[data-pricing-aria]"
+    ).forEach(element => {
+
+      element.setAttribute(
+        "aria-label",
+        translate(
+          element.dataset.pricingAria
+        )
+      );
+
+    });
+
+    const selector = $("language");
+
+    if (
+      selector &&
+      selector.value !== currentLanguage
+    ) {
+
+      selector.value = currentLanguage;
+
+    }
+
+    renderBilling();
+
+  }
+
+  /* GLOBAL LANGUAGE SYNCHRONIZATION */
+
+  function setLanguage(
+    language,
+    synchronize = true
+  ) {
+
+    const next =
+      normalizeLanguage(language);
+
+    currentLanguage = next;
+
+    if (synchronize) {
+
+      const engine =
+        window.WorknelyLocalization;
+
+      if (
+        engine &&
+        typeof engine.setLanguage === "function"
+      ) {
+
+        if (engine.getLanguage() !== next) {
+
+          engine.setLanguage(next);
+
+        }
+
+      } else {
+
+        try {
+
+          localStorage.setItem(
+            STORAGE_KEY,
+            next
+          );
+
+        } catch {
+
+          // Localization remains available
+          // when browser storage is disabled.
+
+        }
+
+      }
+
+    }
+
+    renderLanguage();
+
+  }
+
+  /* INITIALIZATION */
+
+  function initialize() {
+
+    if (initialized) return;
+
+    initialized = true;
+
+    currentLanguage =
+      getSavedLanguage();
+
+    $("monthly").addEventListener(
+      "click",
+      () => setBilling("monthly")
+    );
+
+    $("yearly").addEventListener(
+      "click",
+      () => setBilling("yearly")
+    );
+
+    $("language").addEventListener(
+      "change",
+      event => {
+
+        setLanguage(
+          event.target.value
+        );
+
+      }
+    );
+
+    document.addEventListener(
+      "worknely:languagechange",
+      event => {
+
+        setLanguage(
+
+          event.detail?.language ||
+          getSavedLanguage(),
+
+          false
+
+        );
+
+      }
+    );
+
+    document.addEventListener(
+      "worknely:localizationready",
+      () => {
+
+        setLanguage(
+          getSavedLanguage(),
+          false
+        );
+
+      }
+    );
+
+    window.addEventListener(
+      "storage",
+      event => {
+
+        if (
+          event.key === STORAGE_KEY
+        ) {
+
+          setLanguage(
+            event.newValue || "en",
+            false
+          );
+
+        }
+
+      }
+    );
+
+    window.addEventListener(
+      "pageshow",
+      () => {
+
+        setLanguage(
+          getSavedLanguage(),
+          false
+        );
+
+      }
+    );
+
+    renderLanguage();
+
+    console.info(
+
+      "Worknely V" + VERSION +
+      " International Pricing initialized."
+
+    );
+
+  }
+
+  if (
+    document.readyState === "loading"
+  ) {
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      initialize,
+      { once:true }
+    );
+
+  } else {
+
+    initialize();
+
+  }
 
 })();
 
 </script>
 
-<!-- END WORKNELY V7.12 -->
+<!--
+  END WORKNELY V7.15
+  INTERNATIONAL PRICING & MEMBERSHIP
+-->
 
 </body>
 </html>
