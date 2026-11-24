@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,20 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#5424FF">
 <meta name="color-scheme" content="light">
-
 <meta name="description" content="Worknely helps you build professional resumes, review CV structure, compare skills with job requirements, and explore career opportunities.">
-
 <meta name="application-name" content="Worknely">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Worknely">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-
 <title>Worknely | Build Your Career. Shape Your Future.</title>
-
 <link rel="canonical" href="https://adamdenise.github.io/resume-optimization-toolkit/">
 <link rel="icon" type="image/svg+xml" href="worknely-favicon.svg">
 
-<!-- WORKNELY V7.13.1 CLEAN & AIRY -->
+<!-- WORKNELY V7.15 INTERNATIONAL EDITION -->
 
 <link rel="stylesheet" href="style.css?v=7.12.1">
 <link rel="stylesheet" href="worknely-theme.css?v=7.12.1">
@@ -28,7 +23,6 @@
 <link rel="stylesheet" href="worknely-landing.css?v=7.13.1" media="screen">
 
 <style>
-
 :root {
   --wn-purple:#5424ff;
   --wn-pink:#ec22ad;
@@ -312,7 +306,10 @@ body .shell header.top
   outline-offset:2px;
 }
 
-body .shell header.top [hidden] {
+body .shell header.top [hidden],
+body .shell header.top .wn-auth-nav .wn-auth-btn[hidden],
+body .shell header.top .wn-auth-nav .wn-account-menu[hidden],
+body .shell header.top .wn-auth-nav .wn-menu-panel[hidden] {
   display:none!important;
 }
 
@@ -330,8 +327,7 @@ body .shell header.top [hidden] {
   margin:0;
 }
 
-body .shell #wnLanding .hero
-.wn-landing-actions {
+body .shell #wnLanding .hero .wn-landing-actions {
   display:flex;
   align-items:center;
   justify-content:flex-start;
@@ -339,8 +335,7 @@ body .shell #wnLanding .hero
   margin:24px 0 0;
 }
 
-body .shell #wnLanding
-.wn-landing-actions .primary {
+body .shell #wnLanding .wn-landing-actions .primary {
   display:inline-flex;
   align-items:center;
   justify-content:center;
@@ -390,8 +385,7 @@ body .shell #wnLanding
   margin:0 auto;
 }
 
-body .shell:not(.wn-home-active)
-.wn-pro-banner {
+body .shell:not(.wn-home-active) .wn-pro-banner {
   display:none!important;
 }
 
@@ -562,14 +556,12 @@ body .shell .wn-builder-secondary button {
 
 @media(max-width:700px) {
 
-  body .shell #wnLanding
-  .wn-landing-actions {
+  body .shell #wnLanding .wn-landing-actions {
     justify-content:center;
     margin-top:18px;
   }
 
-  body .shell #wnLanding
-  .wn-landing-actions .primary {
+  body .shell #wnLanding .wn-landing-actions .primary {
     width:100%;
     max-width:320px;
     min-width:0;
@@ -652,6 +644,29 @@ body .shell .wn-builder-secondary button {
   }
 }
 
+@media(max-width:480px) {
+
+  html:not([lang="en"]) body .shell header.top {
+    flex-wrap:wrap!important;
+    row-gap:5px!important;
+  }
+
+  html:not([lang="en"]) body .shell header.top > .brand {
+    order:0!important;
+    flex:1 1 calc(100% - 55px)!important;
+  }
+
+  html:not([lang="en"]) body .shell header.top > .header-tools {
+    order:1!important;
+  }
+
+  html:not([lang="en"]) body .shell header.top > .wn-auth-nav {
+    order:2!important;
+    flex:1 1 100%!important;
+    justify-content:flex-end!important;
+  }
+}
+
 @media(max-width:390px) {
 
   body .shell header.top {
@@ -722,7 +737,6 @@ body .shell .wn-builder-secondary button {
     transition:none!important;
   }
 }
-
 </style>
 </head>
 
@@ -732,15 +746,10 @@ body .shell .wn-builder-secondary button {
 
 <header class="top">
 
-  <a class="brand"
-     href="#top"
-     aria-label="Worknely home">
+  <a class="brand" href="#top" aria-label="Worknely home">
 
     <span class="brandmark">
-      <img src="worknely-mark.svg"
-           alt=""
-           width="32"
-           height="32">
+      <img src="worknely-mark.svg" alt="" width="32" height="32">
     </span>
 
     <span class="worknely-brandname">
@@ -751,32 +760,26 @@ body .shell .wn-builder-secondary button {
   </a>
 
   <div class="header-tools">
-
     <div class="wn-language-picker">
 
-      <label for="language" class="sr-only">
+      <label for="language" class="sr-only" data-wn-i18n="common.language">
         Interface language
       </label>
 
-      <span class="wn-language-visual"
-            aria-hidden="true">
+      <span class="wn-language-visual" aria-hidden="true">
         <span id="wnLanguageFlag">🇬🇧</span>
       </span>
 
-      <select id="language"
-              aria-label="Interface language">
-
+      <select id="language" aria-label="Interface language">
         <option value="en">🇬🇧 English</option>
         <option value="ro">🇷🇴 Română</option>
         <option value="it">🇮🇹 Italiano</option>
         <option value="de">🇩🇪 Deutsch</option>
         <option value="fr">🇫🇷 Français</option>
         <option value="es">🇪🇸 Español</option>
-
       </select>
 
     </div>
-
   </div>
 
 </header>
@@ -787,603 +790,322 @@ body .shell .wn-builder-secondary button {
 
 <div id="wnLanding">
 
-  <section class="hero"
-           aria-labelledby="worknelyHeroTitle">
+<section class="hero" aria-labelledby="worknelyHeroTitle">
 
-    <div class="wn-hero-content">
+  <div class="wn-hero-content">
 
-      <span class="eyebrow">
-        ✦ YOUR CAREER, CONNECTED
-      </span>
+    <span class="eyebrow">✦ YOUR CAREER, CONNECTED</span>
 
-      <h1 id="worknelyHeroTitle">
-        Build your career.
-        <em>Shape your future.</em>
-      </h1>
+    <h1 id="worknelyHeroTitle">
+      Build your career.
+      <em>Shape your future.</em>
+    </h1>
 
-      <p id="wnHeroDescription">
-        Create professional resumes, compare your skills
-        with job requirements, and take your next career
-        step with confidence.
-      </p>
-
-      <nav class="wn-landing-actions"
-           aria-label="Career tools">
-
-        <a class="primary" href="#builder">
-
-          <span id="wnStartFree">
-            Start for free
-          </span>
-
-          <svg viewBox="0 0 24 24"
-               fill="none"
-               stroke="currentColor"
-               stroke-width="2"
-               stroke-linecap="round"
-               stroke-linejoin="round"
-               aria-hidden="true">
-            <path d="M5 12h14m-7-7 7 7-7 7"/>
-          </svg>
-
-        </a>
-
-      </nav>
-
-      <div class="wn-hero-note">
-
-        <span>
-          <svg viewBox="0 0 24 24"
-               fill="none"
-               stroke="currentColor"
-               stroke-width="2"
-               aria-hidden="true">
-            <path d="m5 12 4 4L19 6"/>
-          </svg>
-          <span id="wnFreeNote">
-            Free to get started
-          </span>
-        </span>
-
-        <span>
-          <svg viewBox="0 0 24 24"
-               fill="none"
-               stroke="currentColor"
-               stroke-width="2"
-               aria-hidden="true">
-            <path d="m5 12 4 4L19 6"/>
-          </svg>
-          <span id="wnCardNote">
-            No credit card required
-          </span>
-        </span>
-
-      </div>
-
-    </div>
-
-    <!-- LIGHTWEIGHT SVG PRODUCT ILLUSTRATION -->
-
-    <div class="wn-hero-visual"
-         aria-hidden="true">
-
-      <svg viewBox="0 0 420 340"
-           xmlns="http://www.w3.org/2000/svg"
-           focusable="false">
-
-        <defs>
-
-          <linearGradient id="wnVisualGradient"
-                          x1="0%" y1="0%"
-                          x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#5424ff"/>
-            <stop offset="100%" stop-color="#ec22ad"/>
-          </linearGradient>
-
-          <linearGradient id="wnVisualBackground"
-                          x1="0%" y1="0%"
-                          x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#e9dfff"/>
-            <stop offset="100%" stop-color="#fce3f5"/>
-          </linearGradient>
-
-          <filter id="wnVisualShadow"
-                  x="-30%" y="-30%"
-                  width="160%" height="160%">
-            <feDropShadow dx="0"
-                          dy="10"
-                          stdDeviation="10"
-                          flood-color="#5424ff"
-                          flood-opacity=".10"/>
-          </filter>
-
-        </defs>
-
-        <circle cx="210" cy="170" r="145"
-                fill="url(#wnVisualBackground)"
-                opacity=".7"/>
-
-        <circle cx="330" cy="60" r="20"
-                fill="#e6d9ff"/>
-
-        <circle cx="62" cy="255" r="15"
-                fill="#dff8ff"/>
-
-        <rect x="133" y="42"
-              width="200" height="265"
-              rx="18" fill="#dcd0fa"
-              opacity=".7"
-              transform="rotate(8 233 175)"/>
-
-        <g transform="rotate(-5 205 165)"
-           filter="url(#wnVisualShadow)">
-
-          <rect x="100" y="26"
-                width="210" height="280"
-                rx="16" fill="#ffffff"
-                stroke="#eee7fa"/>
-
-          <rect x="116" y="43"
-                width="178" height="59"
-                rx="10" fill="#f3edff"/>
-
-          <circle cx="145" cy="72"
-                  r="18" fill="#d5c3ff"/>
-
-          <circle cx="145" cy="67"
-                  r="6" fill="#9673ed"/>
-
-          <path d="M133 83Q145 68 157 83"
-                fill="#9673ed"/>
-
-          <rect x="174" y="59"
-                width="102" height="8"
-                rx="4" fill="#5424ff"/>
-
-          <rect x="174" y="75"
-                width="76" height="5"
-                rx="2.5" fill="#b4a5cf"/>
-
-          <rect x="119" y="120"
-                width="80" height="7"
-                rx="3.5" fill="#875bea"/>
-
-          <rect x="119" y="137"
-                width="170" height="5"
-                rx="2.5" fill="#e8e2f1"/>
-
-          <rect x="119" y="149"
-                width="150" height="5"
-                rx="2.5" fill="#e8e2f1"/>
-
-          <rect x="119" y="161"
-                width="160" height="5"
-                rx="2.5" fill="#e8e2f1"/>
-
-          <rect x="119" y="184"
-                width="65" height="7"
-                rx="3.5" fill="#875bea"/>
-
-          <rect x="119" y="201"
-                width="165" height="5"
-                rx="2.5" fill="#e8e2f1"/>
-
-          <rect x="119" y="213"
-                width="140" height="5"
-                rx="2.5" fill="#e8e2f1"/>
-
-          <rect x="119" y="239"
-                width="55" height="7"
-                rx="3.5" fill="#875bea"/>
-
-          <rect x="119" y="257"
-                width="52" height="17"
-                rx="8.5" fill="#f0eaff"/>
-
-          <rect x="177" y="257"
-                width="52" height="17"
-                rx="8.5" fill="#e8faff"/>
-
-          <rect x="235" y="257"
-                width="52" height="17"
-                rx="8.5" fill="#fff0f8"/>
-
-        </g>
-
-        <g filter="url(#wnVisualShadow)">
-
-          <rect x="260" y="120"
-                width="145" height="94"
-                rx="17" fill="#ffffff"
-                stroke="#eee7fa"/>
-
-          <circle cx="285" cy="148"
-                  r="14" fill="#e1f8ee"/>
-
-          <path d="m278 148 5 5 9-11"
-                fill="none"
-                stroke="#159b75"
-                stroke-width="3"
-                stroke-linecap="round"
-                stroke-linejoin="round"/>
-
-          <rect x="307" y="140"
-                width="76" height="6"
-                rx="3" fill="#5424ff"/>
-
-          <rect x="307" y="152"
-                width="51" height="5"
-                rx="2.5" fill="#d7c9f7"/>
-
-          <rect x="275" y="177"
-                width="114" height="7"
-                rx="3.5" fill="#eee7fa"/>
-
-          <rect x="275" y="177"
-                width="92" height="7"
-                rx="3.5"
-                fill="url(#wnVisualGradient)"/>
-
-        </g>
-
-        <g filter="url(#wnVisualShadow)">
-
-          <rect x="18" y="187"
-                width="88" height="70"
-                rx="16" fill="#ffffff"
-                stroke="#eee7fa"/>
-
-          <path d="M36 237v-27m0 27h52"
-                fill="none"
-                stroke="#d7c9f7"
-                stroke-width="2"
-                stroke-linecap="round"/>
-
-          <path d="m43 229 13-13 10 6 18-19"
-                fill="none"
-                stroke="url(#wnVisualGradient)"
-                stroke-width="4"
-                stroke-linecap="round"
-                stroke-linejoin="round"/>
-
-          <path d="M74 203h10v10"
-                fill="none"
-                stroke="#ec22ad"
-                stroke-width="3"
-                stroke-linecap="round"
-                stroke-linejoin="round"/>
-
-        </g>
-
-        <path d="M365 38l4 11 11 4-11 4-4 11-4-11-11-4 11-4Z"
-              fill="#ec22ad" opacity=".65"/>
-
-        <path d="M45 87l3 8 8 3-8 3-3 8-3-8-8-3 8-3Z"
-              fill="#5424ff" opacity=".55"/>
-
-      </svg>
-
-    </div>
-
-  </section>
-
-  <!-- CAREER TOOLKIT -->
-
-  <section class="wn-tools-section"
-           aria-labelledby="wnToolsTitle">
-
-    <div class="wn-landing-heading">
-
-      <span class="wn-landing-kicker"
-            id="wnToolsKicker">
-        YOUR CAREER TOOLKIT
-      </span>
-
-      <h2 id="wnToolsTitle">
-        Your next move starts here.
-      </h2>
-
-      <p id="wnToolsDescription">
-        Everything you need to build, improve
-        and move forward with your career.
-      </p>
-
-    </div>
-
-    <div class="wn-tool-cards">
-
-      <a class="wn-tool-card" href="#builder">
-
-        <span class="wn-tool-icon wn-icon-purple">
-
-          <svg viewBox="0 0 24 24"
-               fill="none"
-               stroke="currentColor"
-               stroke-width="1.7"
-               stroke-linecap="round"
-               stroke-linejoin="round"
-               aria-hidden="true">
-            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/>
-            <path d="M14 2v6h6"/>
-            <path d="M8 13h8M8 17h8"/>
-          </svg>
-
-        </span>
-
-        <h3 id="wnBuilderCardTitle">
-          Resume Builder
-        </h3>
-
-        <p id="wnBuilderCardDescription">
-          Create a professional, ATS-friendly
-          resume that reflects your experience.
-        </p>
-
-        <span class="wn-card-link">
-
-          <span id="wnBuilderCardLink">
-            Build your resume
-          </span>
-
-          <svg viewBox="0 0 24 24"
-               fill="none"
-               stroke="currentColor"
-               stroke-width="2"
-               stroke-linecap="round"
-               stroke-linejoin="round"
-               aria-hidden="true">
-            <path d="M5 12h14m-7-7 7 7-7 7"/>
-          </svg>
-
-        </span>
-
-      </a>
-
-      <a class="wn-tool-card" href="#comparison">
-
-        <span class="wn-tool-icon wn-icon-cyan">
-
-          <svg viewBox="0 0 24 24"
-               fill="none"
-               stroke="currentColor"
-               stroke-width="1.7"
-               stroke-linecap="round"
-               stroke-linejoin="round"
-               aria-hidden="true">
-            <path d="M3 3v18h18"/>
-            <path d="m7 14 4-4 4 4 6-7"/>
-            <path d="M17 7h4v4"/>
-          </svg>
-
-        </span>
-
-        <h3 id="wnAnalysisCardTitle">
-          Career Analysis
-        </h3>
-
-        <p id="wnAnalysisCardDescription">
-          Compare your resume with job requirements
-          and discover skills to review.
-        </p>
-
-        <span class="wn-card-link">
-
-          <span id="wnAnalysisCardLink">
-            Explore your match
-          </span>
-
-          <svg viewBox="0 0 24 24"
-               fill="none"
-               stroke="currentColor"
-               stroke-width="2"
-               stroke-linecap="round"
-               stroke-linejoin="round"
-               aria-hidden="true">
-            <path d="M5 12h14m-7-7 7 7-7 7"/>
-          </svg>
-
-        </span>
-
-      </a>
-
-      <a class="wn-tool-card" href="#ai-studio">
-
-        <span class="wn-tool-icon wn-icon-pink">
-
-          <svg viewBox="0 0 24 24"
-               fill="none"
-               stroke="currentColor"
-               stroke-width="1.7"
-               stroke-linecap="round"
-               stroke-linejoin="round"
-               aria-hidden="true">
-            <path d="m12 3 2.5 6.5L21 12l-6.5 2.5L12 21l-2.5-6.5L3 12l6.5-2.5L12 3Z"/>
-            <path d="M5 3v4M3 5h4"/>
-            <path d="M19 17v4M17 19h4"/>
-          </svg>
-
-        </span>
-
-        <h3 id="wnStudioCardTitle">
-          Writing Studio
-        </h3>
-
-        <p id="wnStudioCardDescription">
-          Turn your verified experience into
-          clear, structured resume content.
-        </p>
-
-        <span class="wn-card-link">
-
-          <span id="wnStudioCardLink">
-            Start writing
-          </span>
-
-          <svg viewBox="0 0 24 24"
-               fill="none"
-               stroke="currentColor"
-               stroke-width="2"
-               stroke-linecap="round"
-               stroke-linejoin="round"
-               aria-hidden="true">
-            <path d="M5 12h14m-7-7 7 7-7 7"/>
-          </svg>
-
-        </span>
-
-      </a>
-
-    </div>
-
-  </section>
-
-  <!-- PLATFORM BENEFITS -->
-
-  <section class="wn-benefits"
-           aria-label="Worknely benefits">
-
-    <div class="wn-benefit">
-
-      <svg viewBox="0 0 24 24"
-           fill="none"
-           stroke="currentColor"
-           stroke-width="1.7"
-           stroke-linecap="round"
-           stroke-linejoin="round"
-           aria-hidden="true">
-        <circle cx="12" cy="12" r="9"/>
-        <path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"/>
-      </svg>
-
-      <strong id="wnBenefitLanguages">
-        6 languages
-      </strong>
-
-      <span id="wnBenefitLanguagesText">
-        International interface
-      </span>
-
-    </div>
-
-    <div class="wn-benefit">
-
-      <svg viewBox="0 0 24 24"
-           fill="none"
-           stroke="currentColor"
-           stroke-width="1.7"
-           stroke-linecap="round"
-           stroke-linejoin="round"
-           aria-hidden="true">
-        <rect x="7" y="2" width="10" height="20" rx="2"/>
-        <path d="M11 18h2"/>
-      </svg>
-
-      <strong id="wnBenefitMobile">
-        Mobile friendly
-      </strong>
-
-      <span id="wnBenefitMobileText">
-        Build from anywhere
-      </span>
-
-    </div>
-
-    <div class="wn-benefit">
-
-      <svg viewBox="0 0 24 24"
-           fill="none"
-           stroke="currentColor"
-           stroke-width="1.7"
-           stroke-linecap="round"
-           stroke-linejoin="round"
-           aria-hidden="true">
-        <path d="M12 3v12m-5-5 5 5 5-5"/>
-        <path d="M4 16v4h16v-4"/>
-      </svg>
-
-      <strong id="wnBenefitPdf">
-        PDF export
-      </strong>
-
-      <span id="wnBenefitPdfText">
-        Your resume, ready to share
-      </span>
-
-    </div>
-
-  </section>
-
-  <!-- EXISTING PRO BANNER -->
-
-  <div id="wnPremiumSlot"></div>
-
-  <!-- FINAL CONVERSION SECTION -->
-
-  <section class="wn-final-cta"
-           aria-labelledby="wnFinalTitle">
-
-    <h2 id="wnFinalTitle">
-      Join Worknely today.
-    </h2>
-
-    <p id="wnFinalDescription">
-      Your future starts with your next move.
+    <p id="wnHeroDescription">
+      Create professional resumes, compare your skills with job requirements, and take your next career step with confidence.
     </p>
 
-    <a class="primary"
-       id="wnFinalButton"
-       href="#builder">
-      Get started for free →
+    <nav class="wn-landing-actions" aria-label="Career tools">
+
+      <a class="primary" href="#builder">
+
+        <span id="wnStartFree">Start for free</span>
+
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M5 12h14m-7-7 7 7-7 7"/>
+        </svg>
+
+      </a>
+
+    </nav>
+
+    <div class="wn-hero-note">
+
+      <span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="m5 12 4 4L19 6"/>
+        </svg>
+        <span id="wnFreeNote">Free to get started</span>
+      </span>
+
+      <span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="m5 12 4 4L19 6"/>
+        </svg>
+        <span id="wnCardNote">No credit card required</span>
+      </span>
+
+    </div>
+
+  </div>
+
+  <div class="wn-hero-visual" aria-hidden="true">
+
+    <svg viewBox="0 0 420 340" xmlns="http://www.w3.org/2000/svg" focusable="false">
+
+      <defs>
+
+        <linearGradient id="wnVisualGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#5424ff"/>
+          <stop offset="100%" stop-color="#ec22ad"/>
+        </linearGradient>
+
+        <linearGradient id="wnVisualBackground" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#e9dfff"/>
+          <stop offset="100%" stop-color="#fce3f5"/>
+        </linearGradient>
+
+        <filter id="wnVisualShadow" x="-30%" y="-30%" width="160%" height="160%">
+          <feDropShadow dx="0" dy="10" stdDeviation="10" flood-color="#5424ff" flood-opacity=".10"/>
+        </filter>
+
+      </defs>
+
+      <circle cx="210" cy="170" r="145" fill="url(#wnVisualBackground)" opacity=".7"/>
+      <circle cx="330" cy="60" r="20" fill="#e6d9ff"/>
+      <circle cx="62" cy="255" r="15" fill="#dff8ff"/>
+
+      <rect x="133" y="42" width="200" height="265" rx="18" fill="#dcd0fa" opacity=".7" transform="rotate(8 233 175)"/>
+
+      <g transform="rotate(-5 205 165)" filter="url(#wnVisualShadow)">
+
+        <rect x="100" y="26" width="210" height="280" rx="16" fill="#ffffff" stroke="#eee7fa"/>
+        <rect x="116" y="43" width="178" height="59" rx="10" fill="#f3edff"/>
+        <circle cx="145" cy="72" r="18" fill="#d5c3ff"/>
+        <circle cx="145" cy="67" r="6" fill="#9673ed"/>
+        <path d="M133 83Q145 68 157 83" fill="#9673ed"/>
+
+        <rect x="174" y="59" width="102" height="8" rx="4" fill="#5424ff"/>
+        <rect x="174" y="75" width="76" height="5" rx="2.5" fill="#b4a5cf"/>
+        <rect x="119" y="120" width="80" height="7" rx="3.5" fill="#875bea"/>
+        <rect x="119" y="137" width="170" height="5" rx="2.5" fill="#e8e2f1"/>
+        <rect x="119" y="149" width="150" height="5" rx="2.5" fill="#e8e2f1"/>
+        <rect x="119" y="161" width="160" height="5" rx="2.5" fill="#e8e2f1"/>
+        <rect x="119" y="184" width="65" height="7" rx="3.5" fill="#875bea"/>
+        <rect x="119" y="201" width="165" height="5" rx="2.5" fill="#e8e2f1"/>
+        <rect x="119" y="213" width="140" height="5" rx="2.5" fill="#e8e2f1"/>
+        <rect x="119" y="239" width="55" height="7" rx="3.5" fill="#875bea"/>
+        <rect x="119" y="257" width="52" height="17" rx="8.5" fill="#f0eaff"/>
+        <rect x="177" y="257" width="52" height="17" rx="8.5" fill="#e8faff"/>
+        <rect x="235" y="257" width="52" height="17" rx="8.5" fill="#fff0f8"/>
+
+      </g>
+
+      <g filter="url(#wnVisualShadow)">
+
+        <rect x="260" y="120" width="145" height="94" rx="17" fill="#ffffff" stroke="#eee7fa"/>
+        <circle cx="285" cy="148" r="14" fill="#e1f8ee"/>
+        <path d="m278 148 5 5 9-11" fill="none" stroke="#159b75" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        <rect x="307" y="140" width="76" height="6" rx="3" fill="#5424ff"/>
+        <rect x="307" y="152" width="51" height="5" rx="2.5" fill="#d7c9f7"/>
+        <rect x="275" y="177" width="114" height="7" rx="3.5" fill="#eee7fa"/>
+        <rect x="275" y="177" width="92" height="7" rx="3.5" fill="url(#wnVisualGradient)"/>
+
+      </g>
+
+      <g filter="url(#wnVisualShadow)">
+
+        <rect x="18" y="187" width="88" height="70" rx="16" fill="#ffffff" stroke="#eee7fa"/>
+        <path d="M36 237v-27m0 27h52" fill="none" stroke="#d7c9f7" stroke-width="2" stroke-linecap="round"/>
+        <path d="m43 229 13-13 10 6 18-19" fill="none" stroke="url(#wnVisualGradient)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M74 203h10v10" fill="none" stroke="#ec22ad" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+
+      </g>
+
+      <path d="M365 38l4 11 11 4-11 4-4 11-4-11-11-4 11-4Z" fill="#ec22ad" opacity=".65"/>
+      <path d="M45 87l3 8 8 3-8 3-3 8-3-8-8-3 8-3Z" fill="#5424ff" opacity=".55"/>
+
+    </svg>
+
+  </div>
+
+</section>
+
+<!-- CAREER TOOLKIT -->
+
+<section class="wn-tools-section" aria-labelledby="wnToolsTitle">
+
+  <div class="wn-landing-heading">
+
+    <span class="wn-landing-kicker" id="wnToolsKicker">
+      YOUR CAREER TOOLKIT
+    </span>
+
+    <h2 id="wnToolsTitle">Your next move starts here.</h2>
+
+    <p id="wnToolsDescription">
+      Everything you need to build, improve and move forward with your career.
+    </p>
+
+  </div>
+
+  <div class="wn-tool-cards">
+
+    <a class="wn-tool-card" href="#builder">
+
+      <span class="wn-tool-icon wn-icon-purple">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/>
+          <path d="M14 2v6h6"/>
+          <path d="M8 13h8M8 17h8"/>
+        </svg>
+      </span>
+
+      <h3 id="wnBuilderCardTitle">Resume Builder</h3>
+
+      <p id="wnBuilderCardDescription">
+        Create a professional, ATS-friendly resume that reflects your experience.
+      </p>
+
+      <span class="wn-card-link">
+        <span id="wnBuilderCardLink">Build your resume</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M5 12h14m-7-7 7 7-7 7"/>
+        </svg>
+      </span>
+
     </a>
 
-  </section>
+    <a class="wn-tool-card" href="#comparison">
+
+      <span class="wn-tool-icon wn-icon-cyan">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M3 3v18h18"/>
+          <path d="m7 14 4-4 4 4 6-7"/>
+          <path d="M17 7h4v4"/>
+        </svg>
+      </span>
+
+      <h3 id="wnAnalysisCardTitle">Career Analysis</h3>
+
+      <p id="wnAnalysisCardDescription">
+        Compare your resume with job requirements and discover skills to review.
+      </p>
+
+      <span class="wn-card-link">
+        <span id="wnAnalysisCardLink">Explore your match</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M5 12h14m-7-7 7 7-7 7"/>
+        </svg>
+      </span>
+
+    </a>
+
+    <a class="wn-tool-card" href="#ai-studio">
+
+      <span class="wn-tool-icon wn-icon-pink">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="m12 3 2.5 6.5L21 12l-6.5 2.5L12 21l-2.5-6.5L3 12l6.5-2.5L12 3Z"/>
+          <path d="M5 3v4M3 5h4"/>
+          <path d="M19 17v4M17 19h4"/>
+        </svg>
+      </span>
+
+      <h3 id="wnStudioCardTitle">Writing Studio</h3>
+
+      <p id="wnStudioCardDescription">
+        Turn your verified experience into clear, structured resume content.
+      </p>
+
+      <span class="wn-card-link">
+        <span id="wnStudioCardLink">Start writing</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M5 12h14m-7-7 7 7-7 7"/>
+        </svg>
+      </span>
+
+    </a>
+
+  </div>
+
+</section>
+
+<!-- PLATFORM BENEFITS -->
+
+<section class="wn-benefits" aria-label="Worknely benefits">
+
+  <div class="wn-benefit">
+
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="9"/>
+      <path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"/>
+    </svg>
+
+    <strong id="wnBenefitLanguages">6 languages</strong>
+    <span id="wnBenefitLanguagesText">International interface</span>
+
+  </div>
+
+  <div class="wn-benefit">
+
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <rect x="7" y="2" width="10" height="20" rx="2"/>
+      <path d="M11 18h2"/>
+    </svg>
+
+    <strong id="wnBenefitMobile">Mobile friendly</strong>
+    <span id="wnBenefitMobileText">Build from anywhere</span>
+
+  </div>
+
+  <div class="wn-benefit">
+
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M12 3v12m-5-5 5 5 5-5"/>
+      <path d="M4 16v4h16v-4"/>
+    </svg>
+
+    <strong id="wnBenefitPdf">PDF export</strong>
+    <span id="wnBenefitPdfText">Your resume, ready to share</span>
+
+  </div>
+
+</section>
+
+<div id="wnPremiumSlot"></div>
+
+<section class="wn-final-cta" aria-labelledby="wnFinalTitle">
+
+  <h2 id="wnFinalTitle">Join Worknely today.</h2>
+
+  <p id="wnFinalDescription">
+    Your future starts with your next move.
+  </p>
+
+  <a class="primary" id="wnFinalButton" href="#builder">
+    Get started for free →
+  </a>
+
+</section>
 
 </div>
 
 <!-- WORKSPACE NAVIGATION -->
 
-<nav class="wn-tool-navigation"
-     id="wnWorkspaceNavigation"
-     aria-label="Worknely tools"
-     hidden>
+<nav class="wn-tool-navigation" id="wnWorkspaceNavigation" aria-label="Worknely tools" hidden>
 
-  <a href="#top"
-     class="wn-home-link"
-     aria-label="Back to home">
+  <a href="#top" class="wn-home-link" aria-label="Back to home" data-wn-i18n-aria="nav.home">
 
-    <svg viewBox="0 0 24 24"
-         fill="none"
-         stroke="currentColor"
-         stroke-width="1.8"
-         stroke-linecap="round"
-         stroke-linejoin="round"
-         aria-hidden="true">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
       <path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1Z"/>
       <path d="M9 21v-8h6v8"/>
     </svg>
 
   </a>
 
-  <a href="#ai-studio"
-     data-wn-tool="ai-studio"
-     id="wnNavStudio">
+  <a href="#ai-studio" data-wn-tool="ai-studio" id="wnNavStudio">
     Writing Studio
   </a>
 
-  <a href="#builder"
-     data-wn-tool="builder"
-     id="wnNavBuilder">
+  <a href="#builder" data-wn-tool="builder" id="wnNavBuilder">
     Resume Builder
   </a>
 
-  <a href="#comparison"
-     data-wn-tool="comparison"
-     id="wnNavAnalysis">
+  <a href="#comparison" data-wn-tool="comparison" id="wnNavAnalysis">
     Career Analysis
   </a>
 
-  <a href="pricing.html"
-     id="wnNavPricing">
+  <a href="pricing.html" id="wnNavPricing">
     Pricing &amp; Plans
   </a>
 
@@ -1391,29 +1113,18 @@ body .shell .wn-builder-secondary button {
 
 <!-- WRITING STUDIO -->
 
-<section class="workspace ai-preview wn-tool-view"
-         id="ai-studio"
-         data-wn-view="ai-studio"
-         aria-labelledby="studioHeading"
-         tabindex="-1"
-         hidden>
+<section class="workspace ai-preview wn-tool-view" id="ai-studio" data-wn-view="ai-studio" aria-labelledby="studioHeading" tabindex="-1" hidden>
 
   <div class="section-head">
 
     <div>
 
-      <span class="overline">
-        WORKNELY CAREER STUDIO
-      </span>
+      <span class="overline">WORKNELY CAREER STUDIO</span>
 
-      <h2 id="studioHeading">
-        Resume Writing Studio
-      </h2>
+      <h2 id="studioHeading">Resume Writing Studio</h2>
 
       <p id="studioIntro">
-        Transform your experience into professional
-        resume content. Highlight your verified skills,
-        responsibilities, and achievements.
+        Transform your experience into professional resume content. Highlight your verified skills, responsibilities, and achievements.
       </p>
 
     </div>
@@ -1423,111 +1134,64 @@ body .shell .wn-builder-secondary button {
   <div class="builder-grid">
 
     <label for="studioRole">
-
-      <span id="studioRoleLabel">
-        Target role
-      </span>
-
-      <input id="studioRole"
-             type="text"
-             maxlength="120"
-             autocomplete="off"
-             placeholder="e.g. Customer Support Specialist">
-
+      <span id="studioRoleLabel">Target role</span>
+      <input id="studioRole" type="text" maxlength="120" autocomplete="off" placeholder="e.g. Customer Support Specialist">
     </label>
 
     <label for="studioTone">
-
-      <span id="studioToneLabel">
-        Writing style
-      </span>
-
+      <span id="studioToneLabel">Writing style</span>
       <select id="studioTone">
         <option value="concise">Concise</option>
         <option value="results">Results-focused</option>
       </select>
-
     </label>
 
     <label for="studioExperience">
-
-      <span id="studioExperienceLabel">
-        Verified experience
-      </span>
-
-      <textarea id="studioExperience"
-                rows="4"
-                placeholder="Describe your real duties and achievements."></textarea>
-
+      <span id="studioExperienceLabel">Verified experience</span>
+      <textarea id="studioExperience" rows="4" placeholder="Describe your real duties and achievements."></textarea>
     </label>
 
     <label for="studioSkills">
-
-      <span id="studioSkillsLabel">
-        Verified skills
-      </span>
-
-      <textarea id="studioSkills"
-                rows="4"
-                placeholder="e.g. Excel, customer service, CRM"></textarea>
-
+      <span id="studioSkillsLabel">Verified skills</span>
+      <textarea id="studioSkills" rows="4" placeholder="e.g. Excel, customer service, CRM"></textarea>
     </label>
 
   </div>
 
   <div class="actions">
 
-    <button class="primary"
-            id="studioDraft"
-            type="button">
+    <button class="primary" id="studioDraft" type="button">
       Create structured draft
     </button>
 
-    <button class="ghost"
-            id="studioToBuilder"
-            type="button">
+    <button class="ghost" id="studioToBuilder" type="button">
       Copy draft to Resume Builder
     </button>
 
   </div>
 
-  <p class="message"
-     id="studioStatus"
-     role="status"
-     aria-live="polite"></p>
+  <p class="message" id="studioStatus" role="status" aria-live="polite"></p>
 
-  <pre class="builder-preview"
-       id="studioOutput"
-       aria-label="Writing studio draft"></pre>
+  <pre class="builder-preview" id="studioOutput" aria-label="Writing studio draft"></pre>
 
 </section>
 
 <!-- RESUME BUILDER -->
 
-<section class="workspace builder wn-tool-view"
-         id="builder"
-         data-wn-view="builder"
-         aria-labelledby="builderTitle"
-         tabindex="-1"
-         hidden>
+<section class="workspace builder wn-tool-view" id="builder" data-wn-view="builder" aria-labelledby="builderTitle" tabindex="-1" hidden>
 
   <div class="section-head">
 
     <div>
 
-      <span class="overline">
-        PROFESSIONAL RESUME BUILDER
-      </span>
+      <span class="overline">PROFESSIONAL RESUME BUILDER</span>
 
-      <h2 id="builderTitle"
-          data-i18n="builderTitle">
+      <h2 id="builderTitle" data-i18n="builderTitle">
         Create your ATS-friendly resume
       </h2>
 
-      <p id="builderIntro"
-         data-i18n="builderIntro">
-        Build a professional resume using your
-        verified experience, education, and skills.
+      <p id="builderIntro" data-i18n="builderIntro">
+        Build a professional resume using your verified experience, education, and skills.
       </p>
 
     </div>
@@ -1537,74 +1201,38 @@ body .shell .wn-builder-secondary button {
   <div class="builder-grid">
 
     <label for="bName">
-
       Full name
-
-      <input id="bName"
-             type="text"
-             autocomplete="name"
-             placeholder="Your name">
-
+      <input id="bName" type="text" autocomplete="name" placeholder="Your name">
     </label>
 
     <label for="bTitle">
-
       Professional title
-
-      <input id="bTitle"
-             type="text"
-             placeholder="Customer Support Specialist">
-
+      <input id="bTitle" type="text" placeholder="Customer Support Specialist">
     </label>
 
     <label for="bContact">
-
       Contact (optional)
-
-      <input id="bContact"
-             type="text"
-             placeholder="Email · City · LinkedIn">
-
+      <input id="bContact" type="text" placeholder="Email · City · LinkedIn">
     </label>
 
     <label for="bEducation">
-
       Education
-
-      <textarea id="bEducation"
-                rows="3"
-                placeholder="Degrees and qualifications"></textarea>
-
+      <textarea id="bEducation" rows="3" placeholder="Degrees and qualifications"></textarea>
     </label>
 
     <label for="bSummary">
-
       Professional summary
-
-      <textarea id="bSummary"
-                rows="3"
-                placeholder="Your professional background"></textarea>
-
+      <textarea id="bSummary" rows="3" placeholder="Your professional background"></textarea>
     </label>
 
     <label for="bExperience">
-
       Experience
-
-      <textarea id="bExperience"
-                rows="4"
-                placeholder="Role, employer, dates and real achievements"></textarea>
-
+      <textarea id="bExperience" rows="4" placeholder="Role, employer, dates and real achievements"></textarea>
     </label>
 
     <label for="bSkills">
-
       Skills
-
-      <textarea id="bSkills"
-                rows="3"
-                placeholder="Your actual skills"></textarea>
-
+      <textarea id="bSkills" rows="3" placeholder="Your actual skills"></textarea>
     </label>
 
   </div>
@@ -1613,10 +1241,7 @@ body .shell .wn-builder-secondary button {
 
     <div class="wn-builder-primary">
 
-      <button class="primary"
-              id="buildResume"
-              data-i18n="buildResume"
-              type="button">
+      <button class="primary" id="buildResume" data-i18n="buildResume" type="button">
         Generate resume
       </button>
 
@@ -1624,16 +1249,11 @@ body .shell .wn-builder-secondary button {
 
     <div class="wn-builder-secondary">
 
-      <button class="ghost"
-              id="saveToAccount"
-              type="button">
+      <button class="ghost" id="saveToAccount" data-wn-i18n="builder.saveAccount" type="button">
         Save to My Account
       </button>
 
-      <button class="ghost"
-              id="exportResume"
-              data-i18n="exportResume"
-              type="button">
+      <button class="ghost" id="exportResume" data-i18n="exportResume" type="button">
         Export resume PDF
       </button>
 
@@ -1641,55 +1261,35 @@ body .shell .wn-builder-secondary button {
 
   </div>
 
-  <p class="message"
-     id="saveAccountStatus"
-     role="status"
-     aria-live="polite"></p>
+  <p class="message" id="saveAccountStatus" role="status" aria-live="polite"></p>
 
-  <p class="message"
-     id="builderMessage"
-     role="status"
-     aria-live="polite"></p>
+  <p class="message" id="builderMessage" role="status" aria-live="polite"></p>
 
-  <pre class="builder-preview"
-       id="builderPreview"
-       aria-label="Resume preview"></pre>
+  <pre class="builder-preview" id="builderPreview" aria-label="Resume preview"></pre>
 
 </section>
 
 <!-- CAREER ANALYSIS -->
 
-<section class="workspace wn-tool-view"
-         id="comparison"
-         data-wn-view="comparison"
-         aria-labelledby="workspaceTitle"
-         tabindex="-1"
-         hidden>
+<section class="workspace wn-tool-view" id="comparison" data-wn-view="comparison" aria-labelledby="workspaceTitle" tabindex="-1" hidden>
 
   <div class="section-head">
 
     <div>
 
-      <span class="overline">
-        CAREER COMPATIBILITY ANALYSIS
-      </span>
+      <span class="overline">CAREER COMPATIBILITY ANALYSIS</span>
 
-      <h2 id="workspaceTitle"
-          data-i18n="workspaceTitle">
+      <h2 id="workspaceTitle" data-i18n="workspaceTitle">
         Resume &amp; job comparison
       </h2>
 
       <p>
-        Compare your resume with job requirements
-        and identify relevant skills and potential gaps.
+        Compare your resume with job requirements and identify relevant skills and potential gaps.
       </p>
 
     </div>
 
-    <button class="ghost"
-            id="sample"
-            data-i18n="sample"
-            type="button">
+    <button class="ghost" id="sample" data-i18n="sample" type="button">
       ✦ Load example
     </button>
 
@@ -1697,30 +1297,17 @@ body .shell .wn-builder-secondary button {
 
   <div class="import-panel">
 
-    <label id="uploadLabel"
-           data-i18n="uploadLabel"
-           for="resumeFile">
-
+    <label id="uploadLabel" data-i18n="uploadLabel" for="resumeFile">
       <strong>Upload your resume</strong>
       (PDF or DOCX)
-
     </label>
 
-    <input id="resumeFile"
-           type="file"
-           accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-           aria-describedby="fileStatus">
+    <input id="resumeFile" type="file" accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document" aria-describedby="fileStatus">
 
-    <p class="hint"
-       id="fileStatus"
-       role="status"
-       aria-live="polite">
-
+    <p class="hint" id="fileStatus" role="status" aria-live="polite">
       Text-based PDF and DOCX files are supported.
       Scanned PDFs and legacy DOC files are not supported.
-      Files are processed locally in your browser using
-      parsing libraries loaded from a CDN.
-
+      Files are processed locally in your browser using parsing libraries loaded from a CDN.
     </p>
 
   </div>
@@ -1733,19 +1320,11 @@ body .shell .wn-builder-secondary button {
         01 <strong>Your resume</strong>
       </label>
 
-      <textarea id="resume"
-                spellcheck="true"
-                aria-describedby="resumeWords"
-                placeholder="Paste your professional summary, experience, education and skills here..."></textarea>
+      <textarea id="resume" spellcheck="true" aria-describedby="resumeWords" placeholder="Paste your professional summary, experience, education and skills here..."></textarea>
 
       <div class="field-foot">
-
-        <span>
-          Remove personal contact details before testing.
-        </span>
-
+        <span>Remove personal contact details before testing.</span>
         <span id="resumeWords">0 words</span>
-
       </div>
 
     </div>
@@ -1756,19 +1335,11 @@ body .shell .wn-builder-secondary button {
         02 <strong>Job description</strong>
       </label>
 
-      <textarea id="job"
-                spellcheck="true"
-                aria-describedby="jobWords"
-                placeholder="Paste the job responsibilities, required skills and qualifications here..."></textarea>
+      <textarea id="job" spellcheck="true" aria-describedby="jobWords" placeholder="Paste the job responsibilities, required skills and qualifications here..."></textarea>
 
       <div class="field-foot">
-
-        <span>
-          Remove unnecessary personal information.
-        </span>
-
+        <span>Remove unnecessary personal information.</span>
         <span id="jobWords">0 words</span>
-
       </div>
 
     </div>
@@ -1777,70 +1348,46 @@ body .shell .wn-builder-secondary button {
 
   <div class="actions">
 
-    <button class="primary"
-            id="analyze"
-            data-i18n="analyze"
-            type="button">
-
+    <button class="primary" id="analyze" data-i18n="analyze" type="button">
       Analyze compatibility
       <span aria-hidden="true">→</span>
-
     </button>
 
-    <button class="ghost"
-            id="clear"
-            data-i18n="clear"
-            type="button">
+    <button class="ghost" id="clear" data-i18n="clear" type="button">
       Clear all
     </button>
 
   </div>
 
-  <p class="message"
-     id="message"
-     role="status"
-     aria-live="polite"></p>
+  <p class="message" id="message" role="status" aria-live="polite"></p>
 
 </section>
 
 <!-- COMPATIBILITY REPORT -->
 
-<section class="results hidden wn-tool-view"
-         id="results"
-         aria-live="polite"
-         aria-labelledby="reportTitle"
-         hidden>
+<section class="results hidden wn-tool-view" id="results" aria-live="polite" aria-labelledby="reportTitle" hidden>
 
   <div class="results-head">
 
     <div>
 
-      <span class="overline">
-        YOUR CAREER INSIGHTS
-      </span>
+      <span class="overline">YOUR CAREER INSIGHTS</span>
 
-      <h2 id="reportTitle">
-        Compatibility report
-      </h2>
+      <h2 id="reportTitle">Compatibility report</h2>
 
       <p>
-        Understand your resume's keyword coverage
-        and identify opportunities for improvement.
+        Understand your resume's keyword coverage and identify opportunities for improvement.
       </p>
 
     </div>
 
     <div class="export-actions">
 
-      <button class="ghost"
-              id="download"
-              type="button">
+      <button class="ghost" id="download" type="button">
         ↓ Download TXT
       </button>
 
-      <button class="ghost"
-              id="printPdf"
-              type="button">
+      <button class="ghost" id="printPdf" type="button">
         ↓ Save PDF
       </button>
 
@@ -1848,10 +1395,7 @@ body .shell .wn-builder-secondary button {
 
   </div>
 
-  <p class="export-message"
-     id="exportMessage"
-     role="status"
-     aria-live="polite"></p>
+  <p class="export-message" id="exportMessage" role="status" aria-live="polite"></p>
 
   <div class="score-layout">
 
@@ -1860,18 +1404,14 @@ body .shell .wn-builder-secondary button {
       <div class="ring" id="ring">
 
         <div>
-
           <strong id="score">0%</strong>
-
           <span>keyword match</span>
-
         </div>
 
       </div>
 
       <p>
-        Estimated coverage of recognized skills
-        mentioned in the job description.
+        Estimated coverage of recognized skills mentioned in the job description.
       </p>
 
       <small>
@@ -1903,8 +1443,7 @@ body .shell .wn-builder-secondary button {
 
   <article class="report-card ats-card">
 
-    <h3 id="atsHeading"
-        data-i18n="atsHeading">
+    <h3 id="atsHeading" data-i18n="atsHeading">
       Estimated ATS readiness
     </h3>
 
@@ -1915,147 +1454,101 @@ body .shell .wn-builder-secondary button {
       <div>
 
         <p id="atsExplainer">
-          A transparent heuristic combining keyword
-          coverage, section headings and evidence
-          of achievements.
+          A transparent heuristic combining keyword coverage, section headings and evidence of achievements.
         </p>
 
         <small id="atsCaution">
           Not an official ATS score.
-          Text input cannot assess PDF layout
-          or parsing quality.
+          Text input cannot assess PDF layout or parsing quality.
         </small>
 
       </div>
 
     </div>
 
-    <div class="structure-findings"
-         id="atsFactors"></div>
+    <div class="structure-findings" id="atsFactors"></div>
 
   </article>
 
-  <article class="report-card"
-           id="structureCard">
+  <article class="report-card" id="structureCard">
 
     <h3>CV structure review</h3>
 
-    <div class="structure-findings"
-         id="structureFindings"></div>
+    <div class="structure-findings" id="structureFindings"></div>
 
   </article>
 
   <div class="report-grid">
 
     <article class="report-card">
-
       <h3>✓ Matched skills</h3>
-
       <div class="chips" id="matched"></div>
-
     </article>
 
     <article class="report-card">
-
       <h3>⌕ Skills not found in CV</h3>
-
       <div class="chips" id="missing"></div>
-
     </article>
 
   </div>
 
   <article class="report-card rec">
-
     <h3>✦ Personalized recommendations</h3>
-
     <ol id="recommendations"></ol>
-
   </article>
 
   <p class="disclaimer">
-
     This is a browser-based, rule-based keyword comparison.
-    It recognizes a limited skills dictionary and some
-    synonyms. It cannot assess actual proficiency,
-    job suitability, or recruitment outcomes.
+    It recognizes a limited skills dictionary and some synonyms.
+    It cannot assess actual proficiency, job suitability, or recruitment outcomes.
     Only claim skills you truly have.
-
   </p>
 
 </section>
 
 <!-- WORKNELY ACCOUNT -->
 
-<section id="worknelyAccount"
-         class="workspace"
-         aria-labelledby="accountTitle">
+<section id="worknelyAccount" class="workspace" aria-labelledby="accountTitle">
 
   <div class="section-head">
 
     <div>
 
-      <span class="overline">
-        WORKNELY ACCOUNT
-      </span>
+      <span class="overline">WORKNELY ACCOUNT</span>
 
-      <h2 id="accountTitle">
-        Your Worknely Account
-      </h2>
+      <h2 id="accountTitle">Your Worknely Account</h2>
 
       <p>
-        Create an account to save and manage
-        your resumes securely.
+        Create an account to save and manage your resumes securely.
       </p>
 
     </div>
 
   </div>
 
-  <form id="worknelyAuthForm"
-        class="builder-grid">
+  <form id="worknelyAuthForm" class="builder-grid">
 
     <label for="authEmail">
-
-      Email
-
-      <input id="authEmail"
-             type="email"
-             autocomplete="email"
-             required>
-
+      <span data-wn-i18n="auth.email">Email</span>
+      <input id="authEmail" type="email" autocomplete="email" required>
     </label>
 
     <label for="authPassword">
-
-      Password
-
-      <input id="authPassword"
-             type="password"
-             autocomplete="current-password"
-             minlength="6"
-             required>
-
+      <span data-wn-i18n="auth.password">Password</span>
+      <input id="authPassword" type="password" autocomplete="current-password" minlength="6" required>
     </label>
 
     <div class="actions">
 
-      <button id="authSignUp"
-              type="button"
-              class="primary">
+      <button id="authSignUp" type="button" class="primary" data-wn-i18n="auth.signup">
         Sign Up
       </button>
 
-      <button id="authLogin"
-              type="submit"
-              class="ghost">
+      <button id="authLogin" type="submit" class="ghost" data-wn-i18n="auth.login">
         Log In
       </button>
 
-      <button id="authLogout"
-              type="button"
-              class="ghost"
-              hidden>
+      <button id="authLogout" type="button" class="ghost" data-wn-i18n="auth.logout" hidden>
         Log Out
       </button>
 
@@ -2063,10 +1556,7 @@ body .shell .wn-builder-secondary button {
 
   </form>
 
-  <p id="authStatus"
-     class="message"
-     role="status"
-     aria-live="polite"></p>
+  <p id="authStatus" class="message" role="status" aria-live="polite"></p>
 
 </section>
 
@@ -2074,9 +1564,7 @@ body .shell .wn-builder-secondary button {
 
 <footer>
 
-  <span>
-    © 2026 Worknely · People Technology
-  </span>
+  <span>© 2026 Worknely · People Technology</span>
 
   <span id="wnFooterTagline">
     Build. Improve. Grow.
@@ -2086,26 +1574,17 @@ body .shell .wn-builder-secondary button {
 
 </div>
 
-<!-- EXISTING FUNCTIONAL MODULES -->
+<!-- WORKNELY V7.15 FUNCTIONAL MODULES -->
 
+<script defer src="worknely-localization.js?v=7.15"></script>
 <script defer src="script.js?v=7.5"></script>
-
 <script defer src="studio.js?v=5.1"></script>
-
 <script defer src="worknely-i18n.js?v=3.1"></script>
-
 <script defer src="worknely-report-i18n.js?v=1.0"></script>
-
 <script defer src="worknely-premium-pdf.js?v=7.5"></script>
-
-<script type="module"
-        src="worknely-auth.js?v=7.6"></script>
-
-<script defer
-        src="worknely-saas-ui.js?v=7.12.1"></script>
-
-<script type="module"
-        src="worknely-save-account.js?v=7.9"></script>
+<script type="module" src="worknely-auth.js?v=7.6"></script>
+<script defer src="worknely-saas-ui.js?v=7.13.4"></script>
+<script type="module" src="worknely-save-account.js?v=7.14"></script>
 
 <!-- LANGUAGE FLAG SYNCHRONIZATION -->
 
@@ -2134,29 +1613,31 @@ body .shell .wn-builder-secondary button {
 
   function initializeLanguageFlag() {
 
-    const select =
-      document.getElementById("language");
-
-    const flag =
-      document.getElementById("wnLanguageFlag");
+    const select = document.getElementById("language");
+    const flag = document.getElementById("wnLanguageFlag");
 
     if (!select || !flag) return;
 
     function updateFlag() {
 
       const language =
-        Object.prototype.hasOwnProperty.call(
-          flags,select.value
-        )
+        Object.prototype.hasOwnProperty.call(flags,select.value)
         ? select.value
         : "en";
 
-      flag.textContent = flags[language];
+      if (flag.textContent !== flags[language]) {
+        flag.textContent = flags[language];
+      }
+
+      const engine = window.WorknelyLocalization;
+
+      const label = engine
+        ? engine.t("common.language")
+        : "Interface language";
 
       select.setAttribute(
         "aria-label",
-        "Interface language: " +
-        languageNames[language]
+        label + ": " + languageNames[language]
       );
 
     }
@@ -2164,38 +1645,38 @@ body .shell .wn-builder-secondary button {
     select.addEventListener("change",updateFlag);
     select.addEventListener("input",updateFlag);
 
-    updateFlag();
+    document.addEventListener(
+      "worknely:languagechange",
+      updateFlag
+    );
 
-    window.addEventListener("load",updateFlag,{
-      once:true
-    });
+    document.addEventListener(
+      "worknely:localizationready",
+      updateFlag
+    );
 
+    window.addEventListener("load",updateFlag,{once:true});
     window.addEventListener("pageshow",updateFlag);
 
-    new MutationObserver(updateFlag).observe(
-      select,
-      {
-        childList:true,
-        subtree:true,
-        attributes:true,
-        attributeFilter:["selected"]
-      }
-    );
+    new MutationObserver(updateFlag).observe(select,{
+      childList:true,
+      subtree:true,
+      attributes:true,
+      attributeFilter:["selected"]
+    });
+
+    updateFlag();
 
   }
 
   if (document.readyState === "loading") {
-
     document.addEventListener(
       "DOMContentLoaded",
       initializeLanguageFlag,
       {once:true}
     );
-
   } else {
-
     initializeLanguageFlag();
-
   }
 
 })();
@@ -2271,19 +1752,14 @@ body .shell .wn-builder-secondary button {
     }
 
     if (shell) {
-      shell.classList.toggle(
-        "wn-home-active",
-        isHome
-      );
+      shell.classList.toggle("wn-home-active",isHome);
     }
 
     document.querySelectorAll(
       ".wn-tool-view[data-wn-view]"
     ).forEach(section => {
-
       section.hidden =
         section.dataset.wnView !== active;
-
     });
 
     document.querySelectorAll(
@@ -2291,16 +1767,9 @@ body .shell .wn-builder-secondary button {
     ).forEach(link => {
 
       if (link.dataset.wnTool === active) {
-
-        link.setAttribute(
-          "aria-current",
-          "page"
-        );
-
+        link.setAttribute("aria-current","page");
       } else {
-
         link.removeAttribute("aria-current");
-
       }
 
     });
@@ -2400,9 +1869,7 @@ body .shell .wn-builder-secondary button {
       if (!banner) return;
 
       if (banner.parentElement !== slot) {
-
         slot.appendChild(banner);
-
       }
 
     }
@@ -2876,6 +2343,16 @@ body .shell .wn-builder-secondary button {
       updateLandingLanguage
     );
 
+    document.addEventListener(
+      "worknely:languagechange",
+      updateLandingLanguage
+    );
+
+    document.addEventListener(
+      "worknely:localizationready",
+      updateLandingLanguage
+    );
+
     window.addEventListener(
       "load",
       updateLandingLanguage,
@@ -2990,8 +2467,17 @@ body .shell .wn-builder-secondary button {
 
     if (!message) return;
 
+    const explicitStatus =
+      element.dataset.wnStatus ||
+      element.dataset.status;
+
+    const status =
+      ["success","error","info"].includes(explicitStatus)
+      ? explicitStatus
+      : classify(message);
+
     element.classList.add(
-      "worknely-status-" + classify(message)
+      "worknely-status-" + status
     );
 
   }
@@ -3012,7 +2498,12 @@ body .shell .wn-builder-secondary button {
       observer.observe(element,{
         childList:true,
         characterData:true,
-        subtree:true
+        subtree:true,
+        attributes:true,
+        attributeFilter:[
+          "data-status",
+          "data-wn-status"
+        ]
       });
 
       updateStatus(element);
@@ -3038,10 +2529,62 @@ body .shell .wn-builder-secondary button {
 })();
 </script>
 
-<script defer
-        src="worknely-celebration.js?v=7.5"></script>
+<!-- WORKNELY V7.15 LOCALIZATION BRIDGE -->
 
-<!-- END WORKNELY V7.13.1 CLEAN & AIRY -->
+<script>
+(() => {
+
+  "use strict";
+
+  function initializeLocalizationBridge() {
+
+    const engine =
+      window.WorknelyLocalization;
+
+    const selector =
+      document.getElementById("language");
+
+    if (!engine || !selector) return;
+
+    selector.value =
+      engine.getLanguage();
+
+    selector.dispatchEvent(
+      new Event("change",{
+        bubbles:true
+      })
+    );
+
+    engine.apply();
+
+  }
+
+  function synchronizeAfterInitialization() {
+
+    queueMicrotask(
+      initializeLocalizationBridge
+    );
+
+  }
+
+  document.addEventListener(
+    "worknely:localizationready",
+    synchronizeAfterInitialization,
+    {once:true}
+  );
+
+  window.addEventListener(
+    "load",
+    initializeLocalizationBridge,
+    {once:true}
+  );
+
+})();
+</script>
+
+<script defer src="worknely-celebration.js?v=7.5"></script>
+
+<!-- END WORKNELY V7.15 INTERNATIONAL EDITION -->
 
 </body>
 </html>
