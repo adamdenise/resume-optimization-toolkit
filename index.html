@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,19 +19,15 @@
 <link rel="canonical" href="https://adamdenise.github.io/resume-optimization-toolkit/">
 <link rel="icon" type="image/svg+xml" href="worknely-favicon.svg">
 
-<!-- WORKNELY V7.13 PREMIUM AIRY EDITION -->
+<!-- WORKNELY V7.13.1 CLEAN & AIRY -->
 
 <link rel="stylesheet" href="style.css?v=7.12.1">
 <link rel="stylesheet" href="worknely-theme.css?v=7.12.1">
 <link rel="stylesheet" href="worknely-electric.css?v=7.12.1">
 <link rel="stylesheet" href="worknely-compact.css?v=7.12.1" media="screen">
+<link rel="stylesheet" href="worknely-landing.css?v=7.13.1" media="screen">
 
 <style>
-
-/* ========================================
-   WORKNELY V7.13
-   PREMIUM AIRY LANDING EXPERIENCE
-   ======================================== */
 
 :root {
   --wn-purple:#5424ff;
@@ -68,6 +65,8 @@ textarea:focus-visible {
   display:none!important;
 }
 
+body .shell,
+#top,
 .wn-tool-view {
   min-width:0;
 }
@@ -87,9 +86,7 @@ textarea:focus-visible {
   display:none;
 }
 
-/* ========================================
-   PREMIUM COMPACT HEADER
-   ======================================== */
+/* COMPACT HEADER */
 
 body .shell header.top {
   display:flex!important;
@@ -122,12 +119,14 @@ body .shell header.top .brandmark {
   width:32px!important;
   height:32px!important;
   min-width:32px!important;
+  padding:0!important;
 }
 
 body .shell header.top .brandmark img {
   display:block;
-  width:32px!important;
-  height:32px!important;
+  width:100%!important;
+  height:100%!important;
+  object-fit:contain;
 }
 
 body .shell header.top .worknely-brandname {
@@ -148,7 +147,7 @@ body .shell header.top .worknely-brandname small {
   letter-spacing:.7px!important;
 }
 
-/* AUTHENTICATION NAVIGATION */
+/* AUTH NAVIGATION */
 
 body .shell header.top > .wn-auth-nav {
   order:1!important;
@@ -277,7 +276,6 @@ body .shell header.top .wn-language-visual {
   border:1px solid #e3d9ff!important;
   border-radius:8px!important;
   background:#fff!important;
-  box-shadow:0 2px 6px rgba(84,36,255,.04);
   pointer-events:none;
 }
 
@@ -318,368 +316,78 @@ body .shell header.top [hidden] {
   display:none!important;
 }
 
-/* ========================================
-   AIRY LANDING PAGE
-   ======================================== */
-
-body .shell {
-  min-width:0;
-}
-
-#top {
-  min-width:0;
-}
+/* LANDING INTEGRATION */
 
 #wnLanding {
-  min-width:0;
-  padding:12px 0 24px;
+  padding:4px 0 16px;
 }
 
-body .shell #wnLanding .hero {
-  position:relative;
-  isolation:isolate;
+#wnLanding .wn-hero-content {
+  width:100%;
+}
+
+#wnLanding .wn-hero-content .eyebrow {
+  margin:0;
+}
+
+body .shell #wnLanding .hero
+.wn-landing-actions {
   display:flex;
-  flex-direction:column;
   align-items:center;
-  justify-content:center;
-  text-align:center;
-  padding:76px 28px 68px!important;
-  margin:0 auto 46px!important;
-  border:0!important;
-  border-radius:24px!important;
-  background:
-    radial-gradient(
-      ellipse at 10% 15%,
-      rgba(84,36,255,.09),
-      transparent 48%
-    ),
-    radial-gradient(
-      ellipse at 90% 20%,
-      rgba(236,34,173,.09),
-      transparent 45%
-    ),
-    radial-gradient(
-      ellipse at 80% 95%,
-      rgba(6,182,212,.10),
-      transparent 42%
-    ),
-    #ffffff!important;
-  box-shadow:none!important;
-  overflow:hidden;
+  justify-content:flex-start;
+  width:100%;
+  margin:24px 0 0;
 }
 
-body .shell #wnLanding .hero::before,
-body .shell #wnLanding .hero::after {
-  display:none!important;
-}
-
-body .shell #wnLanding .hero .eyebrow {
+body .shell #wnLanding
+.wn-landing-actions .primary {
   display:inline-flex;
   align-items:center;
   justify-content:center;
-  padding:7px 12px;
-  margin:0 0 22px!important;
-  border:1px solid #e9dfff;
-  border-radius:999px;
-  background:rgba(255,255,255,.75);
-  color:var(--wn-purple);
-  font-size:10px!important;
-  font-weight:750;
-  letter-spacing:1.3px;
-}
-
-body .shell #wnLanding .hero h1 {
-  max-width:850px;
-  margin:0 auto 20px!important;
-  color:var(--wn-ink);
-  font-size:clamp(38px,6vw,76px)!important;
-  line-height:1.08!important;
-  font-weight:850!important;
-  letter-spacing:-2.8px!important;
-}
-
-body .shell #wnLanding .hero h1 em {
-  display:block;
-  font-style:normal;
-  background:var(--wn-gradient);
-  -webkit-background-clip:text;
-  background-clip:text;
-  -webkit-text-fill-color:transparent;
-  color:var(--wn-purple);
-}
-
-body .shell #wnLanding .hero p {
-  max-width:530px;
-  margin:0 auto!important;
-  color:var(--wn-muted)!important;
-  font-size:16px!important;
-  line-height:1.75!important;
-  font-weight:400;
-}
-
-body .shell #wnLanding .hero .hero-actions {
-  display:flex!important;
-  flex-direction:row!important;
-  flex-wrap:wrap!important;
-  justify-content:center!important;
-  align-items:center!important;
-  gap:12px!important;
-  width:100%!important;
-  margin:30px 0 0!important;
-}
-
-body .shell #wnLanding .hero-actions a {
-  display:inline-flex!important;
-  align-items:center;
-  justify-content:center;
-  flex:0 1 auto!important;
-  width:auto!important;
-  min-width:0!important;
-  min-height:46px!important;
-  padding:12px 20px!important;
-  border-radius:12px!important;
-  font-size:13px!important;
-  font-weight:750;
-  text-decoration:none;
-  white-space:normal;
-}
-
-body .shell #wnLanding .hero-actions .primary {
-  background:var(--wn-gradient)!important;
-  color:#fff!important;
-  border:1px solid transparent!important;
-  box-shadow:0 8px 24px rgba(84,36,255,.15);
-}
-
-body .shell #wnLanding .hero-actions .ghost {
-  background:rgba(255,255,255,.8)!important;
-  color:var(--wn-purple)!important;
-  border:1px solid #e4d9fa!important;
-  box-shadow:none!important;
-}
-
-/* HERO MICROCOPY */
-
-.wn-hero-note {
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  flex-wrap:wrap;
-  gap:8px 14px;
-  margin-top:20px;
-  color:var(--wn-muted);
-  font-size:11px;
-  line-height:1.5;
-}
-
-.wn-hero-note span {
-  display:inline-flex;
-  align-items:center;
-  gap:5px;
-}
-
-.wn-hero-note svg {
-  width:13px;
-  height:13px;
-  color:var(--wn-purple);
-}
-
-/* ========================================
-   CAREER TOOLS
-   ======================================== */
-
-.wn-tools-section {
-  max-width:1020px;
-  margin:0 auto 44px;
-  padding:0 4px;
-}
-
-.wn-landing-heading {
-  text-align:center;
-  margin:0 0 24px;
-}
-
-.wn-landing-heading .wn-kicker {
-  display:block;
-  color:var(--wn-purple);
-  font-size:10px;
-  font-weight:750;
-  letter-spacing:1.5px;
-  text-transform:uppercase;
-  margin-bottom:10px;
-}
-
-.wn-landing-heading h2 {
-  color:var(--wn-ink);
-  font-size:clamp(24px,4vw,36px);
-  font-weight:800;
-  line-height:1.2;
-  letter-spacing:-1px;
-  margin:0 0 10px;
-}
-
-.wn-landing-heading p {
-  max-width:460px;
-  margin:0 auto;
-  color:var(--wn-muted);
-  font-size:14px;
-  line-height:1.65;
-}
-
-.wn-tool-cards {
-  display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:16px;
-}
-
-body .shell .wn-tool-card {
-  position:relative;
-  display:flex;
-  flex-direction:column;
-  align-items:flex-start;
-  min-width:0;
-  padding:22px;
-  border:1px solid var(--wn-border);
-  border-radius:18px;
-  background:#fff;
-  color:var(--wn-ink);
-  text-decoration:none;
-  box-shadow:0 5px 22px rgba(48,25,95,.035);
-  transition:
-    transform .2s ease,
-    border-color .2s ease,
-    box-shadow .2s ease;
-}
-
-.wn-tool-card:active {
-  transform:scale(.985);
-}
-
-.wn-tool-icon {
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  width:44px;
-  height:44px;
-  flex:0 0 44px;
+  gap:10px;
+  min-height:52px;
+  min-width:190px;
+  max-width:100%;
+  padding:14px 25px;
+  border:0;
   border-radius:13px;
-  margin-bottom:18px;
-}
-
-.wn-tool-icon svg {
-  width:23px;
-  height:23px;
-}
-
-.wn-icon-purple {
-  color:#5424ff;
-  background:#f0eaff;
-}
-
-.wn-icon-pink {
-  color:#cf2498;
-  background:#fff0fa;
-}
-
-.wn-icon-cyan {
-  color:#0891b2;
-  background:#e8faff;
-}
-
-.wn-tool-card h3 {
-  margin:0 0 8px;
-  color:var(--wn-ink);
-  font-size:18px;
-  font-weight:800;
-  line-height:1.3;
-  letter-spacing:-.35px;
-}
-
-.wn-tool-card p {
-  flex:1;
-  margin:0 0 20px;
-  color:var(--wn-muted);
-  font-size:13px;
-  line-height:1.65;
-}
-
-.wn-card-link {
-  display:inline-flex;
-  align-items:center;
-  gap:7px;
-  color:var(--wn-purple);
-  font-size:12px;
+  background:var(--wn-gradient);
+  color:#fff;
+  font-size:15px;
   font-weight:750;
+  line-height:1.4;
+  text-decoration:none;
+  box-shadow:0 8px 24px rgba(84,36,255,.18);
+  transition:transform .25s ease,box-shadow .25s ease;
 }
 
-.wn-card-link svg {
-  width:15px;
-  height:15px;
+#wnLanding .wn-landing-actions .primary:hover {
+  transform:translateY(-2px);
 }
 
-@media(hover:hover) {
-
-  body .shell .wn-tool-card:hover {
-    transform:translateY(-4px);
-    border-color:#d8c9ff;
-    box-shadow:0 12px 32px rgba(84,36,255,.08);
-  }
+#wnLanding .wn-landing-actions svg {
+  flex-shrink:0;
+  width:18px;
+  height:18px;
 }
 
-/* ========================================
-   MINIMAL BENEFITS
-   ======================================== */
-
-.wn-benefits {
-  display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:16px;
-  max-width:900px;
-  margin:0 auto 40px;
-  padding:20px 12px;
-}
-
-.wn-benefit {
+#wnLanding .wn-benefit {
   display:flex;
   flex-direction:column;
   align-items:center;
-  gap:7px;
-  text-align:center;
+  gap:3px;
   min-width:0;
 }
 
-.wn-benefit svg {
-  width:22px;
-  height:22px;
-  color:var(--wn-purple);
+#wnLanding .wn-benefit span,
+#wnLanding .wn-tool-card p {
+  overflow-wrap:anywhere;
 }
-
-.wn-benefit strong {
-  color:var(--wn-ink);
-  font-size:12px;
-  font-weight:750;
-}
-
-.wn-benefit span {
-  color:var(--wn-muted);
-  font-size:11px;
-  line-height:1.5;
-}
-
-/* ========================================
-   WORKNELY PRO - LOWER PLACEMENT
-   ======================================== */
 
 #wnPremiumSlot {
+  width:100%;
   max-width:1020px;
-  margin:0 auto 16px;
-}
-
-body .shell #wnPremiumSlot .wn-pro-banner {
-  margin:0!important;
-  padding:18px!important;
-  border-radius:16px!important;
-  box-shadow:none!important;
+  margin:0 auto;
 }
 
 body .shell:not(.wn-home-active)
@@ -687,9 +395,7 @@ body .shell:not(.wn-home-active)
   display:none!important;
 }
 
-/* ========================================
-   WORKSPACE NAVIGATION
-   ======================================== */
+/* WORKSPACE NAVIGATION */
 
 .wn-tool-navigation {
   display:flex;
@@ -726,9 +432,7 @@ body .shell:not(.wn-home-active)
   height:16px;
 }
 
-/* ========================================
-   RESUME BUILDER
-   ======================================== */
+/* RESUME BUILDER */
 
 .wn-builder-actions {
   display:grid;
@@ -854,138 +558,24 @@ body .shell .wn-builder-secondary button {
   cursor:pointer;
 }
 
-/* ========================================
-   MOBILE FIRST
-   ======================================== */
+/* MOBILE */
 
 @media(max-width:700px) {
 
-  #wnLanding {
-    padding:8px 0 18px;
-  }
-
-  body .shell #wnLanding .hero {
-    padding:46px 16px 40px!important;
-    margin-bottom:34px!important;
-    border-radius:20px!important;
-  }
-
-  body .shell #wnLanding .hero .eyebrow {
-    font-size:9px!important;
-    letter-spacing:1px;
-    margin-bottom:20px!important;
-  }
-
-  body .shell #wnLanding .hero h1 {
-    font-size:clamp(32px,8.5vw,46px)!important;
-    line-height:1.12!important;
-    letter-spacing:-1.7px!important;
-    margin-bottom:18px!important;
-  }
-
-  body .shell #wnLanding .hero p {
-    font-size:14px!important;
-    line-height:1.75!important;
-  }
-
-  body .shell #wnLanding .hero .hero-actions {
-    gap:8px!important;
-    margin-top:24px!important;
-  }
-
-  body .shell #wnLanding .hero-actions a {
-    flex:1 1 120px!important;
-    min-height:44px!important;
-    padding:10px 9px!important;
-    font-size:12px!important;
-    border-radius:10px!important;
-  }
-
-  .wn-hero-note {
-    margin-top:18px;
-    font-size:10px;
-  }
-
-  .wn-tools-section {
-    padding:0;
-    margin-bottom:28px;
-  }
-
-  .wn-landing-heading {
-    margin-bottom:20px;
-    padding:0 8px;
-  }
-
-  .wn-landing-heading h2 {
-    font-size:25px;
-  }
-
-  .wn-landing-heading p {
-    font-size:13px;
-  }
-
-  .wn-tool-cards {
-    grid-template-columns:minmax(0,1fr);
-    gap:12px;
-  }
-
-  body .shell .wn-tool-card {
-    display:grid;
-    grid-template-columns:44px minmax(0,1fr) 18px;
-    align-items:center;
-    column-gap:13px;
-    row-gap:5px;
-    padding:17px 14px;
-    border-radius:15px;
-  }
-
-  .wn-tool-icon {
-    grid-column:1;
-    grid-row:1 / 3;
-    margin:0;
-  }
-
-  .wn-tool-card h3 {
-    grid-column:2;
-    grid-row:1;
-    font-size:15px;
-    margin:0;
-  }
-
-  .wn-tool-card p {
-    grid-column:2;
-    grid-row:2;
-    font-size:12px;
-    line-height:1.5;
-    margin:0;
-  }
-
-  .wn-card-link {
-    grid-column:3;
-    grid-row:1 / 3;
+  body .shell #wnLanding
+  .wn-landing-actions {
     justify-content:center;
+    margin-top:18px;
   }
 
-  .wn-card-link span {
-    display:none;
-  }
-
-  .wn-benefits {
-    gap:8px;
-    margin-bottom:26px;
-    padding:14px 0;
-  }
-
-  .wn-benefit strong {
-    font-size:11px;
-  }
-
-  .wn-benefit span {
-    font-size:10px;
-  }
-
-  body .shell #wnPremiumSlot .wn-pro-banner {
-    padding:13px!important;
+  body .shell #wnLanding
+  .wn-landing-actions .primary {
+    width:100%;
+    max-width:320px;
+    min-width:0;
+    min-height:48px;
+    font-size:14px;
+    padding:13px 18px;
   }
 
   .wn-tool-navigation {
@@ -1072,14 +662,10 @@ body .shell .wn-builder-secondary button {
     gap:5px!important;
   }
 
-  body .shell header.top .brandmark,
-  body .shell header.top .brandmark img {
+  body .shell header.top .brandmark {
     width:28px!important;
     height:28px!important;
     min-width:28px!important;
-  }
-
-  body .shell header.top .brandmark {
     flex-basis:28px!important;
   }
 
@@ -1124,26 +710,16 @@ body .shell .wn-builder-secondary button {
   #results .stats {
     grid-template-columns:1fr;
   }
-
-  body .shell #wnLanding .hero-actions a {
-    flex:1 1 100%!important;
-  }
-
-  .wn-benefits {
-    grid-template-columns:1fr;
-    gap:18px;
-  }
 }
 
 @media(prefers-reduced-motion:reduce) {
-
   html {
     scroll-behavior:auto;
   }
 
-  .wn-tool-card {
+  #wnLanding * {
+    animation:none!important;
     transition:none!important;
-    transform:none!important;
   }
 }
 
@@ -1153,8 +729,6 @@ body .shell .wn-builder-secondary button {
 <body>
 
 <div class="shell wn-home-active">
-
-<!-- PREMIUM COMPACT HEADER -->
 
 <header class="top">
 
@@ -1186,9 +760,7 @@ body .shell .wn-builder-secondary button {
 
       <span class="wn-language-visual"
             aria-hidden="true">
-
         <span id="wnLanguageFlag">🇬🇧</span>
-
       </span>
 
       <select id="language"
@@ -1211,79 +783,299 @@ body .shell .wn-builder-secondary button {
 
 <main id="top">
 
-<!-- =====================================
-     PREMIUM LANDING PAGE
-     ===================================== -->
+<!-- PREMIUM LANDING EXPERIENCE -->
 
 <div id="wnLanding">
 
   <section class="hero"
            aria-labelledby="worknelyHeroTitle">
 
-    <span class="eyebrow">
-      ✦ YOUR CAREER, CONNECTED
-    </span>
+    <div class="wn-hero-content">
 
-    <h1 id="worknelyHeroTitle">
-      Build your career.
-      <em>Shape your future.</em>
-    </h1>
-
-    <p>
-      Create professional resumes, compare your skills
-      with job requirements, and take your next career
-      step with confidence.
-    </p>
-
-    <nav class="hero-actions"
-         aria-label="Career tools">
-
-      <a class="primary" href="#builder">
-        Build my resume →
-      </a>
-
-      <a class="ghost" href="#comparison">
-        Analyze compatibility
-      </a>
-
-    </nav>
-
-    <div class="wn-hero-note">
-
-      <span>
-        <svg viewBox="0 0 24 24"
-             fill="none"
-             stroke="currentColor"
-             stroke-width="2"
-             aria-hidden="true">
-          <path d="m5 12 4 4L19 6"/>
-        </svg>
-        Free to get started
+      <span class="eyebrow">
+        ✦ YOUR CAREER, CONNECTED
       </span>
 
-      <span>
-        <svg viewBox="0 0 24 24"
-             fill="none"
-             stroke="currentColor"
-             stroke-width="2"
-             aria-hidden="true">
-          <path d="m5 12 4 4L19 6"/>
-        </svg>
-        No credit card required
-      </span>
+      <h1 id="worknelyHeroTitle">
+        Build your career.
+        <em>Shape your future.</em>
+      </h1>
+
+      <p id="wnHeroDescription">
+        Create professional resumes, compare your skills
+        with job requirements, and take your next career
+        step with confidence.
+      </p>
+
+      <nav class="wn-landing-actions"
+           aria-label="Career tools">
+
+        <a class="primary" href="#builder">
+
+          <span id="wnStartFree">
+            Start for free
+          </span>
+
+          <svg viewBox="0 0 24 24"
+               fill="none"
+               stroke="currentColor"
+               stroke-width="2"
+               stroke-linecap="round"
+               stroke-linejoin="round"
+               aria-hidden="true">
+            <path d="M5 12h14m-7-7 7 7-7 7"/>
+          </svg>
+
+        </a>
+
+      </nav>
+
+      <div class="wn-hero-note">
+
+        <span>
+          <svg viewBox="0 0 24 24"
+               fill="none"
+               stroke="currentColor"
+               stroke-width="2"
+               aria-hidden="true">
+            <path d="m5 12 4 4L19 6"/>
+          </svg>
+          <span id="wnFreeNote">
+            Free to get started
+          </span>
+        </span>
+
+        <span>
+          <svg viewBox="0 0 24 24"
+               fill="none"
+               stroke="currentColor"
+               stroke-width="2"
+               aria-hidden="true">
+            <path d="m5 12 4 4L19 6"/>
+          </svg>
+          <span id="wnCardNote">
+            No credit card required
+          </span>
+        </span>
+
+      </div>
+
+    </div>
+
+    <!-- LIGHTWEIGHT SVG PRODUCT ILLUSTRATION -->
+
+    <div class="wn-hero-visual"
+         aria-hidden="true">
+
+      <svg viewBox="0 0 420 340"
+           xmlns="http://www.w3.org/2000/svg"
+           focusable="false">
+
+        <defs>
+
+          <linearGradient id="wnVisualGradient"
+                          x1="0%" y1="0%"
+                          x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#5424ff"/>
+            <stop offset="100%" stop-color="#ec22ad"/>
+          </linearGradient>
+
+          <linearGradient id="wnVisualBackground"
+                          x1="0%" y1="0%"
+                          x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#e9dfff"/>
+            <stop offset="100%" stop-color="#fce3f5"/>
+          </linearGradient>
+
+          <filter id="wnVisualShadow"
+                  x="-30%" y="-30%"
+                  width="160%" height="160%">
+            <feDropShadow dx="0"
+                          dy="10"
+                          stdDeviation="10"
+                          flood-color="#5424ff"
+                          flood-opacity=".10"/>
+          </filter>
+
+        </defs>
+
+        <circle cx="210" cy="170" r="145"
+                fill="url(#wnVisualBackground)"
+                opacity=".7"/>
+
+        <circle cx="330" cy="60" r="20"
+                fill="#e6d9ff"/>
+
+        <circle cx="62" cy="255" r="15"
+                fill="#dff8ff"/>
+
+        <rect x="133" y="42"
+              width="200" height="265"
+              rx="18" fill="#dcd0fa"
+              opacity=".7"
+              transform="rotate(8 233 175)"/>
+
+        <g transform="rotate(-5 205 165)"
+           filter="url(#wnVisualShadow)">
+
+          <rect x="100" y="26"
+                width="210" height="280"
+                rx="16" fill="#ffffff"
+                stroke="#eee7fa"/>
+
+          <rect x="116" y="43"
+                width="178" height="59"
+                rx="10" fill="#f3edff"/>
+
+          <circle cx="145" cy="72"
+                  r="18" fill="#d5c3ff"/>
+
+          <circle cx="145" cy="67"
+                  r="6" fill="#9673ed"/>
+
+          <path d="M133 83Q145 68 157 83"
+                fill="#9673ed"/>
+
+          <rect x="174" y="59"
+                width="102" height="8"
+                rx="4" fill="#5424ff"/>
+
+          <rect x="174" y="75"
+                width="76" height="5"
+                rx="2.5" fill="#b4a5cf"/>
+
+          <rect x="119" y="120"
+                width="80" height="7"
+                rx="3.5" fill="#875bea"/>
+
+          <rect x="119" y="137"
+                width="170" height="5"
+                rx="2.5" fill="#e8e2f1"/>
+
+          <rect x="119" y="149"
+                width="150" height="5"
+                rx="2.5" fill="#e8e2f1"/>
+
+          <rect x="119" y="161"
+                width="160" height="5"
+                rx="2.5" fill="#e8e2f1"/>
+
+          <rect x="119" y="184"
+                width="65" height="7"
+                rx="3.5" fill="#875bea"/>
+
+          <rect x="119" y="201"
+                width="165" height="5"
+                rx="2.5" fill="#e8e2f1"/>
+
+          <rect x="119" y="213"
+                width="140" height="5"
+                rx="2.5" fill="#e8e2f1"/>
+
+          <rect x="119" y="239"
+                width="55" height="7"
+                rx="3.5" fill="#875bea"/>
+
+          <rect x="119" y="257"
+                width="52" height="17"
+                rx="8.5" fill="#f0eaff"/>
+
+          <rect x="177" y="257"
+                width="52" height="17"
+                rx="8.5" fill="#e8faff"/>
+
+          <rect x="235" y="257"
+                width="52" height="17"
+                rx="8.5" fill="#fff0f8"/>
+
+        </g>
+
+        <g filter="url(#wnVisualShadow)">
+
+          <rect x="260" y="120"
+                width="145" height="94"
+                rx="17" fill="#ffffff"
+                stroke="#eee7fa"/>
+
+          <circle cx="285" cy="148"
+                  r="14" fill="#e1f8ee"/>
+
+          <path d="m278 148 5 5 9-11"
+                fill="none"
+                stroke="#159b75"
+                stroke-width="3"
+                stroke-linecap="round"
+                stroke-linejoin="round"/>
+
+          <rect x="307" y="140"
+                width="76" height="6"
+                rx="3" fill="#5424ff"/>
+
+          <rect x="307" y="152"
+                width="51" height="5"
+                rx="2.5" fill="#d7c9f7"/>
+
+          <rect x="275" y="177"
+                width="114" height="7"
+                rx="3.5" fill="#eee7fa"/>
+
+          <rect x="275" y="177"
+                width="92" height="7"
+                rx="3.5"
+                fill="url(#wnVisualGradient)"/>
+
+        </g>
+
+        <g filter="url(#wnVisualShadow)">
+
+          <rect x="18" y="187"
+                width="88" height="70"
+                rx="16" fill="#ffffff"
+                stroke="#eee7fa"/>
+
+          <path d="M36 237v-27m0 27h52"
+                fill="none"
+                stroke="#d7c9f7"
+                stroke-width="2"
+                stroke-linecap="round"/>
+
+          <path d="m43 229 13-13 10 6 18-19"
+                fill="none"
+                stroke="url(#wnVisualGradient)"
+                stroke-width="4"
+                stroke-linecap="round"
+                stroke-linejoin="round"/>
+
+          <path d="M74 203h10v10"
+                fill="none"
+                stroke="#ec22ad"
+                stroke-width="3"
+                stroke-linecap="round"
+                stroke-linejoin="round"/>
+
+        </g>
+
+        <path d="M365 38l4 11 11 4-11 4-4 11-4-11-11-4 11-4Z"
+              fill="#ec22ad" opacity=".65"/>
+
+        <path d="M45 87l3 8 8 3-8 3-3 8-3-8-8-3 8-3Z"
+              fill="#5424ff" opacity=".55"/>
+
+      </svg>
 
     </div>
 
   </section>
 
-  <!-- CAREER TOOL COLLECTION -->
+  <!-- CAREER TOOLKIT -->
 
   <section class="wn-tools-section"
            aria-labelledby="wnToolsTitle">
 
     <div class="wn-landing-heading">
 
-      <span class="wn-kicker">
+      <span class="wn-landing-kicker"
+            id="wnToolsKicker">
         YOUR CAREER TOOLKIT
       </span>
 
@@ -1291,7 +1083,7 @@ body .shell .wn-builder-secondary button {
         Your next move starts here.
       </h2>
 
-      <p>
+      <p id="wnToolsDescription">
         Everything you need to build, improve
         and move forward with your career.
       </p>
@@ -1299,8 +1091,6 @@ body .shell .wn-builder-secondary button {
     </div>
 
     <div class="wn-tool-cards">
-
-      <!-- RESUME BUILDER CARD -->
 
       <a class="wn-tool-card" href="#builder">
 
@@ -1313,25 +1103,27 @@ body .shell .wn-builder-secondary button {
                stroke-linecap="round"
                stroke-linejoin="round"
                aria-hidden="true">
-
             <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/>
             <path d="M14 2v6h6"/>
             <path d="M8 13h8M8 17h8"/>
-
           </svg>
 
         </span>
 
-        <h3>Resume Builder</h3>
+        <h3 id="wnBuilderCardTitle">
+          Resume Builder
+        </h3>
 
-        <p>
+        <p id="wnBuilderCardDescription">
           Create a professional, ATS-friendly
           resume that reflects your experience.
         </p>
 
         <span class="wn-card-link">
 
-          <span>Build your resume</span>
+          <span id="wnBuilderCardLink">
+            Build your resume
+          </span>
 
           <svg viewBox="0 0 24 24"
                fill="none"
@@ -1346,8 +1138,6 @@ body .shell .wn-builder-secondary button {
         </span>
 
       </a>
-
-      <!-- CAREER ANALYSIS CARD -->
 
       <a class="wn-tool-card" href="#comparison">
 
@@ -1360,25 +1150,27 @@ body .shell .wn-builder-secondary button {
                stroke-linecap="round"
                stroke-linejoin="round"
                aria-hidden="true">
-
             <path d="M3 3v18h18"/>
             <path d="m7 14 4-4 4 4 6-7"/>
             <path d="M17 7h4v4"/>
-
           </svg>
 
         </span>
 
-        <h3>Career Analysis</h3>
+        <h3 id="wnAnalysisCardTitle">
+          Career Analysis
+        </h3>
 
-        <p>
+        <p id="wnAnalysisCardDescription">
           Compare your resume with job requirements
           and discover skills to review.
         </p>
 
         <span class="wn-card-link">
 
-          <span>Explore your match</span>
+          <span id="wnAnalysisCardLink">
+            Explore your match
+          </span>
 
           <svg viewBox="0 0 24 24"
                fill="none"
@@ -1394,8 +1186,6 @@ body .shell .wn-builder-secondary button {
 
       </a>
 
-      <!-- WRITING STUDIO CARD -->
-
       <a class="wn-tool-card" href="#ai-studio">
 
         <span class="wn-tool-icon wn-icon-pink">
@@ -1407,25 +1197,27 @@ body .shell .wn-builder-secondary button {
                stroke-linecap="round"
                stroke-linejoin="round"
                aria-hidden="true">
-
             <path d="m12 3 2.5 6.5L21 12l-6.5 2.5L12 21l-2.5-6.5L3 12l6.5-2.5L12 3Z"/>
             <path d="M5 3v4M3 5h4"/>
             <path d="M19 17v4M17 19h4"/>
-
           </svg>
 
         </span>
 
-        <h3>Writing Studio</h3>
+        <h3 id="wnStudioCardTitle">
+          Writing Studio
+        </h3>
 
-        <p>
+        <p id="wnStudioCardDescription">
           Turn your verified experience into
           clear, structured resume content.
         </p>
 
         <span class="wn-card-link">
 
-          <span>Start writing</span>
+          <span id="wnStudioCardLink">
+            Start writing
+          </span>
 
           <svg viewBox="0 0 24 24"
                fill="none"
@@ -1463,8 +1255,13 @@ body .shell .wn-builder-secondary button {
         <path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"/>
       </svg>
 
-      <strong>6 languages</strong>
-      <span>International interface</span>
+      <strong id="wnBenefitLanguages">
+        6 languages
+      </strong>
+
+      <span id="wnBenefitLanguagesText">
+        International interface
+      </span>
 
     </div>
 
@@ -1481,8 +1278,13 @@ body .shell .wn-builder-secondary button {
         <path d="M11 18h2"/>
       </svg>
 
-      <strong>Mobile friendly</strong>
-      <span>Build from anywhere</span>
+      <strong id="wnBenefitMobile">
+        Mobile friendly
+      </strong>
+
+      <span id="wnBenefitMobileText">
+        Build from anywhere
+      </span>
 
     </div>
 
@@ -1499,22 +1301,46 @@ body .shell .wn-builder-secondary button {
         <path d="M4 16v4h16v-4"/>
       </svg>
 
-      <strong>PDF export</strong>
-      <span>Your resume, ready to share</span>
+      <strong id="wnBenefitPdf">
+        PDF export
+      </strong>
+
+      <span id="wnBenefitPdfText">
+        Your resume, ready to share
+      </span>
 
     </div>
 
   </section>
 
-  <!-- EXISTING PRO BANNER MOVED HERE -->
+  <!-- EXISTING PRO BANNER -->
 
   <div id="wnPremiumSlot"></div>
 
+  <!-- FINAL CONVERSION SECTION -->
+
+  <section class="wn-final-cta"
+           aria-labelledby="wnFinalTitle">
+
+    <h2 id="wnFinalTitle">
+      Join Worknely today.
+    </h2>
+
+    <p id="wnFinalDescription">
+      Your future starts with your next move.
+    </p>
+
+    <a class="primary"
+       id="wnFinalButton"
+       href="#builder">
+      Get started for free →
+    </a>
+
+  </section>
+
 </div>
 
-<!-- =====================================
-     WORKSPACE NAVIGATION
-     ===================================== -->
+<!-- WORKSPACE NAVIGATION -->
 
 <nav class="wn-tool-navigation"
      id="wnWorkspaceNavigation"
@@ -1539,29 +1365,31 @@ body .shell .wn-builder-secondary button {
   </a>
 
   <a href="#ai-studio"
-     data-wn-tool="ai-studio">
+     data-wn-tool="ai-studio"
+     id="wnNavStudio">
     Writing Studio
   </a>
 
   <a href="#builder"
-     data-wn-tool="builder">
+     data-wn-tool="builder"
+     id="wnNavBuilder">
     Resume Builder
   </a>
 
   <a href="#comparison"
-     data-wn-tool="comparison">
+     data-wn-tool="comparison"
+     id="wnNavAnalysis">
     Career Analysis
   </a>
 
-  <a href="pricing.html">
+  <a href="pricing.html"
+     id="wnNavPricing">
     Pricing &amp; Plans
   </a>
 
 </nav>
 
-<!-- =====================================
-     WRITING STUDIO
-     ===================================== -->
+<!-- WRITING STUDIO -->
 
 <section class="workspace ai-preview wn-tool-view"
          id="ai-studio"
@@ -1674,9 +1502,7 @@ body .shell .wn-builder-secondary button {
 
 </section>
 
-<!-- =====================================
-     RESUME BUILDER
-     ===================================== -->
+<!-- RESUME BUILDER -->
 
 <section class="workspace builder wn-tool-view"
          id="builder"
@@ -1831,9 +1657,7 @@ body .shell .wn-builder-secondary button {
 
 </section>
 
-<!-- =====================================
-     CAREER ANALYSIS
-     ===================================== -->
+<!-- CAREER ANALYSIS -->
 
 <section class="workspace wn-tool-view"
          id="comparison"
@@ -1979,9 +1803,7 @@ body .shell .wn-builder-secondary button {
 
 </section>
 
-<!-- =====================================
-     COMPATIBILITY REPORT
-     ===================================== -->
+<!-- COMPATIBILITY REPORT -->
 
 <section class="results hidden wn-tool-view"
          id="results"
@@ -2163,9 +1985,7 @@ body .shell .wn-builder-secondary button {
 
 </section>
 
-<!-- =====================================
-     WORKNELY ACCOUNT
-     ===================================== -->
+<!-- WORKNELY ACCOUNT -->
 
 <section id="worknelyAccount"
          class="workspace"
@@ -2258,7 +2078,7 @@ body .shell .wn-builder-secondary button {
     © 2026 Worknely · People Technology
   </span>
 
-  <span>
+  <span id="wnFooterTagline">
     Build. Improve. Grow.
   </span>
 
@@ -2266,9 +2086,7 @@ body .shell .wn-builder-secondary button {
 
 </div>
 
-<!-- =====================================
-     EXISTING FUNCTIONAL MODULES
-     ===================================== -->
+<!-- EXISTING FUNCTIONAL MODULES -->
 
 <script defer src="script.js?v=7.5"></script>
 
@@ -2280,24 +2098,16 @@ body .shell .wn-builder-secondary button {
 
 <script defer src="worknely-premium-pdf.js?v=7.5"></script>
 
-<!-- SUPABASE AUTHENTICATION -->
-
 <script type="module"
         src="worknely-auth.js?v=7.6"></script>
-
-<!-- VALIDATED AUTHENTICATION UI -->
 
 <script defer
         src="worknely-saas-ui.js?v=7.12.1"></script>
 
-<!-- ACCOUNT SAVING AND EDITING -->
-
 <script type="module"
         src="worknely-save-account.js?v=7.9"></script>
 
-<!-- =====================================
-     FLAG LANGUAGE SYNCHRONIZATION
-     ===================================== -->
+<!-- LANGUAGE FLAG SYNCHRONIZATION -->
 
 <script>
 (() => {
@@ -2391,9 +2201,7 @@ body .shell .wn-builder-secondary button {
 })();
 </script>
 
-<!-- =====================================
-     V7.13 LANDING PAGE ROUTER
-     ===================================== -->
+<!-- WORKSPACE ROUTER -->
 
 <script>
 (() => {
@@ -2406,6 +2214,8 @@ body .shell .wn-builder-secondary button {
     "comparison"
   ];
 
+  let activeView = "home";
+
   function getActiveTool() {
 
     const hash = window.location.hash
@@ -2414,6 +2224,10 @@ body .shell .wn-builder-secondary button {
 
     if (hash === "results") {
       return "comparison";
+    }
+
+    if (hash === "worknelyaccount") {
+      return activeView;
     }
 
     if (toolIds.includes(hash)) {
@@ -2434,6 +2248,8 @@ body .shell .wn-builder-secondary button {
   function updateToolNavigation() {
 
     const active = getActiveTool();
+
+    activeView = active;
 
     const isHome = active === "home";
 
@@ -2493,10 +2309,7 @@ body .shell .wn-builder-secondary button {
       document.getElementById("results");
 
     if (report) {
-
-      report.hidden =
-        active !== "comparison";
-
+      report.hidden = active !== "comparison";
     }
 
     const requestedHash =
@@ -2562,9 +2375,7 @@ body .shell .wn-builder-secondary button {
 })();
 </script>
 
-<!-- =====================================
-     PREMIUM BANNER REPOSITIONING
-     ===================================== -->
+<!-- PREMIUM BANNER REPOSITIONING -->
 
 <script>
 (() => {
@@ -2596,9 +2407,8 @@ body .shell .wn-builder-secondary button {
 
     }
 
-    const observer = new MutationObserver(
-      relocateBanner
-    );
+    const observer =
+      new MutationObserver(relocateBanner);
 
     observer.observe(shell,{
       childList:true,
@@ -2626,153 +2436,368 @@ body .shell .wn-builder-secondary button {
 })();
 </script>
 
-<!-- =====================================
-     LANDING PAGE TRANSLATIONS
-     ===================================== -->
+<!-- LANDING INTERNATIONAL EDITION -->
 
 <script>
 (() => {
 
   "use strict";
 
+  const ids = [
+
+    "wnHeroDescription",
+    "wnStartFree",
+    "wnFreeNote",
+    "wnCardNote",
+
+    "wnToolsKicker",
+    "wnToolsTitle",
+    "wnToolsDescription",
+
+    "wnBuilderCardTitle",
+    "wnBuilderCardDescription",
+    "wnBuilderCardLink",
+
+    "wnAnalysisCardTitle",
+    "wnAnalysisCardDescription",
+    "wnAnalysisCardLink",
+
+    "wnStudioCardTitle",
+    "wnStudioCardDescription",
+    "wnStudioCardLink",
+
+    "wnBenefitLanguages",
+    "wnBenefitLanguagesText",
+
+    "wnBenefitMobile",
+    "wnBenefitMobileText",
+
+    "wnBenefitPdf",
+    "wnBenefitPdfText",
+
+    "wnFinalTitle",
+    "wnFinalDescription",
+    "wnFinalButton",
+
+    "wnNavStudio",
+    "wnNavBuilder",
+    "wnNavAnalysis",
+    "wnNavPricing",
+
+    "wnFooterTagline"
+
+  ];
+
   const translations = {
 
     en:[
+
+      "Create professional resumes, compare your skills with job requirements, and take your next career step with confidence.",
+      "Start for free",
+      "Free to get started",
+      "No credit card required",
+
       "YOUR CAREER TOOLKIT",
       "Your next move starts here.",
       "Everything you need to build, improve and move forward with your career.",
+
       "Resume Builder",
       "Create a professional, ATS-friendly resume that reflects your experience.",
       "Build your resume",
+
       "Career Analysis",
       "Compare your resume with job requirements and discover skills to review.",
       "Explore your match",
+
       "Writing Studio",
       "Turn your verified experience into clear, structured resume content.",
       "Start writing",
+
       "6 languages",
       "International interface",
+
       "Mobile friendly",
       "Build from anywhere",
+
       "PDF export",
       "Your resume, ready to share",
-      "Free to get started",
-      "No credit card required"
+
+      "Join Worknely today.",
+      "Your future starts with your next move.",
+      "Get started for free →",
+
+      "Writing Studio",
+      "Resume Builder",
+      "Career Analysis",
+      "Pricing & Plans",
+
+      "Build. Improve. Grow."
+
     ],
 
     ro:[
+
+      "Creează CV-uri profesionale, compară competențele tale cu cerințele joburilor și fă următorul pas în carieră cu încredere.",
+      "Începe gratuit",
+      "Acces gratuit",
+      "Fără card bancar",
+
       "INSTRUMENTELE TALE PROFESIONALE",
       "Următorul tău pas începe aici.",
       "Tot ce ai nevoie pentru a-ți construi și dezvolta cariera.",
+
       "Creator de CV",
       "Creează un CV profesional, compatibil ATS, care reflectă experiența ta.",
       "Creează CV-ul",
+
       "Analiza carierei",
       "Compară CV-ul cu cerințele jobului și descoperă competențele de îmbunătățit.",
       "Explorează compatibilitatea",
+
       "Studio de redactare",
       "Transformă experiența reală în conținut profesional și structurat.",
       "Începe redactarea",
+
       "6 limbi",
       "Interfață internațională",
+
       "Adaptat pentru mobil",
       "Lucrează de oriunde",
+
       "Export PDF",
       "CV-ul tău, gata de distribuit",
-      "Începe gratuit",
-      "Fără card bancar"
+
+      "Alătură-te Worknely.",
+      "Viitorul tău începe cu următorul pas.",
+      "Începe gratuit →",
+
+      "Studio de redactare",
+      "Creator de CV",
+      "Analiza carierei",
+      "Prețuri și planuri",
+
+      "Construiește. Îmbunătățește. Evoluează."
+
     ],
 
     it:[
+
+      "Crea curriculum professionali, confronta le tue competenze con i requisiti del lavoro e affronta il prossimo passo della tua carriera con fiducia.",
+      "Inizia gratis",
+      "Accesso gratuito",
+      "Nessuna carta richiesta",
+
       "I TUOI STRUMENTI PROFESSIONALI",
       "Il tuo prossimo passo inizia qui.",
       "Tutto ciò che ti serve per costruire e sviluppare la tua carriera.",
+
       "Creatore di CV",
       "Crea un curriculum professionale compatibile con ATS.",
       "Crea il tuo CV",
+
       "Analisi della carriera",
       "Confronta il tuo CV con i requisiti del lavoro e individua le competenze da rivedere.",
       "Esplora la compatibilità",
+
       "Studio di scrittura",
       "Trasforma la tua esperienza reale in contenuti professionali e strutturati.",
       "Inizia a scrivere",
+
       "6 lingue",
       "Interfaccia internazionale",
+
       "Ottimizzato per mobile",
       "Lavora ovunque",
+
       "Esportazione PDF",
       "Il tuo CV pronto da condividere",
-      "Inizia gratuitamente",
-      "Nessuna carta richiesta"
+
+      "Unisciti a Worknely.",
+      "Il tuo futuro inizia con il prossimo passo.",
+      "Inizia gratuitamente →",
+
+      "Studio di scrittura",
+      "Creatore di CV",
+      "Analisi della carriera",
+      "Prezzi e piani",
+
+      "Costruisci. Migliora. Cresci."
+
     ],
 
     de:[
+
+      "Erstelle professionelle Lebensläufe, vergleiche deine Fähigkeiten mit Stellenanforderungen und gehe deinen nächsten Karriereschritt mit Zuversicht.",
+      "Kostenlos starten",
+      "Kostenloser Einstieg",
+      "Keine Kreditkarte erforderlich",
+
       "DEINE KARRIEREWERKZEUGE",
       "Dein nächster Schritt beginnt hier.",
       "Alles, was du für deine berufliche Entwicklung brauchst.",
+
       "Lebenslauf-Builder",
       "Erstelle einen professionellen, ATS-freundlichen Lebenslauf.",
       "Lebenslauf erstellen",
+
       "Karriereanalyse",
       "Vergleiche deinen Lebenslauf mit Stellenanforderungen und prüfe deine Fähigkeiten.",
       "Übereinstimmung prüfen",
+
       "Schreibstudio",
       "Verwandle deine tatsächliche Erfahrung in strukturierte Lebenslaufinhalte.",
       "Jetzt schreiben",
+
       "6 Sprachen",
       "Internationale Oberfläche",
+
       "Mobilfreundlich",
       "Von überall arbeiten",
+
       "PDF-Export",
       "Dein Lebenslauf zum Teilen",
-      "Kostenlos starten",
-      "Keine Kreditkarte erforderlich"
+
+      "Entdecke Worknely.",
+      "Deine Zukunft beginnt mit deinem nächsten Schritt.",
+      "Kostenlos starten →",
+
+      "Schreibstudio",
+      "Lebenslauf-Builder",
+      "Karriereanalyse",
+      "Preise und Tarife",
+
+      "Gestalten. Verbessern. Wachsen."
+
     ],
 
     fr:[
+
+      "Créez des CV professionnels, comparez vos compétences aux exigences des postes et avancez dans votre carrière avec confiance.",
+      "Commencez gratuitement",
+      "Accès gratuit",
+      "Aucune carte bancaire requise",
+
       "VOS OUTILS DE CARRIÈRE",
       "Votre prochaine étape commence ici.",
       "Tout ce dont vous avez besoin pour développer votre carrière.",
+
       "Créateur de CV",
       "Créez un CV professionnel compatible avec les ATS.",
       "Créer votre CV",
+
       "Analyse de carrière",
       "Comparez votre CV aux exigences du poste et identifiez les compétences à revoir.",
       "Explorer la compatibilité",
+
       "Studio de rédaction",
       "Transformez votre expérience réelle en contenu professionnel et structuré.",
       "Commencer à écrire",
+
       "6 langues",
       "Interface internationale",
+
       "Adapté aux mobiles",
       "Travaillez de partout",
+
       "Export PDF",
       "Votre CV prêt à partager",
-      "Commencez gratuitement",
-      "Aucune carte bancaire requise"
+
+      "Rejoignez Worknely.",
+      "Votre avenir commence avec votre prochaine étape.",
+      "Commencez gratuitement →",
+
+      "Studio de rédaction",
+      "Créateur de CV",
+      "Analyse de carrière",
+      "Tarifs et offres",
+
+      "Construire. Améliorer. Évoluer."
+
     ],
 
     es:[
+
+      "Crea currículums profesionales, compara tus habilidades con los requisitos del empleo y da el siguiente paso en tu carrera con confianza.",
+      "Empieza gratis",
+      "Acceso gratuito",
+      "Sin tarjeta de crédito",
+
       "TUS HERRAMIENTAS PROFESIONALES",
       "Tu próximo paso empieza aquí.",
       "Todo lo que necesitas para construir y desarrollar tu carrera.",
+
       "Creador de CV",
       "Crea un currículum profesional compatible con ATS.",
       "Crear tu CV",
+
       "Análisis profesional",
       "Compara tu CV con los requisitos del empleo e identifica habilidades que debes revisar.",
       "Explorar compatibilidad",
+
       "Estudio de redacción",
       "Transforma tu experiencia real en contenido profesional y estructurado.",
       "Empezar a escribir",
+
       "6 idiomas",
       "Interfaz internacional",
+
       "Adaptado a móviles",
       "Trabaja desde cualquier lugar",
+
       "Exportación PDF",
       "Tu CV listo para compartir",
-      "Empieza gratis",
-      "Sin tarjeta de crédito"
+
+      "Únete a Worknely.",
+      "Tu futuro empieza con tu próximo paso.",
+      "Empieza gratis →",
+
+      "Estudio de redacción",
+      "Creador de CV",
+      "Análisis profesional",
+      "Precios y planes",
+
+      "Construye. Mejora. Crece."
+
+    ]
+
+  };
+
+  const premiumTranslations = {
+
+    en:[
+      "Unlock more possibilities for your career",
+      "Explore upcoming Pro & Premium features. No payment required.",
+      "Explore Pro Plans →"
+    ],
+
+    ro:[
+      "Descoperă mai multe posibilități pentru cariera ta",
+      "Explorează viitoarele funcții Pro și Premium. Nu este necesară plata.",
+      "Explorează planurile Pro →"
+    ],
+
+    it:[
+      "Scopri nuove possibilità per la tua carriera",
+      "Esplora le future funzionalità Pro e Premium. Nessun pagamento richiesto.",
+      "Esplora i piani Pro →"
+    ],
+
+    de:[
+      "Entdecke neue Möglichkeiten für deine Karriere",
+      "Entdecke kommende Pro- und Premium-Funktionen. Keine Zahlung erforderlich.",
+      "Pro-Tarife entdecken →"
+    ],
+
+    fr:[
+      "Découvrez de nouvelles possibilités pour votre carrière",
+      "Explorez les futures fonctionnalités Pro et Premium. Aucun paiement requis.",
+      "Découvrir les offres Pro →"
+    ],
+
+    es:[
+      "Descubre nuevas posibilidades para tu carrera",
+      "Explora las próximas funciones Pro y Premium. No se requiere ningún pago.",
+      "Explorar planes Pro →"
     ]
 
   };
@@ -2782,74 +2807,58 @@ body .shell .wn-builder-secondary button {
     const select =
       document.getElementById("language");
 
-    const landing =
-      document.getElementById("wnLanding");
-
-    if (!select || !landing) return;
-
-    const selectors = [
-
-      ".wn-landing-heading .wn-kicker",
-      "#wnToolsTitle",
-      ".wn-landing-heading p",
-
-      ".wn-tool-card:nth-child(1) h3",
-      ".wn-tool-card:nth-child(1) p",
-      ".wn-tool-card:nth-child(1) .wn-card-link span",
-
-      ".wn-tool-card:nth-child(2) h3",
-      ".wn-tool-card:nth-child(2) p",
-      ".wn-tool-card:nth-child(2) .wn-card-link span",
-
-      ".wn-tool-card:nth-child(3) h3",
-      ".wn-tool-card:nth-child(3) p",
-      ".wn-tool-card:nth-child(3) .wn-card-link span",
-
-      ".wn-benefit:nth-child(1) strong",
-      ".wn-benefit:nth-child(1) span",
-
-      ".wn-benefit:nth-child(2) strong",
-      ".wn-benefit:nth-child(2) span",
-
-      ".wn-benefit:nth-child(3) strong",
-      ".wn-benefit:nth-child(3) span",
-
-      ".wn-hero-note > span:nth-child(1)",
-      ".wn-hero-note > span:nth-child(2)"
-
-    ];
+    if (!select) return;
 
     function updateLandingLanguage() {
 
-      const dictionary =
-        translations[select.value] ||
-        translations.en;
+      const language =
+        Object.prototype.hasOwnProperty.call(
+          translations,select.value
+        )
+        ? select.value
+        : "en";
 
-      selectors.forEach((selector,index) => {
+      const dictionary =
+        translations[language];
+
+      ids.forEach((id,index) => {
 
         const element =
-          landing.querySelector(selector);
+          document.getElementById(id);
 
-        if (!element) return;
-
-        if (index >= 18) {
-
-          const textNodes =
-            Array.from(element.childNodes)
-            .filter(node => node.nodeType === 3);
-
-          textNodes.forEach(node => node.remove());
-
-          element.appendChild(
-            document.createTextNode(
-              " " + dictionary[index]
-            )
-          );
-
-        } else {
+        if (
+          element &&
+          typeof dictionary[index] === "string" &&
+          element.textContent !== dictionary[index]
+        ) {
 
           element.textContent =
             dictionary[index];
+
+        }
+
+      });
+
+      const premium =
+        premiumTranslations[language];
+
+      const premiumSelectors = [
+        "#wnPremiumSlot .wn-pro-title",
+        "#wnPremiumSlot .wn-pro-subtitle",
+        "#wnPremiumSlot .wn-pro-cta"
+      ];
+
+      premiumSelectors.forEach((selector,index) => {
+
+        const element =
+          document.querySelector(selector);
+
+        if (
+          element &&
+          element.textContent !== premium[index]
+        ) {
+
+          element.textContent = premium[index];
 
         }
 
@@ -2878,6 +2887,20 @@ body .shell .wn-builder-secondary button {
       updateLandingLanguage
     );
 
+    const slot =
+      document.getElementById("wnPremiumSlot");
+
+    if (slot) {
+
+      new MutationObserver(
+        updateLandingLanguage
+      ).observe(slot,{
+        childList:true,
+        subtree:true
+      });
+
+    }
+
     updateLandingLanguage();
 
   }
@@ -2899,9 +2922,7 @@ body .shell .wn-builder-secondary button {
 })();
 </script>
 
-<!-- =====================================
-     PREMIUM STATUS MESSAGES
-     ===================================== -->
+<!-- PREMIUM STATUS MESSAGES -->
 
 <script>
 (() => {
@@ -3017,12 +3038,10 @@ body .shell .wn-builder-secondary button {
 })();
 </script>
 
-<!-- SUCCESS CELEBRATION -->
-
 <script defer
         src="worknely-celebration.js?v=7.5"></script>
 
-<!-- END WORKNELY V7.13 PREMIUM AIRY EDITION -->
+<!-- END WORKNELY V7.13.1 CLEAN & AIRY -->
 
 </body>
 </html>
