@@ -1,32 +1,25 @@
 
 /*
- * WORKNELY V7.16.5
- * Professional PDF Export Engine
- *
- * Professional Resume Export
- * Template and Accent Synchronization
- * A4 / US Letter Format
- * International Export Interface
- * Native Browser Printing
- * Mobile Safari / Chrome Support
- * Local Document Processing
- *
- * Requires:
- * worknely-templates.js V7.16.1
- * worknely-live-preview.js V7.16.3
- *
- * No external dependencies.
+ * WORKNELY V7.16.11
+ * Professional PDF Export Recovery
+ * Direct PDF Generation
+ * iOS Download and Sharing
+ * Six Language Interface
+ * Resume Builder Synchronization
+ * A4 / US Letter
+ * Local Processing
  */
 
 (() => {
 
   "use strict";
 
-  const VERSION = "7.16.5";
-
+  const VERSION = "7.16.11";
   const ROOT_ID = "wnProfessionalPDFExport";
-
   const STYLE_ID = "wn-professional-pdf-styles";
+
+  const PDF_LIBRARY =
+    "https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js";
 
   const LANGUAGES = [
     "en", "ro", "it", "de", "fr", "es"
@@ -35,38 +28,52 @@
   const FORMATS = Object.freeze({
 
     a4: {
-
-      name:"A4",
-
-      size:"210 × 297 mm",
-
-      css:"A4"
-
+      name: "A4",
+      size: "210 × 297 mm",
+      css: "A4"
     },
 
     letter: {
-
-      name:"US Letter",
-
-      size:"216 × 279 mm",
-
-      css:"letter"
-
+      name: "US Letter",
+      size: "216 × 279 mm",
+      css: "letter"
     }
 
   });
 
+  const FIELD_MAP = {
+
+    fullName: "bName",
+    professionalTitle: "bTitle",
+    contact: "bContact",
+    education: "bEducation",
+    summary: "bSummary",
+    experience: "bExperience",
+    skills: "bSkills"
+
+  };
+
+  const languageNames = {
+
+    en: "English",
+    ro: "Română",
+    it: "Italiano",
+    de: "Deutsch",
+    fr: "Français",
+    es: "Español"
+
+  };
+
   let root = null;
-
   let paperFormat = "a4";
-
   let renderedLanguage = null;
-
   let statusKey = "";
-
   let customReader = null;
-
   let exporting = false;
+  let libraryPromise = null;
+  let fontPromise = null;
+  let preparedFile = null;
+  let preparedURL = null;
 
   /* INTERNATIONAL DICTIONARY */
 
@@ -74,311 +81,193 @@
 
     en: {
 
-      overline:"WORKNELY DESIGN STUDIO",
-
-      title:"Professional PDF Export",
-
-      description:"Export your personalized resume as a professional document.",
-
-      format:"Paper format",
-
-      template:"Selected template",
-
-      color:"Accent color",
-
-      language:"Document language",
-
-      filename:"Document name",
-
-      export:"Export professional PDF",
-
-      preparing:"Preparing document...",
-
-      ready:"Your print-ready document is open.",
-
-      empty:"Complete your resume before exporting.",
-
-      unavailable:"The PDF export engine is unavailable.",
-
-      popup:"Unable to open the document. Please allow pop-ups and try again.",
-
-      failed:"Unable to prepare the document. Please try again.",
-
-      print:"Save / Print PDF",
-
-      close:"Close",
-
-      instructions:"Choose Save as PDF or use your device's print and sharing options.",
-
-      mobile:"On iPhone, open the print preview and use the Share menu to save your document to Files.",
-
-      privacy:"Your resume is processed locally by this export module.",
-
-      note:"Final pagination and PDF options depend on your browser.",
-
-      defaultName:"Professional Resume"
+      overline: "WORKNELY DESIGN STUDIO",
+      title: "Professional PDF Export",
+      description: "Create a professional PDF using your selected resume design.",
+      format: "Paper format",
+      template: "Selected template",
+      color: "Accent color",
+      language: "Document language",
+      filename: "Document name",
+      export: "Generate professional PDF",
+      preparing: "Preparing PDF...",
+      ready: "Your PDF is ready to download or share.",
+      empty: "Complete your resume before exporting.",
+      unavailable: "The template engine is unavailable.",
+      failed: "Unable to generate the PDF. Check your connection and try again.",
+      download: "Download PDF",
+      share: "Share / Save PDF",
+      open: "Open PDF",
+      shareFailed: "Sharing is unavailable. Use Download PDF instead.",
+      privacy: "Your resume is processed locally on your device.",
+      note: "On iPhone, use Share / Save PDF or open the PDF in Safari.",
+      defaultName: "Professional Resume",
+      summary: "Professional Profile",
+      experience: "Professional Experience",
+      education: "Education",
+      skills: "Skills",
+      contact: "Contact"
 
     },
 
     ro: {
 
-      overline:"WORKNELY DESIGN STUDIO",
-
-      title:"Export PDF profesional",
-
-      description:"Exportă CV-ul personalizat sub forma unui document profesional.",
-
-      format:"Formatul paginii",
-
-      template:"Șablon selectat",
-
-      color:"Culoare de accent",
-
-      language:"Limba documentului",
-
-      filename:"Denumirea documentului",
-
-      export:"Exportă PDF profesional",
-
-      preparing:"Se pregătește documentul...",
-
-      ready:"Documentul pregătit pentru imprimare este deschis.",
-
-      empty:"Completează CV-ul înainte de export.",
-
-      unavailable:"Motorul de export PDF nu este disponibil.",
-
-      popup:"Documentul nu poate fi deschis. Permite ferestrele pop-up și încearcă din nou.",
-
-      failed:"Documentul nu poate fi pregătit. Încearcă din nou.",
-
-      print:"Salvează / Imprimă PDF",
-
-      close:"Închide",
-
-      instructions:"Selectează salvarea ca PDF sau utilizează opțiunile de imprimare și partajare ale dispozitivului.",
-
-      mobile:"Pe iPhone, deschide previzualizarea pentru imprimare și utilizează meniul Partajare pentru salvarea în Fișiere.",
-
-      privacy:"CV-ul este procesat local de acest modul de export.",
-
-      note:"Paginarea finală și opțiunile PDF depind de browser.",
-
-      defaultName:"CV Profesional"
+      overline: "WORKNELY DESIGN STUDIO",
+      title: "Export PDF profesional",
+      description: "Creează un PDF profesional folosind designul selectat.",
+      format: "Formatul paginii",
+      template: "Șablon selectat",
+      color: "Culoare de accent",
+      language: "Limba documentului",
+      filename: "Denumirea documentului",
+      export: "Generează PDF profesional",
+      preparing: "Se pregătește PDF-ul...",
+      ready: "PDF-ul este pregătit pentru descărcare sau partajare.",
+      empty: "Completează CV-ul înainte de export.",
+      unavailable: "Motorul de șabloane nu este disponibil.",
+      failed: "PDF-ul nu a putut fi generat. Verifică internetul și încearcă din nou.",
+      download: "Descarcă PDF",
+      share: "Partajează / Salvează PDF",
+      open: "Deschide PDF",
+      shareFailed: "Partajarea nu este disponibilă. Utilizează Descarcă PDF.",
+      privacy: "CV-ul este procesat local pe dispozitivul tău.",
+      note: "Pe iPhone, folosește Partajează / Salvează PDF sau deschide PDF-ul în Safari.",
+      defaultName: "CV Profesional",
+      summary: "Profil profesional",
+      experience: "Experiență profesională",
+      education: "Educație",
+      skills: "Competențe",
+      contact: "Contact"
 
     },
 
     it: {
 
-      overline:"WORKNELY DESIGN STUDIO",
-
-      title:"Esportazione PDF professionale",
-
-      description:"Esporta il tuo curriculum personalizzato come documento professionale.",
-
-      format:"Formato della pagina",
-
-      template:"Modello selezionato",
-
-      color:"Colore di accento",
-
-      language:"Lingua del documento",
-
-      filename:"Nome del documento",
-
-      export:"Esporta PDF professionale",
-
-      preparing:"Preparazione del documento...",
-
-      ready:"Il documento pronto per la stampa è aperto.",
-
-      empty:"Completa il curriculum prima di esportarlo.",
-
-      unavailable:"Il motore di esportazione PDF non è disponibile.",
-
-      popup:"Impossibile aprire il documento. Consenti i pop-up e riprova.",
-
-      failed:"Impossibile preparare il documento. Riprova.",
-
-      print:"Salva / Stampa PDF",
-
-      close:"Chiudi",
-
-      instructions:"Seleziona Salva come PDF oppure utilizza le opzioni di stampa e condivisione.",
-
-      mobile:"Su iPhone, apri l'anteprima di stampa e usa il menu Condividi per salvare il documento in File.",
-
-      privacy:"Il curriculum viene elaborato localmente da questo modulo.",
-
-      note:"L'impaginazione finale dipende dal browser.",
-
-      defaultName:"Curriculum Professionale"
+      overline: "WORKNELY DESIGN STUDIO",
+      title: "Esportazione PDF professionale",
+      description: "Crea un PDF professionale utilizzando il modello selezionato.",
+      format: "Formato della pagina",
+      template: "Modello selezionato",
+      color: "Colore di accento",
+      language: "Lingua del documento",
+      filename: "Nome del documento",
+      export: "Genera PDF professionale",
+      preparing: "Preparazione del PDF...",
+      ready: "Il PDF è pronto per essere scaricato o condiviso.",
+      empty: "Completa il curriculum prima di esportarlo.",
+      unavailable: "Il motore dei modelli non è disponibile.",
+      failed: "Impossibile generare il PDF. Controlla la connessione e riprova.",
+      download: "Scarica PDF",
+      share: "Condividi / Salva PDF",
+      open: "Apri PDF",
+      shareFailed: "Condivisione non disponibile. Utilizza Scarica PDF.",
+      privacy: "Il curriculum viene elaborato localmente sul dispositivo.",
+      note: "Su iPhone, usa Condividi / Salva PDF oppure apri il PDF in Safari.",
+      defaultName: "Curriculum Professionale",
+      summary: "Profilo professionale",
+      experience: "Esperienza professionale",
+      education: "Formazione",
+      skills: "Competenze",
+      contact: "Contatti"
 
     },
 
     de: {
 
-      overline:"WORKNELY DESIGN STUDIO",
-
-      title:"Professioneller PDF-Export",
-
-      description:"Exportiere deinen personalisierten Lebenslauf als professionelles Dokument.",
-
-      format:"Papierformat",
-
-      template:"Ausgewählte Vorlage",
-
-      color:"Akzentfarbe",
-
-      language:"Dokumentsprache",
-
-      filename:"Dokumentname",
-
-      export:"Professionelles PDF exportieren",
-
-      preparing:"Dokument wird vorbereitet...",
-
-      ready:"Das druckfertige Dokument ist geöffnet.",
-
-      empty:"Vervollständige deinen Lebenslauf vor dem Export.",
-
-      unavailable:"Die PDF-Exportfunktion ist nicht verfügbar.",
-
-      popup:"Das Dokument konnte nicht geöffnet werden. Erlaube Pop-ups und versuche es erneut.",
-
-      failed:"Das Dokument konnte nicht vorbereitet werden.",
-
-      print:"PDF speichern / drucken",
-
-      close:"Schließen",
-
-      instructions:"Wähle Als PDF speichern oder nutze die Druck- und Freigabeoptionen.",
-
-      mobile:"Öffne auf dem iPhone die Druckvorschau und speichere das Dokument über das Teilen-Menü in Dateien.",
-
-      privacy:"Der Lebenslauf wird von diesem Modul lokal verarbeitet.",
-
-      note:"Das endgültige Seitenlayout hängt vom Browser ab.",
-
-      defaultName:"Professioneller Lebenslauf"
+      overline: "WORKNELY DESIGN STUDIO",
+      title: "Professioneller PDF-Export",
+      description: "Erstelle ein professionelles PDF mit deiner ausgewählten Vorlage.",
+      format: "Papierformat",
+      template: "Ausgewählte Vorlage",
+      color: "Akzentfarbe",
+      language: "Dokumentsprache",
+      filename: "Dokumentname",
+      export: "Professionelles PDF erstellen",
+      preparing: "PDF wird vorbereitet...",
+      ready: "Dein PDF steht zum Download bereit.",
+      empty: "Vervollständige deinen Lebenslauf vor dem Export.",
+      unavailable: "Die Vorlagenfunktion ist nicht verfügbar.",
+      failed: "PDF konnte nicht erstellt werden. Prüfe deine Internetverbindung.",
+      download: "PDF herunterladen",
+      share: "PDF teilen / speichern",
+      open: "PDF öffnen",
+      shareFailed: "Teilen nicht verfügbar. Lade das PDF herunter.",
+      privacy: "Dein Lebenslauf wird lokal verarbeitet.",
+      note: "Auf dem iPhone kannst du das PDF teilen oder in Safari öffnen.",
+      defaultName: "Professioneller Lebenslauf",
+      summary: "Berufliches Profil",
+      experience: "Berufserfahrung",
+      education: "Ausbildung",
+      skills: "Fähigkeiten",
+      contact: "Kontakt"
 
     },
 
     fr: {
 
-      overline:"WORKNELY DESIGN STUDIO",
-
-      title:"Export PDF professionnel",
-
-      description:"Exportez votre CV personnalisé sous forme de document professionnel.",
-
-      format:"Format du papier",
-
-      template:"Modèle sélectionné",
-
-      color:"Couleur d'accent",
-
-      language:"Langue du document",
-
-      filename:"Nom du document",
-
-      export:"Exporter le PDF professionnel",
-
-      preparing:"Préparation du document...",
-
-      ready:"Le document prêt à imprimer est ouvert.",
-
-      empty:"Complétez votre CV avant de l'exporter.",
-
-      unavailable:"Le moteur d'export PDF est indisponible.",
-
-      popup:"Impossible d'ouvrir le document. Autorisez les fenêtres contextuelles.",
-
-      failed:"Impossible de préparer le document. Réessayez.",
-
-      print:"Enregistrer / Imprimer PDF",
-
-      close:"Fermer",
-
-      instructions:"Choisissez Enregistrer en PDF ou utilisez les options d'impression et de partage.",
-
-      mobile:"Sur iPhone, ouvrez l'aperçu avant impression et utilisez le menu Partager pour enregistrer le document dans Fichiers.",
-
-      privacy:"Votre CV est traité localement par ce module.",
-
-      note:"La pagination finale dépend du navigateur.",
-
-      defaultName:"CV Professionnel"
+      overline: "WORKNELY DESIGN STUDIO",
+      title: "Export PDF professionnel",
+      description: "Créez un PDF professionnel avec votre modèle sélectionné.",
+      format: "Format du papier",
+      template: "Modèle sélectionné",
+      color: "Couleur d'accent",
+      language: "Langue du document",
+      filename: "Nom du document",
+      export: "Générer le PDF professionnel",
+      preparing: "Préparation du PDF...",
+      ready: "Votre PDF est prêt à être téléchargé ou partagé.",
+      empty: "Complétez votre CV avant de l'exporter.",
+      unavailable: "Le moteur de modèles est indisponible.",
+      failed: "Impossible de générer le PDF. Vérifiez votre connexion.",
+      download: "Télécharger le PDF",
+      share: "Partager / Enregistrer le PDF",
+      open: "Ouvrir le PDF",
+      shareFailed: "Partage indisponible. Téléchargez le PDF.",
+      privacy: "Votre CV est traité localement sur votre appareil.",
+      note: "Sur iPhone, partagez le PDF ou ouvrez-le dans Safari.",
+      defaultName: "CV Professionnel",
+      summary: "Profil professionnel",
+      experience: "Expérience professionnelle",
+      education: "Formation",
+      skills: "Compétences",
+      contact: "Coordonnées"
 
     },
 
     es: {
 
-      overline:"WORKNELY DESIGN STUDIO",
-
-      title:"Exportación PDF profesional",
-
-      description:"Exporta tu currículum personalizado como documento profesional.",
-
-      format:"Formato del papel",
-
-      template:"Plantilla seleccionada",
-
-      color:"Color de acento",
-
-      language:"Idioma del documento",
-
-      filename:"Nombre del documento",
-
-      export:"Exportar PDF profesional",
-
-      preparing:"Preparando documento...",
-
-      ready:"El documento listo para imprimir está abierto.",
-
-      empty:"Completa tu currículum antes de exportarlo.",
-
-      unavailable:"El motor de exportación PDF no está disponible.",
-
-      popup:"No se pudo abrir el documento. Permite las ventanas emergentes.",
-
-      failed:"No se pudo preparar el documento. Inténtalo de nuevo.",
-
-      print:"Guardar / Imprimir PDF",
-
-      close:"Cerrar",
-
-      instructions:"Selecciona Guardar como PDF o utiliza las opciones de impresión y uso compartido.",
-
-      mobile:"En iPhone, abre la vista previa de impresión y utiliza el menú Compartir para guardar el documento en Archivos.",
-
-      privacy:"Tu currículum se procesa localmente en este módulo.",
-
-      note:"La paginación final depende del navegador.",
-
-      defaultName:"Currículum Profesional"
+      overline: "WORKNELY DESIGN STUDIO",
+      title: "Exportación PDF profesional",
+      description: "Crea un PDF profesional con tu plantilla seleccionada.",
+      format: "Formato del papel",
+      template: "Plantilla seleccionada",
+      color: "Color de acento",
+      language: "Idioma del documento",
+      filename: "Nombre del documento",
+      export: "Generar PDF profesional",
+      preparing: "Preparando PDF...",
+      ready: "Tu PDF está listo para descargar o compartir.",
+      empty: "Completa tu currículum antes de exportarlo.",
+      unavailable: "El motor de plantillas no está disponible.",
+      failed: "No se pudo generar el PDF. Comprueba tu conexión.",
+      download: "Descargar PDF",
+      share: "Compartir / Guardar PDF",
+      open: "Abrir PDF",
+      shareFailed: "No se puede compartir. Descarga el PDF.",
+      privacy: "Tu currículum se procesa localmente en tu dispositivo.",
+      note: "En iPhone, comparte el PDF o ábrelo en Safari.",
+      defaultName: "Currículum Profesional",
+      summary: "Perfil profesional",
+      experience: "Experiencia profesional",
+      education: "Formación",
+      skills: "Competencias",
+      contact: "Contacto"
 
     }
 
   };
 
-  const languageNames = {
-
-    en:"English",
-
-    ro:"Română",
-
-    it:"Italiano",
-
-    de:"Deutsch",
-
-    fr:"Français",
-
-    es:"Español"
-
-  };
-
-  /* LANGUAGE UTILITIES */
+  /* LANGUAGE */
 
   function normalizeLanguage(value) {
 
@@ -387,9 +276,7 @@
       .split("-")[0];
 
     return LANGUAGES.includes(code)
-
       ? code
-
       : "en";
 
   }
@@ -421,9 +308,9 @@
 
   }
 
-  function t(key) {
+  function t(key, language = getLanguage()) {
 
-    return translations[getLanguage()]?.[key] ||
+    return translations[language]?.[key] ||
 
       translations.en[key] ||
 
@@ -431,39 +318,48 @@
 
   }
 
-  /* SAFE TEXT PROCESSING */
+  function getDocumentLanguage() {
+
+    return normalizeLanguage(
+
+      window.WorknelyLivePreview
+        ?.getDocumentLanguage?.() ||
+
+      getLanguage()
+
+    );
+
+  }
+
+  /* SAFE TEXT */
 
   function escapeHTML(value) {
 
     return String(value ?? "")
 
-      .replace(/&/g,"&amp;")
-
-      .replace(/</g,"&lt;")
-
-      .replace(/>/g,"&gt;")
-
-      .replace(/"/g,"&quot;")
-
-      .replace(/'/g,"&#39;");
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
 
   }
 
   function normalizeFilename(value) {
 
-    const name = String(value || "")
+    return String(value || "")
 
-      .replace(/[<>:"/\\|?*\u0000-\u001f]/g," ")
+      .replace(/[<>:"/\\|?*\u0000-\u001f]/g, " ")
 
-      .replace(/\.pdf$/i,"")
+      .replace(/\.pdf$/i, "")
 
-      .replace(/\s+/g," ")
+      .replace(/\s+/g, " ")
 
       .trim()
 
-      .slice(0,100);
+      .slice(0, 100)
 
-    return name || t("defaultName");
+      || t("defaultName");
 
   }
 
@@ -480,17 +376,9 @@
 
   }
 
-  /* ENGINE ACCESS */
-
   function getEngine() {
 
     return window.WorknelyTemplates || null;
-
-  }
-
-  function getPreview() {
-
-    return window.WorknelyLivePreview || null;
 
   }
 
@@ -502,69 +390,41 @@
 
       engine &&
 
-      typeof engine.renderInto === "function" &&
-
       typeof engine.getState === "function" &&
 
-      typeof engine.getTemplate === "function" &&
-
-      typeof engine.normalizeContent === "function"
+      typeof engine.getTemplate === "function"
 
     );
 
   }
 
-  /* RESUME DATA */
+  /* RESUME DATA RECOVERY */
 
-  function readResume() {
+  function normalizeContent(content = {}) {
 
-    if (!engineAvailable()) return {};
+    const result = {};
 
-    let content = {};
+    Object.keys(FIELD_MAP).forEach(key => {
 
-    try {
+      result[key] =
 
-      if (typeof customReader === "function") {
+        typeof content?.[key] === "string"
 
-        content = customReader();
+          ? content[key].trim()
 
-      } else {
+          : "";
 
-        content = getPreview()?.readResume?.() || {};
+    });
 
-      }
-
-      return getEngine().normalizeContent(content);
-
-    } catch {
-
-      return {};
-
-    }
+    return result;
 
   }
 
   function hasContent(content) {
 
-    return [
+    return Object.keys(FIELD_MAP).some(key =>
 
-      "fullName",
-
-      "professionalTitle",
-
-      "contact",
-
-      "summary",
-
-      "experience",
-
-      "education",
-
-      "skills"
-
-    ].some(key =>
-
-      typeof content[key] === "string" &&
+      typeof content?.[key] === "string" &&
 
       content[key].trim().length > 0
 
@@ -572,19 +432,314 @@
 
   }
 
-  function getDocumentLanguage() {
+  function readBuilderFields() {
 
-    return normalizeLanguage(
+    const content = {};
 
-      getPreview()?.getDocumentLanguage?.() ||
+    let found = false;
 
-      getLanguage()
+    Object.entries(FIELD_MAP).forEach(
+
+      ([key, id]) => {
+
+        const field = document.getElementById(id);
+
+        if (field) {
+
+          found = true;
+
+          content[key] = String(
+
+            field.value || ""
+
+          ).trim();
+
+        }
+
+      }
+
+    );
+
+    return {
+
+      found,
+
+      content: normalizeContent(content)
+
+    };
+
+  }
+
+  function readResume() {
+
+    /*
+     * The actual builder fields are the
+     * primary source of truth.
+     */
+
+    const builder = readBuilderFields();
+
+    if (builder.found) {
+
+      return builder.content;
+
+    }
+
+    if (typeof customReader === "function") {
+
+      try {
+
+        const content = normalizeContent(
+
+          customReader()
+
+        );
+
+        if (hasContent(content)) {
+
+          return content;
+
+        }
+
+      } catch {}
+
+    }
+
+    try {
+
+      return normalizeContent(
+
+        window.WorknelyLivePreview
+
+          ?.readResume?.() || {}
+
+      );
+
+    } catch {
+
+      return normalizeContent();
+
+    }
+
+  }
+
+  /* PDF LIBRARY */
+
+  function loadPDFLibrary() {
+
+    if (window.jspdf?.jsPDF) {
+
+      return Promise.resolve(
+
+        window.jspdf.jsPDF
+
+      );
+
+    }
+
+    if (libraryPromise) {
+
+      return libraryPromise;
+
+    }
+
+    libraryPromise = new Promise(
+
+      (resolve, reject) => {
+
+        const script = document.createElement(
+
+          "script"
+
+        );
+
+        script.src = PDF_LIBRARY;
+
+        script.async = true;
+
+        script.crossOrigin = "anonymous";
+
+        script.onload = () => {
+
+          if (window.jspdf?.jsPDF) {
+
+            resolve(window.jspdf.jsPDF);
+
+          } else {
+
+            script.remove();
+
+            reject(new Error(
+
+              "PDF library unavailable"
+
+            ));
+
+          }
+
+        };
+
+        script.onerror = () => {
+
+          script.remove();
+
+          reject(new Error(
+
+            "PDF library loading failed"
+
+          ));
+
+        };
+
+        document.head.appendChild(script);
+
+      }
+
+    ).catch(error => {
+
+      libraryPromise = null;
+
+      throw error;
+
+    });
+
+    return libraryPromise;
+
+  }
+
+  /* UNICODE FONT SUPPORT */
+
+  const FONT_BASE =
+
+    "https://cdn.jsdelivr.net/gh/notofonts/noto-fonts@main/hinted/ttf/NotoSans/";
+
+  function bufferToBase64(buffer) {
+
+    const bytes = new Uint8Array(buffer);
+
+    let binary = "";
+
+    const chunkSize = 8192;
+
+    for (
+
+      let i = 0;
+
+      i < bytes.length;
+
+      i += chunkSize
+
+    ) {
+
+      binary += String.fromCharCode(
+
+        ...bytes.subarray(i, i + chunkSize)
+
+      );
+
+    }
+
+    return btoa(binary);
+
+  }
+
+  async function fetchFont(filename) {
+
+    const response = await fetch(
+
+      FONT_BASE + filename,
+
+      {
+
+        credentials: "omit",
+
+        referrerPolicy: "no-referrer"
+
+      }
+
+    );
+
+    if (!response.ok) {
+
+      throw new Error("Font loading failed");
+
+    }
+
+    return bufferToBase64(
+
+      await response.arrayBuffer()
 
     );
 
   }
 
-  /* EXPORT INTERFACE STYLES */
+  function loadFonts() {
+
+    if (fontPromise) {
+
+      return fontPromise;
+
+    }
+
+    fontPromise = Promise.all([
+
+      fetchFont("NotoSans-Regular.ttf"),
+
+      fetchFont("NotoSans-Bold.ttf")
+
+    ]).catch(error => {
+
+      fontPromise = null;
+
+      throw error;
+
+    });
+
+    return fontPromise;
+
+  }
+
+  function registerFonts(pdf, fonts) {
+
+    pdf.addFileToVFS(
+
+      "NotoSans-Regular.ttf",
+
+      fonts[0]
+
+    );
+
+    pdf.addFont(
+
+      "NotoSans-Regular.ttf",
+
+      "WorknelySans",
+
+      "normal"
+
+    );
+
+    pdf.addFileToVFS(
+
+      "NotoSans-Bold.ttf",
+
+      fonts[1]
+
+    );
+
+    pdf.addFont(
+
+      "NotoSans-Bold.ttf",
+
+      "WorknelySans",
+
+      "bold"
+
+    );
+
+  }
+
+  /* INTERFACE STYLES */
 
   const CSS = `
 
@@ -600,7 +755,7 @@
       padding:18px;
       border:1px solid #e9e3f5;
       border-radius:16px;
-      background:#ffffff;
+      background:#fff;
       color:#241442;
       font-family:Inter,-apple-system,
         BlinkMacSystemFont,"Segoe UI",sans-serif;
@@ -613,20 +768,19 @@
 
     .wn-pdf-overline {
       display:block;
-      margin:0 0 7px;
+      margin-bottom:7px;
       color:#5424ff;
-      font-size:10px;
+      font-size:11px;
       font-weight:800;
       letter-spacing:1.4px;
     }
 
     .wn-pdf-export h2 {
       margin:0 0 8px;
-      color:#241442;
       font-size:clamp(22px,4vw,30px);
-      font-weight:800;
       line-height:1.2;
-      letter-spacing:-.6px;
+      font-weight:800;
+      color:#241442;
     }
 
     .wn-pdf-description {
@@ -640,7 +794,7 @@
       display:grid;
       grid-template-columns:1fr 1fr;
       gap:12px;
-      margin:0 0 16px;
+      margin-bottom:16px;
     }
 
     .wn-pdf-field {
@@ -649,7 +803,7 @@
 
     .wn-pdf-field label {
       display:block;
-      margin:0 0 6px;
+      margin-bottom:6px;
       color:#625b71;
       font-size:12px;
       font-weight:700;
@@ -665,7 +819,7 @@
       padding:10px;
       border:1px solid #e1daef;
       border-radius:9px;
-      background:#ffffff;
+      background:#fff;
       color:#241442;
       font:inherit;
       font-size:16px;
@@ -675,8 +829,8 @@
       display:grid;
       grid-template-columns:
         repeat(3,minmax(0,1fr));
-      gap:10px;
-      margin:0 0 16px;
+      gap:12px;
+      margin-bottom:16px;
       padding:14px;
       border:1px solid #eee9f7;
       border-radius:12px;
@@ -685,17 +839,17 @@
 
     .wn-pdf-detail-label {
       display:block;
-      margin:0 0 6px;
+      margin-bottom:6px;
       color:#706780;
-      font-size:10px;
+      font-size:11px;
       font-weight:600;
     }
 
     .wn-pdf-detail-value {
       display:block;
-      color:#241442;
-      font-size:12px;
+      font-size:13px;
       font-weight:750;
+      color:#241442;
       overflow-wrap:anywhere;
     }
 
@@ -720,7 +874,7 @@
       background:linear-gradient(
         120deg,#5424ff,#7134e9
       );
-      color:#ffffff;
+      color:#fff;
       font:inherit;
       font-size:14px;
       font-weight:800;
@@ -729,15 +883,15 @@
       touch-action:manipulation;
     }
 
-    .wn-pdf-button:disabled {
-      opacity:.5;
+    .wn-pdf-export .wn-pdf-button:disabled {
+      opacity:.55;
       cursor:not-allowed;
     }
 
     .wn-pdf-status {
       margin:12px 0 0;
-      color:#625b71;
-      font-size:12px;
+      color:#08784c;
+      font-size:13px;
       line-height:1.5;
     }
 
@@ -752,7 +906,42 @@
       line-height:1.6;
     }
 
+    .wn-pdf-file-actions {
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:8px;
+      margin-top:12px;
+    }
+
+    .wn-pdf-file-actions a,
+    .wn-pdf-file-actions button {
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      min-height:46px;
+      padding:10px 12px;
+      border:1px solid #e1d7ff;
+      border-radius:10px;
+      background:#f3efff;
+      color:#5424ff;
+      text-align:center;
+      text-decoration:none;
+      font:inherit;
+      font-size:13px;
+      font-weight:750;
+      cursor:pointer;
+    }
+
+    .wn-pdf-file-actions
+    [data-wn-pdf-share] {
+      grid-column:1/-1;
+      background:#5424ff;
+      color:#fff;
+      border-color:#5424ff;
+    }
+
     .wn-pdf-export button:focus-visible,
+    .wn-pdf-export a:focus-visible,
     .wn-pdf-export input:focus-visible,
     .wn-pdf-export select:focus-visible {
       outline:3px solid #5424ff;
@@ -765,10 +954,7 @@
         padding:12px;
       }
 
-      .wn-pdf-settings {
-        grid-template-columns:1fr;
-      }
-
+      .wn-pdf-settings,
       .wn-pdf-details {
         grid-template-columns:1fr;
       }
@@ -793,7 +979,11 @@
 
     }
 
-    const style = document.createElement("style");
+    const style = document.createElement(
+
+      "style"
+
+    );
 
     style.id = STYLE_ID;
 
@@ -803,14 +993,16 @@
 
   }
 
-  /* EXPORT STATUS */
+  /* STATUS */
 
   function setStatus(key = "") {
 
     statusKey = key;
 
     const status = root?.querySelector(
+
       "[data-wn-pdf-status]"
+
     );
 
     if (!status) return;
@@ -825,11 +1017,15 @@
 
       "unavailable",
 
-      "popup",
+      "failed",
 
-      "failed"
+      "shareFailed"
 
-    ].includes(key) ? "error" : "info";
+    ].includes(key)
+
+      ? "error"
+
+      : "info";
 
   }
 
@@ -838,7 +1034,9 @@
     exporting = Boolean(value);
 
     const button = root?.querySelector(
+
       "[data-wn-pdf-export]"
+
     );
 
     if (!button) return;
@@ -861,541 +1059,603 @@
 
   }
 
-  /* DOCUMENT STYLES */
+  /* PDF DOCUMENT GENERATION */
 
-  function getPrintCSS(format) {
+  function createPDF(
 
-    const selected = FORMATS[format] || FORMATS.a4;
+    JsPDF,
 
-    const width = format === "letter"
-
-      ? "215.9mm"
-
-      : "210mm";
-
-    return `
-
-      @page {
-
-        size:${selected.css};
-
-        margin:14mm;
-
-      }
-
-      html,body {
-
-        margin:0;
-
-        padding:0;
-
-        background:#efedf4;
-
-        color:#222222;
-
-        font-family:Arial,Helvetica,sans-serif;
-
-      }
-
-      *,*::before,*::after {
-
-        box-sizing:border-box;
-
-      }
-
-      .wn-print-toolbar {
-
-        position:sticky;
-
-        top:0;
-
-        z-index:10;
-
-        padding:16px;
-
-        background:#ffffff;
-
-        border-bottom:1px solid #e9e3f5;
-
-      }
-
-      .wn-print-toolbar h1 {
-
-        margin:0 0 8px;
-
-        color:#5424ff;
-
-        font-size:20px;
-
-      }
-
-      .wn-print-toolbar p {
-
-        margin:0 0 12px;
-
-        color:#625b71;
-
-        font-size:13px;
-
-        line-height:1.5;
-
-      }
-
-      .wn-print-actions {
-
-        display:flex;
-
-        flex-wrap:wrap;
-
-        gap:8px;
-
-      }
-
-      .wn-print-actions button {
-
-        min-height:44px;
-
-        padding:12px 18px;
-
-        border:0;
-
-        border-radius:9px;
-
-        background:#5424ff;
-
-        color:#ffffff;
-
-        font-size:14px;
-
-        font-weight:700;
-
-        cursor:pointer;
-
-      }
-
-      .wn-print-actions .wn-print-close {
-
-        background:#f1edf9;
-
-        color:#5424ff;
-
-      }
-
-      .wn-print-page {
-
-        width:${width};
-
-        max-width:100%;
-
-        margin:20px auto;
-
-        padding:14mm;
-
-        background:#ffffff;
-
-        box-shadow:0 4px 24px rgba(0,0,0,.08);
-
-      }
-
-      .wn-print-page .wn-tpl-resume {
-
-        width:100%!important;
-
-        max-width:none!important;
-
-        min-height:0!important;
-
-        height:auto!important;
-
-        margin:0!important;
-
-        padding:0!important;
-
-        box-shadow:none!important;
-
-        overflow:visible!important;
-
-        transform:none!important;
-
-        overflow-wrap:anywhere;
-
-      }
-
-      .wn-print-page h1,
-
-      .wn-print-page h2,
-
-      .wn-print-page h3 {
-
-        break-after:avoid;
-
-        page-break-after:avoid;
-
-      }
-
-      .wn-print-page p,
-
-      .wn-print-page li {
-
-        orphans:3;
-
-        widows:3;
-
-      }
-
-      @media(max-width:600px) {
-
-        .wn-print-page {
-
-          margin:8px auto;
-
-          padding:18px;
-
-        }
-
-      }
-
-      @media print {
-
-        html,body {
-
-          background:#ffffff!important;
-
-          width:auto!important;
-
-          height:auto!important;
-
-          overflow:visible!important;
-
-          -webkit-print-color-adjust:exact;
-
-          print-color-adjust:exact;
-
-        }
-
-        .wn-print-toolbar {
-
-          display:none!important;
-
-        }
-
-        .wn-print-page {
-
-          width:auto!important;
-
-          max-width:none!important;
-
-          margin:0!important;
-
-          padding:0!important;
-
-          box-shadow:none!important;
-
-          overflow:visible!important;
-
-        }
-
-        .wn-print-page .wn-tpl-resume {
-
-          border:0!important;
-
-          border-radius:0!important;
-
-          min-height:0!important;
-
-          height:auto!important;
-
-          overflow:visible!important;
-
-        }
-
-        .wn-print-page .wn-tpl-columns {
-
-          display:grid;
-
-          grid-template-columns:
-
-            minmax(0,1.8fr)
-
-            minmax(0,1fr);
-
-        }
-
-      }
-
-    `;
-
-  }
-
-  /* RENDER RESUME INTO A TEMPORARY ELEMENT */
-
-  function prepareResume(content, options) {
-
-    const engine = getEngine();
-
-    const target = document.createElement("div");
-
-    engine.renderInto(
-
-      target,
-
-      content,
-
-      {
-
-        templateId:options.templateId,
-
-        accentColor:options.accentColor,
-
-        documentLanguage:options.documentLanguage
-
-      }
-
-    );
-
-    if (!target.children.length) {
-
-      throw new Error("Empty document");
-
-    }
-
-    return target;
-
-  }
-
-  /* COPY TRUSTED TEMPLATE STYLES */
-
-  function copyTemplateStyles(targetDocument) {
-
-    const styles = document.querySelectorAll(
-      "style"
-    );
-
-    styles.forEach(sourceStyle => {
-
-      const css = sourceStyle.textContent || "";
-
-      const id = sourceStyle.id || "";
-
-      const isTemplateStyle =
-
-        /wn-tpl-/.test(css) &&
-
-        !/preview|gallery|color-customization|pdf-export/.test(id);
-
-      if (!isTemplateStyle) return;
-
-      const style = targetDocument.createElement(
-        "style"
-      );
-
-      style.textContent = css;
-
-      targetDocument.head.appendChild(style);
-
-    });
-
-  }
-
-  /* DOCUMENT WINDOW */
-
-  function buildPrintWindow(
-
-    printWindow,
+    fonts,
 
     content,
 
-    options
+    settings
 
   ) {
 
-    const prepared = prepareResume(
+    const pdf = new JsPDF({
 
-      content,
+      orientation: "portrait",
 
-      options
+      unit: "mm",
 
-    );
+      format: settings.paperFormat,
 
-    const doc = printWindow.document;
+      compress: true,
 
-    doc.open();
+      putOnlyUsedFonts: true
 
-    doc.write(`
+    });
 
-      <!DOCTYPE html>
+    registerFonts(pdf, fonts);
 
-      <html lang="${options.documentLanguage}">
+    const width = pdf.internal.pageSize
 
-        <head>
+      .getWidth();
 
-          <meta charset="UTF-8">
+    const height = pdf.internal.pageSize
 
-          <meta
+      .getHeight();
 
-            name="viewport"
+    const margin = 15;
 
-            content="width=device-width,initial-scale=1"
+    const bodyWidth = width - margin * 2;
 
-          >
+    const bottom = height - 16;
 
-          <meta
+    const template = settings.templateId;
 
-            name="robots"
+    const accent = settings.accentColor;
 
-            content="noindex,nofollow"
+    const isATS = template === "ats";
 
-          >
+    const isClassic = template === "classic";
 
-          <title>
+    const isExecutive = template === "executive";
 
-            ${escapeHTML(options.filename)}
+    const isModern = template === "modern";
 
-          </title>
+    const isCreative = template === "creative";
 
-        </head>
+    const headingColor = isATS
 
-        <body>
+      ? "#242424"
 
-          <header
+      : accent;
 
-            class="wn-print-toolbar"
+    let y = margin;
 
-            lang="${getLanguage()}"
+    let pageNumber = 1;
 
-          >
+    pdf.setProperties({
 
-            <h1>Worknely</h1>
+      title: settings.filename,
 
-            <p>
+      author: content.fullName || "",
 
-              ${escapeHTML(t("instructions"))}
+      subject: content.professionalTitle || "",
 
-            </p>
+      creator: "Worknely"
 
-            <p>
+    });
 
-              ${escapeHTML(t("mobile"))}
+    function setFont(
 
-            </p>
+      size,
 
-            <div class="wn-print-actions">
+      weight = "normal",
 
-              <button
+      color = "#242424"
 
-                type="button"
+    ) {
 
-                id="wnPrintDocument"
+      pdf.setFont(
 
-              >
+        "WorknelySans",
 
-                ${escapeHTML(t("print"))}
+        weight
 
-              </button>
+      );
 
-              <button
+      pdf.setFontSize(size);
 
-                type="button"
+      pdf.setTextColor(color);
 
-                id="wnCloseDocument"
+    }
 
-                class="wn-print-close"
+    function drawPageDecoration() {
 
-              >
+      if (isModern) {
 
-                ${escapeHTML(t("close"))}
+        pdf.setFillColor(accent);
 
-              </button>
+        pdf.rect(
 
-            </div>
-
-          </header>
-
-          <main
-
-            class="wn-print-page"
-
-            id="wnPrintPage"
-
-          ></main>
-
-        </body>
-
-      </html>
-
-    `);
-
-    doc.close();
-
-    copyTemplateStyles(doc);
-
-    const style = doc.createElement("style");
-
-    style.textContent = getPrintCSS(
-
-      options.paperFormat
-
-    );
-
-    doc.head.appendChild(style);
-
-    const page = doc.getElementById(
-
-      "wnPrintPage"
-
-    );
-
-    Array.from(prepared.childNodes)
-
-      .forEach(node => {
-
-        page.appendChild(
-
-          doc.importNode(node,true)
+          0, 0, width, 4, "F"
 
         );
 
+      }
+
+      if (isCreative) {
+
+        pdf.setFillColor(accent);
+
+        pdf.rect(
+
+          0, 0, 4, height, "F"
+
+        );
+
+      }
+
+    }
+
+    function newPage() {
+
+      pdf.addPage();
+
+      pageNumber += 1;
+
+      drawPageDecoration();
+
+      y = margin;
+
+    }
+
+    function ensureSpace(required) {
+
+      if (y + required > bottom) {
+
+        newPage();
+
+      }
+
+    }
+
+    function writeText(
+
+      value,
+
+      options = {}
+
+    ) {
+
+      const text = String(value || "")
+
+        .replace(/\r\n/g, "\n")
+
+        .replace(/\r/g, "\n")
+
+        .replace(/\t/g, "    ")
+
+        .trim();
+
+      if (!text) return;
+
+      const size = options.size || 10;
+
+      const lineHeight =
+
+        options.lineHeight || 4.8;
+
+      const align = options.align || "left";
+
+      const weight = options.weight || "normal";
+
+      const color = options.color || "#242424";
+
+      const paragraphs = text.split("\n");
+
+      paragraphs.forEach(paragraph => {
+
+        if (!paragraph.trim()) {
+
+          ensureSpace(2.5);
+
+          y += 2.5;
+
+          return;
+
+        }
+
+        setFont(size, weight, color);
+
+        const lines = pdf.splitTextToSize(
+
+          paragraph.trim(),
+
+          bodyWidth
+
+        );
+
+        lines.forEach(line => {
+
+          ensureSpace(lineHeight);
+
+          setFont(size, weight, color);
+
+          const x = align === "center"
+
+            ? width / 2
+
+            : margin;
+
+          pdf.text(
+
+            line,
+
+            x,
+
+            y,
+
+            { align }
+
+          );
+
+          y += lineHeight;
+
+        });
+
       });
 
-    doc.getElementById(
+    }
 
-      "wnPrintDocument"
+    function divider(color = "#d5d5d5") {
 
-    ).addEventListener("click",() => {
+      pdf.setDrawColor(color);
 
-      printWindow.focus();
+      pdf.setLineWidth(0.3);
 
-      printWindow.print();
+      pdf.line(
 
-    });
+        margin,
 
-    doc.getElementById(
+        y,
 
-      "wnCloseDocument"
+        width - margin,
 
-    ).addEventListener("click",() => {
+        y
 
-      printWindow.close();
+      );
 
-    });
+    }
 
-    try {
+    function section(key, value) {
 
-      printWindow.opener = null;
+      if (!String(value || "").trim()) {
 
-    } catch {}
+        return;
 
-    return true;
+      }
+
+      ensureSpace(19);
+
+      y += 4;
+
+      writeText(
+
+        t(key, settings.documentLanguage)
+
+          .toLocaleUpperCase(
+
+            settings.documentLanguage
+
+          ),
+
+        {
+
+          size: 11,
+
+          weight: "bold",
+
+          color: headingColor,
+
+          lineHeight: 5.5
+
+        }
+
+      );
+
+      divider(
+
+        isATS ? "#bcbcbc" : accent
+
+      );
+
+      y += 5;
+
+      writeText(value, {
+
+        size: 10,
+
+        lineHeight: 4.8
+
+      });
+
+      y += 2;
+
+    }
+
+    drawPageDecoration();
+
+    /* HEADER */
+
+    if (isExecutive) {
+
+      pdf.setFillColor(accent);
+
+      pdf.rect(
+
+        margin,
+
+        y - 4,
+
+        2,
+
+        18,
+
+        "F"
+
+      );
+
+      y += 3;
+
+    }
+
+    writeText(
+
+      content.fullName || settings.filename,
+
+      {
+
+        size: isClassic ? 23 : 25,
+
+        weight: "bold",
+
+        color: isATS
+
+          ? "#171717"
+
+          : accent,
+
+        align: isClassic
+
+          ? "center"
+
+          : "left",
+
+        lineHeight: 10
+
+      }
+
+    );
+
+    if (content.professionalTitle) {
+
+      writeText(
+
+        content.professionalTitle,
+
+        {
+
+          size: 12,
+
+          weight: "bold",
+
+          color: "#343434",
+
+          align: isClassic
+
+            ? "center"
+
+            : "left",
+
+          lineHeight: 6
+
+        }
+
+      );
+
+    }
+
+    y += 2;
+
+    if (content.contact) {
+
+      writeText(content.contact, {
+
+        size: 9,
+
+        color: "#505050",
+
+        align: isClassic
+
+          ? "center"
+
+          : "left",
+
+        lineHeight: 4.5
+
+      });
+
+    }
+
+    y += 3;
+
+    divider(
+
+      isATS ? "#777777" : accent
+
+    );
+
+    y += 4;
+
+    /* DOCUMENT SECTIONS */
+
+    section("summary", content.summary);
+
+    section("experience", content.experience);
+
+    section("education", content.education);
+
+    section("skills", content.skills);
+
+    return pdf;
 
   }
 
-  /* PROFESSIONAL EXPORT */
+  /* PREPARED FILE MANAGEMENT */
 
-  function exportResume(options = {}) {
+  function clearPreparedFile() {
+
+    if (preparedURL) {
+
+      URL.revokeObjectURL(preparedURL);
+
+    }
+
+    preparedURL = null;
+
+    preparedFile = null;
+
+    updateFileActions();
+
+  }
+
+  function updateFileActions() {
+
+    if (!root) return;
+
+    const actions = root.querySelector(
+
+      "[data-wn-pdf-actions]"
+
+    );
+
+    if (!actions) return;
+
+    actions.hidden = !preparedFile;
+
+    const download = actions.querySelector(
+
+      "[data-wn-pdf-download]"
+
+    );
+
+    const open = actions.querySelector(
+
+      "[data-wn-pdf-open]"
+
+    );
+
+    const share = actions.querySelector(
+
+      "[data-wn-pdf-share]"
+
+    );
+
+    if (!preparedFile || !preparedURL) {
+
+      download?.removeAttribute("href");
+
+      open?.removeAttribute("href");
+
+      return;
+
+    }
+
+    download.href = preparedURL;
+
+    download.download = preparedFile.name;
+
+    open.href = preparedURL;
+
+    if (share) {
+
+      let canShare = false;
+
+      try {
+
+        canShare = Boolean(
+
+          navigator.share &&
+
+          navigator.canShare?.({
+
+            files: [preparedFile]
+
+          })
+
+        );
+
+      } catch {}
+
+      share.hidden = !canShare;
+
+    }
+
+  }
+
+  /* NATIVE iOS SHARING */
+
+  async function sharePDF() {
+
+    if (!preparedFile) return;
+
+    try {
+
+      if (
+
+        !navigator.share ||
+
+        !navigator.canShare?.({
+
+          files: [preparedFile]
+
+        })
+
+      ) {
+
+        setStatus("shareFailed");
+
+        return;
+
+      }
+
+      await navigator.share({
+
+        files: [preparedFile],
+
+        title: preparedFile.name
+
+      });
+
+    } catch (error) {
+
+      if (error?.name !== "AbortError") {
+
+        setStatus("shareFailed");
+
+      }
+
+    }
+
+  }
+
+  /* EXPORT API */
+
+  async function exportResume(options = {}) {
 
     if (exporting) {
 
-      return {ok:false,reason:"busy"};
+      return {
+
+        ok: false,
+
+        reason: "busy"
+
+      };
 
     }
 
@@ -1405,9 +1665,9 @@
 
       return {
 
-        ok:false,
+        ok: false,
 
-        reason:"unavailable"
+        reason: "unavailable"
 
       };
 
@@ -1419,19 +1679,21 @@
 
     const content = options.content
 
-      ? engine.normalizeContent(options.content)
+      ? normalizeContent(options.content)
 
       : readResume();
 
     if (!hasContent(content)) {
 
+      clearPreparedFile();
+
       setStatus("empty");
 
       return {
 
-        ok:false,
+        ok: false,
 
-        reason:"empty"
+        reason: "empty"
 
       };
 
@@ -1447,25 +1709,67 @@
 
       options.paperFormat || paperFormat;
 
+    const requestedTemplate =
+
+      options.templateId || state.templateId;
+
+    const validTemplates = [
+
+      "ats",
+
+      "classic",
+
+      "executive",
+
+      "modern",
+
+      "creative"
+
+    ];
+
+    const templateId = validTemplates.includes(
+
+      requestedTemplate
+
+    )
+
+      ? requestedTemplate
+
+      : "ats";
+
+    const template = engine.getTemplate(
+
+      templateId
+
+    );
+
     const settings = {
 
-      templateId:
+      templateId,
 
-        state.templateId,
+      accentColor: normalizeColor(
 
-      accentColor:
+        options.accentColor ||
 
-        normalizeColor(state.accentColor),
+        (
 
-      documentLanguage:
+          templateId === state.templateId
 
-        normalizeLanguage(
+            ? state.accentColor
 
-          options.documentLanguage ||
+            : template?.accent
 
-          getDocumentLanguage()
+        )
 
-        ),
+      ),
+
+      documentLanguage: normalizeLanguage(
+
+        options.documentLanguage ||
+
+        getDocumentLanguage()
+
+      ),
 
       paperFormat:
 
@@ -1481,66 +1785,99 @@
 
           : "a4",
 
-      filename:
+      filename: normalizeFilename(
 
-        normalizeFilename(
+        options.filename ||
 
-          options.filename ||
+        filenameInput?.value ||
 
-          filenameInput?.value ||
+        content.fullName ||
 
-          content.fullName ||
+        t("defaultName")
 
-          t("defaultName")
-
-        )
+      )
 
     };
+
+    clearPreparedFile();
 
     setBusy(true);
 
     setStatus("");
 
-    /*
-     * Open synchronously during the user's
-     * click to reduce mobile popup blocking.
-     */
-
-    let printWindow = null;
-
     try {
 
-      printWindow = window.open(
+      const [JsPDF, fonts] =
 
-        "",
+        await Promise.all([
 
-        "_blank"
+          loadPDFLibrary(),
 
-      );
+          loadFonts()
 
-      if (!printWindow) {
+        ]);
 
-        setStatus("popup");
+      const pdf = createPDF(
 
-        return {
+        JsPDF,
 
-          ok:false,
-
-          reason:"popup"
-
-        };
-
-      }
-
-      buildPrintWindow(
-
-        printWindow,
+        fonts,
 
         content,
 
         settings
 
       );
+
+      const blob = pdf.output("blob");
+
+      const filename =
+
+        settings.filename + ".pdf";
+
+      const file = new File(
+
+        [blob],
+
+        filename,
+
+        {
+
+          type: "application/pdf"
+
+        }
+
+      );
+
+      /*
+       * Dashboard and other consumers
+       * may request a file without mounting
+       * the export interface.
+       */
+
+      if (options.returnFile === true) {
+
+        return {
+
+          ok: true,
+
+          file,
+
+          blob,
+
+          filename,
+
+          paperFormat: settings.paperFormat
+
+        };
+
+      }
+
+      preparedFile = file;
+
+      preparedURL = URL.createObjectURL(file);
+
+      updateFileActions();
 
       setStatus("ready");
 
@@ -1552,13 +1889,13 @@
 
           {
 
-            detail:{
+            detail: {
 
-              version:VERSION,
+              version: VERSION,
 
-              templateId:settings.templateId,
+              templateId: settings.templateId,
 
-              paperFormat:settings.paperFormat,
+              paperFormat: settings.paperFormat,
 
               documentLanguage:
 
@@ -1574,27 +1911,35 @@
 
       return {
 
-        ok:true,
+        ok: true,
 
-        paperFormat:settings.paperFormat
+        file,
+
+        blob,
+
+        filename,
+
+        paperFormat: settings.paperFormat
 
       };
 
-    } catch {
+    } catch (error) {
 
-      try {
+      console.warn(
 
-        printWindow?.close();
+        "Worknely PDF generation failed:",
 
-      } catch {}
+        error?.name || "Error"
+
+      );
 
       setStatus("failed");
 
       return {
 
-        ok:false,
+        ok: false,
 
-        reason:"failed"
+        reason: "failed"
 
       };
 
@@ -1606,7 +1951,7 @@
 
   }
 
-  /* UPDATE DESIGN INFORMATION */
+  /* DESIGN SYNCHRONIZATION */
 
   function refresh() {
 
@@ -1692,13 +2037,25 @@
 
     if (filename && !filename.value.trim()) {
 
-      const content = readResume();
-
       filename.placeholder = normalizeFilename(
 
-        content.fullName || t("defaultName")
+        readResume().fullName ||
+
+        t("defaultName")
 
       );
+
+    }
+
+    if (
+
+      statusKey === "empty" &&
+
+      hasContent(readResume())
+
+    ) {
+
+      setStatus("");
 
     }
 
@@ -1746,11 +2103,7 @@
 
       </span>
 
-      <h2>
-
-        ${escapeHTML(t("title"))}
-
-      </h2>
+      <h2>${escapeHTML(t("title"))}</h2>
 
       <p class="wn-pdf-description">
 
@@ -1858,7 +2211,11 @@
 
             ></span>
 
-            <span data-wn-pdf-color-value></span>
+            <span
+
+              data-wn-pdf-color-value
+
+            ></span>
 
           </strong>
 
@@ -1912,6 +2269,50 @@
 
       ></p>
 
+      <div
+
+        class="wn-pdf-file-actions"
+
+        data-wn-pdf-actions
+
+        hidden
+
+      >
+
+        <button
+
+          type="button"
+
+          data-wn-pdf-share
+
+        >
+
+          ${escapeHTML(t("share"))}
+
+        </button>
+
+        <a data-wn-pdf-download>
+
+          ${escapeHTML(t("download"))}
+
+        </a>
+
+        <a
+
+          data-wn-pdf-open
+
+          target="_blank"
+
+          rel="noopener noreferrer"
+
+        >
+
+          ${escapeHTML(t("open"))}
+
+        </a>
+
+      </div>
+
       <p class="wn-pdf-notice">
 
         ${escapeHTML(t("privacy"))}
@@ -1940,6 +2341,8 @@
 
     refresh();
 
+    updateFileActions();
+
     setStatus(statusKey);
 
     setBusy(exporting);
@@ -1965,6 +2368,14 @@
     ) {
 
       return false;
+
+    }
+
+    if (paperFormat !== format) {
+
+      clearPreparedFile();
+
+      setStatus("");
 
     }
 
@@ -1996,15 +2407,39 @@
 
     }
 
-    const button = event.target.closest(
+    const exportButton = event.target.closest(
 
       "[data-wn-pdf-export]"
 
     );
 
-    if (button && root.contains(button)) {
+    const shareButton = event.target.closest(
+
+      "[data-wn-pdf-share]"
+
+    );
+
+    if (
+
+      exportButton &&
+
+      root.contains(exportButton)
+
+    ) {
 
       exportResume();
+
+    }
+
+    if (
+
+      shareButton &&
+
+      root.contains(shareButton)
+
+    ) {
+
+      sharePDF();
 
     }
 
@@ -2028,7 +2463,27 @@
 
   }
 
-  /* MOUNTING API */
+  function handleInput(event) {
+
+    if (
+
+      event.target.matches?.(
+
+        "[data-wn-pdf-filename]"
+
+      )
+
+    ) {
+
+      clearPreparedFile();
+
+      setStatus("");
+
+    }
+
+  }
+
+  /* MOUNTING */
 
   function mount(
 
@@ -2072,7 +2527,7 @@
 
       root.classList.add("wn-pdf-export");
 
-      root.setAttribute("role","region");
+      root.setAttribute("role", "region");
 
       root.addEventListener(
 
@@ -2090,9 +2545,21 @@
 
       );
 
+      root.addEventListener(
+
+        "input",
+
+        handleInput
+
+      );
+
     }
 
-    if (typeof options.readContent === "function") {
+    if (
+
+      typeof options.readContent === "function"
+
+    ) {
 
       customReader = options.readContent;
 
@@ -2110,9 +2577,9 @@
 
           {
 
-            detail:{
+            detail: {
 
-              version:VERSION
+              version: VERSION
 
             }
 
@@ -2128,11 +2595,11 @@
 
   }
 
-  /* CLEANUP */
-
   function unmount() {
 
     if (!root) return false;
+
+    clearPreparedFile();
 
     root.removeEventListener(
 
@@ -2147,6 +2614,14 @@
       "change",
 
       handleChange
+
+    );
+
+    root.removeEventListener(
+
+      "input",
+
+      handleInput
 
     );
 
@@ -2168,7 +2643,7 @@
 
   }
 
-  /* INTERNATIONAL SYNCHRONIZATION */
+  /* SYNCHRONIZATION EVENTS */
 
   function refreshLanguage() {
 
@@ -2183,6 +2658,16 @@
       renderInterface();
 
     }
+
+  }
+
+  function invalidateDocument() {
+
+    clearPreparedFile();
+
+    setStatus("");
+
+    refresh();
 
   }
 
@@ -2206,7 +2691,7 @@
 
     "worknely:templatechange",
 
-    refresh
+    invalidateDocument
 
   );
 
@@ -2214,7 +2699,23 @@
 
     "worknely:resumechange",
 
-    refresh
+    invalidateDocument
+
+  );
+
+  document.addEventListener(
+
+    "worknely:designrestored",
+
+    invalidateDocument
+
+  );
+
+  document.addEventListener(
+
+    "worknely:designcontextcleared",
+
+    invalidateDocument
 
   );
 
@@ -2223,6 +2724,28 @@
     "worknely:previewready",
 
     refresh
+
+  );
+
+  document.addEventListener(
+
+    "input",
+
+    event => {
+
+      if (
+
+        Object.values(FIELD_MAP)
+
+          .includes(event.target?.id)
+
+      ) {
+
+        invalidateDocument();
+
+      }
+
+    }
 
   );
 
@@ -2242,7 +2765,11 @@
 
       ) {
 
-        queueMicrotask(refresh);
+        queueMicrotask(
+
+          invalidateDocument
+
+        );
 
       }
 
@@ -2304,11 +2831,11 @@
 
   );
 
-  /* PUBLIC PDF EXPORT API */
+  /* PUBLIC API */
 
   window.WorknelyPDFExport = Object.freeze({
 
-    version:VERSION,
+    version: VERSION,
 
     mount,
 
@@ -2322,19 +2849,27 @@
 
     normalizeFilename,
 
-    formats:FORMATS,
+    readResume,
 
-    getState:() => ({
+    clearPreparedFile,
 
-      version:VERSION,
+    formats: FORMATS,
 
-      mounted:Boolean(root),
+    isMounted: () => Boolean(root),
+
+    getState: () => ({
+
+      version: VERSION,
+
+      mounted: Boolean(root),
 
       paperFormat,
 
       exporting,
 
-      documentLanguage:getDocumentLanguage()
+      documentLanguage: getDocumentLanguage(),
+
+      fileReady: Boolean(preparedFile)
 
     })
 
@@ -2348,9 +2883,11 @@
 
     console.info(
 
-      "Worknely V" + VERSION +
+      "Worknely V" +
 
-      " Professional PDF Export Engine ready."
+      VERSION +
+
+      " Professional PDF Export ready."
 
     );
 
@@ -2364,7 +2901,7 @@
 
       initialize,
 
-      {once:true}
+      { once: true }
 
     );
 
@@ -2377,6 +2914,6 @@
 })();
 
 /*
- * END WORKNELY V7.16.5
- * PROFESSIONAL PDF EXPORT ENGINE
+ * END WORKNELY V7.16.11
+ * PROFESSIONAL PDF EXPORT RECOVERY
  */
