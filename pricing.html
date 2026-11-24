@@ -2,464 +2,1507 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#5424ff">
-<meta name="description" content="Compare Worknely Free, Pro and Premium memberships.">
+
+<meta name="viewport"
+      content="width=device-width,initial-scale=1">
+
+<meta name="theme-color"
+      content="#5424ff">
+
+<meta name="color-scheme"
+      content="light">
+
+<meta name="application-name"
+      content="Worknely">
+
+<meta name="description"
+      content="Compare Worknely Free, Pro and Premium memberships.">
+
 <title>Pricing & Membership | Worknely</title>
-<link rel="icon" type="image/svg+xml" href="worknely-favicon.svg">
+
+<link rel="icon"
+      type="image/svg+xml"
+      href="worknely-favicon.svg">
+
+<!-- WORKNELY V7.12 GLOBAL COMPACT DESIGN -->
+
+<link rel="stylesheet"
+      href="worknely-compact.css?v=7.12"
+      media="screen">
 
 <style>
+
+/*
+ * WORKNELY V7.12
+ * Compact Pricing & Membership Edition
+ *
+ * Mobile First
+ * Electric Purple Branding
+ * Compact Membership Cards
+ * Monthly / Yearly Pricing
+ * Future Monetization Ready
+ *
+ * No active payments.
+ * No active paid subscriptions.
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
 :root {
+
   --purple:#5424ff;
-  --pink:#e928c8;
+  --pink:#ff24a8;
   --ink:#241442;
-  --muted:#817994;
+  --muted:#706780;
   --border:#e9e3f5;
+  --surface:#ffffff;
+
+  --pricing-gradient:
+    linear-gradient(
+      105deg,
+      #5424ff,
+      #ff24a8
+    );
+
+  --pricing-radius:14px;
+  --pricing-button:40px;
+
 }
-* {box-sizing:border-box}
-body {
+
+* {
+
+  box-sizing:border-box;
+
+}
+
+html {
+
+  scroll-behavior:smooth;
+
+}
+
+body.wn-pricing-page {
+
   margin:0;
-  background:linear-gradient(180deg,#faf8ff,#fff 70%);
+  min-height:100vh;
+
+  background:linear-gradient(
+    180deg,
+    #faf8ff,
+    #ffffff 75%
+  );
+
   color:var(--ink);
-  font-family:Inter,-apple-system,BlinkMacSystemFont,
-    "Segoe UI",sans-serif;
+
+  font-family:Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+  -webkit-font-smoothing:antialiased;
+
 }
-a {text-decoration:none}
-button {font:inherit}
-button:focus-visible,a:focus-visible {
+
+[hidden] {
+
+  display:none !important;
+
+}
+
+a {
+
+  text-decoration:none;
+
+}
+
+button {
+
+  font:inherit;
+
+}
+
+button,
+a {
+
+  -webkit-tap-highlight-color:transparent;
+  touch-action:manipulation;
+
+}
+
+button:focus-visible,
+a:focus-visible {
+
   outline:3px solid var(--purple);
   outline-offset:3px;
+
 }
-.container {
+
+/* COMPACT PAGE CONTAINER */
+
+.wn-pricing-page .container {
+
+  width:100%;
   max-width:1140px;
-  margin:auto;
-  padding:0 20px;
+
+  margin:0 auto;
+  padding:0 18px;
+
 }
-header {
+
+/* COMPACT HEADER */
+
+.wn-pricing-page header {
+
   background:#fff;
-  border-bottom:1px solid var(--border);
+
+  border-bottom:
+    1px solid var(--border);
+
 }
-.header-inner {
-  min-height:72px;
+
+.wn-pricing-page .header-inner {
+
+  min-height:58px;
+
   display:flex;
   justify-content:space-between;
   align-items:center;
-  gap:12px;
+
+  gap:10px;
+
 }
-.brand {
-  display:flex;
+
+.wn-pricing-page .brand {
+
+  display:inline-flex;
   align-items:center;
-  gap:9px;
+
+  min-width:0;
+  gap:8px;
+
   color:var(--purple);
-  font-size:23px;
+
+  font-size:21px;
   font-weight:850;
+  line-height:1.2;
+
 }
-.brand img {width:34px;height:34px}
-.back {
+
+.wn-pricing-page .brand img {
+
+  width:34px;
+  height:34px;
+  flex-shrink:0;
+
+}
+
+.wn-pricing-page .back {
+
+  display:inline-flex;
+  align-items:center;
+
+  min-height:40px;
+
+  padding:8px 0;
+
   color:var(--purple);
-  font-size:13px;
+
+  font-size:12px;
   font-weight:750;
+  line-height:1.3;
+
 }
-.hero {
-  padding:48px 0 22px;
+
+/* COMPACT PRICING HERO */
+
+.wn-pricing-page .pricing-hero {
+
+  padding:30px 0 16px;
+
   text-align:center;
+
 }
-.eyebrow {
+
+.wn-pricing-page .eyebrow {
+
   color:var(--purple);
-  font-size:11px;
+
+  font-size:10px;
   font-weight:850;
-  letter-spacing:2px;
+  letter-spacing:1.6px;
+  line-height:1.4;
+
 }
-h1 {
+
+.wn-pricing-page h1 {
+
   max-width:740px;
-  margin:14px auto;
-  font-size:clamp(30px,5vw,49px);
+
+  margin:10px auto;
+
+  font-size:clamp(
+    29px,
+    4.5vw,
+    43px
+  );
+
+  font-weight:850;
   line-height:1.15;
-  letter-spacing:-1.4px;
+  letter-spacing:-1.2px;
+
 }
-.gradient {
-  background:linear-gradient(105deg,#5424ff,#e928c8);
+
+.wn-pricing-page .gradient {
+
+  background:var(--pricing-gradient);
+
   -webkit-background-clip:text;
   background-clip:text;
+
   color:transparent;
+
 }
-.hero p {
+
+.wn-pricing-page .pricing-hero p {
+
   max-width:570px;
+
   margin:0 auto;
+
   color:var(--muted);
-  font-size:15px;
-  line-height:1.6;
+
+  font-size:14px;
+  line-height:1.55;
+
 }
-.billing {
+
+/* COMPACT BILLING SELECTOR */
+
+.wn-pricing-page .billing {
+
   display:flex;
   justify-content:center;
   align-items:center;
   flex-wrap:wrap;
-  gap:10px;
-  margin-top:25px;
+
+  gap:8px;
+
+  margin-top:17px;
+
 }
-.billing-switch {
+
+.wn-pricing-page .billing-switch {
+
   display:flex;
-  padding:5px;
+  align-items:center;
+
+  padding:3px;
+
   border:1px solid var(--border);
   border-radius:100px;
+
   background:#fff;
+
 }
-.billing-switch button {
-  padding:10px 19px;
+
+.wn-pricing-page .billing-switch button {
+
+  min-height:36px;
+
+  padding:7px 15px;
+
   border:0;
   border-radius:100px;
+
   background:transparent;
+
   color:var(--muted);
-  font-size:13px;
-  font-weight:750;
-  cursor:pointer;
-}
-.billing-switch button[aria-pressed="true"] {
-  background:var(--purple);
-  color:#fff;
-}
-.savings {
-  padding:7px 11px;
-  border-radius:100px;
-  background:#f0eaff;
-  color:var(--purple);
+
   font-size:12px;
   font-weight:750;
+
+  cursor:pointer;
+
 }
-.plans {
+
+.wn-pricing-page
+.billing-switch
+button[aria-pressed="true"] {
+
+  background:var(--purple);
+
+  color:#fff;
+
+}
+
+.wn-pricing-page .savings {
+
+  padding:5px 9px;
+
+  border-radius:100px;
+
+  background:#f0eaff;
+
+  color:var(--purple);
+
+  font-size:11px;
+  font-weight:750;
+  line-height:1.4;
+
+}
+
+/* COMPACT MEMBERSHIP GRID */
+
+.wn-pricing-page .plans {
+
   display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:18px;
+
+  grid-template-columns:
+    repeat(3,minmax(0,1fr));
+
   align-items:stretch;
-  margin:32px auto 45px;
+
+  gap:12px;
+
+  margin:22px auto 25px;
+
 }
-.plan {
+
+/* COMPACT PLAN CARD */
+
+.wn-pricing-page .plan {
+
   position:relative;
+
   display:flex;
   flex-direction:column;
+
   min-width:0;
-  padding:25px 23px;
-  background:#fff;
+
+  padding:18px 16px;
+
+  background:var(--surface);
+
   border:1px solid var(--border);
-  border-radius:22px;
-  box-shadow:0 10px 30px rgba(40,20,90,.04);
+  border-radius:var(--pricing-radius);
+
+  box-shadow:
+    0 6px 20px rgba(40,20,90,.035);
+
 }
-.plan.featured {
+
+/* RECOMMENDED PRO CARD */
+
+.wn-pricing-page .plan.featured {
+
   border:2px solid var(--purple);
-  box-shadow:0 15px 40px rgba(84,36,255,.12);
+
+  box-shadow:
+    0 8px 25px rgba(84,36,255,.10);
+
 }
-.popular {
+
+.wn-pricing-page .popular {
+
   position:absolute;
-  top:-15px;
+
+  top:-12px;
   left:50%;
+
   transform:translateX(-50%);
-  padding:8px 15px;
+
+  padding:5px 11px;
+
   border-radius:100px;
-  background:linear-gradient(105deg,#5424ff,#e928c8);
+
+  background:var(--pricing-gradient);
+
   color:#fff;
-  font-size:11px;
+
+  font-size:9px;
   font-weight:800;
+  letter-spacing:.3px;
+
   white-space:nowrap;
+
 }
-.plan-icon {
+
+/* PLAN ICONS */
+
+.wn-pricing-page .plan-icon {
+
   display:grid;
   place-items:center;
-  width:39px;
-  height:39px;
-  border-radius:12px;
+
+  width:34px;
+  height:34px;
+
+  border-radius:9px;
+
   background:#f1ecff;
+
   color:var(--purple);
+
+  font-size:19px;
+
+}
+
+.wn-pricing-page .plan h2 {
+
+  margin:10px 0 4px;
+
   font-size:21px;
+  font-weight:800;
+  line-height:1.25;
+
 }
-.plan h2 {
-  margin:14px 0 5px;
-  font-size:23px;
-}
-.description {
-  min-height:39px;
+
+.wn-pricing-page .description {
+
+  min-height:36px;
+
   margin:0;
+
   color:var(--muted);
-  font-size:13px;
+
+  font-size:12px;
   line-height:1.5;
+
 }
-.price {
+
+/* COMPACT PRICING */
+
+.wn-pricing-page .price {
+
   display:flex;
   align-items:baseline;
-  gap:5px;
-  margin:17px 0 3px;
+  flex-wrap:wrap;
+
+  gap:4px;
+
+  margin:12px 0 2px;
+
 }
-.amount {
-  font-size:39px;
+
+.wn-pricing-page .amount {
+
+  font-size:34px;
   font-weight:850;
-  letter-spacing:-1.7px;
+  letter-spacing:-1.3px;
+  line-height:1.15;
+
+  font-variant-numeric:tabular-nums;
+
 }
-.period {
+
+.wn-pricing-page .period {
+
   color:var(--muted);
-  font-size:13px;
+
+  font-size:12px;
+
 }
-.billing-note {
-  min-height:22px;
-  margin:0 0 15px;
+
+.wn-pricing-page .billing-note {
+
+  min-height:18px;
+
+  margin:0 0 10px;
+
   color:var(--muted);
+
   font-size:11px;
+  line-height:1.4;
+
 }
-.action {
+
+/* COMPACT PLAN ACTIONS */
+
+.wn-pricing-page .action {
+
   display:flex;
   justify-content:center;
   align-items:center;
+
   width:100%;
-  min-height:47px;
-  padding:12px;
+  min-width:0;
+
+  min-height:var(--pricing-button);
+
+  padding:9px 11px;
+
   border:0;
-  border-radius:12px;
-  font-size:14px;
+  border-radius:9px;
+
+  font-size:12px;
   font-weight:750;
+  line-height:1.35;
+
   text-align:center;
+
 }
-.action-free {
-  background:#f2eeff;
-  color:var(--purple);
+
+.wn-pricing-page .action-free {
+
+  background:var(--pricing-gradient);
+
+  color:#fff;
+
 }
-.action-disabled {
+
+.wn-pricing-page .action-free:hover {
+
+  filter:brightness(1.04);
+
+}
+
+.wn-pricing-page .action-disabled {
+
   background:#f1eff5;
-  color:#827b91;
+
+  color:#756d85;
+
   cursor:not-allowed;
+
 }
-.plan ul {
+
+.wn-pricing-page .action:disabled {
+
+  opacity:1;
+
+}
+
+/* COMPACT MEMBERSHIP BENEFITS */
+
+.wn-pricing-page .plan ul {
+
   display:grid;
-  gap:12px;
-  margin:21px 0 0;
+
+  gap:8px;
+
+  margin:14px 0 0;
   padding:0;
+
   list-style:none;
+
 }
-.plan li {
+
+.wn-pricing-page .plan li {
+
   display:flex;
   align-items:flex-start;
-  gap:9px;
-  font-size:13px;
+
+  gap:7px;
+
+  font-size:12px;
   line-height:1.45;
+
 }
-.check {
+
+.wn-pricing-page .check {
+
+  flex-shrink:0;
+
   color:var(--purple);
+
   font-weight:850;
+
 }
-.note {
+
+.wn-pricing-page .note {
+
   margin:auto 0 0;
-  padding-top:22px;
+
+  padding-top:14px;
+
   color:var(--muted);
+
   font-size:11px;
   line-height:1.5;
+
 }
-.notice {
+
+/* COMPACT DEVELOPMENT NOTICE */
+
+.wn-pricing-page .notice {
+
   max-width:780px;
-  margin:0 auto 55px;
-  padding:20px;
+
+  margin:0 auto 25px;
+  padding:13px 15px;
+
   border:1px solid #e9ddff;
-  border-radius:17px;
+  border-radius:12px;
+
   background:#f6f2ff;
+
   color:#665b80;
+
   text-align:center;
-  font-size:13px;
-  line-height:1.6;
-}
-.notice p {margin:8px 0 0}
-footer {
-  padding:25px 15px;
-  border-top:1px solid var(--border);
-  color:var(--muted);
-  text-align:center;
+
   font-size:12px;
+  line-height:1.55;
+
 }
+
+.wn-pricing-page .notice p {
+
+  margin:5px 0 0;
+
+}
+
+/* COMPACT FOOTER */
+
+.wn-pricing-page footer {
+
+  padding:15px 12px;
+
+  border-top:1px solid var(--border);
+
+  color:var(--muted);
+
+  text-align:center;
+
+  font-size:11px;
+  line-height:1.5;
+
+}
+
+.wn-pricing-page footer p {
+
+  margin:4px 0 0;
+
+}
+
+/* TABLET OPTIMIZATION */
+
 @media(max-width:850px) {
-  .plans {
-    grid-template-columns:1fr;
-    max-width:470px;
-    gap:25px;
+
+  .wn-pricing-page .plans {
+
+    grid-template-columns:
+      repeat(2,minmax(0,1fr));
+
+    max-width:720px;
+
+    gap:16px;
+
   }
-  .plan {padding:23px 22px}
-  .description {min-height:0}
-  .hero {padding:38px 0 20px}
+
+  .wn-pricing-page .plan:last-child {
+
+    grid-column:1 / -1;
+
+  }
+
+  .wn-pricing-page .pricing-hero {
+
+    padding:25px 0 14px;
+
+  }
+
 }
+
+/* IPHONE COMPACT EXPERIENCE */
+
+@media(max-width:600px) {
+
+  .wn-pricing-page .container {
+
+    padding:0 14px;
+
+  }
+
+  .wn-pricing-page .header-inner {
+
+    min-height:56px;
+
+  }
+
+  .wn-pricing-page .brand {
+
+    font-size:20px;
+
+  }
+
+  .wn-pricing-page .brand img {
+
+    width:32px;
+    height:32px;
+
+  }
+
+  .wn-pricing-page .back {
+
+    min-height:44px;
+
+    font-size:11px;
+
+  }
+
+  .wn-pricing-page .pricing-hero {
+
+    padding:23px 0 12px;
+
+  }
+
+  .wn-pricing-page h1 {
+
+    margin:8px auto;
+
+    font-size:clamp(
+      27px,
+      7vw,
+      36px
+    );
+
+    letter-spacing:-.9px;
+
+  }
+
+  .wn-pricing-page .pricing-hero p {
+
+    font-size:13px;
+    line-height:1.5;
+
+  }
+
+  .wn-pricing-page .billing {
+
+    margin-top:13px;
+
+    gap:7px;
+
+  }
+
+  .wn-pricing-page
+  .billing-switch button {
+
+    min-height:44px;
+
+    padding:7px 13px;
+
+    font-size:12px;
+
+  }
+
+  .wn-pricing-page .savings {
+
+    font-size:10px;
+
+  }
+
+  .wn-pricing-page .plans {
+
+    grid-template-columns:
+      minmax(0,1fr);
+
+    max-width:470px;
+
+    gap:17px;
+
+    margin:17px auto 19px;
+
+  }
+
+  .wn-pricing-page .plan:last-child {
+
+    grid-column:auto;
+
+  }
+
+  .wn-pricing-page .plan {
+
+    padding:15px 14px;
+
+    border-radius:13px;
+
+  }
+
+  .wn-pricing-page .plan-icon {
+
+    width:32px;
+    height:32px;
+
+    font-size:18px;
+
+  }
+
+  .wn-pricing-page .plan h2 {
+
+    margin:8px 0 4px;
+
+    font-size:20px;
+
+  }
+
+  .wn-pricing-page .description {
+
+    min-height:0;
+
+    font-size:12px;
+
+  }
+
+  .wn-pricing-page .price {
+
+    margin:10px 0 2px;
+
+  }
+
+  .wn-pricing-page .amount {
+
+    font-size:32px;
+
+  }
+
+  .wn-pricing-page .action {
+
+    min-height:44px;
+
+    padding:8px 10px;
+
+    font-size:12px;
+
+  }
+
+  .wn-pricing-page .plan ul {
+
+    gap:7px;
+
+    margin-top:12px;
+
+  }
+
+  .wn-pricing-page .plan li {
+
+    font-size:12px;
+
+  }
+
+  .wn-pricing-page .note {
+
+    padding-top:12px;
+
+  }
+
+  .wn-pricing-page .notice {
+
+    margin-bottom:18px;
+
+    padding:12px;
+
+    font-size:11px;
+
+  }
+
+}
+
+/* SMALL IPHONE SCREENS */
+
 @media(max-width:380px) {
-  .container {padding:0 14px}
-  .brand {font-size:20px}
-  .plan {padding:22px 18px}
+
+  .wn-pricing-page .container {
+
+    padding:0 11px;
+
+  }
+
+  .wn-pricing-page .brand {
+
+    font-size:18px;
+
+  }
+
+  .wn-pricing-page .brand img {
+
+    width:30px;
+    height:30px;
+
+  }
+
+  .wn-pricing-page .back {
+
+    font-size:10px;
+
+  }
+
+  .wn-pricing-page .plan {
+
+    padding:13px 12px;
+
+  }
+
+  .wn-pricing-page .amount {
+
+    font-size:30px;
+
+  }
+
 }
+
+/* EXTRA NARROW SCREENS */
+
+@media(max-width:340px) {
+
+  .wn-pricing-page .billing {
+
+    flex-direction:column;
+
+  }
+
+  .wn-pricing-page .header-inner {
+
+    gap:6px;
+
+  }
+
+  .wn-pricing-page .brand {
+
+    gap:5px;
+
+  }
+
+}
+
+/* ACCESSIBILITY */
+
+@media(prefers-reduced-motion:reduce) {
+
+  html {
+
+    scroll-behavior:auto;
+
+  }
+
+}
+
+/* END WORKNELY V7.12 PRICING DESIGN */
+
 </style>
+
 </head>
 
-<body>
+<body class="wn-pricing-page">
+
+<!-- COMPACT HEADER -->
+
 <header>
+
   <div class="container header-inner">
-    <a class="brand" href="index.html">
-      <img src="worknely-mark.svg" alt="">
+
+    <a class="brand"
+       href="index.html"
+       aria-label="Worknely home">
+
+      <img src="worknely-mark.svg"
+           width="34"
+           height="34"
+           alt="">
+
       Worknely
+
     </a>
-    <a class="back" href="index.html">← Back to Worknely</a>
+
+    <a class="back"
+       href="index.html">
+
+      ← Back to Worknely
+
+    </a>
+
   </div>
+
 </header>
 
 <main class="container">
-  <section class="hero">
-    <span class="eyebrow">WORKNELY MEMBERSHIP</span>
-    <h1>
+
+  <!-- COMPACT MEMBERSHIP HERO -->
+
+  <section class="pricing-hero"
+           aria-labelledby="pricingTitle">
+
+    <span class="eyebrow">
+
+      WORKNELY MEMBERSHIP
+
+    </span>
+
+    <h1 id="pricingTitle">
+
       Your career deserves
-      <span class="gradient">more possibilities.</span>
+
+      <span class="gradient">
+
+        more possibilities.
+
+      </span>
+
     </h1>
+
     <p>
+
       Start free. Explore what's next.
-      Choose the career tools that fit your ambitions.
+      Choose the career tools that fit
+      your ambitions.
+
     </p>
 
+    <!-- MONTHLY / YEARLY SELECTOR -->
+
     <div class="billing">
-      <div class="billing-switch" aria-label="Billing period">
-        <button id="monthly" type="button" aria-pressed="true">
+
+      <div class="billing-switch"
+           role="group"
+           aria-label="Billing period">
+
+        <button id="monthly"
+                type="button"
+                aria-pressed="true">
+
           Monthly
+
         </button>
-        <button id="yearly" type="button" aria-pressed="false">
+
+        <button id="yearly"
+                type="button"
+                aria-pressed="false">
+
           Yearly
+
         </button>
+
       </div>
-      <span class="savings">Save up to 17% yearly</span>
+
+      <span class="savings">
+
+        Save up to 17% yearly
+
+      </span>
+
     </div>
+
   </section>
 
-  <section class="plans" aria-label="Membership plans">
+  <!-- MEMBERSHIP PLANS -->
+
+  <section class="plans"
+           aria-label="Membership plans">
+
+    <!-- FREE MEMBERSHIP -->
 
     <article class="plan">
-      <div class="plan-icon">✦</div>
-      <h2>Free</h2>
-      <p class="description">
-        Your first step toward a stronger resume.
-      </p>
-      <div class="price">
-        <span class="amount">$0</span>
-        <span class="period">/ month</span>
+
+      <div class="plan-icon"
+           aria-hidden="true">
+
+        ✦
+
       </div>
-      <p class="billing-note">Free forever</p>
-      <a class="action action-free" href="index.html#builder">
+
+      <h2>Free</h2>
+
+      <p class="description">
+
+        Your first step toward
+        a stronger resume.
+
+      </p>
+
+      <div class="price">
+
+        <span class="amount">$0</span>
+
+        <span class="period">/ month</span>
+
+      </div>
+
+      <p class="billing-note">
+
+        Free forever
+
+      </p>
+
+      <a class="action action-free"
+         href="index.html#builder">
+
         Get Started Free
+
       </a>
+
       <ul>
-        <li><span class="check">✓</span> Resume Builder</li>
-        <li><span class="check">✓</span> Basic Writing Studio</li>
-        <li><span class="check">✓</span> Career Compatibility Analysis</li>
-        <li><span class="check">✓</span> PDF Resume Export</li>
-        <li><span class="check">✓</span> Account Registration</li>
+
+        <li>
+          <span class="check"
+                aria-hidden="true">✓</span>
+          Resume Builder
+        </li>
+
+        <li>
+          <span class="check"
+                aria-hidden="true">✓</span>
+          Basic Writing Studio
+        </li>
+
+        <li>
+          <span class="check"
+                aria-hidden="true">✓</span>
+          Career Compatibility Analysis
+        </li>
+
+        <li>
+          <span class="check"
+                aria-hidden="true">✓</span>
+          PDF Resume Export
+        </li>
+
+        <li>
+          <span class="check"
+                aria-hidden="true">✓</span>
+          Account Registration
+        </li>
+
       </ul>
-      <p class="note">Available with the current Worknely tools.</p>
+
+      <p class="note">
+
+        Available with the current
+        Worknely tools.
+
+      </p>
+
     </article>
+
+    <!-- PRO MEMBERSHIP -->
 
     <article class="plan featured">
-      <span class="popular">MOST POPULAR</span>
-      <div class="plan-icon">✧</div>
-      <h2>Pro</h2>
-      <p class="description">
-        More powerful tools for ambitious professionals.
-      </p>
-      <div class="price">
-        <span class="amount" id="proPrice">$9</span>
-        <span class="period" id="proPeriod">/ month</span>
+
+      <span class="popular">
+
+        RECOMMENDED
+
+      </span>
+
+      <div class="plan-icon"
+           aria-hidden="true">
+
+        ✧
+
       </div>
-      <p class="billing-note" id="proBilling">
+
+      <h2>Pro</h2>
+
+      <p class="description">
+
+        More powerful tools
+        for ambitious professionals.
+
+      </p>
+
+      <div class="price"
+           aria-live="polite"
+           aria-atomic="true">
+
+        <span class="amount"
+              id="proPrice">
+
+          $9
+
+        </span>
+
+        <span class="period"
+              id="proPeriod">
+
+          / month
+
+        </span>
+
+      </div>
+
+      <p class="billing-note"
+         id="proBilling">
+
         Billed monthly
+
       </p>
-      <button class="action action-disabled" disabled>
+
+      <button class="action action-disabled"
+              type="button"
+              disabled>
+
         Coming Soon
+
       </button>
+
       <ul>
-        <li><span class="check">✓</span> Everything in Free</li>
-        <li><span class="check">✓</span> Planned advanced writing tools</li>
-        <li><span class="check">✓</span> Planned extended CV analysis</li>
-        <li><span class="check">✓</span> Planned expanded resume storage</li>
-        <li><span class="check">✓</span> Planned premium templates</li>
+
+        <li>
+          <span class="check"
+                aria-hidden="true">✓</span>
+          Everything in Free
+        </li>
+
+        <li>
+          <span class="check"
+                aria-hidden="true">✓</span>
+          Planned advanced writing tools
+        </li>
+
+        <li>
+          <span class="check"
+                aria-hidden="true">✓</span>
+          Planned extended CV analysis
+        </li>
+
+        <li>
+          <span class="check"
+                aria-hidden="true">✓</span>
+          Planned expanded resume storage
+        </li>
+
+        <li>
+          <span class="check"
+                aria-hidden="true">✓</span>
+          Planned premium templates
+        </li>
+
       </ul>
+
       <p class="note">
-        Features in development. No subscription available yet.
+
+        Features in development.
+        No subscription available yet.
+
       </p>
+
     </article>
 
+    <!-- PREMIUM MEMBERSHIP -->
+
     <article class="plan">
-      <div class="plan-icon">✺</div>
-      <h2>Premium</h2>
-      <p class="description">
-        A complete career workspace for your future.
-      </p>
-      <div class="price">
-        <span class="amount" id="premiumPrice">$19</span>
-        <span class="period" id="premiumPeriod">/ month</span>
+
+      <div class="plan-icon"
+           aria-hidden="true">
+
+        ✺
+
       </div>
-      <p class="billing-note" id="premiumBilling">
+
+      <h2>Premium</h2>
+
+      <p class="description">
+
+        A complete career workspace
+        for your future.
+
+      </p>
+
+      <div class="price"
+           aria-live="polite"
+           aria-atomic="true">
+
+        <span class="amount"
+              id="premiumPrice">
+
+          $19
+
+        </span>
+
+        <span class="period"
+              id="premiumPeriod">
+
+          / month
+
+        </span>
+
+      </div>
+
+      <p class="billing-note"
+         id="premiumBilling">
+
         Billed monthly
+
       </p>
-      <button class="action action-disabled" disabled>
+
+      <button class="action action-disabled"
+              type="button"
+              disabled>
+
         Coming Soon
+
       </button>
+
       <ul>
-        <li><span class="check">✓</span> Everything planned for Pro</li>
-        <li><span class="check">✓</span> Planned complete career dashboard</li>
-        <li><span class="check">✓</span> Planned advanced resume insights</li>
-        <li><span class="check">✓</span> Planned career document tools</li>
-        <li><span class="check">✓</span> Planned premium experience</li>
+
+        <li>
+          <span class="check"
+                aria-hidden="true">✓</span>
+          Everything planned for Pro
+        </li>
+
+        <li>
+          <span class="check"
+                aria-hidden="true">✓</span>
+          Planned complete career dashboard
+        </li>
+
+        <li>
+          <span class="check"
+                aria-hidden="true">✓</span>
+          Planned advanced resume insights
+        </li>
+
+        <li>
+          <span class="check"
+                aria-hidden="true">✓</span>
+          Planned career document tools
+        </li>
+
+        <li>
+          <span class="check"
+                aria-hidden="true">✓</span>
+          Planned premium experience
+        </li>
+
       </ul>
+
       <p class="note">
-        Features in development. No subscription available yet.
+
+        Features in development.
+        No subscription available yet.
+
       </p>
+
     </article>
 
   </section>
 
+  <!-- TRANSPARENT DEVELOPMENT NOTICE -->
+
   <aside class="notice">
-    <strong>We're building the next chapter of Worknely.</strong>
+
+    <strong>
+
+      We're building the next chapter
+      of Worknely.
+
+    </strong>
+
     <p>
+
       Pro and Premium are planned memberships.
       Prices and benefits may change before launch.
       No payments are collected on this page.
+
     </p>
+
   </aside>
+
 </main>
 
+<!-- COMPACT FOOTER -->
+
 <footer>
+
   © 2026 Worknely · People Technology
-  <p>Build. Improve. Grow.</p>
+
+  <p>
+
+    Build. Improve. Grow.
+
+  </p>
+
 </footer>
 
+<!-- MEMBERSHIP BILLING CONTROLLER -->
+
 <script>
+
 (() => {
+
   "use strict";
 
-  const $ = id => document.getElementById(id);
+  const $ = id =>
+    document.getElementById(id);
+
   const monthly = $("monthly");
   const yearly = $("yearly");
 
   function setBilling(period) {
-    const annual = period === "yearly";
 
-    monthly.setAttribute("aria-pressed", String(!annual));
-    yearly.setAttribute("aria-pressed", String(annual));
+    const annual =
+      period === "yearly";
 
-    $("proPrice").textContent = annual ? "$90" : "$9";
-    $("premiumPrice").textContent = annual ? "$190" : "$19";
+    monthly.setAttribute(
 
-    $("proPeriod").textContent = annual ? "/ year" : "/ month";
-    $("premiumPeriod").textContent = annual ? "/ year" : "/ month";
+      "aria-pressed",
+      String(!annual)
 
-    $("proBilling").textContent = annual
-      ? "Billed yearly · Save $18"
-      : "Billed monthly";
+    );
 
-    $("premiumBilling").textContent = annual
-      ? "Billed yearly · Save $38"
-      : "Billed monthly";
+    yearly.setAttribute(
+
+      "aria-pressed",
+      String(annual)
+
+    );
+
+    $("proPrice").textContent =
+
+      annual ? "$90" : "$9";
+
+    $("premiumPrice").textContent =
+
+      annual ? "$190" : "$19";
+
+    $("proPeriod").textContent =
+
+      annual ? "/ year" : "/ month";
+
+    $("premiumPeriod").textContent =
+
+      annual ? "/ year" : "/ month";
+
+    $("proBilling").textContent =
+
+      annual
+        ? "Billed yearly · Save $18"
+        : "Billed monthly";
+
+    $("premiumBilling").textContent =
+
+      annual
+        ? "Billed yearly · Save $38"
+        : "Billed monthly";
+
   }
 
-  monthly.addEventListener("click", () => setBilling("monthly"));
-  yearly.addEventListener("click", () => setBilling("yearly"));
+  monthly.addEventListener(
+
+    "click",
+
+    () => setBilling("monthly")
+
+  );
+
+  yearly.addEventListener(
+
+    "click",
+
+    () => setBilling("yearly")
+
+  );
 
   setBilling("monthly");
+
 })();
+
 </script>
+
+<!-- END WORKNELY V7.12 -->
+
 </body>
 </html>
