@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,8 +6,7 @@
 <meta name="theme-color" content="#5424FF">
 <meta name="color-scheme" content="light">
 
-<meta name="description"
-content="Worknely helps you build professional resumes, review CV structure, compare skills with job requirements, and explore career opportunities.">
+<meta name="description" content="Worknely helps you build professional resumes, review CV structure, compare skills with job requirements, and explore career opportunities.">
 
 <meta name="application-name" content="Worknely">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -17,24 +15,32 @@ content="Worknely helps you build professional resumes, review CV structure, com
 
 <title>Worknely | Build Your Career. Shape Your Future.</title>
 
-<link rel="canonical"
-href="https://adamdenise.github.io/resume-optimization-toolkit/">
+<link rel="canonical" href="https://adamdenise.github.io/resume-optimization-toolkit/">
+<link rel="icon" type="image/svg+xml" href="worknely-favicon.svg">
 
-<link rel="icon" type="image/svg+xml"
-href="worknely-favicon.svg">
-
-<!-- WORKNELY CORE STYLES -->
+<!-- WORKNELY V7.13 PREMIUM AIRY EDITION -->
 
 <link rel="stylesheet" href="style.css?v=7.12.1">
 <link rel="stylesheet" href="worknely-theme.css?v=7.12.1">
 <link rel="stylesheet" href="worknely-electric.css?v=7.12.1">
+<link rel="stylesheet" href="worknely-compact.css?v=7.12.1" media="screen">
 
 <style>
-/*
- * WORKNELY V7.12.2
- * Premium Compact Header Edition
- * Preserves V7.12.1 Authentication Hotfix
- */
+
+/* ========================================
+   WORKNELY V7.13
+   PREMIUM AIRY LANDING EXPERIENCE
+   ======================================== */
+
+:root {
+  --wn-purple:#5424ff;
+  --wn-pink:#ec22ad;
+  --wn-cyan:#06b6d4;
+  --wn-ink:#20123f;
+  --wn-muted:#746c85;
+  --wn-border:#e9e2f4;
+  --wn-gradient:linear-gradient(105deg,#5424ff,#a326e8,#ec22ad);
+}
 
 .sr-only {
   position:absolute;
@@ -57,17 +63,6 @@ textarea:focus-visible {
   outline-offset:3px;
 }
 
-.builder-preview {
-  white-space:pre-wrap;
-  overflow-wrap:anywhere;
-}
-
-.message:empty,
-.export-message:empty,
-.builder-preview:empty {
-  display:none;
-}
-
 [hidden],
 .wn-tool-view[hidden] {
   display:none!important;
@@ -81,269 +76,20 @@ textarea:focus-visible {
   outline:none;
 }
 
-/* COMPACT TOOL NAVIGATION */
-
-.wn-tool-navigation {
-  display:flex;
-  flex-wrap:wrap;
-  gap:7px;
-  margin:12px 0 14px;
+.builder-preview {
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
 }
 
-.wn-tool-navigation a {
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  min-height:40px;
-  padding:8px 12px;
-  border:1px solid #e5dbfa;
-  border-radius:9px;
-  background:#fff;
-  color:#5424ff;
-  font-weight:750;
-  font-size:13px;
-  line-height:1.3;
-  text-align:center;
-  text-decoration:none;
-}
-
-.wn-tool-navigation a[aria-current="page"] {
-  background:linear-gradient(105deg,#5626ff,#ec22ad);
-  border-color:transparent;
-  color:#fff;
-}
-
-/* COMPACT RESUME BUILDER ACTIONS */
-
-.wn-builder-actions {
-  display:grid;
-  gap:8px;
-  margin-top:12px;
-}
-
-.wn-builder-primary {
-  display:flex;
-}
-
-body .shell .wn-builder-primary .primary {
-  width:100%;
-  min-height:42px;
-  padding:10px 14px;
-  border-radius:10px;
-  font-size:13px;
-}
-
-.wn-builder-secondary {
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:8px;
-}
-
-body .shell .wn-builder-secondary button {
-  width:100%;
-  min-width:0;
-  min-height:40px;
-  padding:8px 10px;
-  border-radius:9px;
-  font-size:12px;
-  line-height:1.3;
-  white-space:normal;
-}
-
-/* STATUS MESSAGES */
-
-#builderMessage,
-#saveAccountStatus,
-#exportMessage,
-#studioStatus {
+.message:empty,
+.export-message:empty,
+.builder-preview:empty {
   display:none;
-  margin:10px 0;
-  padding:10px 12px;
-  border-radius:10px;
-  border:1px solid transparent;
-  font-size:12px;
-  font-weight:600;
-  line-height:1.5;
-  overflow-wrap:anywhere;
-  box-shadow:0 4px 12px rgba(40,20,90,.035);
 }
 
-#builderMessage:not(:empty),
-#saveAccountStatus:not(:empty),
-#exportMessage:not(:empty),
-#studioStatus:not(:empty) {
-  display:block;
-}
-
-.worknely-status-success {
-  color:#08784c!important;
-  background:#ecfdf4!important;
-  border-color:#b7efd1!important;
-}
-
-.worknely-status-error {
-  color:#b42332!important;
-  background:#fff1f2!important;
-  border-color:#fecdd3!important;
-}
-
-.worknely-status-info {
-  color:#5424ff!important;
-  background:#f3efff!important;
-  border-color:#e1d7ff!important;
-}
-
-/* CAREER ANALYSIS REPORT */
-
-#results .score-layout {
-  grid-template-columns:minmax(0,1fr);
-  margin-bottom:10px;
-}
-
-#results .stats {
-  grid-template-columns:repeat(3,minmax(0,1fr));
-  margin-bottom:12px;
-}
-
-#results .stat {
-  flex-direction:column;
-  align-items:flex-start;
-  min-width:0;
-  gap:5px;
-}
-
-#results .stat strong {
-  overflow-wrap:anywhere;
-}
-
-#results .ats-card {
-  margin-top:12px;
-}
-
-/* DOCUMENT IMPORT */
-
-#resumeFile {
-  font-size:13px;
-  max-width:100%;
-}
-
-#resumeFile::file-selector-button {
-  min-height:40px;
-  padding:8px 12px;
-  margin-right:8px;
-  border:1px solid #e4d8ff;
-  border-radius:9px;
-  background:#f3efff;
-  color:#5424ff;
-  font-family:inherit;
-  font-size:12px;
-  font-weight:700;
-  cursor:pointer;
-}
-
-@media(max-width:700px) {
-
-  .wn-tool-navigation {
-    flex-wrap:nowrap;
-    overflow-x:auto;
-    gap:6px;
-    margin:10px 0 12px;
-    padding:2px 0 7px;
-    -webkit-overflow-scrolling:touch;
-    scrollbar-width:none;
-  }
-
-  .wn-tool-navigation::-webkit-scrollbar {
-    display:none;
-  }
-
-  .wn-tool-navigation a {
-    flex:0 0 auto;
-    min-height:44px;
-    padding:8px 10px;
-    font-size:12px;
-    border-radius:9px;
-  }
-
-  .wn-builder-actions {
-    gap:7px;
-    margin-top:10px;
-  }
-
-  body .shell .wn-builder-primary .primary {
-    min-height:44px;
-    font-size:13px;
-  }
-
-  .wn-builder-secondary {
-    gap:7px;
-  }
-
-  body .shell .wn-builder-secondary button {
-    min-height:44px;
-    padding:8px 6px;
-    font-size:12px;
-  }
-
-  #builderMessage,
-  #saveAccountStatus,
-  #exportMessage,
-  #studioStatus {
-    margin:8px 0;
-    padding:9px 10px;
-    border-radius:9px;
-    font-size:12px;
-  }
-
-  #results .stats {
-    gap:7px;
-  }
-
-  #results .stat {
-    padding:10px 8px;
-  }
-
-  #results .stat span {
-    font-size:11px;
-    line-height:1.35;
-  }
-
-  #results .stat strong {
-    font-size:17px;
-  }
-
-  #resumeFile::file-selector-button {
-    min-height:44px;
-  }
-}
-
-@media(max-width:340px) {
-
-  .wn-builder-secondary {
-    grid-template-columns:1fr;
-  }
-
-  #results .stats {
-    grid-template-columns:1fr;
-  }
-}
-
-@media(prefers-reduced-motion:reduce) {
-  html {
-    scroll-behavior:auto;
-  }
-}
-</style>
-
-<!-- GLOBAL COMPACT DESIGN SYSTEM -->
-
-<link rel="stylesheet"
-href="worknely-compact.css?v=7.12.1"
-media="screen">
-
-<!-- V7.12.2 PREMIUM HEADER OVERRIDES -->
-
-<style media="screen">
+/* ========================================
+   PREMIUM COMPACT HEADER
+   ======================================== */
 
 body .shell header.top {
   display:flex!important;
@@ -354,7 +100,7 @@ body .shell header.top {
   gap:8px!important;
   width:100%!important;
   min-width:0!important;
-  padding:8px 0!important;
+  padding:10px 0!important;
   margin:0!important;
 }
 
@@ -450,9 +196,7 @@ body .shell header.top .wn-auth-nav .wn-login {
 }
 
 body .shell header.top .wn-auth-nav .wn-signup {
-  background:linear-gradient(
-    105deg,#5424ff,#a326e8,#ec22ad
-  )!important;
+  background:var(--wn-gradient)!important;
   color:#fff!important;
   border:1px solid transparent!important;
 }
@@ -496,7 +240,7 @@ body .shell header.top .wn-menu-panel button {
   font-size:12px!important;
 }
 
-/* FLAG ONLY LANGUAGE SELECTOR */
+/* FLAG LANGUAGE SELECTOR */
 
 body .shell header.top > .header-tools {
   order:2!important;
@@ -539,8 +283,7 @@ body .shell header.top .wn-language-visual {
 
 body .shell header.top #wnLanguageFlag {
   display:block;
-  font-family:"Apple Color Emoji",
-    "Segoe UI Emoji",sans-serif;
+  font-family:"Apple Color Emoji","Segoe UI Emoji",sans-serif;
   font-size:20px!important;
   line-height:1!important;
 }
@@ -575,7 +318,749 @@ body .shell header.top [hidden] {
   display:none!important;
 }
 
-/* SMALL MOBILE HEADER */
+/* ========================================
+   AIRY LANDING PAGE
+   ======================================== */
+
+body .shell {
+  min-width:0;
+}
+
+#top {
+  min-width:0;
+}
+
+#wnLanding {
+  min-width:0;
+  padding:12px 0 24px;
+}
+
+body .shell #wnLanding .hero {
+  position:relative;
+  isolation:isolate;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:76px 28px 68px!important;
+  margin:0 auto 46px!important;
+  border:0!important;
+  border-radius:24px!important;
+  background:
+    radial-gradient(
+      ellipse at 10% 15%,
+      rgba(84,36,255,.09),
+      transparent 48%
+    ),
+    radial-gradient(
+      ellipse at 90% 20%,
+      rgba(236,34,173,.09),
+      transparent 45%
+    ),
+    radial-gradient(
+      ellipse at 80% 95%,
+      rgba(6,182,212,.10),
+      transparent 42%
+    ),
+    #ffffff!important;
+  box-shadow:none!important;
+  overflow:hidden;
+}
+
+body .shell #wnLanding .hero::before,
+body .shell #wnLanding .hero::after {
+  display:none!important;
+}
+
+body .shell #wnLanding .hero .eyebrow {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:7px 12px;
+  margin:0 0 22px!important;
+  border:1px solid #e9dfff;
+  border-radius:999px;
+  background:rgba(255,255,255,.75);
+  color:var(--wn-purple);
+  font-size:10px!important;
+  font-weight:750;
+  letter-spacing:1.3px;
+}
+
+body .shell #wnLanding .hero h1 {
+  max-width:850px;
+  margin:0 auto 20px!important;
+  color:var(--wn-ink);
+  font-size:clamp(38px,6vw,76px)!important;
+  line-height:1.08!important;
+  font-weight:850!important;
+  letter-spacing:-2.8px!important;
+}
+
+body .shell #wnLanding .hero h1 em {
+  display:block;
+  font-style:normal;
+  background:var(--wn-gradient);
+  -webkit-background-clip:text;
+  background-clip:text;
+  -webkit-text-fill-color:transparent;
+  color:var(--wn-purple);
+}
+
+body .shell #wnLanding .hero p {
+  max-width:530px;
+  margin:0 auto!important;
+  color:var(--wn-muted)!important;
+  font-size:16px!important;
+  line-height:1.75!important;
+  font-weight:400;
+}
+
+body .shell #wnLanding .hero .hero-actions {
+  display:flex!important;
+  flex-direction:row!important;
+  flex-wrap:wrap!important;
+  justify-content:center!important;
+  align-items:center!important;
+  gap:12px!important;
+  width:100%!important;
+  margin:30px 0 0!important;
+}
+
+body .shell #wnLanding .hero-actions a {
+  display:inline-flex!important;
+  align-items:center;
+  justify-content:center;
+  flex:0 1 auto!important;
+  width:auto!important;
+  min-width:0!important;
+  min-height:46px!important;
+  padding:12px 20px!important;
+  border-radius:12px!important;
+  font-size:13px!important;
+  font-weight:750;
+  text-decoration:none;
+  white-space:normal;
+}
+
+body .shell #wnLanding .hero-actions .primary {
+  background:var(--wn-gradient)!important;
+  color:#fff!important;
+  border:1px solid transparent!important;
+  box-shadow:0 8px 24px rgba(84,36,255,.15);
+}
+
+body .shell #wnLanding .hero-actions .ghost {
+  background:rgba(255,255,255,.8)!important;
+  color:var(--wn-purple)!important;
+  border:1px solid #e4d9fa!important;
+  box-shadow:none!important;
+}
+
+/* HERO MICROCOPY */
+
+.wn-hero-note {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:8px 14px;
+  margin-top:20px;
+  color:var(--wn-muted);
+  font-size:11px;
+  line-height:1.5;
+}
+
+.wn-hero-note span {
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+}
+
+.wn-hero-note svg {
+  width:13px;
+  height:13px;
+  color:var(--wn-purple);
+}
+
+/* ========================================
+   CAREER TOOLS
+   ======================================== */
+
+.wn-tools-section {
+  max-width:1020px;
+  margin:0 auto 44px;
+  padding:0 4px;
+}
+
+.wn-landing-heading {
+  text-align:center;
+  margin:0 0 24px;
+}
+
+.wn-landing-heading .wn-kicker {
+  display:block;
+  color:var(--wn-purple);
+  font-size:10px;
+  font-weight:750;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  margin-bottom:10px;
+}
+
+.wn-landing-heading h2 {
+  color:var(--wn-ink);
+  font-size:clamp(24px,4vw,36px);
+  font-weight:800;
+  line-height:1.2;
+  letter-spacing:-1px;
+  margin:0 0 10px;
+}
+
+.wn-landing-heading p {
+  max-width:460px;
+  margin:0 auto;
+  color:var(--wn-muted);
+  font-size:14px;
+  line-height:1.65;
+}
+
+.wn-tool-cards {
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:16px;
+}
+
+body .shell .wn-tool-card {
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  min-width:0;
+  padding:22px;
+  border:1px solid var(--wn-border);
+  border-radius:18px;
+  background:#fff;
+  color:var(--wn-ink);
+  text-decoration:none;
+  box-shadow:0 5px 22px rgba(48,25,95,.035);
+  transition:
+    transform .2s ease,
+    border-color .2s ease,
+    box-shadow .2s ease;
+}
+
+.wn-tool-card:active {
+  transform:scale(.985);
+}
+
+.wn-tool-icon {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:44px;
+  height:44px;
+  flex:0 0 44px;
+  border-radius:13px;
+  margin-bottom:18px;
+}
+
+.wn-tool-icon svg {
+  width:23px;
+  height:23px;
+}
+
+.wn-icon-purple {
+  color:#5424ff;
+  background:#f0eaff;
+}
+
+.wn-icon-pink {
+  color:#cf2498;
+  background:#fff0fa;
+}
+
+.wn-icon-cyan {
+  color:#0891b2;
+  background:#e8faff;
+}
+
+.wn-tool-card h3 {
+  margin:0 0 8px;
+  color:var(--wn-ink);
+  font-size:18px;
+  font-weight:800;
+  line-height:1.3;
+  letter-spacing:-.35px;
+}
+
+.wn-tool-card p {
+  flex:1;
+  margin:0 0 20px;
+  color:var(--wn-muted);
+  font-size:13px;
+  line-height:1.65;
+}
+
+.wn-card-link {
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  color:var(--wn-purple);
+  font-size:12px;
+  font-weight:750;
+}
+
+.wn-card-link svg {
+  width:15px;
+  height:15px;
+}
+
+@media(hover:hover) {
+
+  body .shell .wn-tool-card:hover {
+    transform:translateY(-4px);
+    border-color:#d8c9ff;
+    box-shadow:0 12px 32px rgba(84,36,255,.08);
+  }
+}
+
+/* ========================================
+   MINIMAL BENEFITS
+   ======================================== */
+
+.wn-benefits {
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:16px;
+  max-width:900px;
+  margin:0 auto 40px;
+  padding:20px 12px;
+}
+
+.wn-benefit {
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:7px;
+  text-align:center;
+  min-width:0;
+}
+
+.wn-benefit svg {
+  width:22px;
+  height:22px;
+  color:var(--wn-purple);
+}
+
+.wn-benefit strong {
+  color:var(--wn-ink);
+  font-size:12px;
+  font-weight:750;
+}
+
+.wn-benefit span {
+  color:var(--wn-muted);
+  font-size:11px;
+  line-height:1.5;
+}
+
+/* ========================================
+   WORKNELY PRO - LOWER PLACEMENT
+   ======================================== */
+
+#wnPremiumSlot {
+  max-width:1020px;
+  margin:0 auto 16px;
+}
+
+body .shell #wnPremiumSlot .wn-pro-banner {
+  margin:0!important;
+  padding:18px!important;
+  border-radius:16px!important;
+  box-shadow:none!important;
+}
+
+body .shell:not(.wn-home-active)
+.wn-pro-banner {
+  display:none!important;
+}
+
+/* ========================================
+   WORKSPACE NAVIGATION
+   ======================================== */
+
+.wn-tool-navigation {
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
+  margin:18px 0 16px;
+}
+
+.wn-tool-navigation a {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:40px;
+  padding:8px 12px;
+  border:1px solid #e5dbfa;
+  border-radius:9px;
+  background:#fff;
+  color:#5424ff;
+  font-weight:750;
+  font-size:13px;
+  line-height:1.3;
+  text-align:center;
+  text-decoration:none;
+}
+
+.wn-tool-navigation a[aria-current="page"] {
+  background:var(--wn-gradient);
+  border-color:transparent;
+  color:#fff;
+}
+
+.wn-home-link svg {
+  width:16px;
+  height:16px;
+}
+
+/* ========================================
+   RESUME BUILDER
+   ======================================== */
+
+.wn-builder-actions {
+  display:grid;
+  gap:8px;
+  margin-top:12px;
+}
+
+.wn-builder-primary {
+  display:flex;
+}
+
+body .shell .wn-builder-primary .primary {
+  width:100%;
+  min-height:42px;
+  padding:10px 14px;
+  border-radius:10px;
+  font-size:13px;
+}
+
+.wn-builder-secondary {
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:8px;
+}
+
+body .shell .wn-builder-secondary button {
+  width:100%;
+  min-width:0;
+  min-height:40px;
+  padding:8px 10px;
+  border-radius:9px;
+  font-size:12px;
+  line-height:1.3;
+  white-space:normal;
+}
+
+/* STATUS MESSAGES */
+
+#builderMessage,
+#saveAccountStatus,
+#exportMessage,
+#studioStatus {
+  display:none;
+  margin:10px 0;
+  padding:10px 12px;
+  border-radius:10px;
+  border:1px solid transparent;
+  font-size:12px;
+  font-weight:600;
+  line-height:1.5;
+  overflow-wrap:anywhere;
+  box-shadow:0 4px 12px rgba(40,20,90,.035);
+}
+
+#builderMessage:not(:empty),
+#saveAccountStatus:not(:empty),
+#exportMessage:not(:empty),
+#studioStatus:not(:empty) {
+  display:block;
+}
+
+.worknely-status-success {
+  color:#08784c!important;
+  background:#ecfdf4!important;
+  border-color:#b7efd1!important;
+}
+
+.worknely-status-error {
+  color:#b42332!important;
+  background:#fff1f2!important;
+  border-color:#fecdd3!important;
+}
+
+.worknely-status-info {
+  color:#5424ff!important;
+  background:#f3efff!important;
+  border-color:#e1d7ff!important;
+}
+
+/* CAREER ANALYSIS */
+
+#results .score-layout {
+  grid-template-columns:minmax(0,1fr);
+  margin-bottom:10px;
+}
+
+#results .stats {
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  margin-bottom:12px;
+}
+
+#results .stat {
+  flex-direction:column;
+  align-items:flex-start;
+  min-width:0;
+  gap:5px;
+}
+
+#results .stat strong {
+  overflow-wrap:anywhere;
+}
+
+#results .ats-card {
+  margin-top:12px;
+}
+
+#resumeFile {
+  font-size:13px;
+  max-width:100%;
+}
+
+#resumeFile::file-selector-button {
+  min-height:40px;
+  padding:8px 12px;
+  margin-right:8px;
+  border:1px solid #e4d8ff;
+  border-radius:9px;
+  background:#f3efff;
+  color:#5424ff;
+  font-family:inherit;
+  font-size:12px;
+  font-weight:700;
+  cursor:pointer;
+}
+
+/* ========================================
+   MOBILE FIRST
+   ======================================== */
+
+@media(max-width:700px) {
+
+  #wnLanding {
+    padding:8px 0 18px;
+  }
+
+  body .shell #wnLanding .hero {
+    padding:46px 16px 40px!important;
+    margin-bottom:34px!important;
+    border-radius:20px!important;
+  }
+
+  body .shell #wnLanding .hero .eyebrow {
+    font-size:9px!important;
+    letter-spacing:1px;
+    margin-bottom:20px!important;
+  }
+
+  body .shell #wnLanding .hero h1 {
+    font-size:clamp(32px,8.5vw,46px)!important;
+    line-height:1.12!important;
+    letter-spacing:-1.7px!important;
+    margin-bottom:18px!important;
+  }
+
+  body .shell #wnLanding .hero p {
+    font-size:14px!important;
+    line-height:1.75!important;
+  }
+
+  body .shell #wnLanding .hero .hero-actions {
+    gap:8px!important;
+    margin-top:24px!important;
+  }
+
+  body .shell #wnLanding .hero-actions a {
+    flex:1 1 120px!important;
+    min-height:44px!important;
+    padding:10px 9px!important;
+    font-size:12px!important;
+    border-radius:10px!important;
+  }
+
+  .wn-hero-note {
+    margin-top:18px;
+    font-size:10px;
+  }
+
+  .wn-tools-section {
+    padding:0;
+    margin-bottom:28px;
+  }
+
+  .wn-landing-heading {
+    margin-bottom:20px;
+    padding:0 8px;
+  }
+
+  .wn-landing-heading h2 {
+    font-size:25px;
+  }
+
+  .wn-landing-heading p {
+    font-size:13px;
+  }
+
+  .wn-tool-cards {
+    grid-template-columns:minmax(0,1fr);
+    gap:12px;
+  }
+
+  body .shell .wn-tool-card {
+    display:grid;
+    grid-template-columns:44px minmax(0,1fr) 18px;
+    align-items:center;
+    column-gap:13px;
+    row-gap:5px;
+    padding:17px 14px;
+    border-radius:15px;
+  }
+
+  .wn-tool-icon {
+    grid-column:1;
+    grid-row:1 / 3;
+    margin:0;
+  }
+
+  .wn-tool-card h3 {
+    grid-column:2;
+    grid-row:1;
+    font-size:15px;
+    margin:0;
+  }
+
+  .wn-tool-card p {
+    grid-column:2;
+    grid-row:2;
+    font-size:12px;
+    line-height:1.5;
+    margin:0;
+  }
+
+  .wn-card-link {
+    grid-column:3;
+    grid-row:1 / 3;
+    justify-content:center;
+  }
+
+  .wn-card-link span {
+    display:none;
+  }
+
+  .wn-benefits {
+    gap:8px;
+    margin-bottom:26px;
+    padding:14px 0;
+  }
+
+  .wn-benefit strong {
+    font-size:11px;
+  }
+
+  .wn-benefit span {
+    font-size:10px;
+  }
+
+  body .shell #wnPremiumSlot .wn-pro-banner {
+    padding:13px!important;
+  }
+
+  .wn-tool-navigation {
+    flex-wrap:nowrap;
+    overflow-x:auto;
+    gap:6px;
+    margin:12px 0 14px;
+    padding:2px 0 7px;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+  }
+
+  .wn-tool-navigation::-webkit-scrollbar {
+    display:none;
+  }
+
+  .wn-tool-navigation a {
+    flex:0 0 auto;
+    min-height:44px;
+    padding:8px 10px;
+    font-size:12px;
+    border-radius:9px;
+  }
+
+  .wn-builder-actions {
+    gap:7px;
+    margin-top:10px;
+  }
+
+  body .shell .wn-builder-primary .primary {
+    min-height:44px;
+    font-size:13px;
+  }
+
+  .wn-builder-secondary {
+    gap:7px;
+  }
+
+  body .shell .wn-builder-secondary button {
+    min-height:44px;
+    padding:8px 6px;
+    font-size:12px;
+  }
+
+  #builderMessage,
+  #saveAccountStatus,
+  #exportMessage,
+  #studioStatus {
+    margin:8px 0;
+    padding:9px 10px;
+    border-radius:9px;
+    font-size:12px;
+  }
+
+  #results .stats {
+    gap:7px;
+  }
+
+  #results .stat {
+    padding:10px 8px;
+  }
+
+  #results .stat span {
+    font-size:11px;
+    line-height:1.35;
+  }
+
+  #results .stat strong {
+    font-size:17px;
+  }
+
+  #resumeFile::file-selector-button {
+    min-height:44px;
+  }
+}
 
 @media(max-width:390px) {
 
@@ -613,8 +1098,6 @@ body .shell header.top [hidden] {
   }
 }
 
-/* EXTRA SMALL SCREENS */
-
 @media(max-width:340px) {
 
   body .shell header.top {
@@ -636,15 +1119,40 @@ body .shell header.top [hidden] {
     flex:1 1 100%!important;
     justify-content:flex-end!important;
   }
+
+  .wn-builder-secondary,
+  #results .stats {
+    grid-template-columns:1fr;
+  }
+
+  body .shell #wnLanding .hero-actions a {
+    flex:1 1 100%!important;
+  }
+
+  .wn-benefits {
+    grid-template-columns:1fr;
+    gap:18px;
+  }
+}
+
+@media(prefers-reduced-motion:reduce) {
+
+  html {
+    scroll-behavior:auto;
+  }
+
+  .wn-tool-card {
+    transition:none!important;
+    transform:none!important;
+  }
 }
 
 </style>
-
 </head>
 
 <body>
 
-<div class="shell">
+<div class="shell wn-home-active">
 
 <!-- PREMIUM COMPACT HEADER -->
 
@@ -703,55 +1211,345 @@ body .shell header.top [hidden] {
 
 <main id="top">
 
-<!-- LANDING PAGE HERO -->
+<!-- =====================================
+     PREMIUM LANDING PAGE
+     ===================================== -->
 
-<section class="hero"
-aria-labelledby="worknelyHeroTitle">
+<div id="wnLanding">
 
-  <span class="eyebrow">
-    ✦ YOUR CAREER, CONNECTED
-  </span>
+  <section class="hero"
+           aria-labelledby="worknelyHeroTitle">
 
-  <h1 id="worknelyHeroTitle">
-    Build your career.
-    <em>Shape your future.</em>
-  </h1>
+    <span class="eyebrow">
+      ✦ YOUR CAREER, CONNECTED
+    </span>
 
-  <p>
-    Create professional resumes, compare your skills
-    with job requirements, and take your next career
-    step with confidence.
-  </p>
+    <h1 id="worknelyHeroTitle">
+      Build your career.
+      <em>Shape your future.</em>
+    </h1>
 
-  <nav class="hero-actions"
-       aria-label="Career tools">
+    <p>
+      Create professional resumes, compare your skills
+      with job requirements, and take your next career
+      step with confidence.
+    </p>
 
-    <a class="primary" href="#builder">
-      Build my resume
-    </a>
+    <nav class="hero-actions"
+         aria-label="Career tools">
 
-    <a class="ghost" href="#comparison">
-      Analyze compatibility
-    </a>
+      <a class="primary" href="#builder">
+        Build my resume →
+      </a>
 
-  </nav>
+      <a class="ghost" href="#comparison">
+        Analyze compatibility
+      </a>
 
-</section>
+    </nav>
 
-<!-- TOOL NAVIGATION -->
+    <div class="wn-hero-note">
+
+      <span>
+        <svg viewBox="0 0 24 24"
+             fill="none"
+             stroke="currentColor"
+             stroke-width="2"
+             aria-hidden="true">
+          <path d="m5 12 4 4L19 6"/>
+        </svg>
+        Free to get started
+      </span>
+
+      <span>
+        <svg viewBox="0 0 24 24"
+             fill="none"
+             stroke="currentColor"
+             stroke-width="2"
+             aria-hidden="true">
+          <path d="m5 12 4 4L19 6"/>
+        </svg>
+        No credit card required
+      </span>
+
+    </div>
+
+  </section>
+
+  <!-- CAREER TOOL COLLECTION -->
+
+  <section class="wn-tools-section"
+           aria-labelledby="wnToolsTitle">
+
+    <div class="wn-landing-heading">
+
+      <span class="wn-kicker">
+        YOUR CAREER TOOLKIT
+      </span>
+
+      <h2 id="wnToolsTitle">
+        Your next move starts here.
+      </h2>
+
+      <p>
+        Everything you need to build, improve
+        and move forward with your career.
+      </p>
+
+    </div>
+
+    <div class="wn-tool-cards">
+
+      <!-- RESUME BUILDER CARD -->
+
+      <a class="wn-tool-card" href="#builder">
+
+        <span class="wn-tool-icon wn-icon-purple">
+
+          <svg viewBox="0 0 24 24"
+               fill="none"
+               stroke="currentColor"
+               stroke-width="1.7"
+               stroke-linecap="round"
+               stroke-linejoin="round"
+               aria-hidden="true">
+
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/>
+            <path d="M14 2v6h6"/>
+            <path d="M8 13h8M8 17h8"/>
+
+          </svg>
+
+        </span>
+
+        <h3>Resume Builder</h3>
+
+        <p>
+          Create a professional, ATS-friendly
+          resume that reflects your experience.
+        </p>
+
+        <span class="wn-card-link">
+
+          <span>Build your resume</span>
+
+          <svg viewBox="0 0 24 24"
+               fill="none"
+               stroke="currentColor"
+               stroke-width="2"
+               stroke-linecap="round"
+               stroke-linejoin="round"
+               aria-hidden="true">
+            <path d="M5 12h14m-7-7 7 7-7 7"/>
+          </svg>
+
+        </span>
+
+      </a>
+
+      <!-- CAREER ANALYSIS CARD -->
+
+      <a class="wn-tool-card" href="#comparison">
+
+        <span class="wn-tool-icon wn-icon-cyan">
+
+          <svg viewBox="0 0 24 24"
+               fill="none"
+               stroke="currentColor"
+               stroke-width="1.7"
+               stroke-linecap="round"
+               stroke-linejoin="round"
+               aria-hidden="true">
+
+            <path d="M3 3v18h18"/>
+            <path d="m7 14 4-4 4 4 6-7"/>
+            <path d="M17 7h4v4"/>
+
+          </svg>
+
+        </span>
+
+        <h3>Career Analysis</h3>
+
+        <p>
+          Compare your resume with job requirements
+          and discover skills to review.
+        </p>
+
+        <span class="wn-card-link">
+
+          <span>Explore your match</span>
+
+          <svg viewBox="0 0 24 24"
+               fill="none"
+               stroke="currentColor"
+               stroke-width="2"
+               stroke-linecap="round"
+               stroke-linejoin="round"
+               aria-hidden="true">
+            <path d="M5 12h14m-7-7 7 7-7 7"/>
+          </svg>
+
+        </span>
+
+      </a>
+
+      <!-- WRITING STUDIO CARD -->
+
+      <a class="wn-tool-card" href="#ai-studio">
+
+        <span class="wn-tool-icon wn-icon-pink">
+
+          <svg viewBox="0 0 24 24"
+               fill="none"
+               stroke="currentColor"
+               stroke-width="1.7"
+               stroke-linecap="round"
+               stroke-linejoin="round"
+               aria-hidden="true">
+
+            <path d="m12 3 2.5 6.5L21 12l-6.5 2.5L12 21l-2.5-6.5L3 12l6.5-2.5L12 3Z"/>
+            <path d="M5 3v4M3 5h4"/>
+            <path d="M19 17v4M17 19h4"/>
+
+          </svg>
+
+        </span>
+
+        <h3>Writing Studio</h3>
+
+        <p>
+          Turn your verified experience into
+          clear, structured resume content.
+        </p>
+
+        <span class="wn-card-link">
+
+          <span>Start writing</span>
+
+          <svg viewBox="0 0 24 24"
+               fill="none"
+               stroke="currentColor"
+               stroke-width="2"
+               stroke-linecap="round"
+               stroke-linejoin="round"
+               aria-hidden="true">
+            <path d="M5 12h14m-7-7 7 7-7 7"/>
+          </svg>
+
+        </span>
+
+      </a>
+
+    </div>
+
+  </section>
+
+  <!-- PLATFORM BENEFITS -->
+
+  <section class="wn-benefits"
+           aria-label="Worknely benefits">
+
+    <div class="wn-benefit">
+
+      <svg viewBox="0 0 24 24"
+           fill="none"
+           stroke="currentColor"
+           stroke-width="1.7"
+           stroke-linecap="round"
+           stroke-linejoin="round"
+           aria-hidden="true">
+        <circle cx="12" cy="12" r="9"/>
+        <path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"/>
+      </svg>
+
+      <strong>6 languages</strong>
+      <span>International interface</span>
+
+    </div>
+
+    <div class="wn-benefit">
+
+      <svg viewBox="0 0 24 24"
+           fill="none"
+           stroke="currentColor"
+           stroke-width="1.7"
+           stroke-linecap="round"
+           stroke-linejoin="round"
+           aria-hidden="true">
+        <rect x="7" y="2" width="10" height="20" rx="2"/>
+        <path d="M11 18h2"/>
+      </svg>
+
+      <strong>Mobile friendly</strong>
+      <span>Build from anywhere</span>
+
+    </div>
+
+    <div class="wn-benefit">
+
+      <svg viewBox="0 0 24 24"
+           fill="none"
+           stroke="currentColor"
+           stroke-width="1.7"
+           stroke-linecap="round"
+           stroke-linejoin="round"
+           aria-hidden="true">
+        <path d="M12 3v12m-5-5 5 5 5-5"/>
+        <path d="M4 16v4h16v-4"/>
+      </svg>
+
+      <strong>PDF export</strong>
+      <span>Your resume, ready to share</span>
+
+    </div>
+
+  </section>
+
+  <!-- EXISTING PRO BANNER MOVED HERE -->
+
+  <div id="wnPremiumSlot"></div>
+
+</div>
+
+<!-- =====================================
+     WORKSPACE NAVIGATION
+     ===================================== -->
 
 <nav class="wn-tool-navigation"
-     aria-label="Worknely tools">
+     id="wnWorkspaceNavigation"
+     aria-label="Worknely tools"
+     hidden>
 
-  <a href="#ai-studio" data-wn-tool="ai-studio">
+  <a href="#top"
+     class="wn-home-link"
+     aria-label="Back to home">
+
+    <svg viewBox="0 0 24 24"
+         fill="none"
+         stroke="currentColor"
+         stroke-width="1.8"
+         stroke-linecap="round"
+         stroke-linejoin="round"
+         aria-hidden="true">
+      <path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1Z"/>
+      <path d="M9 21v-8h6v8"/>
+    </svg>
+
+  </a>
+
+  <a href="#ai-studio"
+     data-wn-tool="ai-studio">
     Writing Studio
   </a>
 
-  <a href="#builder" data-wn-tool="builder">
+  <a href="#builder"
+     data-wn-tool="builder">
     Resume Builder
   </a>
 
-  <a href="#comparison" data-wn-tool="comparison">
+  <a href="#comparison"
+     data-wn-tool="comparison">
     Career Analysis
   </a>
 
@@ -761,14 +1559,16 @@ aria-labelledby="worknelyHeroTitle">
 
 </nav>
 
-<!-- WRITING STUDIO -->
+<!-- =====================================
+     WRITING STUDIO
+     ===================================== -->
 
 <section class="workspace ai-preview wn-tool-view"
-id="ai-studio"
-data-wn-view="ai-studio"
-aria-labelledby="studioHeading"
-tabindex="-1"
-hidden>
+         id="ai-studio"
+         data-wn-view="ai-studio"
+         aria-labelledby="studioHeading"
+         tabindex="-1"
+         hidden>
 
   <div class="section-head">
 
@@ -874,13 +1674,16 @@ hidden>
 
 </section>
 
-<!-- PROFESSIONAL RESUME BUILDER -->
+<!-- =====================================
+     RESUME BUILDER
+     ===================================== -->
 
 <section class="workspace builder wn-tool-view"
-id="builder"
-data-wn-view="builder"
-aria-labelledby="builderTitle"
-tabindex="-1">
+         id="builder"
+         data-wn-view="builder"
+         aria-labelledby="builderTitle"
+         tabindex="-1"
+         hidden>
 
   <div class="section-head">
 
@@ -1028,14 +1831,16 @@ tabindex="-1">
 
 </section>
 
-<!-- CAREER COMPATIBILITY ANALYSIS -->
+<!-- =====================================
+     CAREER ANALYSIS
+     ===================================== -->
 
 <section class="workspace wn-tool-view"
-id="comparison"
-data-wn-view="comparison"
-aria-labelledby="workspaceTitle"
-tabindex="-1"
-hidden>
+         id="comparison"
+         data-wn-view="comparison"
+         aria-labelledby="workspaceTitle"
+         tabindex="-1"
+         hidden>
 
   <div class="section-head">
 
@@ -1174,12 +1979,15 @@ hidden>
 
 </section>
 
-<!-- COMPATIBILITY REPORT -->
+<!-- =====================================
+     COMPATIBILITY REPORT
+     ===================================== -->
 
 <section class="results hidden wn-tool-view"
-id="results"
-aria-live="polite"
-aria-labelledby="reportTitle">
+         id="results"
+         aria-live="polite"
+         aria-labelledby="reportTitle"
+         hidden>
 
   <div class="results-head">
 
@@ -1355,7 +2163,9 @@ aria-labelledby="reportTitle">
 
 </section>
 
-<!-- WORKNELY ACCOUNT -->
+<!-- =====================================
+     WORKNELY ACCOUNT
+     ===================================== -->
 
 <section id="worknelyAccount"
          class="workspace"
@@ -1456,7 +2266,9 @@ aria-labelledby="reportTitle">
 
 </div>
 
-<!-- CORE FUNCTIONAL MODULES -->
+<!-- =====================================
+     EXISTING FUNCTIONAL MODULES
+     ===================================== -->
 
 <script defer src="script.js?v=7.5"></script>
 
@@ -1468,22 +2280,24 @@ aria-labelledby="reportTitle">
 
 <script defer src="worknely-premium-pdf.js?v=7.5"></script>
 
-<!-- VALIDATED SUPABASE AUTHENTICATION -->
+<!-- SUPABASE AUTHENTICATION -->
 
 <script type="module"
-src="worknely-auth.js?v=7.6"></script>
+        src="worknely-auth.js?v=7.6"></script>
 
-<!-- PRESERVE VALIDATED V7.12.1 AUTHENTICATION UI -->
+<!-- VALIDATED AUTHENTICATION UI -->
 
 <script defer
-src="worknely-saas-ui.js?v=7.12.1"></script>
+        src="worknely-saas-ui.js?v=7.12.1"></script>
 
 <!-- ACCOUNT SAVING AND EDITING -->
 
 <script type="module"
-src="worknely-save-account.js?v=7.9"></script>
+        src="worknely-save-account.js?v=7.9"></script>
 
-<!-- V7.12.2 FLAG LANGUAGE SYNCHRONIZATION -->
+<!-- =====================================
+     FLAG LANGUAGE SYNCHRONIZATION
+     ===================================== -->
 
 <script>
 (() => {
@@ -1577,7 +2391,9 @@ src="worknely-save-account.js?v=7.9"></script>
 })();
 </script>
 
-<!-- TOOL NAVIGATION -->
+<!-- =====================================
+     V7.13 LANDING PAGE ROUTER
+     ===================================== -->
 
 <script>
 (() => {
@@ -1600,15 +2416,50 @@ src="worknely-save-account.js?v=7.9"></script>
       return "comparison";
     }
 
-    return toolIds.includes(hash)
-      ? hash
-      : "builder";
+    if (toolIds.includes(hash)) {
+      return hash;
+    }
+
+    const params =
+      new URLSearchParams(window.location.search);
+
+    if (!hash && params.has("edit")) {
+      return "builder";
+    }
+
+    return "home";
 
   }
 
   function updateToolNavigation() {
 
     const active = getActiveTool();
+
+    const isHome = active === "home";
+
+    const landing =
+      document.getElementById("wnLanding");
+
+    const navigation =
+      document.getElementById("wnWorkspaceNavigation");
+
+    const shell =
+      document.querySelector(".shell");
+
+    if (landing) {
+      landing.hidden = !isHome;
+    }
+
+    if (navigation) {
+      navigation.hidden = isHome;
+    }
+
+    if (shell) {
+      shell.classList.toggle(
+        "wn-home-active",
+        isHome
+      );
+    }
 
     document.querySelectorAll(
       ".wn-tool-view[data-wn-view]"
@@ -1626,7 +2477,8 @@ src="worknely-save-account.js?v=7.9"></script>
       if (link.dataset.wnTool === active) {
 
         link.setAttribute(
-          "aria-current","page"
+          "aria-current",
+          "page"
         );
 
       } else {
@@ -1641,13 +2493,39 @@ src="worknely-save-account.js?v=7.9"></script>
       document.getElementById("results");
 
     if (report) {
-      report.hidden = active !== "comparison";
+
+      report.hidden =
+        active !== "comparison";
+
     }
 
-    const target =
-      document.getElementById(active);
+    const requestedHash =
+      window.location.hash.toLowerCase();
 
-    if (target && window.location.hash) {
+    if (requestedHash === "#worknelyaccount") {
+      return;
+    }
+
+    if (isHome) {
+
+      window.scrollTo({
+        top:0,
+        behavior:"auto"
+      });
+
+      return;
+
+    }
+
+    const target = document.getElementById(
+      requestedHash === "#results" &&
+      report &&
+      !report.classList.contains("hidden")
+        ? "results"
+        : active
+    );
+
+    if (target) {
 
       requestAnimationFrame(() => {
 
@@ -1671,7 +2549,8 @@ src="worknely-save-account.js?v=7.9"></script>
 
     document.addEventListener(
       "DOMContentLoaded",
-      updateToolNavigation
+      updateToolNavigation,
+      {once:true}
     );
 
   } else {
@@ -1683,7 +2562,346 @@ src="worknely-save-account.js?v=7.9"></script>
 })();
 </script>
 
-<!-- PREMIUM STATUS MESSAGES -->
+<!-- =====================================
+     PREMIUM BANNER REPOSITIONING
+     ===================================== -->
+
+<script>
+(() => {
+
+  "use strict";
+
+  function initializePremiumPlacement() {
+
+    const slot =
+      document.getElementById("wnPremiumSlot");
+
+    const shell =
+      document.querySelector(".shell");
+
+    if (!slot || !shell) return;
+
+    function relocateBanner() {
+
+      const banner =
+        shell.querySelector(".wn-pro-banner");
+
+      if (!banner) return;
+
+      if (banner.parentElement !== slot) {
+
+        slot.appendChild(banner);
+
+      }
+
+    }
+
+    const observer = new MutationObserver(
+      relocateBanner
+    );
+
+    observer.observe(shell,{
+      childList:true,
+      subtree:true
+    });
+
+    relocateBanner();
+
+  }
+
+  if (document.readyState === "loading") {
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      initializePremiumPlacement,
+      {once:true}
+    );
+
+  } else {
+
+    initializePremiumPlacement();
+
+  }
+
+})();
+</script>
+
+<!-- =====================================
+     LANDING PAGE TRANSLATIONS
+     ===================================== -->
+
+<script>
+(() => {
+
+  "use strict";
+
+  const translations = {
+
+    en:[
+      "YOUR CAREER TOOLKIT",
+      "Your next move starts here.",
+      "Everything you need to build, improve and move forward with your career.",
+      "Resume Builder",
+      "Create a professional, ATS-friendly resume that reflects your experience.",
+      "Build your resume",
+      "Career Analysis",
+      "Compare your resume with job requirements and discover skills to review.",
+      "Explore your match",
+      "Writing Studio",
+      "Turn your verified experience into clear, structured resume content.",
+      "Start writing",
+      "6 languages",
+      "International interface",
+      "Mobile friendly",
+      "Build from anywhere",
+      "PDF export",
+      "Your resume, ready to share",
+      "Free to get started",
+      "No credit card required"
+    ],
+
+    ro:[
+      "INSTRUMENTELE TALE PROFESIONALE",
+      "Următorul tău pas începe aici.",
+      "Tot ce ai nevoie pentru a-ți construi și dezvolta cariera.",
+      "Creator de CV",
+      "Creează un CV profesional, compatibil ATS, care reflectă experiența ta.",
+      "Creează CV-ul",
+      "Analiza carierei",
+      "Compară CV-ul cu cerințele jobului și descoperă competențele de îmbunătățit.",
+      "Explorează compatibilitatea",
+      "Studio de redactare",
+      "Transformă experiența reală în conținut profesional și structurat.",
+      "Începe redactarea",
+      "6 limbi",
+      "Interfață internațională",
+      "Adaptat pentru mobil",
+      "Lucrează de oriunde",
+      "Export PDF",
+      "CV-ul tău, gata de distribuit",
+      "Începe gratuit",
+      "Fără card bancar"
+    ],
+
+    it:[
+      "I TUOI STRUMENTI PROFESSIONALI",
+      "Il tuo prossimo passo inizia qui.",
+      "Tutto ciò che ti serve per costruire e sviluppare la tua carriera.",
+      "Creatore di CV",
+      "Crea un curriculum professionale compatibile con ATS.",
+      "Crea il tuo CV",
+      "Analisi della carriera",
+      "Confronta il tuo CV con i requisiti del lavoro e individua le competenze da rivedere.",
+      "Esplora la compatibilità",
+      "Studio di scrittura",
+      "Trasforma la tua esperienza reale in contenuti professionali e strutturati.",
+      "Inizia a scrivere",
+      "6 lingue",
+      "Interfaccia internazionale",
+      "Ottimizzato per mobile",
+      "Lavora ovunque",
+      "Esportazione PDF",
+      "Il tuo CV pronto da condividere",
+      "Inizia gratuitamente",
+      "Nessuna carta richiesta"
+    ],
+
+    de:[
+      "DEINE KARRIEREWERKZEUGE",
+      "Dein nächster Schritt beginnt hier.",
+      "Alles, was du für deine berufliche Entwicklung brauchst.",
+      "Lebenslauf-Builder",
+      "Erstelle einen professionellen, ATS-freundlichen Lebenslauf.",
+      "Lebenslauf erstellen",
+      "Karriereanalyse",
+      "Vergleiche deinen Lebenslauf mit Stellenanforderungen und prüfe deine Fähigkeiten.",
+      "Übereinstimmung prüfen",
+      "Schreibstudio",
+      "Verwandle deine tatsächliche Erfahrung in strukturierte Lebenslaufinhalte.",
+      "Jetzt schreiben",
+      "6 Sprachen",
+      "Internationale Oberfläche",
+      "Mobilfreundlich",
+      "Von überall arbeiten",
+      "PDF-Export",
+      "Dein Lebenslauf zum Teilen",
+      "Kostenlos starten",
+      "Keine Kreditkarte erforderlich"
+    ],
+
+    fr:[
+      "VOS OUTILS DE CARRIÈRE",
+      "Votre prochaine étape commence ici.",
+      "Tout ce dont vous avez besoin pour développer votre carrière.",
+      "Créateur de CV",
+      "Créez un CV professionnel compatible avec les ATS.",
+      "Créer votre CV",
+      "Analyse de carrière",
+      "Comparez votre CV aux exigences du poste et identifiez les compétences à revoir.",
+      "Explorer la compatibilité",
+      "Studio de rédaction",
+      "Transformez votre expérience réelle en contenu professionnel et structuré.",
+      "Commencer à écrire",
+      "6 langues",
+      "Interface internationale",
+      "Adapté aux mobiles",
+      "Travaillez de partout",
+      "Export PDF",
+      "Votre CV prêt à partager",
+      "Commencez gratuitement",
+      "Aucune carte bancaire requise"
+    ],
+
+    es:[
+      "TUS HERRAMIENTAS PROFESIONALES",
+      "Tu próximo paso empieza aquí.",
+      "Todo lo que necesitas para construir y desarrollar tu carrera.",
+      "Creador de CV",
+      "Crea un currículum profesional compatible con ATS.",
+      "Crear tu CV",
+      "Análisis profesional",
+      "Compara tu CV con los requisitos del empleo e identifica habilidades que debes revisar.",
+      "Explorar compatibilidad",
+      "Estudio de redacción",
+      "Transforma tu experiencia real en contenido profesional y estructurado.",
+      "Empezar a escribir",
+      "6 idiomas",
+      "Interfaz internacional",
+      "Adaptado a móviles",
+      "Trabaja desde cualquier lugar",
+      "Exportación PDF",
+      "Tu CV listo para compartir",
+      "Empieza gratis",
+      "Sin tarjeta de crédito"
+    ]
+
+  };
+
+  function initializeLandingTranslations() {
+
+    const select =
+      document.getElementById("language");
+
+    const landing =
+      document.getElementById("wnLanding");
+
+    if (!select || !landing) return;
+
+    const selectors = [
+
+      ".wn-landing-heading .wn-kicker",
+      "#wnToolsTitle",
+      ".wn-landing-heading p",
+
+      ".wn-tool-card:nth-child(1) h3",
+      ".wn-tool-card:nth-child(1) p",
+      ".wn-tool-card:nth-child(1) .wn-card-link span",
+
+      ".wn-tool-card:nth-child(2) h3",
+      ".wn-tool-card:nth-child(2) p",
+      ".wn-tool-card:nth-child(2) .wn-card-link span",
+
+      ".wn-tool-card:nth-child(3) h3",
+      ".wn-tool-card:nth-child(3) p",
+      ".wn-tool-card:nth-child(3) .wn-card-link span",
+
+      ".wn-benefit:nth-child(1) strong",
+      ".wn-benefit:nth-child(1) span",
+
+      ".wn-benefit:nth-child(2) strong",
+      ".wn-benefit:nth-child(2) span",
+
+      ".wn-benefit:nth-child(3) strong",
+      ".wn-benefit:nth-child(3) span",
+
+      ".wn-hero-note > span:nth-child(1)",
+      ".wn-hero-note > span:nth-child(2)"
+
+    ];
+
+    function updateLandingLanguage() {
+
+      const dictionary =
+        translations[select.value] ||
+        translations.en;
+
+      selectors.forEach((selector,index) => {
+
+        const element =
+          landing.querySelector(selector);
+
+        if (!element) return;
+
+        if (index >= 18) {
+
+          const textNodes =
+            Array.from(element.childNodes)
+            .filter(node => node.nodeType === 3);
+
+          textNodes.forEach(node => node.remove());
+
+          element.appendChild(
+            document.createTextNode(
+              " " + dictionary[index]
+            )
+          );
+
+        } else {
+
+          element.textContent =
+            dictionary[index];
+
+        }
+
+      });
+
+    }
+
+    select.addEventListener(
+      "change",
+      updateLandingLanguage
+    );
+
+    select.addEventListener(
+      "input",
+      updateLandingLanguage
+    );
+
+    window.addEventListener(
+      "load",
+      updateLandingLanguage,
+      {once:true}
+    );
+
+    window.addEventListener(
+      "pageshow",
+      updateLandingLanguage
+    );
+
+    updateLandingLanguage();
+
+  }
+
+  if (document.readyState === "loading") {
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      initializeLandingTranslations,
+      {once:true}
+    );
+
+  } else {
+
+    initializeLandingTranslations();
+
+  }
+
+})();
+</script>
+
+<!-- =====================================
+     PREMIUM STATUS MESSAGES
+     ===================================== -->
 
 <script>
 (() => {
@@ -1802,9 +3020,9 @@ src="worknely-save-account.js?v=7.9"></script>
 <!-- SUCCESS CELEBRATION -->
 
 <script defer
-src="worknely-celebration.js?v=7.5"></script>
+        src="worknely-celebration.js?v=7.5"></script>
 
-<!-- END WORKNELY V7.12.2 -->
+<!-- END WORKNELY V7.13 PREMIUM AIRY EDITION -->
 
 </body>
 </html>
