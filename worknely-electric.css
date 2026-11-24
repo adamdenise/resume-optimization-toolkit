@@ -1,47 +1,1059 @@
-/* Worknely V5.2 — Electric Career Edition. Load after existing styles. */
-:root{--wn-navy:#23134f;--wn-blue:#5424ff;--wn-violet:#742cff;--wn-cyan:#00cfff;--wn-bg:#f8f9ff;color:#23134f;background:#f8f9ff}*{box-sizing:border-box}html{scroll-behavior:smooth}body{background:radial-gradient(ellipse at 90% 5%,#e9e4ff 0,transparent 34%),radial-gradient(ellipse at 4% 20%,#e9faff 0,transparent 30%),#f8f9ff;color:#23134f}.shell{max-width:1240px;width:min(100% - 32px,1240px);margin-inline:auto}.top{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-block:18px;border-bottom:1px solid #e9e5f5}.brand{display:inline-flex;align-items:center;gap:10px;text-decoration:none;color:#24124c}.brandmark{background:linear-gradient(135deg,#00cfff,#5424ff 60%,#ff24a8);border-radius:12px;display:grid;place-items:center;width:48px;height:48px;padding:7px}.worknely-brandname{font-size:1.3rem;line-height:1.12;font-weight:800}.worknely-brandname small{display:block;font-size:.56rem;letter-spacing:.16em;margin-top:5px;color:#6b628a}.header-tools{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.header-tools select{max-width:155px}.version{background:#f0eaff;color:#5424ff;border:1px solid #e4d8ff}.hero{background:radial-gradient(circle at 86% 14%,rgba(255,36,168,.15),transparent 28%),radial-gradient(circle at 96% 90%,rgba(0,207,255,.22),transparent 32%),linear-gradient(125deg,#fff 0%,#f5f0ff 68%,#f9f9ff 100%);border:1px solid #ece5ff;border-radius:30px;box-shadow:0 24px 70px rgba(84,36,255,.09);padding:clamp(42px,7vw,88px) clamp(24px,6vw,72px);margin:26px 0 32px;position:relative;isolation:isolate;overflow:hidden}.hero:before{content:"";position:absolute;width:300px;height:300px;border:44px solid rgba(84,36,255,.09);border-radius:50%;right:-110px;top:-135px;z-index:-1}.hero:after{content:"";position:absolute;width:330px;height:330px;border:45px solid rgba(0,207,255,.1);border-radius:50%;right:-170px;bottom:-235px;transform:rotate(20deg);z-index:-1}.hero .eyebrow{color:#6d3df5;font-weight:800;letter-spacing:.11em}.hero h1{max-width:850px;color:#24124c;font-family:Manrope,Inter,sans-serif;font-size:clamp(2.5rem,5.5vw,5.1rem);line-height:1.08;letter-spacing:-.055em;margin:18px 0}.hero h1 em{font-style:normal;background:linear-gradient(100deg,#5424ff,#ff24a8);-webkit-background-clip:text;background-clip:text;color:transparent}.hero p{max-width:690px;color:#625a7a;font-size:clamp(1rem,1.7vw,1.2rem);line-height:1.7}.hero-meta{display:none}.wn-hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}.wn-hero-actions a{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:12px 20px;border-radius:12px;text-decoration:none;font-weight:700}.wn-hero-actions .wn-main-cta{color:white;background:linear-gradient(110deg,#5424ff,#ff24a8);box-shadow:0 10px 24px rgba(116,44,255,.2)}.wn-hero-actions .wn-secondary-cta{color:#5424ff;background:#fff;border:1px solid #e4d8ff}.wn-feature-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin:0 0 32px}.wn-feature-card{background:#fff;border:1px solid #ebe7f7;border-radius:20px;padding:24px;box-shadow:0 12px 30px rgba(47,27,99,.045)}.wn-feature-card .wn-symbol{display:grid;place-items:center;width:42px;height:42px;border-radius:13px;margin-bottom:16px;font-size:1.25rem;background:#f1eaff;color:#5424ff}.wn-feature-card:nth-child(2) .wn-symbol{background:#e7f9ff;color:#008ac5}.wn-feature-card:nth-child(3) .wn-symbol{background:#fff0f8;color:#db1b91}.wn-feature-card:nth-child(4) .wn-symbol{background:#e6fff6;color:#008b69}.wn-feature-card h2{font-size:1.05rem;color:#24124c;margin:0 0 8px}.wn-feature-card p{font-size:.9rem;color:#6a637c;line-height:1.55;margin:0}.workspace,.results,.report-card{border:1px solid #ebe7f7;box-shadow:0 14px 40px rgba(47,27,99,.045)}.section-head h2,.results-head h2{color:#24124c}.eyebrow,.overline,.field label{color:#5424ff}.primary{background:linear-gradient(105deg,#5424ff,#ff24a8);border-color:transparent;box-shadow:0 10px 22px rgba(84,36,255,.15)}.ghost{background:#f4efff;color:#5424ff;border-color:#e5d9ff}.ghost:hover{background:#eae0ff}.field textarea:focus,.builder-grid input:focus,.builder-grid textarea:focus,.ai-preview select:focus{outline:2px solid #bba2ff;outline-offset:1px;border-color:#5424ff}.ring{background:conic-gradient(#5424ff calc(var(--score)*1%),#e8e0fa 0)}.ring strong,.ats-main strong{color:#5424ff}.studio-notice{background:#f3eeff;color:#55457d}footer{border-top:1px solid #e9e5f5;color:#736b88}.wn-top-links{display:flex;align-items:center;gap:10px}.wn-top-links a{text-decoration:none;color:#5424ff;font-weight:700;padding:10px 14px;border-radius:10px;background:#f2edff}.wn-top-links a:last-child{background:linear-gradient(110deg,#5424ff,#ff24a8);color:#fff}@media(max-width:900px){.wn-feature-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.hero{padding:56px 36px}}@media(max-width:700px){.shell{width:min(100% - 24px,1240px)}.top{padding-block:12px;gap:10px}.brandmark{width:42px;height:42px}.worknely-brandname{font-size:1.1rem}.header-tools{width:100%;justify-content:space-between}.hero{margin:16px 0 24px;padding:48px 24px;border-radius:22px}.hero h1{letter-spacing:-.045em}.wn-feature-grid{gap:12px}.wn-feature-card{padding:18px}.wn-top-links a{padding:8px 11px;font-size:.85rem}}@media(max-width:480px){.wn-feature-grid{grid-template-columns:1fr}.hero{padding:42px 20px}.wn-hero-actions a{width:100%}.header-tools select{max-width:135px}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 
-/* WORKNELY — HERO MOBILE FIX */
+/*
+ * WORKNELY V7.12
+ * Electric Compact Edition
+ * Global Compact Design System
+ *
+ * Premium SaaS Identity
+ * Electric Purple & Hot Pink
+ * Mobile First Experience
+ * Compact Landing Page
+ * Compact Feature Cards
+ * Compact Global Actions
+ * Responsive Career Workspace
+ *
+ * LOAD AFTER:
+ * style.css
+ * worknely-theme.css
+ */
 
-.hero .hero-actions {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: stretch;
-  gap: 14px;
-  margin-top: 28px;
+/* ELECTRIC DESIGN TOKENS */
+
+:root {
+  --wn-navy: #23134f;
+  --wn-blue: #5424ff;
+  --wn-violet: #742cff;
+  --wn-pink: #ff24a8;
+  --wn-cyan: #00cfff;
+  --wn-bg: #f8f9ff;
+  --wn-white: #ffffff;
+
+  --wn-electric-gradient:
+    linear-gradient(
+      105deg,
+      #5424ff,
+      #ff24a8
+    );
+
+  --wn-electric-border: #ebe7f7;
+  --wn-electric-radius: 14px;
+  --wn-electric-gap: 10px;
+  --wn-electric-action-height: 40px;
+
+  color: #23134f;
+  background: #f8f9ff;
 }
 
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background:
+    radial-gradient(
+      ellipse at 90% 5%,
+      #e9e4ff 0,
+      transparent 34%
+    ),
+    radial-gradient(
+      ellipse at 4% 20%,
+      #e9faff 0,
+      transparent 30%
+    ),
+    #f8f9ff;
+
+  color: #23134f;
+}
+
+/* COMPACT PAGE CONTAINER */
+
+.shell {
+  max-width: 1240px;
+  width: 100%;
+  margin-inline: auto;
+  padding-inline: 20px;
+}
+
+/* COMPACT GLOBAL HEADER */
+
+.top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+
+  gap: 10px;
+  padding-block: 12px;
+
+  border-bottom: 1px solid #e9e5f5;
+}
+
+/* ELECTRIC BRAND IDENTITY */
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  text-decoration: none;
+  color: #24124c;
+}
+
+.brandmark {
+  display: grid;
+  place-items: center;
+
+  width: 36px;
+  height: 36px;
+
+  padding: 5px;
+  flex-shrink: 0;
+
+  border-radius: 10px;
+
+  background: linear-gradient(
+    135deg,
+    #00cfff,
+    #5424ff 60%,
+    #ff24a8
+  );
+}
+
+.brandmark img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.worknely-brandname {
+  font-size: 1.15rem;
+  line-height: 1.12;
+  font-weight: 800;
+}
+
+.worknely-brandname small {
+  display: block;
+
+  font-size: .48rem;
+  letter-spacing: .13em;
+
+  margin-top: 3px;
+
+  color: #6b628a;
+}
+
+/* COMPACT HEADER CONTROLS */
+
+.header-tools {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+
+  gap: 7px;
+}
+
+.header-tools select {
+  max-width: 135px;
+  min-height: 36px;
+
+  padding: 6px 9px;
+
+  border-radius: 9px;
+}
+
+.version {
+  background: #f0eaff;
+  color: #5424ff;
+
+  border: 1px solid #e4d8ff;
+
+  padding: 5px 8px;
+
+  font-size: 10px;
+  letter-spacing: .5px;
+}
+
+/* COMPACT LANDING HERO */
+
+.hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+
+  background:
+    radial-gradient(
+      circle at 86% 14%,
+      rgba(255,36,168,.15),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 96% 90%,
+      rgba(0,207,255,.22),
+      transparent 32%
+    ),
+    linear-gradient(
+      125deg,
+      #fff 0%,
+      #f5f0ff 68%,
+      #f9f9ff 100%
+    );
+
+  border: 1px solid #ece5ff;
+  border-radius: 18px;
+
+  box-shadow:
+    0 8px 28px rgba(84,36,255,.07);
+
+  padding: 32px 28px 36px;
+  margin: 14px 0 18px;
+}
+
+/* COMPACT HERO DECORATIONS */
+
+.hero:before {
+  content: "";
+
+  position: absolute;
+
+  width: 220px;
+  height: 220px;
+
+  border: 30px solid
+    rgba(84,36,255,.09);
+
+  border-radius: 50%;
+
+  right: -85px;
+  top: -110px;
+
+  z-index: -1;
+  pointer-events: none;
+}
+
+.hero:after {
+  content: "";
+
+  position: absolute;
+
+  width: 240px;
+  height: 240px;
+
+  border: 32px solid
+    rgba(0,207,255,.1);
+
+  border-radius: 50%;
+
+  right: -130px;
+  bottom: -175px;
+
+  transform: rotate(20deg);
+
+  background: none;
+
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* HERO TYPOGRAPHY */
+
+.hero .eyebrow {
+  color: #6d3df5;
+
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .11em;
+}
+
+.hero h1 {
+  max-width: 850px;
+
+  color: #24124c;
+
+  font-family:
+    Manrope,
+    Inter,
+    sans-serif;
+
+  font-size: clamp(30px,5vw,52px);
+
+  line-height: 1.12;
+  letter-spacing: -.045em;
+
+  margin: 12px 0;
+}
+
+.hero h1 em {
+  font-style: normal;
+
+  background: linear-gradient(
+    100deg,
+    #5424ff,
+    #ff24a8
+  );
+
+  -webkit-background-clip: text;
+  background-clip: text;
+
+  color: transparent;
+}
+
+.hero p {
+  max-width: 650px;
+
+  color: #625a7a;
+
+  font-size: 15px;
+  line-height: 1.6;
+
+  margin: 10px 0;
+}
+
+.hero-meta {
+  display: none;
+}
+
+/* GLOBAL COMPACT HERO ACTIONS */
+
+.wn-hero-actions,
+.hero .hero-actions {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: stretch;
+
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.wn-hero-actions a,
 .hero .hero-actions a {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  text-align: center;
-  text-decoration: none;
+
   box-sizing: border-box;
+
   min-width: 0;
-  padding: 16px 22px;
-  border-radius: 16px;
+  max-width: 100%;
+
+  min-height: 40px;
+
+  padding: 10px 14px;
+  margin: 0;
+
+  border-radius: 10px;
+
+  text-decoration: none;
+  text-align: center;
+
+  font-size: 13px;
   font-weight: 700;
   line-height: 1.35;
+
+  white-space: normal;
   overflow-wrap: normal;
   word-break: normal;
 }
 
-@media (max-width: 767px) {
-  .hero .hero-actions {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    gap: 12px;
+.wn-hero-actions .wn-main-cta,
+.hero .hero-actions .wn-main-cta {
+  color: #ffffff;
+
+  background:
+    var(--wn-electric-gradient);
+
+  box-shadow:
+    0 4px 12px rgba(116,44,255,.15);
+}
+
+.wn-hero-actions .wn-secondary-cta,
+.hero .hero-actions .wn-secondary-cta {
+  color: #5424ff;
+  background: #ffffff;
+
+  border: 1px solid #e4d8ff;
+}
+
+/* COMPACT FEATURE GRID */
+
+.wn-feature-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4,minmax(0,1fr));
+
+  gap: 10px;
+  margin: 0 0 16px;
+}
+
+/* COMPACT FEATURE CARDS */
+
+.wn-feature-card {
+  min-width: 0;
+
+  background: #ffffff;
+
+  border: 1px solid #ebe7f7;
+  border-radius: 14px;
+
+  padding: 14px;
+
+  box-shadow:
+    0 4px 16px rgba(47,27,99,.035);
+}
+
+.wn-feature-card .wn-symbol {
+  display: grid;
+  place-items: center;
+
+  width: 32px;
+  height: 32px;
+
+  border-radius: 9px;
+  margin-bottom: 9px;
+
+  font-size: 1rem;
+
+  background: #f1eaff;
+  color: #5424ff;
+}
+
+.wn-feature-card .wn-symbol svg {
+  width: 18px;
+  height: 18px;
+}
+
+.wn-feature-card:nth-child(2)
+.wn-symbol {
+  background: #e7f9ff;
+  color: #008ac5;
+}
+
+.wn-feature-card:nth-child(3)
+.wn-symbol {
+  background: #fff0f8;
+  color: #db1b91;
+}
+
+.wn-feature-card:nth-child(4)
+.wn-symbol {
+  background: #e6fff6;
+  color: #008b69;
+}
+
+.wn-feature-card h2 {
+  font-size: 14px;
+  line-height: 1.35;
+
+  color: #24124c;
+
+  margin: 0 0 6px;
+  overflow-wrap: anywhere;
+}
+
+.wn-feature-card p {
+  font-size: 12px;
+  line-height: 1.5;
+
+  color: #6a637c;
+
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+/* COMPACT WORKSPACE AND REPORTS */
+
+.workspace,
+.results {
+  border: 1px solid #ebe7f7;
+  border-radius: 18px;
+
+  padding: 20px;
+  margin-bottom: 16px;
+
+  box-shadow:
+    0 6px 22px rgba(47,27,99,.04);
+}
+
+.report-card {
+  border: 1px solid #ebe7f7;
+  border-radius: 13px;
+
+  padding: 15px;
+
+  box-shadow:
+    0 3px 10px rgba(47,27,99,.025);
+}
+
+.section-head h2,
+.results-head h2 {
+  color: #24124c;
+}
+
+.eyebrow,
+.overline,
+.field label {
+  color: #5424ff;
+}
+
+/* ELECTRIC COMPACT BUTTONS */
+
+.primary,
+.ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  min-width: 0;
+  max-width: 100%;
+
+  min-height: 40px;
+
+  padding: 10px 14px;
+
+  border-radius: 10px;
+
+  font-size: 13px;
+  line-height: 1.3;
+
+  text-align: center;
+}
+
+.primary {
+  background:
+    var(--wn-electric-gradient);
+
+  color: #ffffff;
+  border-color: transparent;
+
+  box-shadow:
+    0 4px 12px rgba(84,36,255,.13);
+}
+
+.ghost {
+  background: #f4efff;
+  color: #5424ff;
+
+  border-color: #e5d9ff;
+}
+
+.primary:hover:not(:disabled) {
+  filter: brightness(1.05);
+}
+
+.ghost:hover:not(:disabled) {
+  background: #eae0ff;
+}
+
+/* COMPACT ACTION GROUPS */
+
+.actions,
+.export-actions {
+  gap: 8px;
+}
+
+.actions {
+  margin-top: 14px;
+}
+
+/* ELECTRIC FORM FOCUS */
+
+.field textarea:focus,
+.builder-grid input:focus,
+.builder-grid textarea:focus,
+.ai-preview select:focus {
+  outline: 2px solid #bba2ff;
+  outline-offset: 1px;
+
+  border-color: #5424ff;
+}
+
+/* COMPACT FORM IDENTITY */
+
+.field textarea,
+.builder-grid input,
+.builder-grid textarea,
+.ai-preview select {
+  border-color: #e3ddef;
+  background: #fcfbff;
+}
+
+.field textarea::placeholder,
+.builder-grid input::placeholder,
+.builder-grid textarea::placeholder {
+  color: #948ba6;
+}
+
+/* ELECTRIC ATS SCORE */
+
+.ring {
+  background: conic-gradient(
+    #5424ff calc(var(--score)*1%),
+    #e8e0fa 0
+  );
+}
+
+.ring strong,
+.ats-main strong {
+  color: #5424ff;
+}
+
+.score-card {
+  background: #f7f3ff;
+}
+
+.ring > div {
+  background: #f7f3ff;
+}
+
+.stat {
+  background: #fcfbff;
+  border-color: #ebe7f7;
+}
+
+.stat strong {
+  color: #24124c;
+}
+
+/* COMPACT WRITING STUDIO */
+
+.studio-notice {
+  background: #f3eeff;
+  color: #55457d;
+
+  padding: 10px 12px;
+
+  border-radius: 10px;
+
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+.ai-preview {
+  border-color: #e5dcff;
+}
+
+.builder-preview {
+  background: #faf8ff;
+}
+
+/* COMPACT DOCUMENT IMPORT */
+
+.import-panel {
+  background: #f8f5ff;
+  border-color: #d8c9ff;
+
+  padding: 12px;
+  border-radius: 11px;
+}
+
+/* COMPACT TOP NAVIGATION */
+
+.wn-top-links {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+
+  gap: 7px;
+}
+
+.wn-top-links a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 36px;
+
+  text-decoration: none;
+  text-align: center;
+
+  color: #5424ff;
+  font-weight: 700;
+  font-size: 12px;
+
+  padding: 8px 11px;
+
+  border-radius: 9px;
+  background: #f2edff;
+}
+
+.wn-top-links a:last-child {
+  background:
+    var(--wn-electric-gradient);
+
+  color: #ffffff;
+}
+
+/* COMPACT FOOTER */
+
+footer {
+  border-top: 1px solid #e9e5f5;
+
+  color: #736b88;
+
+  padding: 16px 0 22px;
+
+  font-size: 11px;
+  gap: 8px;
+}
+
+/* TABLET RESPONSIVE DESIGN */
+
+@media (max-width: 900px) {
+
+  .wn-feature-grid {
+    grid-template-columns:
+      repeat(2,minmax(0,1fr));
   }
 
-  .hero .hero-actions a {
-    display: flex;
+  .hero {
+    padding: 28px 24px 30px;
+  }
+}
+
+/* MOBILE COMPACT DESIGN */
+
+@media (max-width: 700px) {
+
+  .shell {
     width: 100%;
+    padding-inline: 14px;
+  }
+
+  .top {
+    padding-block: 10px;
+    gap: 8px;
+  }
+
+  .brand {
+    gap: 7px;
+  }
+
+  .brandmark {
+    width: 34px;
+    height: 34px;
+
+    padding: 5px;
+
+    border-radius: 9px;
+  }
+
+  .worknely-brandname {
+    font-size: 1.05rem;
+  }
+
+  .worknely-brandname small {
+    font-size: .45rem;
+    margin-top: 2px;
+  }
+
+  .header-tools {
+    width: 100%;
+
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 6px;
+  }
+
+  .header-tools select {
+    max-width: 120px;
+    min-height: 36px;
+
+    font-size: 16px;
+  }
+
+  .version {
+    font-size: 9px;
+    padding: 5px 7px;
+  }
+
+  /* MOBILE LANDING */
+
+  .hero {
+    margin: 10px 0 14px;
+
+    padding: 24px 18px 26px;
+
+    border-radius: 15px;
+
+    box-shadow:
+      0 6px 20px rgba(84,36,255,.06);
+  }
+
+  .hero h1 {
+    font-size: clamp(29px,7vw,40px);
+
+    line-height: 1.15;
+    letter-spacing: -.035em;
+
+    margin: 10px 0;
+  }
+
+  .hero p {
+    font-size: 14px;
+    line-height: 1.55;
+
+    margin: 8px 0;
+  }
+
+  .hero .eyebrow {
+    font-size: 9px;
+    letter-spacing: .09em;
+  }
+
+  /* MOBILE HERO ACTIONS */
+
+  .wn-hero-actions,
+  .hero .hero-actions {
+    display: flex;
+
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    width: 100%;
+
+    gap: 8px;
+    margin-top: 14px;
+  }
+
+  .wn-hero-actions a,
+  .hero .hero-actions a {
+    flex: 1 1 130px;
+
+    width: auto;
     max-width: 100%;
-    min-height: 54px;
-    margin: 0;
-    padding: 15px 18px;
-    white-space: normal;
+
+    min-height: 44px;
+
+    padding: 9px 12px;
+
+    border-radius: 9px;
+
+    font-size: 12px;
+    line-height: 1.35;
+  }
+
+  /* MOBILE FEATURE CARDS */
+
+  .wn-feature-grid {
+    grid-template-columns:
+      repeat(2,minmax(0,1fr));
+
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .wn-feature-card {
+    padding: 12px;
+    border-radius: 12px;
+  }
+
+  .wn-feature-card .wn-symbol {
+    width: 30px;
+    height: 30px;
+
+    margin-bottom: 8px;
+
+    border-radius: 8px;
+  }
+
+  .wn-feature-card h2 {
+    font-size: 13px;
+    line-height: 1.3;
+  }
+
+  .wn-feature-card p {
+    font-size: 12px;
+    line-height: 1.45;
+  }
+
+  /* MOBILE WORKSPACE */
+
+  .workspace,
+  .results {
+    padding: 15px;
+
+    border-radius: 15px;
+
+    margin-bottom: 12px;
+  }
+
+  .report-card {
+    padding: 12px;
+    border-radius: 11px;
+  }
+
+  /* MOBILE BUTTONS */
+
+  .primary,
+  .ghost {
+    min-width: 0;
+    min-height: 40px;
+
+    padding: 9px 12px;
+
+    font-size: 12px;
+    border-radius: 9px;
+  }
+
+  .actions > .primary,
+  .actions > .ghost,
+  .export-actions > button {
+    min-height: 44px;
+  }
+
+  .wn-top-links {
+    gap: 6px;
+  }
+
+  .wn-top-links a {
+    min-height: 36px;
+
+    padding: 7px 10px;
+
+    font-size: 11px;
+    border-radius: 8px;
+  }
+
+  footer {
+    padding: 14px 0 18px;
+    gap: 6px;
+  }
+}
+
+/* SMALL MOBILE SCREENS */
+
+@media (max-width: 480px) {
+
+  .hero {
+    padding: 22px 16px 24px;
+  }
+
+  .wn-feature-grid {
+    grid-template-columns:
+      repeat(2,minmax(0,1fr));
+  }
+
+  .wn-hero-actions a,
+  .hero .hero-actions a {
+    flex-basis: 120px;
+  }
+
+  .header-tools select {
+    max-width: 120px;
+  }
+}
+
+/* SMALL IPHONE SCREENS */
+
+@media (max-width: 390px) {
+
+  .shell {
+    padding-inline: 12px;
+  }
+
+  .brandmark {
+    width: 32px;
+    height: 32px;
+  }
+
+  .worknely-brandname {
+    font-size: 1rem;
+  }
+
+  .hero {
+    padding: 20px 14px 22px;
+
+    border-radius: 13px;
+    margin: 10px 0 12px;
+  }
+
+  .hero h1 {
+    font-size: 29px;
+  }
+
+  .hero p {
+    font-size: 13px;
+  }
+
+  .wn-feature-card {
+    padding: 10px;
+    border-radius: 11px;
+  }
+
+  .wn-feature-card h2 {
+    font-size: 12px;
+  }
+
+  .wn-feature-card p {
+    font-size: 11px;
+  }
+
+  .workspace,
+  .results {
+    padding: 12px;
+    border-radius: 13px;
+  }
+
+  .primary,
+  .ghost {
+    padding: 9px 10px;
+    font-size: 12px;
+  }
+
+  .wn-hero-actions a,
+  .hero .hero-actions a {
+    padding: 9px 10px;
+    font-size: 12px;
+  }
+
+  .report-card {
+    padding: 11px;
+  }
+}
+
+/* EXTRA NARROW SCREENS */
+
+@media (max-width: 340px) {
+
+  .wn-feature-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .wn-hero-actions a,
+  .hero .hero-actions a {
+    flex-basis: 100%;
+  }
+
+  .hero h1 {
+    font-size: 27px;
+  }
+}
+
+/* ACCESSIBILITY */
+
+@media (prefers-reduced-motion: reduce) {
+
+  html {
+    scroll-behavior: auto;
+  }
+
+  .primary,
+  .ghost,
+  .wn-hero-actions a,
+  .hero .hero-actions a {
+    transition: none;
   }
 }
