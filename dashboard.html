@@ -3,11 +3,18 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
+
   <meta name="viewport"
         content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#5424ff">
-  <meta name="robots" content="noindex,nofollow">
-  <meta name="color-scheme" content="light">
+
+  <meta name="theme-color"
+        content="#5424ff">
+
+  <meta name="robots"
+        content="noindex,nofollow">
+
+  <meta name="color-scheme"
+        content="light">
 
   <title>My Dashboard | Worknely</title>
 
@@ -15,31 +22,51 @@
         type="image/svg+xml"
         href="worknely-favicon.svg">
 
-  <!-- WORKNELY PREMIUM DASHBOARD V7.10 -->
+  <!--
+    WORKNELY V7.11
+    Premium Resume Workspace
+
+    Professional Document Management
+    Mobile First Experience
+    Quick Create Resume
+    Supabase Integration
+  -->
+
   <link rel="stylesheet"
-        href="dashboard.css?v=7.10">
+        href="dashboard.css?v=7.11">
+
 </head>
 
 <body>
+
+  <!-- SESSION LOADING -->
 
   <div id="loading" role="status">
     Checking your Worknely session…
   </div>
 
+  <!-- AUTHENTICATED APPLICATION -->
+
   <div id="app" hidden>
 
     <!-- HEADER -->
+
     <header class="topbar">
-      <a class="brand" href="./"
+
+      <a class="brand"
+         href="./"
          aria-label="Worknely home">
+
         <img src="worknely-mark.svg"
              width="38"
              height="38"
              alt="">
+
         <span>
           Worknely
           <small>PEOPLE TECHNOLOGY</small>
         </span>
+
       </a>
 
       <button id="logout"
@@ -47,11 +74,15 @@
               type="button">
         Log Out
       </button>
+
     </header>
+
+    <!-- DASHBOARD LAYOUT -->
 
     <div class="layout">
 
       <!-- NAVIGATION -->
+
       <nav class="sidebar"
            aria-label="Dashboard navigation">
 
@@ -77,11 +108,13 @@
         <a href="./#comparison">
           Career Analysis ↗
         </a>
+
       </nav>
 
       <main id="dashboardMain">
 
-        <!-- VIEW 1: DASHBOARD -->
+        <!-- VIEW 1: OVERVIEW -->
+
         <section id="overview"
                  class="hero wn-view"
                  data-view="overview"
@@ -100,7 +133,10 @@
             Your career documents, in one place.
           </p>
 
+          <!-- OVERVIEW METRICS -->
+
           <div class="metrics">
+
             <div>
               <strong id="resumeCount">—</strong>
               <span>Saved resumes</span>
@@ -110,20 +146,33 @@
               <strong>Free</strong>
               <span>Current plan</span>
             </div>
+
           </div>
+
+          <!-- OVERVIEW ACTIONS -->
 
           <div class="wn-dashboard-actions">
-            <a class="button" href="#resumes">
+
+            <a class="button"
+               href="#resumes">
+
               Manage My Resumes
+
             </a>
 
-            <a class="outline" href="./#builder">
+            <a class="outline"
+               href="./index.html#builder">
+
               Create New Resume
+
             </a>
+
           </div>
+
         </section>
 
-        <!-- VIEW 2: MY RESUMES -->
+        <!-- VIEW 2: MY RESUMES WORKSPACE -->
+
         <section id="resumes"
                  class="panel wn-view"
                  data-view="resumes"
@@ -131,10 +180,14 @@
                  tabindex="-1"
                  hidden>
 
+          <!-- WORKSPACE HEADER -->
+
           <div class="section-title">
+
             <div>
+
               <span class="eyebrow">
-                YOUR DOCUMENTS
+                YOUR DOCUMENT WORKSPACE
               </span>
 
               <h1 id="resumesTitle">
@@ -142,103 +195,296 @@
               </h1>
 
               <p>
-                Create, edit and manage
-                your saved resumes.
+                Create, organize and manage
+                your professional resumes
+                in one place.
               </p>
+
             </div>
 
-            <a class="button" href="./#builder">
-              Open Resume Builder
+            <!-- PRIMARY CREATION ACTION -->
+
+            <a class="button"
+               href="./index.html#builder">
+
+              <svg viewBox="0 0 24 24"
+                   fill="none"
+                   stroke="currentColor"
+                   stroke-width="2"
+                   stroke-linecap="round"
+                   stroke-linejoin="round"
+                   aria-hidden="true"
+                   focusable="false">
+
+                <path d="M12 5v14"></path>
+                <path d="M5 12h14"></path>
+
+              </svg>
+
+              Create New Resume
+
             </a>
+
           </div>
 
-          <!-- RESUME FORM -->
-          <form id="resumeForm">
+          <!-- WORKSPACE METRICS -->
 
-            <label for="resumeTitle">
-              Resume title
-            </label>
+          <div class="workspace-metrics">
 
-            <input
-              id="resumeTitle"
-              maxlength="120"
-              required
-              placeholder="e.g. Customer Support CV"
-            >
+            <div class="workspace-metric">
 
-            <div class="fields">
+              <span>
+                Saved resumes
+              </span>
 
-              <label>
-                Full name
-                <input id="fullName"
-                       maxlength="200"
-                       autocomplete="name">
-              </label>
-
-              <label>
-                Professional title
-                <input id="professionalTitle"
-                       maxlength="200">
-              </label>
-
-              <label>
-                Contact
-                <textarea id="contact"
-                          rows="2"></textarea>
-              </label>
-
-              <label>
-                Education
-                <textarea id="education"
-                          rows="3"></textarea>
-              </label>
-
-              <label>
-                Summary
-                <textarea id="summary"
-                          rows="3"></textarea>
-              </label>
-
-              <label>
-                Experience
-                <textarea id="experience"
-                          rows="4"></textarea>
-              </label>
-
-              <label>
-                Skills
-                <textarea id="skills"
-                          rows="3"></textarea>
-              </label>
+              <strong id="workspaceResumeCount">
+                —
+              </strong>
 
             </div>
 
-            <div class="actions">
-              <button class="button"
-                      type="submit"
-                      id="saveResume">
-                Save Resume
-              </button>
+            <div class="workspace-metric">
 
-              <button class="outline"
-                      type="button"
-                      id="newResume">
-                New / Clear
-              </button>
+              <span>
+                Current plan
+              </span>
+
+              <strong>
+                Free
+              </strong>
+
             </div>
-          </form>
+
+          </div>
+
+          <!-- WORKSPACE STATUS -->
 
           <p id="resumeStatus"
              role="status"
              aria-live="polite"></p>
 
-          <h2>Saved resumes</h2>
+          <!-- SAVED RESUMES HEADER -->
+
+          <div class="resume-list-header">
+
+            <h2 id="savedResumesTitle">
+              Saved resumes
+            </h2>
+
+            <span>
+              Recently updated
+            </span>
+
+          </div>
+
+          <!-- DYNAMIC RESUME LIST -->
 
           <div id="resumeList"
-               class="resume-list"></div>
+               class="resume-list"
+               aria-labelledby="savedResumesTitle">
+
+          </div>
+
+          <!-- QUICK CREATE RESUME -->
+
+          <details id="quickCreate"
+                   class="quick-create">
+
+            <summary>
+
+              <!-- QUICK CREATE ICON -->
+
+              <span class="quick-create-icon">
+
+                <svg viewBox="0 0 24 24"
+                     fill="none"
+                     stroke="currentColor"
+                     stroke-width="1.7"
+                     stroke-linecap="round"
+                     stroke-linejoin="round"
+                     aria-hidden="true"
+                     focusable="false">
+
+                  <path
+                    d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z">
+                  </path>
+
+                  <path d="M14 2v6h6"></path>
+                  <path d="M12 11v6"></path>
+                  <path d="M9 14h6"></path>
+
+                </svg>
+
+              </span>
+
+              <!-- QUICK CREATE TITLE -->
+
+              <span class="quick-create-heading">
+
+                <strong>
+                  Quick Create Resume
+                </strong>
+
+                <small>
+                  Create a resume directly
+                  from your dashboard.
+                </small>
+
+              </span>
+
+              <!-- EXPAND / COLLAPSE ICON -->
+
+              <svg class="quick-create-chevron"
+                   viewBox="0 0 24 24"
+                   fill="none"
+                   stroke="currentColor"
+                   stroke-width="2"
+                   stroke-linecap="round"
+                   stroke-linejoin="round"
+                   aria-hidden="true"
+                   focusable="false">
+
+                <path d="m6 9 6 6 6-6"></path>
+
+              </svg>
+
+            </summary>
+
+            <!-- QUICK CREATE FORM BODY -->
+
+            <div class="quick-create-body">
+
+              <p>
+                Add your professional information
+                and save your resume directly
+                to your Worknely account.
+              </p>
+
+              <form id="resumeForm">
+
+                <!-- RESUME TITLE -->
+
+                <label for="resumeTitle">
+                  Resume title
+                </label>
+
+                <input id="resumeTitle"
+                       type="text"
+                       maxlength="120"
+                       required
+                       placeholder="e.g. Customer Support CV">
+
+                <!-- RESUME FIELDS -->
+
+                <div class="fields">
+
+                  <label for="fullName">
+
+                    Full name
+
+                    <input id="fullName"
+                           type="text"
+                           maxlength="200"
+                           autocomplete="name"
+                           placeholder="Your full name">
+
+                  </label>
+
+                  <label for="professionalTitle">
+
+                    Professional title
+
+                    <input id="professionalTitle"
+                           type="text"
+                           maxlength="200"
+                           placeholder="Your professional role">
+
+                  </label>
+
+                  <label for="contact">
+
+                    Contact
+
+                    <textarea id="contact"
+                              rows="2"
+                              placeholder="Email, city, LinkedIn"></textarea>
+
+                  </label>
+
+                  <label for="education">
+
+                    Education
+
+                    <textarea id="education"
+                              rows="3"
+                              placeholder="Degrees and qualifications"></textarea>
+
+                  </label>
+
+                  <label for="summary">
+
+                    Professional summary
+
+                    <textarea id="summary"
+                              rows="3"
+                              placeholder="Your professional background"></textarea>
+
+                  </label>
+
+                  <label for="experience">
+
+                    Experience
+
+                    <textarea id="experience"
+                              rows="4"
+                              placeholder="Roles, employers and achievements"></textarea>
+
+                  </label>
+
+                  <label for="skills">
+
+                    Skills
+
+                    <textarea id="skills"
+                              rows="3"
+                              placeholder="Your verified skills"></textarea>
+
+                  </label>
+
+                </div>
+
+                <!-- QUICK CREATE ACTIONS -->
+
+                <div class="actions">
+
+                  <button class="button"
+                          type="submit"
+                          id="saveResume">
+
+                    Save Resume
+
+                  </button>
+
+                  <button class="outline"
+                          type="button"
+                          id="newResume">
+
+                    New / Clear
+
+                  </button>
+
+                </div>
+
+              </form>
+
+            </div>
+
+          </details>
+
         </section>
 
-        <!-- VIEW 3: PRO -->
+        <!-- VIEW 3: WORKNELY PRO -->
+
         <section id="pro"
                  class="panel pro wn-view"
                  data-view="pro"
@@ -262,23 +508,32 @@
           <button class="outline"
                   type="button"
                   disabled>
+
             Upgrade to Pro — Coming soon
+
           </button>
+
         </section>
+
+        <!-- FOOTER -->
 
         <footer>
           © 2026 Worknely · People Technology
         </footer>
 
       </main>
+
     </div>
+
   </div>
 
-  <!-- SUPABASE AND RESUME FUNCTIONS V7.9.2 -->
+  <!-- SUPABASE AND RESUME WORKSPACE V7.11 -->
+
   <script type="module"
-          src="dashboard.js?v=7.9.2"></script>
+          src="dashboard.js?v=7.11"></script>
 
   <!-- DASHBOARD SECTION NAVIGATION -->
+
   <script>
     (() => {
       "use strict";
@@ -290,6 +545,7 @@
       ];
 
       function getRequestedView() {
+
         const hash = window.location.hash
           .replace("#", "")
           .toLowerCase();
@@ -300,43 +556,71 @@
       }
 
       function showView() {
-        const activeView = getRequestedView();
 
-        document.querySelectorAll(".wn-view")
-          .forEach(section => {
-            section.hidden =
-              section.dataset.view !== activeView;
-          });
+        const activeView =
+          getRequestedView();
+
+        document.querySelectorAll(
+          ".wn-view"
+        ).forEach(section => {
+
+          section.hidden =
+            section.dataset.view !== activeView;
+
+        });
 
         document.querySelectorAll(
           ".sidebar [data-wn-view]"
         ).forEach(link => {
-          if (link.dataset.wnView === activeView) {
+
+          if (
+            link.dataset.wnView === activeView
+          ) {
+
             link.setAttribute(
               "aria-current",
               "page"
             );
+
           } else {
+
             link.removeAttribute(
               "aria-current"
             );
+
           }
+
         });
 
         document.title = {
-          overview: "My Dashboard | Worknely",
-          resumes: "My Resumes | Worknely",
-          pro: "Worknely Pro | Worknely"
+
+          overview:
+            "My Dashboard | Worknely",
+
+          resumes:
+            "My Resumes | Worknely",
+
+          pro:
+            "Worknely Pro | Worknely"
+
         }[activeView];
 
         const activeSection =
           document.getElementById(activeView);
 
-        if (activeSection &&
-            !document.getElementById("app").hidden) {
+        const app =
+          document.getElementById("app");
+
+        if (
+          activeSection &&
+          app &&
+          !app.hidden
+        ) {
+
           activeSection.focus({
             preventScroll: true
           });
+
         }
 
         window.scrollTo(0, 0);
@@ -347,14 +631,22 @@
         showView
       );
 
-      if (document.readyState === "loading") {
+      if (
+        document.readyState === "loading"
+      ) {
+
         document.addEventListener(
           "DOMContentLoaded",
-          showView
+          showView,
+          { once: true }
         );
+
       } else {
+
         showView();
+
       }
+
     })();
   </script>
 
