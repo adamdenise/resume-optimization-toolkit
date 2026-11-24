@@ -1,21 +1,16 @@
 
 /*
- * WORKNELY V7.16.9
- * Professional International Dashboard Engine
- * People Technology
- *
- * Professional Resume Templates
+ * WORKNELY V7.16.12
+ * Professional International Dashboard
+ * Unified Direct PDF Export Integration
  * Persistent Document Design
- * Design-aware Duplication
- * Professional PDF Export
- * Six Language Interface
- * Supabase Account Integration
+ * People Technology
  */
 
 import { createClient } from
   "https://esm.sh/@supabase/supabase-js@2";
 
-const VERSION = "7.16.9";
+const VERSION = "7.16.12";
 
 const SITE_URL =
   "https://adamdenise.github.io/resume-optimization-toolkit/";
@@ -116,10 +111,10 @@ const dictionary = {
 
   sessionError: [
     "Unable to verify your session. Please try again.",
-    "Sesiunea nu a putut fi verificată. Încearcă din nou.",
-    "Impossibile verificare la sessione. Riprova.",
+    "Sesiunea nu a putut fi verificată.",
+    "Impossibile verificare la sessione.",
     "Sitzung konnte nicht überprüft werden.",
-    "Impossible de vérifier la session. Réessayez.",
+    "Impossible de vérifier la session.",
     "No se pudo verificar la sesión."
   ],
 
@@ -152,7 +147,7 @@ const dictionary = {
 
   loadError: [
     "Unable to load resumes. Please refresh.",
-    "CV-urile nu au putut fi încărcate. Reîncarcă pagina.",
+    "CV-urile nu au putut fi încărcate.",
     "Impossibile caricare i curriculum.",
     "Lebensläufe konnten nicht geladen werden.",
     "Impossible de charger les CV.",
@@ -227,7 +222,7 @@ const dictionary = {
     "Introdu un nume pentru document.",
     "Inserisci un nome per il documento.",
     "Bitte einen Dokumentnamen eingeben.",
-    "Saisissez un nom de document.",
+    "Saisissez un nom pour le document.",
     "Introduce un nombre para el documento."
   ],
 
@@ -250,9 +245,9 @@ const dictionary = {
   ],
 
   saveError: [
-    "Unable to save resume. Please try again.",
-    "CV-ul nu a putut fi salvat. Încearcă din nou.",
-    "Impossibile salvare il curriculum. Riprova.",
+    "Unable to save resume.",
+    "CV-ul nu a putut fi salvat.",
+    "Impossibile salvare il curriculum.",
     "Speichern fehlgeschlagen.",
     "Impossible d'enregistrer le CV.",
     "No se pudo guardar el currículum."
@@ -314,7 +309,7 @@ const dictionary = {
 
   notFound: [
     "Resume not found. Please refresh.",
-    "CV-ul nu a fost găsit. Reîncarcă pagina.",
+    "CV-ul nu a fost găsit.",
     "Curriculum non trovato.",
     "Lebenslauf nicht gefunden.",
     "CV introuvable.",
@@ -385,21 +380,13 @@ const dictionary = {
   ],
 
   rename: [
-    "Rename",
-    "Redenumește",
-    "Rinomina",
-    "Umbenennen",
-    "Renommer",
-    "Renombrar"
+    "Rename", "Redenumește", "Rinomina",
+    "Umbenennen", "Renommer", "Renombrar"
   ],
 
   duplicate: [
-    "Duplicate",
-    "Duplică",
-    "Duplica",
-    "Duplizieren",
-    "Dupliquer",
-    "Duplicar"
+    "Duplicate", "Duplică", "Duplica",
+    "Duplizieren", "Dupliquer", "Duplicar"
   ],
 
   download: [
@@ -479,49 +466,76 @@ const dictionary = {
     "Utiliza un navegador actualizado."
   ],
 
-  popupError: [
-    "Please allow pop-ups to export your PDF.",
-    "Permite ferestrele pop-up pentru exportul PDF.",
-    "Consenti le finestre pop-up.",
-    "Bitte Pop-ups erlauben.",
-    "Autorisez les fenêtres contextuelles.",
-    "Permite las ventanas emergentes."
+  pdfPreparing: [
+    "Generating your professional PDF...",
+    "Se generează PDF-ul profesional...",
+    "Generazione del PDF professionale...",
+    "Professionelles PDF wird erstellt...",
+    "Génération du PDF professionnel...",
+    "Generando tu PDF profesional..."
   ],
 
   pdfReady: [
-    "PDF preview opened. Use Save / Print PDF.",
-    "Previzualizarea PDF este deschisă. Alege Salvare / Imprimare.",
-    "Anteprima PDF aperta. Usa Salva / Stampa.",
-    "PDF-Vorschau geöffnet.",
-    "Aperçu PDF ouvert.",
-    "Vista previa PDF abierta."
+    "Your PDF is ready.",
+    "PDF-ul tău este pregătit.",
+    "Il tuo PDF è pronto.",
+    "Dein PDF ist bereit.",
+    "Votre PDF est prêt.",
+    "Tu PDF está listo."
   ],
 
   pdfError: [
-    "Unable to prepare PDF. Please refresh.",
-    "PDF-ul nu a putut fi pregătit. Reîncarcă pagina.",
-    "Impossibile preparare il PDF.",
-    "PDF konnte nicht vorbereitet werden.",
-    "Impossible de préparer le PDF.",
-    "No se pudo preparar el PDF."
+    "Unable to generate PDF. Please try again.",
+    "PDF-ul nu a putut fi generat. Încearcă din nou.",
+    "Impossibile generare il PDF. Riprova.",
+    "PDF konnte nicht erstellt werden.",
+    "Impossible de générer le PDF.",
+    "No se pudo generar el PDF."
   ],
 
-  print: [
-    "Save / Print PDF",
-    "Salvare / Imprimare PDF",
-    "Salva / Stampa PDF",
-    "PDF speichern / drucken",
-    "Enregistrer / Imprimer PDF",
-    "Guardar / Imprimir PDF"
+  pdfEmpty: [
+    "This resume has no content.",
+    "Acest CV nu conține informații.",
+    "Questo curriculum è vuoto.",
+    "Dieser Lebenslauf ist leer.",
+    "Ce CV est vide.",
+    "Este currículum está vacío."
   ],
 
-  printHelp: [
-    "Choose Save as PDF or use the iOS print and share options.",
-    "Alege Salvare ca PDF sau opțiunile de imprimare și partajare iOS.",
-    "Seleziona Salva come PDF o usa le opzioni di stampa iOS.",
-    "Als PDF speichern oder die iOS-Druckoptionen verwenden.",
-    "Enregistrez en PDF ou utilisez les options iOS.",
-    "Guarda como PDF o utiliza las opciones de impresión de iOS."
+  share: [
+    "Save / Share PDF",
+    "Salvează / Partajează PDF",
+    "Salva / Condividi PDF",
+    "PDF speichern / teilen",
+    "Enregistrer / Partager PDF",
+    "Guardar / Compartir PDF"
+  ],
+
+  openPDF: [
+    "Open PDF",
+    "Deschide PDF",
+    "Apri PDF",
+    "PDF öffnen",
+    "Ouvrir le PDF",
+    "Abrir PDF"
+  ],
+
+  pdfHelp: [
+    "Download the PDF or use Share to save it to your device.",
+    "Descarcă PDF-ul sau folosește Partajare pentru a-l salva pe dispozitiv.",
+    "Scarica il PDF oppure usa Condividi per salvarlo sul dispositivo.",
+    "Lade das PDF herunter oder nutze die Teilen-Funktion.",
+    "Téléchargez le PDF ou utilisez Partager pour l'enregistrer.",
+    "Descarga el PDF o utiliza Compartir para guardarlo."
+  ],
+
+  pdfPrivate: [
+    "Generated locally. No resume data is sent to a PDF service.",
+    "Generat local. Datele CV-ului nu sunt trimise unui serviciu PDF.",
+    "Generato localmente. Nessun dato viene inviato a un servizio PDF.",
+    "Lokal erstellt. Keine Daten werden an einen PDF-Dienst gesendet.",
+    "Généré localement, sans transfert vers un service PDF.",
+    "Generado localmente, sin enviar datos a un servicio PDF."
   ],
 
   signingOut: [
@@ -548,12 +562,12 @@ const dictionary = {
   ],
 
   designUnavailable: [
-    "The design engine is unavailable. Please refresh.",
-    "Motorul de design nu este disponibil. Reîncarcă pagina.",
-    "Motore di design non disponibile.",
-    "Design-Engine nicht verfügbar.",
-    "Moteur de design indisponible.",
-    "Motor de diseño no disponible."
+    "The PDF engine is unavailable. Please refresh.",
+    "Motorul PDF nu este disponibil. Reîncarcă pagina.",
+    "Motore PDF non disponibile. Ricarica la pagina.",
+    "PDF-Engine nicht verfügbar.",
+    "Moteur PDF indisponible.",
+    "Motor PDF no disponible."
   ],
 
   close: [
@@ -576,17 +590,13 @@ function getLanguage() {
         "worknely.language"
       );
 
-    } catch {
-
-      language = document.documentElement.lang;
-
-    }
+    } catch {}
 
   }
 
-  language = String(language || "en")
-    .toLowerCase()
-    .split("-")[0];
+  language = String(
+    language || document.documentElement.lang || "en"
+  ).toLowerCase().split("-")[0];
 
   return LANGUAGES.includes(language)
     ? language
@@ -622,14 +632,12 @@ function locale() {
 }
 
 function formatNumber(value) {
-
   return new Intl.NumberFormat(
     locale()
   ).format(value);
-
 }
 
-/* PROFESSIONAL DESIGN ENGINE */
+/* PROFESSIONAL TEMPLATE REGISTRY */
 
 const TEMPLATE_REGISTRY = Object.freeze({
 
@@ -721,9 +729,7 @@ function normalizeDesign(value) {
       legacyColor &&
       legacyColor !== template.accent
     ) {
-
       customColor = legacyColor;
-
     }
 
   }
@@ -731,7 +737,6 @@ function normalizeDesign(value) {
   return {
 
     version: 1,
-
     templateId,
 
     accentColor:
@@ -740,9 +745,7 @@ function normalizeDesign(value) {
     customColor,
 
     documentLanguage:
-      LANGUAGES.includes(
-        source.documentLanguage
-      )
+      LANGUAGES.includes(source.documentLanguage)
         ? source.documentLanguage
         : null,
 
@@ -756,144 +759,119 @@ function normalizeDesign(value) {
 }
 
 function getDesign(resume) {
-
-  return normalizeDesign(
-    resume?.design
-  );
-
+  return normalizeDesign(resume?.design);
 }
 
-function getTemplateEngine() {
+/* SHARED PDF ENGINE LOADER */
 
-  return window.WorknelyTemplates || null;
+const modulePromises = new Map();
 
-}
+function loadModule(path, validator) {
 
-let designEnginePromise = null;
-
-function loadDesignEngine() {
-
-  if (getTemplateEngine()?.renderResume) {
-
+  if (validator()) {
     return Promise.resolve(true);
-
   }
 
-  if (designEnginePromise) {
-
-    return designEnginePromise;
-
+  if (modulePromises.has(path)) {
+    return modulePromises.get(path);
   }
 
-  designEnginePromise = new Promise(resolve => {
+  const promise = new Promise(resolve => {
 
-    const script = document.createElement(
-      "script"
+    const script =
+      document.createElement("script");
+
+    let completed = false;
+
+    const finish = success => {
+
+      if (completed) return;
+
+      completed = true;
+
+      clearTimeout(timer);
+
+      script.onload = null;
+      script.onerror = null;
+
+      if (!success) {
+        script.remove();
+      }
+
+      resolve(success);
+
+    };
+
+    const timer = setTimeout(
+      () => finish(false),
+      20000
     );
 
     script.src = new URL(
-      "worknely-templates.js?v=7.16.1",
-      SITE_URL
+      path, SITE_URL
     ).href;
 
     script.async = true;
 
-    script.onload = () => {
+    script.onload = () =>
+      finish(Boolean(validator()));
 
-      resolve(
-        Boolean(
-          getTemplateEngine()?.renderResume
-        )
-      );
-
-    };
-
-    script.onerror = () => {
-
-      script.remove();
-      designEnginePromise = null;
-      resolve(false);
-
-    };
+    script.onerror = () =>
+      finish(false);
 
     document.head.appendChild(script);
 
   });
 
-  return designEnginePromise;
+  modulePromises.set(path, promise);
+
+  promise.then(success => {
+
+    if (!success) {
+      modulePromises.delete(path);
+    }
+
+  });
+
+  return promise;
 
 }
 
-/* DASHBOARD DESIGN STYLES */
+async function loadDesignEngine() {
 
-function installDesignStyles() {
+  return loadModule(
 
-  if ($("wnDashboardDesignStyles")) return;
+    "worknely-templates.js?v=7.16.1",
 
-  const style = document.createElement("style");
+    () => Boolean(
+      window.WorknelyTemplates?.renderResume
+    )
 
-  style.id = "wnDashboardDesignStyles";
+  );
 
-  style.textContent = `
+}
 
-    #resumeList .wn-document-design {
+async function loadPDFEngine() {
 
-      display:flex;
-      align-items:center;
-      flex-wrap:wrap;
-      gap:5px;
-      margin-top:6px;
-      color:#655d76;
-      font-size:10px;
-      line-height:1.4;
+  if (!await loadDesignEngine()) {
+    return false;
+  }
 
-    }
+  return loadModule(
 
-    #resumeList .wn-template-label {
+    "worknely-pdf-export.js?v=7.16.11",
 
-      display:inline-flex;
-      align-items:center;
-      gap:5px;
-      max-width:100%;
-      padding:4px 7px;
-      border:1px solid #e9e2f4;
-      border-radius:7px;
-      background:#faf8ff;
-      color:#493669;
-      font-weight:650;
-      overflow-wrap:anywhere;
+    () => Boolean(
 
-    }
+      window.WorknelyPDFExport?.version ===
+        "7.16.11" &&
 
-    #resumeList .wn-design-color {
+      typeof window.WorknelyPDFExport
+        ?.exportResume === "function"
 
-      display:inline-block;
-      width:10px;
-      height:10px;
-      flex:0 0 10px;
-      border:1px solid rgba(0,0,0,.15);
-      border-radius:50%;
+    )
 
-    }
-
-    #resumeList .wn-paper-label {
-
-      padding:3px 6px;
-      border-radius:6px;
-      background:#f4f2f7;
-
-    }
-
-    #resumeList .wn-document-language {
-
-      font-weight:650;
-      color:#655d76;
-
-    }
-
-  `;
-
-  document.head.appendChild(style);
+  );
 
 }
 
@@ -913,7 +891,180 @@ let selectedDeleteId = null;
 let activeOperation = "";
 let loadingKey = "checking";
 
+let preparedPDF = null;
+let preparedPDFURL = null;
+
 const statusMessages = new Map();
+
+/* DASHBOARD STYLES */
+
+function installDesignStyles() {
+
+  if ($("wnDashboardDesignStyles")) return;
+
+  const style = document.createElement("style");
+
+  style.id = "wnDashboardDesignStyles";
+
+  style.textContent = `
+
+    #resumeList .wn-document-design {
+      display:flex;
+      align-items:center;
+      flex-wrap:wrap;
+      gap:5px;
+      margin-top:6px;
+      color:#655d76;
+      font-size:10px;
+      line-height:1.4;
+    }
+
+    #resumeList .wn-template-label {
+      display:inline-flex;
+      align-items:center;
+      gap:5px;
+      max-width:100%;
+      padding:4px 7px;
+      border:1px solid #e9e2f4;
+      border-radius:7px;
+      background:#faf8ff;
+      color:#493669;
+      font-weight:650;
+      overflow-wrap:anywhere;
+    }
+
+    #resumeList .wn-design-color {
+      display:inline-block;
+      width:10px;
+      height:10px;
+      flex:0 0 10px;
+      border:1px solid rgba(0,0,0,.15);
+      border-radius:50%;
+    }
+
+    #resumeList .wn-paper-label {
+      padding:3px 6px;
+      border-radius:6px;
+      background:#f4f2f7;
+    }
+
+    #resumeList .wn-document-language {
+      font-weight:650;
+      color:#655d76;
+    }
+
+    #wnDashboardPDFDialog {
+      position:fixed;
+      inset:0;
+      margin:auto;
+      width:420px;
+      max-width:calc(100% - 28px);
+      max-height:calc(100dvh - 32px);
+      padding:22px;
+      border:1px solid #e9e2f4;
+      border-radius:20px;
+      background:#fff;
+      color:#261449;
+      overflow:auto;
+      box-shadow:0 20px 80px rgba(38,20,73,.22);
+      font-family:Inter,-apple-system,
+        BlinkMacSystemFont,"Segoe UI",sans-serif;
+    }
+
+    #wnDashboardPDFDialog::backdrop {
+      background:rgba(25,12,55,.48);
+      backdrop-filter:blur(4px);
+    }
+
+    #wnDashboardPDFDialog h2 {
+      margin:14px 0 8px;
+      font-size:23px;
+      font-weight:800;
+      color:#261449;
+    }
+
+    #wnDashboardPDFDialog p {
+      margin:10px 0;
+      font-size:13px;
+      line-height:1.6;
+      color:#746c85;
+      overflow-wrap:anywhere;
+    }
+
+    .wn-pdf-success-icon {
+      display:grid;
+      place-items:center;
+      width:54px;
+      height:54px;
+      border-radius:16px;
+      background:#f0eaff;
+      color:#5424ff;
+    }
+
+    .wn-pdf-success-icon svg {
+      width:27px;
+      height:27px;
+    }
+
+    .wn-dashboard-pdf-file {
+      padding:13px;
+      margin:14px 0;
+      background:#faf8ff;
+      border:1px solid #e9e2f4;
+      border-radius:12px;
+      overflow-wrap:anywhere;
+      font-size:13px;
+      font-weight:700;
+    }
+
+    .wn-dashboard-pdf-actions {
+      display:grid;
+      gap:9px;
+      margin-top:16px;
+    }
+
+    .wn-dashboard-pdf-actions button,
+    .wn-dashboard-pdf-actions a {
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      min-height:48px;
+      width:100%;
+      padding:12px;
+      box-sizing:border-box;
+      border:0;
+      border-radius:10px;
+      background:#5424ff;
+      color:#fff;
+      font:inherit;
+      font-size:14px;
+      font-weight:750;
+      text-decoration:none;
+      text-align:center;
+      cursor:pointer;
+    }
+
+    .wn-dashboard-pdf-actions .wn-pdf-primary {
+      background:linear-gradient(
+        110deg,#5424ff,#a326e8,#ec22ad
+      );
+    }
+
+    .wn-dashboard-pdf-actions .wn-pdf-secondary {
+      background:#f1ebff;
+      color:#5424ff;
+    }
+
+    #wnDashboardPDFDialog [hidden] {
+      display:none!important;
+    }
+
+  `;
+
+  document.head.appendChild(style);
+
+}
 
 /* STATUS MANAGEMENT */
 
@@ -925,13 +1076,9 @@ function setStatus(key = "", type = "info") {
     key ? t(key) : "";
 
   if (key) {
-
     resumeStatus.dataset.status = type;
-
   } else {
-
     delete resumeStatus.dataset.status;
-
   }
 
 }
@@ -989,10 +1136,10 @@ function updateActionLabels() {
 
 function setBusy(busy, operation = "") {
 
-  isBusy = busy;
+  isBusy = Boolean(busy);
 
   activeOperation =
-    busy ? operation : "";
+    isBusy ? operation : "";
 
   const controls = [
 
@@ -1019,23 +1166,19 @@ function setBusy(busy, operation = "") {
   controls.forEach(element => {
 
     if (element) {
-
-      element.disabled = busy;
-
+      element.disabled = isBusy;
     }
 
   });
 
   resumeList.querySelectorAll("button")
     .forEach(button => {
-
-      button.disabled = busy;
-
+      button.disabled = isBusy;
     });
 
   resumeForm.setAttribute(
     "aria-busy",
-    String(busy)
+    String(isBusy)
   );
 
   updateActionLabels();
@@ -1045,19 +1188,15 @@ function setBusy(busy, operation = "") {
 /* SESSION PROTECTION */
 
 function showApp() {
-
   loading.hidden = true;
   app.hidden = false;
-
 }
 
 function showLoading(key) {
 
   loadingKey = key;
-
   loading.hidden = false;
   loading.textContent = t(key);
-
   app.hidden = true;
 
 }
@@ -1073,6 +1212,8 @@ function redirectToLogin() {
 function clearSession() {
 
   sessionGeneration++;
+
+  clearPreparedPDF();
 
   currentUser = null;
   editingResumeId = null;
@@ -1133,9 +1274,7 @@ async function verifyAuthenticatedOwner(
 ) {
 
   if (!verifyOwner(userId, generation)) {
-
     return false;
-
   }
 
   const { data, error } =
@@ -1172,9 +1311,7 @@ function formatDate(date) {
   const parsed = new Date(date);
 
   if (Number.isNaN(parsed.getTime())) {
-
     return t("unknownDate");
-
   }
 
   return parsed.toLocaleDateString(
@@ -1222,6 +1359,16 @@ function normalizeContent(content) {
   });
 
   return result;
+
+}
+
+function hasContent(content) {
+
+  return Object.values(content).some(
+    value =>
+      typeof value === "string" &&
+      value.trim().length > 0
+  );
 
 }
 
@@ -1299,6 +1446,16 @@ function createIcon(name = "document") {
       "M12 3v12",
       "M7 10l5 5 5-5",
       "M4 17v4h16v-4"
+    ],
+
+    check: [
+      "M5 12l4 4L19 6"
+    ],
+
+    share: [
+      "M12 16V3",
+      "M7 8l5-5 5 5",
+      "M5 12v8h14v-8"
     ]
 
   };
@@ -1318,7 +1475,6 @@ function createIcon(name = "document") {
       circle.setAttribute(
         "fill", "currentColor"
       );
-
       circle.setAttribute("stroke", "none");
 
       svg.appendChild(circle);
@@ -1370,11 +1526,7 @@ function createButton(
   );
 
   if (iconName) {
-
-    button.appendChild(
-      createIcon(iconName)
-    );
-
+    button.appendChild(createIcon(iconName));
   }
 
   if (!iconOnly) {
@@ -1420,10 +1572,7 @@ function fillResumeForm(content = {}) {
     .forEach(([key, element]) => {
 
       if (element) {
-
-        element.value =
-          safeContent[key];
-
+        element.value = safeContent[key];
       }
 
     });
@@ -1446,9 +1595,7 @@ function resetForm(options = {}) {
   updateActionLabels();
 
   if (announce) {
-
     setStatus("ready");
-
   }
 
   if (focus) {
@@ -1510,7 +1657,7 @@ function openInResumeBuilder(id) {
 
 }
 
-/* SMART SEARCH AND SORT */
+/* SEARCH AND SORT */
 
 function getFilteredResumes() {
 
@@ -1529,9 +1676,7 @@ function getFilteredResumes() {
       const design = getDesign(resume);
 
       const template =
-        TEMPLATE_REGISTRY[
-          design.templateId
-        ];
+        TEMPLATE_REGISTRY[design.templateId];
 
       const searchable = normalizeSearch(
 
@@ -1653,9 +1798,7 @@ function closeDocumentMenus(
         );
 
         if (restoreFocus && wasOpen) {
-
           button.focus();
-
         }
 
       }
@@ -1805,16 +1948,14 @@ function createDocumentMenu(resume) {
 
 }
 
-/* PROFESSIONAL DESIGN METADATA */
+/* DESIGN METADATA */
 
 function createDesignMetadata(resume) {
 
   const design = getDesign(resume);
 
   const template =
-    TEMPLATE_REGISTRY[
-      design.templateId
-    ];
+    TEMPLATE_REGISTRY[design.templateId];
 
   const wrapper =
     document.createElement("div");
@@ -1892,7 +2033,7 @@ function createDesignMetadata(resume) {
 
 }
 
-/* PROFESSIONAL DOCUMENT CARDS */
+/* DOCUMENT CARDS */
 
 function createResumeCard(resume) {
 
@@ -2066,12 +2207,10 @@ function createEmptyState() {
   );
 
   empty.append(
-
     icon,
     heading,
     description,
     link
-
   );
 
   return empty;
@@ -2190,8 +2329,6 @@ function storeDocument(documentData) {
 
 }
 
-/* FETCH USER DOCUMENTS */
-
 async function loadResumes() {
 
   if (!currentUser) return false;
@@ -2215,19 +2352,13 @@ async function loadResumes() {
         .eq("user_id", userId)
 
         .order("updated_at", {
-
           ascending: false
-
         });
 
     if (error) throw error;
 
-    if (
-      !verifyOwner(userId, generation)
-    ) {
-
+    if (!verifyOwner(userId, generation)) {
       return false;
-
     }
 
     savedResumes =
@@ -2245,9 +2376,7 @@ async function loadResumes() {
 
     reportError("load", error);
 
-    if (
-      verifyOwner(userId, generation)
-    ) {
+    if (verifyOwner(userId, generation)) {
 
       setStatus("loadError", "error");
 
@@ -2268,13 +2397,11 @@ async function saveResume(event) {
   if (isBusy || !currentUser) return;
 
   const title =
-    resumeTitle.value.trim();
+    resumeTitle.value.trim().slice(0, 120);
 
   if (!title) {
 
-    setStatus(
-      "titleRequired", "error"
-    );
+    setStatus("titleRequired", "error");
 
     resumeTitle.focus();
 
@@ -2292,11 +2419,6 @@ async function saveResume(event) {
 
   const wasEditing =
     Boolean(documentId);
-
-  /*
-   * Existing design is deliberately
-   * excluded from update payloads.
-   */
 
   const payload = {
 
@@ -2373,25 +2495,15 @@ async function saveResume(event) {
     }
 
     if (result.error) {
-
       throw result.error;
-
     }
 
-    if (
-      !verifyOwner(userId, generation)
-    ) {
-
+    if (!verifyOwner(userId, generation)) {
       return;
-
     }
 
     if (!result.data?.id) {
-
-      throw new Error(
-        "Missing save confirmation"
-      );
-
+      throw new Error("Missing save confirmation");
     }
 
     storeDocument(result.data);
@@ -2417,12 +2529,8 @@ async function saveResume(event) {
 
     reportError("save", error);
 
-    if (
-      verifyOwner(userId, generation)
-    ) {
-
+    if (verifyOwner(userId, generation)) {
       setStatus("saveError", "error");
-
     }
 
   } finally {
@@ -2442,13 +2550,10 @@ function showDialog(dialog) {
   try {
 
     if (
-      typeof dialog.showModal !==
-      "function"
+      typeof dialog.showModal !== "function"
     ) {
 
-      throw new Error(
-        "Dialog unsupported"
-      );
+      throw new Error("Dialog unsupported");
 
     }
 
@@ -2460,9 +2565,7 @@ function showDialog(dialog) {
 
     reportError("dialog", error);
 
-    setStatus(
-      "browserError", "error"
-    );
+    setStatus("browserError", "error");
 
     return false;
 
@@ -2472,7 +2575,7 @@ function showDialog(dialog) {
 
 function closeDialog(dialog) {
 
-  if (dialog.open) dialog.close();
+  if (dialog?.open) dialog.close();
 
 }
 
@@ -2527,7 +2630,7 @@ async function renameResume(event) {
     sessionGeneration;
 
   const title =
-    renameInput.value.trim();
+    renameInput.value.trim().slice(0, 120);
 
   if (!title) {
 
@@ -2580,23 +2683,18 @@ async function renameResume(event) {
 
     if (error) throw error;
 
-    if (
-      !verifyOwner(userId, generation)
-    ) return;
+    if (!verifyOwner(userId, generation)) {
+      return;
+    }
 
     if (!data?.id) {
-
-      throw new Error(
-        "Missing rename confirmation"
-      );
-
+      throw new Error("Missing rename confirmation");
     }
 
     storeDocument(data);
 
     if (
-      String(editingResumeId) ===
-      String(id)
+      String(editingResumeId) === String(id)
     ) {
 
       resumeTitle.value = title;
@@ -2615,9 +2713,7 @@ async function renameResume(event) {
 
     reportError("rename", error);
 
-    if (
-      verifyOwner(userId, generation)
-    ) {
+    if (verifyOwner(userId, generation)) {
 
       setDialogStatus(
         renameStatus,
@@ -2634,7 +2730,7 @@ async function renameResume(event) {
 
 }
 
-/* DESIGN-AWARE DOCUMENT DUPLICATION */
+/* DESIGN-AWARE DUPLICATION */
 
 function openDuplicateDialog(id) {
 
@@ -2693,16 +2789,13 @@ async function duplicateResume(event) {
     selectedDuplicateId;
 
   const title =
-    duplicateInput.value.trim();
+    duplicateInput.value.trim().slice(0, 120);
 
   if (!title) {
 
     setDialogStatus(
-
       duplicateStatus,
-
       "nameRequired"
-
     );
 
     return;
@@ -2725,11 +2818,6 @@ async function duplicateResume(event) {
 
     }
 
-    /*
-     * Fetch the latest original document
-     * instead of duplicating stale data.
-     */
-
     const originalResult =
       await supabase
 
@@ -2744,24 +2832,18 @@ async function duplicateResume(event) {
         .single();
 
     if (originalResult.error) {
-
       throw originalResult.error;
-
     }
 
-    if (
-      !verifyOwner(userId, generation)
-    ) return;
+    if (!verifyOwner(userId, generation)) {
+      return;
+    }
 
     const original =
       originalResult.data;
 
     if (!original?.id) {
-
-      throw new Error(
-        "Original document not found"
-      );
-
+      throw new Error("Original document not found");
     }
 
     const content = JSON.parse(
@@ -2771,11 +2853,6 @@ async function duplicateResume(event) {
       )
 
     );
-
-    /*
-     * Copy the original document design.
-     * Never use the active browser design.
-     */
 
     const design = normalizeDesign(
       original.design
@@ -2807,16 +2884,12 @@ async function duplicateResume(event) {
 
     if (error) throw error;
 
-    if (
-      !verifyOwner(userId, generation)
-    ) return;
+    if (!verifyOwner(userId, generation)) {
+      return;
+    }
 
     if (!data?.id) {
-
-      throw new Error(
-        "Missing copy confirmation"
-      );
-
+      throw new Error("Missing copy confirmation");
     }
 
     storeDocument(data);
@@ -2829,24 +2902,17 @@ async function duplicateResume(event) {
 
     renderResumes();
 
-    setStatus(
-      "duplicated", "success"
-    );
+    setStatus("duplicated", "success");
 
   } catch (error) {
 
     reportError("duplicate", error);
 
-    if (
-      verifyOwner(userId, generation)
-    ) {
+    if (verifyOwner(userId, generation)) {
 
       setDialogStatus(
-
         duplicateStatus,
-
         "duplicateError"
-
       );
 
     }
@@ -2883,9 +2949,7 @@ function openDeleteDialog(id) {
   setDialogStatus(deleteStatus);
 
   if (showDialog(deleteDialog)) {
-
     deleteCancel.focus();
-
   }
 
 }
@@ -2936,22 +3000,17 @@ async function deleteResume() {
 
     if (error) throw error;
 
-    if (
-      !verifyOwner(userId, generation)
-    ) return;
+    if (!verifyOwner(userId, generation)) {
+      return;
+    }
 
     if (
       !data?.some(
-
-        item => String(item.id) ===
-          String(id)
-
+        item => String(item.id) === String(id)
       )
     ) {
 
-      throw new Error(
-        "Missing delete confirmation"
-      );
+      throw new Error("Missing delete confirmation");
 
     }
 
@@ -2959,25 +3018,20 @@ async function deleteResume() {
 
       editingResumeId !== null &&
 
-      String(editingResumeId) ===
-      String(id)
+      String(editingResumeId) === String(id)
 
     ) {
 
       resetForm({
-
         focus: false,
-
         announce: false
-
       });
 
     }
 
     savedResumes = savedResumes.filter(
 
-      item => String(item.id) !==
-        String(id)
+      item => String(item.id) !== String(id)
 
     );
 
@@ -2993,16 +3047,11 @@ async function deleteResume() {
 
     reportError("delete", error);
 
-    if (
-      verifyOwner(userId, generation)
-    ) {
+    if (verifyOwner(userId, generation)) {
 
       setDialogStatus(
-
         deleteStatus,
-
         "deleteError"
-
       );
 
     }
@@ -3015,97 +3064,88 @@ async function deleteResume() {
 
 }
 
-/* PROFESSIONAL PDF EXPORT */
+/* DIRECT PDF FILE MANAGEMENT */
 
-function escapeHTML(value) {
+function clearPreparedPDF() {
 
-  return String(value ?? "")
+  const dialog =
+    $("wnDashboardPDFDialog");
 
-    .replace(/&/g, "&amp;")
+  if (dialog?.open) {
+    dialog.close();
+  }
 
-    .replace(/</g, "&lt;")
+  if (dialog) {
+    dialog.replaceChildren();
+  }
 
-    .replace(/>/g, "&gt;")
+  if (preparedPDFURL) {
 
-    .replace(/"/g, "&quot;")
+    URL.revokeObjectURL(
+      preparedPDFURL
+    );
 
-    .replace(/'/g, "&#39;");
+  }
+
+  preparedPDFURL = null;
+  preparedPDF = null;
+
+  window.WorknelyPDFExport
+    ?.clearPreparedFile?.();
 
 }
 
-function downloadResumePDF(id) {
+function normalizePDFFilename(value) {
 
-  if (isBusy || !currentUser) return;
+  const name = String(
+    value || t("untitled")
+  )
 
-  const resume = findResume(id);
+    .replace(/[<>:"/\\|?*\u0000-\u001f]/g, " ")
 
-  if (!resume) {
+    .replace(/\.pdf$/i, "")
 
-    setStatus("notFound", "error");
+    .replace(/\s+/g, " ")
 
-    return;
+    .trim()
+
+    .slice(0, 100);
+
+  return (name || "Worknely Resume") + ".pdf";
+
+}
+
+function canSharePDF(file) {
+
+  try {
+
+    return typeof navigator.share === "function" &&
+
+      typeof navigator.canShare === "function" &&
+
+      navigator.canShare({
+        files: [file]
+      });
+
+  } catch {
+
+    return false;
 
   }
 
-  const engine =
-    getTemplateEngine();
+}
 
-  if (
-    !engine?.renderResume ||
-    !engine?.getStyles
-  ) {
+/* NATIVE PDF SHARING */
 
-    setStatus(
-      "designUnavailable",
-      "error"
-    );
+async function sharePreparedPDF() {
 
-    loadDesignEngine();
+  const file = preparedPDF?.file;
 
-    return;
+  if (!file || !currentUser) return;
 
-  }
+  if (!canSharePDF(file)) {
 
-  const design = getDesign(resume);
-
-  const content = normalizeContent(
-    resume.content
-  );
-
-  const title =
-    getDocumentTitle(resume);
-
-  const documentLanguage =
-    design.documentLanguage || "en";
-
-  const paperSize =
-    design.paperFormat === "letter"
-      ? "Letter"
-      : "A4";
-
-  const paperWidth =
-    design.paperFormat === "letter"
-      ? "215.9mm"
-      : "210mm";
-
-  const paperHeight =
-    design.paperFormat === "letter"
-      ? "279.4mm"
-      : "297mm";
-
-  /*
-   * Open synchronously from the user
-   * interaction for mobile browsers.
-   */
-
-  const printWindow =
-    window.open("", "_blank");
-
-  if (!printWindow) {
-
-    setStatus(
-      "popupError", "error"
-    );
+    $("wnDashboardPDFDownload")?.focus();
 
     return;
 
@@ -3113,290 +3153,571 @@ function downloadResumePDF(id) {
 
   try {
 
-    printWindow.opener = null;
+    await navigator.share({
+
+      files: [file],
+
+      title: file.name
+
+    });
+
+  } catch (error) {
+
+    if (error?.name === "AbortError") {
+      return;
+    }
+
+    reportError("share", error);
+
+    const message =
+      $("wnDashboardPDFMessage");
+
+    if (message) {
+      message.textContent = t("pdfHelp");
+    }
+
+    $("wnDashboardPDFDownload")?.focus();
+
+  }
+
+}
+
+/* PROFESSIONAL PDF DELIVERY DIALOG */
+
+function getPDFDialog() {
+
+  let dialog =
+    $("wnDashboardPDFDialog");
+
+  if (dialog) return dialog;
+
+  dialog =
+    document.createElement("dialog");
+
+  dialog.id =
+    "wnDashboardPDFDialog";
+
+  dialog.setAttribute(
+    "aria-labelledby",
+    "wnDashboardPDFHeading"
+  );
+
+  dialog.addEventListener(
+    "close",
+    () => {
+
+      if (preparedPDFURL) {
+
+        URL.revokeObjectURL(
+          preparedPDFURL
+        );
+
+      }
+
+      preparedPDFURL = null;
+      preparedPDF = null;
+
+      dialog.replaceChildren();
+
+      window.WorknelyPDFExport
+        ?.clearPreparedFile?.();
+
+    }
+  );
+
+  document.body.appendChild(dialog);
+
+  return dialog;
+
+}
+
+function renderPDFDialog() {
+
+  if (!preparedPDF || !preparedPDFURL) {
+    return false;
+  }
+
+  const dialog = getPDFDialog();
+
+  const { file, design } =
+    preparedPDF;
+
+  dialog.replaceChildren();
+
+  const icon =
+    document.createElement("div");
+
+  icon.className =
+    "wn-pdf-success-icon";
+
+  icon.appendChild(
+    createIcon("check")
+  );
+
+  const heading =
+    document.createElement("h2");
+
+  heading.id =
+    "wnDashboardPDFHeading";
+
+  heading.textContent =
+    t("pdfReady");
+
+  const filename =
+    document.createElement("div");
+
+  filename.className =
+    "wn-dashboard-pdf-file";
+
+  filename.textContent =
+    file.name;
+
+  const metadata =
+    document.createElement("p");
+
+  metadata.textContent = [
+
+    TEMPLATE_REGISTRY[
+      design.templateId
+    ].name,
+
+    design.paperFormat === "letter"
+      ? "US Letter"
+      : "A4",
+
+    design.documentLanguage.toUpperCase(),
+
+    Math.max(
+      1,
+      Math.round(file.size / 1024)
+    ) + " KB"
+
+  ].join(" · ");
+
+  const message =
+    document.createElement("p");
+
+  message.id =
+    "wnDashboardPDFMessage";
+
+  message.textContent =
+    t("pdfHelp");
+
+  const actions =
+    document.createElement("div");
+
+  actions.className =
+    "wn-dashboard-pdf-actions";
+
+  const shareButton = createButton(
+
+    "wn-pdf-primary",
+
+    t("share"),
+
+    "share",
+
+    sharePreparedPDF
+
+  );
+
+  shareButton.disabled = false;
+
+  shareButton.hidden =
+    !canSharePDF(file);
+
+  const download =
+    document.createElement("a");
+
+  download.id =
+    "wnDashboardPDFDownload";
+
+  download.className =
+    shareButton.hidden
+      ? "wn-pdf-primary"
+      : "wn-pdf-secondary";
+
+  download.href =
+    preparedPDFURL;
+
+  download.download =
+    file.name;
+
+  download.append(
+
+    createIcon("download"),
+
+    document.createTextNode(
+      t("download")
+    )
+
+  );
+
+  const open =
+    document.createElement("a");
+
+  open.className =
+    "wn-pdf-secondary";
+
+  open.href =
+    preparedPDFURL;
+
+  open.target =
+    "_blank";
+
+  open.rel =
+    "noopener noreferrer";
+
+  open.textContent =
+    t("openPDF");
+
+  const closeButton = createButton(
+
+    "wn-pdf-secondary",
+
+    t("close"),
+
+    null,
+
+    () => clearPreparedPDF()
+
+  );
+
+  closeButton.disabled = false;
+
+  actions.append(
+
+    shareButton,
+
+    download,
+
+    open,
+
+    closeButton
+
+  );
+
+  const privacy =
+    document.createElement("p");
+
+  privacy.textContent =
+    t("pdfPrivate");
+
+  dialog.append(
+
+    icon,
+
+    heading,
+
+    filename,
+
+    metadata,
+
+    message,
+
+    actions,
+
+    privacy
+
+  );
+
+  return true;
+
+}
+
+/* UNIFIED PROFESSIONAL PDF EXPORT */
+
+async function downloadResumePDF(id) {
+
+  if (isBusy || !currentUser) return;
+
+  if (!findResume(id)) {
+
+    setStatus("notFound", "error");
+
+    return;
+
+  }
+
+  const userId = currentUser.id;
+
+  const generation =
+    sessionGeneration;
+
+  clearPreparedPDF();
+
+  setBusy(true, "pdf");
+
+  setStatus("pdfPreparing");
+
+  try {
+
+    if (
+      !await verifyAuthenticatedOwner(
+        userId, generation
+      )
+    ) {
+
+      throw new Error("Session changed");
+
+    }
 
     /*
-     * Render the saved document design
-     * without changing the active template
-     * or the browser's local preferences.
+     * Fetch the latest saved content
+     * and the exact document design.
      */
 
-    const resumeHTML =
-      engine.renderResume(
+    const { data: resume, error } =
+      await supabase
+
+        .from("resumes")
+
+        .select(DOCUMENT_COLUMNS)
+
+        .eq("id", id)
+
+        .eq("user_id", userId)
+
+        .single();
+
+    if (error) throw error;
+
+    if (!verifyOwner(userId, generation)) {
+      return;
+    }
+
+    if (!resume?.id) {
+
+      setStatus("notFound", "error");
+
+      return;
+
+    }
+
+    const content =
+      normalizeContent(resume.content);
+
+    if (!hasContent(content)) {
+
+      setStatus("pdfEmpty", "error");
+
+      return;
+
+    }
+
+    const design = {
+
+      ...getDesign(resume),
+
+      documentLanguage:
+        getDesign(resume).documentLanguage ||
+        "en"
+
+    };
+
+    const engineReady =
+      await loadPDFEngine();
+
+    if (!verifyOwner(userId, generation)) {
+      return;
+    }
+
+    if (!engineReady) {
+
+      setStatus(
+        "designUnavailable",
+        "error"
+      );
+
+      return;
+
+    }
+
+    const engine =
+      window.WorknelyPDFExport;
+
+    const filename =
+      normalizePDFFilename(
+        getDocumentTitle(resume)
+      );
+
+    /*
+     * Shared PDF engine V7.16.11.
+     *
+     * No window.print().
+     * No HTML print popup.
+     * No changes to active builder design.
+     */
+
+    const result =
+      await engine.exportResume({
 
         content,
 
+        templateId:
+          design.templateId,
+
+        accentColor:
+          design.accentColor,
+
+        documentLanguage:
+          design.documentLanguage,
+
+        paperFormat:
+          design.paperFormat,
+
+        filename,
+
+        returnFile: true
+
+      });
+
+    if (
+      !await verifyAuthenticatedOwner(
+        userId, generation
+      )
+    ) {
+
+      engine.clearPreparedFile?.();
+
+      return;
+
+    }
+
+    if (!result?.ok) {
+
+      throw new Error(
+        "PDF generation failed"
+      );
+
+    }
+
+    const blob =
+      result.file instanceof Blob
+        ? result.file
+        : result.blob;
+
+    if (
+      !(blob instanceof Blob) ||
+      blob.size < 5
+    ) {
+
+      throw new Error(
+        "Missing PDF file"
+      );
+
+    }
+
+    /*
+     * Validate the PDF signature before
+     * presenting the generated document.
+     */
+
+    const signature =
+      await blob.slice(0, 5).text();
+
+    if (signature !== "%PDF-") {
+
+      throw new Error(
+        "Invalid PDF signature"
+      );
+
+    }
+
+    if (!verifyOwner(userId, generation)) {
+      return;
+    }
+
+    const file = new File(
+
+      [blob],
+
+      filename,
+
+      {
+        type: "application/pdf",
+        lastModified: Date.now()
+      }
+
+    );
+
+    preparedPDF = {
+
+      file,
+
+      design,
+
+      ownerId: userId,
+
+      resumeId: resume.id
+
+    };
+
+    preparedPDFURL =
+      URL.createObjectURL(file);
+
+    renderPDFDialog();
+
+    const dialog =
+      getPDFDialog();
+
+    if (!showDialog(dialog)) {
+
+      clearPreparedPDF();
+
+      return;
+
+    }
+
+    setStatus(
+      "pdfReady",
+      "success"
+    );
+
+    document.dispatchEvent(
+
+      new CustomEvent(
+
+        "worknely:dashboardpdfready",
+
         {
 
-          templateId:
-            design.templateId,
+          detail: {
 
-          accentColor:
-            design.accentColor,
+            version: VERSION,
 
-          documentLanguage
+            templateId:
+              design.templateId,
+
+            paperFormat:
+              design.paperFormat,
+
+            documentLanguage:
+              design.documentLanguage
+
+          }
 
         }
 
-      );
+      )
 
-    const templateCSS =
-      engine.getStyles();
-
-    printWindow.document.open();
-
-    printWindow.document.write(`
-
-<!doctype html>
-<html lang="${getLanguage()}">
-
-<head>
-
-<meta charset="utf-8">
-
-<meta name="viewport"
-      content="width=device-width, initial-scale=1">
-
-<meta name="robots"
-      content="noindex,nofollow">
-
-<title>${escapeHTML(title)}</title>
-
-<style>
-
-* {
-  box-sizing:border-box;
-}
-
-body {
-  margin:0;
-  background:#f4f1fa;
-  color:#242424;
-  font-family:Arial,Helvetica,sans-serif;
-}
-
-.wn-print-toolbar {
-  display:flex;
-  flex-wrap:wrap;
-  align-items:center;
-  justify-content:center;
-  gap:10px;
-  padding:14px;
-  background:#fff;
-  border-bottom:1px solid #e9e2f4;
-}
-
-.wn-print-toolbar button {
-  min-height:44px;
-  padding:10px 20px;
-  border:0;
-  border-radius:10px;
-  background:#5424ff;
-  color:#fff;
-  font-size:14px;
-  font-weight:700;
-  cursor:pointer;
-}
-
-.wn-print-toolbar .wn-close-print {
-  background:#f1ebff;
-  color:#5424ff;
-}
-
-.wn-print-toolbar p {
-  flex-basis:100%;
-  margin:0;
-  color:#655d76;
-  text-align:center;
-  font-size:12px;
-  line-height:1.5;
-}
-
-.wn-print-meta {
-  flex-basis:100%;
-  color:#746c85;
-  font-size:11px;
-  text-align:center;
-}
-
-.wn-print-page {
-  width:100%;
-  max-width:${paperWidth};
-  min-height:${paperHeight};
-  margin:20px auto;
-  background:#fff;
-  box-shadow:0 8px 30px rgba(38,20,73,.09);
-}
-
-${templateCSS}
-
-.wn-print-page .wn-tpl-resume {
-  width:100%;
-  max-width:none;
-  margin:0;
-}
-
-@media screen and (max-width:700px) {
-
-  .wn-print-page {
-    margin:0 auto;
-    min-height:0;
-    box-shadow:none;
-  }
-
-}
-
-@page {
-  size:${paperSize};
-  margin:14mm;
-}
-
-@media print {
-
-  html,
-  body {
-    margin:0!important;
-    padding:0!important;
-    background:#fff!important;
-  }
-
-  * {
-    -webkit-print-color-adjust:exact;
-    print-color-adjust:exact;
-  }
-
-  .wn-print-toolbar {
-    display:none!important;
-  }
-
-  .wn-print-page {
-    width:auto!important;
-    max-width:none!important;
-    min-height:0!important;
-    margin:0!important;
-    padding:0!important;
-    box-shadow:none!important;
-  }
-
-  .wn-print-page .wn-tpl-resume {
-    width:auto!important;
-    max-width:none!important;
-    padding:0!important;
-    margin:0!important;
-  }
-
-  h1,
-  h2,
-  h3 {
-    break-after:avoid;
-    page-break-after:avoid;
-  }
-
-}
-
-</style>
-
-</head>
-
-<body>
-
-<div class="wn-print-toolbar">
-
-  <button id="printResume"
-          type="button">
-
-    ${escapeHTML(t("print"))}
-
-  </button>
-
-  <button id="closePrint"
-          class="wn-close-print"
-          type="button">
-
-    ${escapeHTML(t("close"))}
-
-  </button>
-
-  <div class="wn-print-meta">
-
-    ${escapeHTML(
-      TEMPLATE_REGISTRY[
-        design.templateId
-      ].name
-    )}
-
-    ·
-
-    ${escapeHTML(
-      design.paperFormat === "letter"
-        ? "US Letter"
-        : "A4"
-    )}
-
-    ·
-
-    ${escapeHTML(
-      documentLanguage.toUpperCase()
-    )}
-
-  </div>
-
-  <p>
-
-    ${escapeHTML(t("printHelp"))}
-
-  </p>
-
-</div>
-
-<main class="wn-print-page"
-      lang="${documentLanguage}">
-
-  ${resumeHTML}
-
-</main>
-
-</body>
-
-</html>
-
-    `);
-
-    printWindow.document.close();
-
-    printWindow.document
-
-      .getElementById("printResume")
-
-      .addEventListener(
-
-        "click",
-
-        () => printWindow.print()
-
-      );
-
-    printWindow.document
-
-      .getElementById("closePrint")
-
-      .addEventListener(
-
-        "click",
-
-        () => printWindow.close()
-
-      );
-
-    setStatus("pdfReady", "success");
+    );
 
   } catch (error) {
 
     reportError("pdf", error);
 
-    printWindow.close();
+    clearPreparedPDF();
 
-    setStatus("pdfError", "error");
+    if (verifyOwner(userId, generation)) {
+
+      setStatus("pdfError", "error");
+
+    }
+
+  } finally {
+
+    setBusy(false);
 
   }
 
@@ -3445,6 +3766,15 @@ function refreshLanguage() {
   updateActionLabels();
 
   renderResumes();
+
+  if (
+    preparedPDF &&
+    $("wnDashboardPDFDialog")?.open
+  ) {
+
+    renderPDFDialog();
+
+  }
 
   if (selectedDeleteId !== null) {
 
@@ -3500,6 +3830,8 @@ window.addEventListener(
 
       const generation =
         sessionGeneration;
+
+      clearPreparedPDF();
 
       setBusy(true, "load");
 
@@ -3612,7 +3944,12 @@ async function initializeDashboard() {
 
   installDesignStyles();
 
-  loadDesignEngine();
+  /*
+   * Preload the shared template and
+   * PDF modules without blocking login.
+   */
+
+  loadPDFEngine().catch(() => {});
 
   const generation =
     sessionGeneration;
@@ -3665,71 +4002,47 @@ async function initializeDashboard() {
 /* FORM EVENTS */
 
 resumeForm.addEventListener(
-
   "submit",
-
   saveResume
-
 );
 
 newButton.addEventListener(
-
   "click",
-
   () => resetForm()
-
 );
 
 logoutButton.addEventListener(
-
   "click",
-
   logOut
-
 );
 
 /* SEARCH AND SORT */
 
 searchInput.addEventListener(
-
   "input",
-
   renderResumes
-
 );
 
 sortInput.addEventListener(
-
   "change",
-
   renderResumes
-
 );
 
 clearSearch.addEventListener(
-
   "click",
-
   clearDocumentSearch
-
 );
 
 resetSearch.addEventListener(
-
   "click",
-
   clearDocumentSearch
-
 );
 
 /* RENAME EVENTS */
 
 renameForm.addEventListener(
-
   "submit",
-
   renameResume
-
 );
 
 renameCancel.addEventListener(
@@ -3739,9 +4052,7 @@ renameCancel.addEventListener(
   () => {
 
     if (!isBusy) {
-
       closeDialog(renameDialog);
-
     }
 
   }
@@ -3765,11 +4076,8 @@ renameDialog.addEventListener(
 /* DUPLICATE EVENTS */
 
 duplicateForm.addEventListener(
-
   "submit",
-
   duplicateResume
-
 );
 
 duplicateCancel.addEventListener(
@@ -3779,9 +4087,7 @@ duplicateCancel.addEventListener(
   () => {
 
     if (!isBusy) {
-
       closeDialog(duplicateDialog);
-
     }
 
   }
@@ -3805,11 +4111,8 @@ duplicateDialog.addEventListener(
 /* DELETE EVENTS */
 
 deleteConfirm.addEventListener(
-
   "click",
-
   deleteResume
-
 );
 
 deleteCancel.addEventListener(
@@ -3819,9 +4122,7 @@ deleteCancel.addEventListener(
   () => {
 
     if (!isBusy) {
-
       closeDialog(deleteDialog);
-
     }
 
   }
@@ -3861,9 +4162,7 @@ deleteDialog.addEventListener(
     event => {
 
       if (isBusy) {
-
         event.preventDefault();
-
       }
 
     }
@@ -3918,7 +4217,13 @@ window.addEventListener(
 
   "hashchange",
 
-  () => closeDocumentMenus()
+  () => {
+
+    closeDocumentMenus();
+
+    clearPreparedPDF();
+
+  }
 
 );
 
@@ -3966,6 +4271,10 @@ window.WorknelyDashboard = Object.freeze({
 
   normalizeDesign,
 
+  downloadResumePDF,
+
+  clearPreparedPDF,
+
   getTemplates: () =>
 
     Object.entries(
@@ -3994,8 +4303,17 @@ window.WorknelyDashboard = Object.freeze({
 
     designEngineReady:
       Boolean(
-        getTemplateEngine()?.renderResume
-      )
+        window.WorknelyTemplates?.renderResume
+      ),
+
+    pdfEngineReady:
+      Boolean(
+        window.WorknelyPDFExport?.version ===
+        "7.16.11"
+      ),
+
+    pdfPrepared:
+      Boolean(preparedPDF)
 
   })
 
@@ -4014,10 +4332,10 @@ console.info(
 );
 
 /*
- * END WORKNELY V7.16.9
+ * END WORKNELY V7.16.12
  *
- * Professional Dashboard Engine
- * Persistent Document Design
+ * Unified Direct PDF Export
+ * Professional Template Integration
  * International SaaS Workspace
  * People Technology
  */
