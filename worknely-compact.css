@@ -1,0 +1,1088 @@
+
+/*
+ * WORKNELY V7.12
+ * Global Compact Design System
+ *
+ * Landing Page
+ * Resume Writing Studio
+ * Resume Builder
+ * Career Analysis
+ * ATS Reports
+ * Authentication
+ * Premium Conversion Banner
+ * Dashboard
+ *
+ * Load AFTER existing stylesheets.
+ * Preserves application functionality.
+ */
+
+/* GLOBAL DESIGN TOKENS */
+
+:root {
+  --wn-compact-purple: #5424ff;
+  --wn-compact-pink: #ec22ad;
+  --wn-compact-cyan: #00cfff;
+
+  --wn-compact-button: 40px;
+  --wn-compact-input: 44px;
+
+  --wn-compact-gap: 8px;
+  --wn-compact-radius: 10px;
+  --wn-compact-card: 16px;
+
+  --wn-compact-gradient:
+    linear-gradient(
+      105deg,
+      #5424ff,
+      #ec22ad
+    );
+}
+
+/* GLOBAL SAFETY */
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+button,
+a,
+summary {
+  touch-action: manipulation;
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+}
+
+/* LANDING PAGE CONTAINER */
+
+body .shell {
+  width: calc(100% - 32px);
+  max-width: 1180px;
+  margin-inline: auto;
+  padding-inline: 0;
+}
+
+/* COMPACT LANDING HEADER */
+
+body .shell .top {
+  padding-block: 10px;
+  gap: 8px;
+}
+
+body .top .brand {
+  gap: 8px;
+}
+
+body .top .brandmark {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  padding: 5px;
+}
+
+body .worknely-brandname {
+  font-size: 18px;
+  line-height: 1.15;
+}
+
+body .worknely-brandname small {
+  font-size: 8px;
+  margin-top: 3px;
+  letter-spacing: 1.2px;
+}
+
+body .header-tools {
+  gap: 6px;
+}
+
+body .header-tools select {
+  min-height: 36px;
+  padding: 7px 9px;
+  border-radius: 8px;
+}
+
+body .version {
+  padding: 6px 9px;
+  font-size: 9px;
+  letter-spacing: .5px;
+}
+
+body .wn-top-links {
+  gap: 6px;
+}
+
+body .wn-top-links a {
+  padding: 8px 11px;
+  font-size: 12px;
+  border-radius: 8px;
+}
+
+/* COMPACT LANDING HERO */
+
+body .shell .hero {
+  padding: clamp(24px,4vw,46px);
+  margin: 14px 0 18px;
+  border-radius: 20px;
+}
+
+body .shell .hero h1 {
+  font-size: clamp(30px,4.5vw,54px);
+  line-height: 1.12;
+  letter-spacing: -.045em;
+  margin: 12px 0;
+}
+
+body .shell .hero .eyebrow {
+  font-size: 10px;
+  letter-spacing: 1.3px;
+}
+
+body .shell .hero p {
+  font-size: 15px;
+  line-height: 1.6;
+  margin: 10px 0;
+}
+
+/* HERO ACTIONS */
+
+body .hero .hero-actions,
+body .hero .wn-hero-actions {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+body .hero .hero-actions a,
+body .hero .wn-hero-actions a {
+  width: auto;
+  max-width: 100%;
+  min-width: 0;
+  min-height: 42px;
+
+  padding: 10px 14px;
+  border-radius: 10px;
+
+  font-size: 13px;
+  line-height: 1.35;
+  text-align: center;
+}
+
+/* COMPACT FEATURE CARDS */
+
+body .wn-feature-grid {
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+body .wn-feature-card {
+  min-width: 0;
+  padding: 14px;
+  border-radius: 14px;
+}
+
+body .wn-feature-card .wn-symbol {
+  width: 34px;
+  height: 34px;
+  margin-bottom: 9px;
+  border-radius: 9px;
+  font-size: 17px;
+}
+
+body .wn-feature-card h2 {
+  font-size: 14px;
+  line-height: 1.35;
+  margin: 0 0 5px;
+}
+
+body .wn-feature-card p {
+  font-size: 12px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+/* COMPACT WORKSPACES */
+
+body .shell .workspace,
+body .shell .results {
+  min-width: 0;
+  padding: 18px;
+  margin-bottom: 14px;
+  border-radius: 16px;
+}
+
+body .section-head,
+body .results-head {
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+body .section-head h2,
+body .results-head h2 {
+  font-size: clamp(20px,3vw,24px);
+  line-height: 1.25;
+  margin: 6px 0;
+}
+
+body .section-head p,
+body .results-head p {
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+body .overline {
+  font-size: 10px;
+  letter-spacing: 1.3px;
+}
+
+/* GLOBAL WORKSPACE BUTTONS */
+
+body .shell .primary,
+body .shell .ghost {
+  min-width: 0;
+  min-height: var(--wn-compact-button);
+  max-width: 100%;
+
+  padding: 9px 13px;
+  border-radius: 9px;
+
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+body .shell .primary span {
+  margin-left: 6px;
+}
+
+body .shell .actions {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+body .shell .actions button {
+  width: auto;
+  min-width: 0;
+}
+
+/* RESUME BUILDER */
+
+body .builder-grid {
+  gap: 10px;
+}
+
+body .builder-grid label {
+  min-width: 0;
+  font-size: 12px;
+  gap: 5px;
+}
+
+body .builder-grid input,
+body .builder-grid textarea {
+  min-width: 0;
+  padding: 9px 11px;
+  border-radius: 9px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+body .builder-grid input {
+  min-height: var(--wn-compact-input);
+}
+
+body .builder-grid textarea {
+  min-height: 70px;
+  resize: vertical;
+}
+
+body .builder-preview {
+  padding: 13px;
+  border-radius: 11px;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+body .builder-preview:empty {
+  display: none;
+}
+
+/* RESUME WRITING STUDIO */
+
+body .studio-notice {
+  padding: 9px 11px;
+  border-radius: 9px;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+body .ai-preview select {
+  min-height: var(--wn-compact-input);
+  padding: 8px 10px;
+  border-radius: 9px;
+  font-size: 14px;
+}
+
+body .ai-preview .builder-preview {
+  min-height: 90px;
+}
+
+/* DOCUMENT IMPORT */
+
+body .import-panel {
+  padding: 12px;
+  margin-bottom: 12px;
+  border-radius: 11px;
+}
+
+body .import-panel input {
+  margin-top: 8px;
+  max-width: 100%;
+}
+
+body .hint {
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+/* CAREER ANALYSIS */
+
+body .input-grid {
+  gap: 12px;
+}
+
+body .field label {
+  font-size: 12px;
+  margin-bottom: 7px;
+}
+
+body .field label strong {
+  font-size: 14px;
+  margin-left: 4px;
+}
+
+body .field textarea {
+  min-height: 190px;
+  padding: 12px;
+  border-radius: 11px;
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+body .field-foot {
+  gap: 6px;
+  margin-top: 6px;
+  font-size: 11px;
+}
+
+/* COMPACT ATS SCORE */
+
+body .ats-card {
+  margin-bottom: 12px;
+}
+
+body .ats-main {
+  gap: 12px;
+}
+
+body .ats-main strong {
+  font-size: 32px;
+  line-height: 1.2;
+}
+
+body .ats-main p {
+  font-size: 13px;
+  line-height: 1.5;
+  margin: 5px 0;
+}
+
+body .ats-main small {
+  font-size: 11px;
+}
+
+body .score-layout {
+  gap: 12px;
+}
+
+body .score-card {
+  padding: 14px;
+  border-radius: 13px;
+}
+
+body .ring {
+  width: 140px;
+  height: 140px;
+  margin: 0 auto 10px;
+}
+
+body .ring > div {
+  width: 114px;
+  height: 114px;
+}
+
+body .ring strong {
+  font-size: 34px;
+  letter-spacing: -1px;
+}
+
+body .ring span {
+  font-size: 11px;
+}
+
+body .score-card p {
+  font-size: 12px;
+  line-height: 1.5;
+  margin: 7px 0;
+}
+
+body .score-card small {
+  font-size: 11px;
+}
+
+/* COMPACT REPORT STATISTICS */
+
+body .stats {
+  gap: 8px;
+}
+
+body .stat {
+  padding: 12px;
+  gap: 8px;
+  border-radius: 11px;
+}
+
+body .stat span {
+  font-size: 12px;
+}
+
+body .stat strong {
+  font-size: 20px;
+}
+
+/* COMPATIBILITY REPORT */
+
+body .report-grid {
+  gap: 10px;
+  margin-top: 12px;
+}
+
+body .report-card {
+  min-width: 0;
+  padding: 13px;
+  border-radius: 12px;
+}
+
+body .report-card h3 {
+  font-size: 15px;
+  margin: 0 0 10px;
+}
+
+body .chips {
+  gap: 5px;
+}
+
+body .chip {
+  max-width: 100%;
+  padding: 5px 8px;
+  border-radius: 7px;
+  font-size: 11px;
+  overflow-wrap: anywhere;
+}
+
+body .rec {
+  margin-top: 12px;
+}
+
+body .rec ol {
+  padding-left: 18px;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+body .rec li {
+  margin-bottom: 5px;
+  padding-left: 2px;
+}
+
+body .disclaimer {
+  font-size: 11px;
+  line-height: 1.55;
+}
+
+/* STRUCTURE FINDINGS */
+
+body .structure-findings,
+body .ats-card .structure-findings {
+  gap: 7px;
+  margin-top: 10px;
+}
+
+body .structure-item {
+  padding: 9px;
+  border-radius: 9px;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+/* EXPORT ACTIONS */
+
+body .export-actions {
+  gap: 7px;
+}
+
+body .export-actions button {
+  min-width: 0;
+  min-height: 40px;
+}
+
+body .export-message,
+body .message {
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+/* AUTHENTICATION NAVIGATION */
+
+/*
+ * Higher specificity is intentional.
+ * Overrides CSS injected by
+ * worknely-saas-ui.js V7.8.2.
+ */
+
+body .top .wn-auth-nav {
+  gap: 6px;
+}
+
+body .wn-auth-nav .wn-auth-btn {
+  min-height: 38px;
+  padding: 8px 11px;
+  border-radius: 9px;
+  font-size: 12px;
+  line-height: 1.3;
+}
+
+body .wn-account-menu .wn-menu-panel {
+  top: calc(100% + 7px);
+  min-width: 185px;
+  padding: 6px;
+  border-radius: 12px;
+}
+
+body .wn-menu-panel a,
+body .wn-menu-panel button {
+  min-height: 40px;
+  padding: 9px 10px;
+  font-size: 13px;
+  border-radius: 8px;
+}
+
+body .wn-menu-panel .wn-menu-divider {
+  margin: 4px 2px;
+}
+
+/* COMPACT PREMIUM BANNER */
+
+body .wn-pro-banner {
+  gap: 10px;
+  padding: 12px 14px;
+  margin: 10px 0 14px;
+  border-radius: 14px;
+}
+
+body .wn-pro-banner .wn-pro-copy {
+  gap: 9px;
+}
+
+body .wn-pro-banner .wn-pro-icon {
+  flex-basis: 34px;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  font-size: 18px;
+}
+
+body .wn-pro-banner .wn-pro-kicker {
+  margin-bottom: 3px;
+  font-size: 9px;
+  letter-spacing: 1.1px;
+}
+
+body .wn-pro-banner .wn-pro-title {
+  font-size: 14px;
+  line-height: 1.35;
+}
+
+body .wn-pro-banner .wn-pro-subtitle {
+  margin-top: 3px;
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+body .wn-pro-banner .wn-pro-cta {
+  min-height: 40px;
+  padding: 9px 13px;
+  border-radius: 9px;
+  font-size: 12px;
+  gap: 6px;
+}
+
+/* COMPACT AUTHENTICATION MODAL */
+
+/*
+ * Explicit overrides for injected
+ * authentication styles.
+ */
+
+body dialog#wnAuthDialog.wn-dialog {
+  width: 400px !important;
+  max-width: calc(100vw - 24px) !important;
+  border-radius: 16px !important;
+}
+
+body #wnAuthDialog .wn-dialog-head {
+  padding: 10px 14px;
+  gap: 8px;
+}
+
+body #wnAuthDialog .wn-dialog-brand {
+  font-size: 18px;
+}
+
+body #wnAuthDialog .wn-close {
+  flex-basis: 36px;
+  width: 36px;
+  height: 36px;
+  min-height: 36px;
+  border-radius: 9px;
+  font-size: 22px;
+}
+
+body #wnAuthDialog #worknelyAccount.workspace {
+  padding: 16px !important;
+}
+
+body #wnAuthDialog .section-head {
+  margin: 0 0 12px !important;
+}
+
+body #wnAuthDialog .section-head .overline {
+  margin-bottom: 6px;
+  font-size: 10px;
+  letter-spacing: 1.3px;
+}
+
+body #wnAuthDialog #accountTitle {
+  font-size: 24px;
+  margin: 0 0 6px !important;
+}
+
+body #wnAuthDialog .section-head p {
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+body #wnAuthDialog #worknelyAuthForm {
+  gap: 10px !important;
+}
+
+body #wnAuthDialog #worknelyAuthForm > label {
+  gap: 5px !important;
+  font-size: 12px;
+}
+
+body #wnAuthDialog #authEmail,
+body #wnAuthDialog #authPassword {
+  height: 44px !important;
+  min-height: 44px !important;
+
+  padding: 9px 11px !important;
+  border-radius: 9px !important;
+
+  font-size: 16px !important;
+}
+
+body #wnAuthDialog .wn-forgot-row {
+  margin-top: -2px;
+}
+
+body #wnAuthDialog #worknelyAuthForm > .actions {
+  gap: 8px !important;
+}
+
+body #wnAuthDialog #authLogin,
+body #wnAuthDialog #authSignUp,
+body #wnAuthDialog #wnUpdatePassword {
+  min-height: 44px !important;
+
+  padding: 10px 13px !important;
+  border-radius: 10px !important;
+
+  font-size: 14px !important;
+
+  background:
+    var(--wn-compact-gradient) !important;
+}
+
+body #wnAuthDialog .wn-auth-switch {
+  margin-top: 10px;
+  font-size: 12px;
+}
+
+body #wnAuthDialog .wn-auth-support {
+  margin-top: 12px;
+  padding-top: 10px;
+}
+
+body #wnAuthDialog .wn-auth-support p {
+  font-size: 11px;
+}
+
+body #wnAuthDialog #authStatus {
+  margin-top: 8px;
+  font-size: 12px;
+}
+
+/* DASHBOARD CONSISTENCY */
+
+body .topbar {
+  gap: 8px;
+}
+
+body .layout .wn-dashboard-actions {
+  gap: 8px;
+}
+
+body .layout .workspace-metrics {
+  gap: 8px;
+}
+
+body .layout .resume-list {
+  gap: 8px;
+}
+
+body .layout .resume-delete-button {
+  padding: 0;
+  font-size: 0;
+}
+
+body .layout .resume-delete-button svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* COMPACT FOOTER */
+
+body .shell footer,
+body .layout footer {
+  padding: 12px 0 16px;
+  gap: 8px;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+/* TABLET */
+
+@media (max-width: 900px) {
+
+  body .wn-feature-grid {
+    grid-template-columns:
+      repeat(2,minmax(0,1fr));
+  }
+
+  body .shell .hero {
+    padding: 28px;
+  }
+}
+
+/* MOBILE FIRST EXPERIENCE */
+
+@media (max-width: 700px) {
+
+  body .shell {
+    width: calc(100% - 24px);
+  }
+
+  body .shell .top {
+    padding-block: 9px;
+    gap: 8px;
+  }
+
+  body .top .brandmark {
+    width: 34px;
+    height: 34px;
+  }
+
+  body .worknely-brandname {
+    font-size: 17px;
+  }
+
+  body .header-tools {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 6px;
+  }
+
+  body .header-tools select {
+    max-width: 130px;
+    font-size: 16px;
+  }
+
+  body .shell .hero {
+    padding: 20px 16px;
+    margin: 10px 0 14px;
+    border-radius: 16px;
+  }
+
+  body .shell .hero h1 {
+    font-size: clamp(28px,7vw,38px);
+    margin: 9px 0;
+  }
+
+  body .shell .hero p {
+    font-size: 14px;
+    line-height: 1.55;
+  }
+
+  body .hero .hero-actions,
+  body .hero .wn-hero-actions {
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  body .hero .hero-actions a,
+  body .hero .wn-hero-actions a {
+    flex: 1 1 130px;
+    width: auto;
+    min-height: 44px;
+    padding: 9px 10px;
+    font-size: 12px;
+  }
+
+  body .wn-feature-grid {
+    grid-template-columns:
+      repeat(2,minmax(0,1fr));
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+
+  body .wn-feature-card {
+    padding: 11px;
+    border-radius: 12px;
+  }
+
+  body .wn-feature-card h2 {
+    font-size: 13px;
+  }
+
+  body .wn-feature-card p {
+    font-size: 12px;
+  }
+
+  body .shell .workspace,
+  body .shell .results {
+    padding: 14px;
+    margin-bottom: 12px;
+    border-radius: 14px;
+  }
+
+  body .section-head,
+  body .results-head {
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  body .section-head h2,
+  body .results-head h2 {
+    font-size: 21px;
+  }
+
+  body .section-head p,
+  body .results-head p {
+    font-size: 12px;
+  }
+
+  body .shell .actions {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-top: 10px;
+  }
+
+  body .shell .actions button {
+    flex: 1 1 120px;
+    width: auto;
+    min-height: 44px;
+    padding: 9px 10px;
+    font-size: 12px;
+  }
+
+  body .builder-grid,
+  body .input-grid,
+  body .score-layout,
+  body .report-grid {
+    grid-template-columns: minmax(0,1fr);
+    gap: 10px;
+  }
+
+  body .builder-grid input,
+  body .builder-grid textarea,
+  body .field textarea,
+  body .ai-preview select {
+    font-size: 16px;
+  }
+
+  body .field textarea {
+    min-height: 160px;
+    padding: 10px;
+  }
+
+  body .builder-grid textarea {
+    min-height: 65px;
+  }
+
+  body .score-card {
+    padding: 12px;
+  }
+
+  body .ring {
+    width: 124px;
+    height: 124px;
+  }
+
+  body .ring > div {
+    width: 100px;
+    height: 100px;
+  }
+
+  body .ring strong {
+    font-size: 30px;
+  }
+
+  body .export-actions button {
+    flex: 1 1 120px;
+    min-width: 0;
+    min-height: 44px;
+  }
+
+  body .wn-pro-banner {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 9px;
+    padding: 11px;
+    margin: 9px 0 12px;
+  }
+
+  body .wn-pro-banner .wn-pro-cta {
+    width: 100%;
+    min-height: 44px;
+    padding: 9px 11px;
+  }
+
+  body .wn-auth-nav .wn-auth-btn {
+    min-height: 40px;
+    padding: 8px 10px;
+  }
+
+  body #wnAuthDialog #worknelyAccount.workspace {
+    padding: 14px !important;
+  }
+
+  body #wnAuthDialog .wn-dialog-head {
+    padding: 10px 12px;
+  }
+}
+
+/* SMALL IPHONE SCREENS */
+
+@media (max-width: 390px) {
+
+  body .shell {
+    width: calc(100% - 20px);
+  }
+
+  body .shell .hero {
+    padding: 17px 13px;
+  }
+
+  body .shell .hero h1 {
+    font-size: 28px;
+  }
+
+  body .shell .workspace,
+  body .shell .results {
+    padding: 12px;
+  }
+
+  body .wn-feature-card {
+    padding: 10px;
+  }
+
+  body .hero .hero-actions a,
+  body .hero .wn-hero-actions a {
+    flex-basis: 110px;
+    font-size: 12px;
+  }
+
+  body .worknely-brandname {
+    font-size: 16px;
+  }
+
+  body .wn-auth-nav .wn-auth-btn {
+    padding: 8px 9px;
+    font-size: 11px;
+  }
+}
+
+/* EXTRA NARROW SCREENS */
+
+@media (max-width: 340px) {
+
+  body .wn-feature-grid {
+    grid-template-columns: minmax(0,1fr);
+  }
+
+  body .hero .hero-actions a,
+  body .hero .wn-hero-actions a {
+    flex-basis: 100%;
+  }
+
+  body .shell .actions button {
+    flex-basis: 100%;
+  }
+}
+
+/* ACCESSIBILITY */
+
+@media (prefers-reduced-motion: reduce) {
+
+  html {
+    scroll-behavior: auto;
+  }
+
+  body .wn-pro-banner .wn-pro-cta {
+    transition: none;
+  }
+
+  body .wn-pro-banner .wn-pro-cta:hover {
+    transform: none;
+  }
+}
+
+/* END WORKNELY V7.12 */
