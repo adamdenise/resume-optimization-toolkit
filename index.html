@@ -10,11 +10,13 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Worknely">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
 <title>Worknely | Build Your Career. Shape Your Future.</title>
+
 <link rel="canonical" href="https://adamdenise.github.io/resume-optimization-toolkit/">
 <link rel="icon" type="image/svg+xml" href="worknely-favicon.svg">
 
-<!-- WORKNELY V7.15 INTERNATIONAL EDITION -->
+<!-- WORKNELY V7.16.7 PROFESSIONAL DESIGN STUDIO -->
 
 <link rel="stylesheet" href="style.css?v=7.12.1">
 <link rel="stylesheet" href="worknely-theme.css?v=7.12.1">
@@ -233,7 +235,7 @@ body .shell header.top .wn-menu-panel button {
   font-size:12px!important;
 }
 
-/* FLAG LANGUAGE SELECTOR */
+/* LANGUAGE SELECTOR */
 
 body .shell header.top > .header-tools {
   order:2!important;
@@ -313,7 +315,7 @@ body .shell header.top .wn-auth-nav .wn-menu-panel[hidden] {
   display:none!important;
 }
 
-/* LANDING INTEGRATION */
+/* LANDING EXPERIENCE */
 
 #wnLanding {
   padding:4px 0 16px;
@@ -463,6 +465,46 @@ body .shell .wn-builder-secondary button {
   white-space:normal;
 }
 
+/* PROFESSIONAL DESIGN STUDIO */
+
+#wnDesignStudio {
+  display:block;
+  width:100%;
+  min-width:0;
+  margin:20px 0;
+}
+
+#wnDesignStudio > div {
+  min-width:0;
+  max-width:100%;
+  box-sizing:border-box;
+}
+
+#wnDesignStudio > div:empty {
+  display:none;
+}
+
+#wnTemplateGallery,
+#wnColorCustomization,
+#wnLivePreview,
+#wnProfessionalPDFExport {
+  scroll-margin-top:20px;
+}
+
+#wnDesignStudio button {
+  touch-action:manipulation;
+}
+
+#wnDesignStudio input,
+#wnDesignStudio select {
+  max-width:100%;
+}
+
+#wnDesignStudio .wn-tpl-resume {
+  box-sizing:border-box;
+  overflow-wrap:anywhere;
+}
+
 /* STATUS MESSAGES */
 
 #builderMessage,
@@ -552,7 +594,7 @@ body .shell .wn-builder-secondary button {
   cursor:pointer;
 }
 
-/* MOBILE */
+/* MOBILE OPTIMIZATION */
 
 @media(max-width:700px) {
 
@@ -641,6 +683,15 @@ body .shell .wn-builder-secondary button {
 
   #resumeFile::file-selector-button {
     min-height:44px;
+  }
+
+  #wnDesignStudio {
+    margin:14px 0;
+  }
+
+  #wnDesignStudio input,
+  #wnDesignStudio select {
+    font-size:16px;
   }
 }
 
@@ -732,9 +783,16 @@ body .shell .wn-builder-secondary button {
     scroll-behavior:auto;
   }
 
-  #wnLanding * {
+  #wnLanding *,
+  #wnDesignStudio * {
     animation:none!important;
     transition:none!important;
+  }
+}
+
+@media print {
+  #wnDesignStudio {
+    display:none!important;
   }
 }
 </style>
@@ -1237,6 +1295,30 @@ body .shell .wn-builder-secondary button {
 
   </div>
 
+  <!-- V7.16.7 PROFESSIONAL DESIGN STUDIO -->
+
+  <div id="wnDesignStudio">
+
+    <!-- FIVE PROFESSIONAL RESUME TEMPLATES -->
+
+    <div id="wnTemplateGallery"></div>
+
+    <!-- CUSTOM ACCENT COLORS -->
+
+    <div id="wnColorCustomization"></div>
+
+    <!-- LIVE RESUME PREVIEW -->
+
+    <div id="wnLivePreview"></div>
+
+    <!-- PROFESSIONAL A4 / LETTER EXPORT -->
+
+    <div id="wnProfessionalPDFExport"></div>
+
+  </div>
+
+  <!-- EXISTING BUILDER ACTIONS -->
+
   <div class="wn-builder-actions">
 
     <div class="wn-builder-primary">
@@ -1574,16 +1656,40 @@ body .shell .wn-builder-secondary button {
 
 </div>
 
-<!-- WORKNELY V7.15 FUNCTIONAL MODULES -->
+<!-- WORKNELY V7.16.7 FUNCTIONAL MODULES -->
 
 <script defer src="worknely-localization.js?v=7.15"></script>
+
 <script defer src="script.js?v=7.5"></script>
+
 <script defer src="studio.js?v=5.1"></script>
+
 <script defer src="worknely-i18n.js?v=3.1"></script>
+
 <script defer src="worknely-report-i18n.js?v=1.0"></script>
+
 <script defer src="worknely-premium-pdf.js?v=7.5"></script>
-<script type="module" src="worknely-auth.js?v=7.6"></script>
-<script defer src="worknely-saas-ui.js?v=7.13.4"></script>
+
+<!-- PROFESSIONAL DESIGN STUDIO MODULES -->
+
+<script defer src="worknely-templates.js?v=7.16.1"></script>
+
+<script defer src="worknely-template-gallery.js?v=7.16.2"></script>
+
+<script defer src="worknely-live-preview.js?v=7.16.3"></script>
+
+<script defer src="worknely-color-customization.js?v=7.16.4"></script>
+
+<script defer src="worknely-pdf-export.js?v=7.16.5"></script>
+
+<script defer src="worknely-template-persistence.js?v=7.16.6"></script>
+
+<!-- AUTHENTICATION AND SAAS -->
+
+<script type="module" src="worknely-auth.js?v=7.15"></script>
+
+<script defer src="worknely-saas-ui.js?v=7.15"></script>
+
 <script type="module" src="worknely-save-account.js?v=7.14"></script>
 
 <!-- LANGUAGE FLAG SYNCHRONIZATION -->
@@ -1780,6 +1886,12 @@ body .shell .wn-builder-secondary button {
     if (report) {
       report.hidden = active !== "comparison";
     }
+
+    document.dispatchEvent(
+      new CustomEvent("worknely:workspacechange",{
+        detail:{view:active}
+      })
+    );
 
     const requestedHash =
       window.location.hash.toLowerCase();
@@ -2529,7 +2641,7 @@ body .shell .wn-builder-secondary button {
 })();
 </script>
 
-<!-- WORKNELY V7.15 LOCALIZATION BRIDGE -->
+<!-- WORKNELY INTERNATIONAL LOCALIZATION BRIDGE -->
 
 <script>
 (() => {
@@ -2582,9 +2694,406 @@ body .shell .wn-builder-secondary button {
 })();
 </script>
 
+<!-- WORKNELY V7.16.7 DESIGN STUDIO CONTROLLER -->
+
+<script>
+(() => {
+
+  "use strict";
+
+  const VERSION = "7.16.7";
+
+  let scheduled = false;
+
+  let initialized = false;
+
+  const moduleDefinitions = [
+
+    {
+      name:"Template Gallery",
+      api:"WorknelyTemplateGallery",
+      root:"wnTemplateGallery"
+    },
+
+    {
+      name:"Color Customization",
+      api:"WorknelyColorCustomization",
+      root:"wnColorCustomization"
+    },
+
+    {
+      name:"Live Resume Preview",
+      api:"WorknelyLivePreview",
+      root:"wnLivePreview"
+    },
+
+    {
+      name:"Professional PDF Export",
+      api:"WorknelyPDFExport",
+      root:"wnProfessionalPDFExport"
+    }
+
+  ];
+
+  function readResumeContent() {
+
+    const fields = {
+
+      fullName:"bName",
+
+      professionalTitle:"bTitle",
+
+      contact:"bContact",
+
+      education:"bEducation",
+
+      summary:"bSummary",
+
+      experience:"bExperience",
+
+      skills:"bSkills"
+
+    };
+
+    const content = {};
+
+    Object.entries(fields).forEach(
+      ([key,id]) => {
+
+        const field =
+          document.getElementById(id);
+
+        content[key] =
+          field?.value?.trim() || "";
+
+      }
+    );
+
+    return content;
+
+  }
+
+  function mountModule(definition) {
+
+    const root =
+      document.getElementById(
+        definition.root
+      );
+
+    const api =
+      window[definition.api];
+
+    if (!root || !api) {
+
+      return false;
+
+    }
+
+    try {
+
+      const alreadyMounted =
+
+        typeof api.isMounted === "function"
+
+          ? api.isMounted()
+
+          : Boolean(
+              api.getState?.()?.mounted
+            );
+
+      if (
+
+        !alreadyMounted &&
+
+        !root.childElementCount &&
+
+        typeof api.mount === "function"
+
+      ) {
+
+        api.mount(root,{
+
+          readContent:readResumeContent
+
+        });
+
+      }
+
+      return true;
+
+    } catch (error) {
+
+      console.warn(
+
+        "Worknely module initialization:",
+
+        definition.name,
+
+        error?.name || "Error"
+
+      );
+
+      return false;
+
+    }
+
+  }
+
+  function refreshDesignStudio() {
+
+    scheduled = false;
+
+    const builder =
+      document.getElementById("builder");
+
+    if (!builder || builder.hidden) {
+
+      return;
+
+    }
+
+    moduleDefinitions.forEach(
+      mountModule
+    );
+
+    const preview =
+      window.WorknelyLivePreview;
+
+    const colors =
+      window.WorknelyColorCustomization;
+
+    const pdf =
+      window.WorknelyPDFExport;
+
+    try {
+
+      preview?.refresh?.();
+
+    } catch (error) {
+
+      console.warn(
+        "Worknely preview refresh:",
+        error?.name || "Error"
+      );
+
+    }
+
+    try {
+
+      colors?.refresh?.();
+
+    } catch (error) {
+
+      console.warn(
+        "Worknely color refresh:",
+        error?.name || "Error"
+      );
+
+    }
+
+    try {
+
+      pdf?.refresh?.();
+
+    } catch (error) {
+
+      console.warn(
+        "Worknely PDF refresh:",
+        error?.name || "Error"
+      );
+
+    }
+
+  }
+
+  function scheduleRefresh() {
+
+    if (scheduled) return;
+
+    scheduled = true;
+
+    requestAnimationFrame(
+      refreshDesignStudio
+    );
+
+  }
+
+  function bindPersistence() {
+
+    try {
+
+      window.WorknelyTemplatePersistence
+        ?.bindAuthentication?.();
+
+    } catch (error) {
+
+      console.warn(
+        "Worknely persistence initialization:",
+        error?.name || "Error"
+      );
+
+    }
+
+  }
+
+  function getModuleStatus() {
+
+    return {
+
+      version:VERSION,
+
+      templateEngine:
+        Boolean(window.WorknelyTemplates),
+
+      gallery:
+        Boolean(window.WorknelyTemplateGallery),
+
+      livePreview:
+        Boolean(window.WorknelyLivePreview),
+
+      colors:
+        Boolean(window.WorknelyColorCustomization),
+
+      pdf:
+        Boolean(window.WorknelyPDFExport),
+
+      persistence:
+        Boolean(window.WorknelyTemplatePersistence),
+
+      localization:
+        Boolean(window.WorknelyLocalization),
+
+      accountClient:
+        Boolean(window.worknelySupabase)
+
+    };
+
+  }
+
+  function initializeDesignStudio() {
+
+    if (!initialized) {
+
+      initialized = true;
+
+      moduleDefinitions.forEach(
+        mountModule
+      );
+
+      console.info(
+
+        "Worknely V" + VERSION +
+
+        " Design Studio controller initialized.",
+
+        getModuleStatus()
+
+      );
+
+    }
+
+    bindPersistence();
+
+    scheduleRefresh();
+
+  }
+
+  document.addEventListener(
+
+    "worknely:workspacechange",
+
+    event => {
+
+      if (event.detail?.view === "builder") {
+
+        scheduleRefresh();
+
+      }
+
+    }
+
+  );
+
+  document.addEventListener(
+
+    "worknely:languagechange",
+
+    scheduleRefresh
+
+  );
+
+  document.addEventListener(
+
+    "worknely:localizationready",
+
+    scheduleRefresh
+
+  );
+
+  window.addEventListener(
+
+    "hashchange",
+
+    scheduleRefresh
+
+  );
+
+  window.addEventListener(
+
+    "pageshow",
+
+    initializeDesignStudio
+
+  );
+
+  window.addEventListener(
+
+    "load",
+
+    initializeDesignStudio,
+
+    {once:true}
+
+  );
+
+  window.WorknelyDesignStudio =
+
+    Object.freeze({
+
+      version:VERSION,
+
+      refresh:scheduleRefresh,
+
+      readResumeContent,
+
+      getModuleStatus
+
+    });
+
+  if (document.readyState === "loading") {
+
+    document.addEventListener(
+
+      "DOMContentLoaded",
+
+      initializeDesignStudio,
+
+      {once:true}
+
+    );
+
+  } else {
+
+    initializeDesignStudio();
+
+  }
+
+})();
+</script>
+
 <script defer src="worknely-celebration.js?v=7.5"></script>
 
-<!-- END WORKNELY V7.15 INTERNATIONAL EDITION -->
+<!-- END WORKNELY V7.16.7 PROFESSIONAL DESIGN STUDIO -->
 
 </body>
 </html>
