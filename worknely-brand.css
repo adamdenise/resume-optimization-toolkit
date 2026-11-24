@@ -1,0 +1,191 @@
+
+/*
+ * WORKNELY V7.13.2
+ * Brand Identity Fix
+ * Responsive Logo System
+ */
+
+/* BRAND CONTAINER */
+
+body .shell header.top > .brand {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  min-width: 0 !important;
+}
+
+/* PREMIUM LOGO FRAME */
+
+body .shell header.top .brandmark {
+  position: relative !important;
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  box-sizing: border-box !important;
+
+  flex: 0 0 36px !important;
+
+  width: 36px !important;
+  height: 36px !important;
+
+  min-width: 36px !important;
+  min-height: 36px !important;
+
+  max-width: 36px !important;
+  max-height: 36px !important;
+
+  aspect-ratio: 1 / 1 !important;
+
+  padding: 5px !important;
+  margin: 0 !important;
+
+  border: 0 !important;
+  border-radius: 10px !important;
+
+  background: #0b1f3b !important;
+
+  overflow: hidden !important;
+
+  box-shadow:
+    0 3px 10px rgba(84,36,255,.12) !important;
+}
+
+/* CENTERED SVG SYMBOL */
+
+body .shell header.top .brandmark img,
+body .shell header.top .brandmark svg {
+
+  display: block !important;
+
+  flex: 0 0 auto !important;
+
+  width: 100% !important;
+  height: 100% !important;
+
+  min-width: 0 !important;
+  min-height: 0 !important;
+
+  max-width: 100% !important;
+  max-height: 100% !important;
+
+  object-fit: contain !important;
+  object-position: center !important;
+
+  padding: 0 !important;
+  margin: 0 !important;
+
+  transform: none !important;
+
+  filter: none !important;
+}
+
+/* BRAND TYPOGRAPHY */
+
+body .shell header.top .worknely-brandname {
+  display: block !important;
+
+  font-family:
+    Manrope,
+    Inter,
+    sans-serif !important;
+
+  font-size: 19px !important;
+  font-weight: 800 !important;
+
+  line-height: 1.12 !important;
+  letter-spacing: -.6px !important;
+
+  color: #23134f !important;
+
+  white-space: nowrap !important;
+}
+
+body .shell header.top
+.worknely-brandname small {
+
+  display: block !important;
+
+  margin-top: 3px !important;
+
+  font-size: 7px !important;
+  font-weight: 700 !important;
+
+  line-height: 1.2 !important;
+  letter-spacing: .65px !important;
+
+  color: #746c85 !important;
+}
+
+/* MOBILE HEADER */
+
+@media (max-width: 700px) {
+
+  body .shell header.top > .brand {
+    gap: 6px !important;
+  }
+
+  body .shell header.top .brandmark {
+
+    flex-basis: 32px !important;
+
+    width: 32px !important;
+    height: 32px !important;
+
+    min-width: 32px !important;
+    min-height: 32px !important;
+
+    max-width: 32px !important;
+    max-height: 32px !important;
+
+    padding: 4px !important;
+
+    border-radius: 9px !important;
+  }
+
+  body .shell header.top
+  .worknely-brandname {
+    font-size: 18px !important;
+  }
+}
+
+/* SMALL IPHONE SCREENS */
+
+@media (max-width: 390px) {
+
+  body .shell header.top > .brand {
+    gap: 5px !important;
+  }
+
+  body .shell header.top .brandmark {
+
+    flex-basis: 28px !important;
+
+    width: 28px !important;
+    height: 28px !important;
+
+    min-width: 28px !important;
+    min-height: 28px !important;
+
+    max-width: 28px !important;
+    max-height: 28px !important;
+
+    padding: 3px !important;
+
+    border-radius: 8px !important;
+  }
+
+  body .shell header.top
+  .worknely-brandname {
+    font-size: 17px !important;
+  }
+
+  body .shell header.top
+  .worknely-brandname small {
+    font-size: 6px !important;
+    letter-spacing: .4px !important;
+  }
+}
+
+/* END WORKNELY V7.13.2 */
