@@ -4,14 +4,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
 <meta name="theme-color" content="#5424FF">
 <meta name="color-scheme" content="light">
 
-<meta
-  name="description"
-  content="Worknely helps you build professional resumes, review CV structure, compare skills with job requirements, and explore career opportunities."
->
+<meta name="description"
+content="Worknely helps you build professional resumes, review CV structure, compare skills with job requirements, and explore career opportunities.">
 
 <meta name="application-name" content="Worknely">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -20,18 +17,13 @@
 
 <title>Worknely | Build Your Career. Shape Your Future.</title>
 
-<link
-  rel="canonical"
-  href="https://adamdenise.github.io/resume-optimization-toolkit/"
->
+<link rel="canonical"
+href="https://adamdenise.github.io/resume-optimization-toolkit/">
 
-<link
-  rel="icon"
-  type="image/svg+xml"
-  href="worknely-favicon.svg"
->
+<link rel="icon" type="image/svg+xml"
+href="worknely-favicon.svg">
 
-<!-- WORKNELY V7.12.1 CORE STYLES -->
+<!-- WORKNELY CORE STYLES -->
 
 <link rel="stylesheet" href="style.css?v=7.12.1">
 <link rel="stylesheet" href="worknely-theme.css?v=7.12.1">
@@ -39,22 +31,9 @@
 
 <style>
 /*
- * WORKNELY V7.12.1
- * Global Compact Edition
- * Authentication UI Hotfix
- *
- * Mobile First SaaS Experience
- * Compact Tool Navigation
- * Compact Resume Builder
- * Compact Career Analysis
- * Compact Authentication Modal
- * Responsive Status Messages
- *
- * Compatible with:
- * Resume Workspace V7.11.1
- * Resume Save & Edit V7.9
- * Authentication V7.6
- * Premium SaaS UI V7.12.1
+ * WORKNELY V7.12.2
+ * Premium Compact Header Edition
+ * Preserves V7.12.1 Authentication Hotfix
  */
 
 .sr-only {
@@ -91,7 +70,7 @@ textarea:focus-visible {
 
 [hidden],
 .wn-tool-view[hidden] {
-  display:none !important;
+  display:none!important;
 }
 
 .wn-tool-view {
@@ -129,12 +108,7 @@ textarea:focus-visible {
 }
 
 .wn-tool-navigation a[aria-current="page"] {
-  background:linear-gradient(
-    105deg,
-    #5626ff,
-    #ec22ad
-  );
-
+  background:linear-gradient(105deg,#5626ff,#ec22ad);
   border-color:transparent;
   color:#fff;
 }
@@ -161,8 +135,7 @@ body .shell .wn-builder-primary .primary {
 
 .wn-builder-secondary {
   display:grid;
-  grid-template-columns:
-    repeat(2,minmax(0,1fr));
+  grid-template-columns:repeat(2,minmax(0,1fr));
   gap:8px;
 }
 
@@ -177,7 +150,7 @@ body .shell .wn-builder-secondary button {
   white-space:normal;
 }
 
-/* COMPACT STATUS MESSAGES */
+/* STATUS MESSAGES */
 
 #builderMessage,
 #saveAccountStatus,
@@ -203,24 +176,24 @@ body .shell .wn-builder-secondary button {
 }
 
 .worknely-status-success {
-  color:#08784c !important;
-  background:#ecfdf4 !important;
-  border-color:#b7efd1 !important;
+  color:#08784c!important;
+  background:#ecfdf4!important;
+  border-color:#b7efd1!important;
 }
 
 .worknely-status-error {
-  color:#b42332 !important;
-  background:#fff1f2 !important;
-  border-color:#fecdd3 !important;
+  color:#b42332!important;
+  background:#fff1f2!important;
+  border-color:#fecdd3!important;
 }
 
 .worknely-status-info {
-  color:#5424ff !important;
-  background:#f3efff !important;
-  border-color:#e1d7ff !important;
+  color:#5424ff!important;
+  background:#f3efff!important;
+  border-color:#e1d7ff!important;
 }
 
-/* COMPACT CAREER ANALYSIS REPORT */
+/* CAREER ANALYSIS REPORT */
 
 #results .score-layout {
   grid-template-columns:minmax(0,1fr);
@@ -228,8 +201,7 @@ body .shell .wn-builder-secondary button {
 }
 
 #results .stats {
-  grid-template-columns:
-    repeat(3,minmax(0,1fr));
+  grid-template-columns:repeat(3,minmax(0,1fr));
   margin-bottom:12px;
 }
 
@@ -269,9 +241,7 @@ body .shell .wn-builder-secondary button {
   cursor:pointer;
 }
 
-/* MOBILE OPTIMIZATION */
-
-@media (max-width:700px) {
+@media(max-width:700px) {
 
   .wn-tool-navigation {
     flex-wrap:nowrap;
@@ -347,9 +317,7 @@ body .shell .wn-builder-secondary button {
   }
 }
 
-/* EXTRA SMALL SCREENS */
-
-@media (max-width:340px) {
+@media(max-width:340px) {
 
   .wn-builder-secondary {
     grid-template-columns:1fr;
@@ -360,23 +328,317 @@ body .shell .wn-builder-secondary button {
   }
 }
 
-/* ACCESSIBILITY */
-
-@media (prefers-reduced-motion:reduce) {
-
+@media(prefers-reduced-motion:reduce) {
   html {
     scroll-behavior:auto;
   }
 }
 </style>
 
-<!-- WORKNELY GLOBAL COMPACT DESIGN SYSTEM -->
+<!-- GLOBAL COMPACT DESIGN SYSTEM -->
 
-<link
-  rel="stylesheet"
-  href="worknely-compact.css?v=7.12.1"
-  media="screen"
->
+<link rel="stylesheet"
+href="worknely-compact.css?v=7.12.1"
+media="screen">
+
+<!-- V7.12.2 PREMIUM HEADER OVERRIDES -->
+
+<style media="screen">
+
+body .shell header.top {
+  display:flex!important;
+  flex-direction:row!important;
+  flex-wrap:nowrap!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:8px!important;
+  width:100%!important;
+  min-width:0!important;
+  padding:8px 0!important;
+  margin:0!important;
+}
+
+body .shell header.top > .brand {
+  order:0!important;
+  display:flex!important;
+  align-items:center!important;
+  flex:1 1 auto!important;
+  gap:7px!important;
+  min-width:0!important;
+  width:auto!important;
+  margin:0!important;
+  padding:0!important;
+  text-decoration:none!important;
+}
+
+body .shell header.top .brandmark {
+  flex:0 0 32px!important;
+  width:32px!important;
+  height:32px!important;
+  min-width:32px!important;
+}
+
+body .shell header.top .brandmark img {
+  display:block;
+  width:32px!important;
+  height:32px!important;
+}
+
+body .shell header.top .worknely-brandname {
+  display:block!important;
+  min-width:0!important;
+  font-size:19px!important;
+  font-weight:850!important;
+  line-height:1.15!important;
+  letter-spacing:-.6px!important;
+  white-space:nowrap!important;
+}
+
+body .shell header.top .worknely-brandname small {
+  display:block!important;
+  margin-top:3px!important;
+  font-size:7px!important;
+  line-height:1.2!important;
+  letter-spacing:.7px!important;
+}
+
+/* AUTHENTICATION NAVIGATION */
+
+body .shell header.top > .wn-auth-nav {
+  order:1!important;
+  display:flex!important;
+  flex-direction:row!important;
+  flex-wrap:nowrap!important;
+  align-items:center!important;
+  justify-content:flex-end!important;
+  flex:0 0 auto!important;
+  width:auto!important;
+  min-width:0!important;
+  gap:5px!important;
+  padding:0!important;
+  margin:0!important;
+}
+
+body .shell header.top .wn-auth-nav .wn-auth-btn {
+  position:relative!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  flex:0 0 auto!important;
+  box-sizing:border-box!important;
+  width:auto!important;
+  min-width:0!important;
+  height:34px!important;
+  min-height:34px!important;
+  max-height:34px!important;
+  padding:0 9px!important;
+  margin:0!important;
+  border-radius:8px!important;
+  font-size:11px!important;
+  font-weight:750!important;
+  line-height:1!important;
+  white-space:nowrap!important;
+  box-shadow:none!important;
+  transform:none!important;
+  touch-action:manipulation;
+}
+
+body .shell header.top .wn-auth-nav .wn-login {
+  background:#fff!important;
+  color:#5424ff!important;
+  border:1px solid #e3d9ff!important;
+}
+
+body .shell header.top .wn-auth-nav .wn-signup {
+  background:linear-gradient(
+    105deg,#5424ff,#a326e8,#ec22ad
+  )!important;
+  color:#fff!important;
+  border:1px solid transparent!important;
+}
+
+body .shell header.top .wn-auth-nav .wn-account {
+  background:#f2edff!important;
+  color:#5424ff!important;
+  border:1px solid #e3d9ff!important;
+  padding:0 10px!important;
+}
+
+body .shell header.top .wn-auth-nav .wn-auth-btn::after {
+  content:"";
+  position:absolute;
+  top:-5px;
+  bottom:-5px;
+  left:0;
+  right:0;
+}
+
+body .shell header.top .wn-account-menu {
+  position:relative!important;
+  width:auto!important;
+  min-width:0!important;
+}
+
+body .shell header.top .wn-menu-panel {
+  top:calc(100% + 10px)!important;
+  right:0!important;
+  min-width:190px!important;
+  max-width:calc(100vw - 30px)!important;
+  padding:6px!important;
+  border-radius:12px!important;
+  z-index:1000!important;
+}
+
+body .shell header.top .wn-menu-panel a,
+body .shell header.top .wn-menu-panel button {
+  min-height:44px!important;
+  padding:10px!important;
+  font-size:12px!important;
+}
+
+/* FLAG ONLY LANGUAGE SELECTOR */
+
+body .shell header.top > .header-tools {
+  order:2!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  flex:0 0 44px!important;
+  width:44px!important;
+  min-width:44px!important;
+  height:44px!important;
+  padding:0!important;
+  margin:0!important;
+}
+
+body .shell header.top .wn-language-picker {
+  position:relative!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  flex:0 0 44px!important;
+  width:44px!important;
+  height:44px!important;
+  padding:0!important;
+  margin:0!important;
+  cursor:pointer;
+}
+
+body .shell header.top .wn-language-visual {
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  width:34px!important;
+  height:34px!important;
+  border:1px solid #e3d9ff!important;
+  border-radius:8px!important;
+  background:#fff!important;
+  box-shadow:0 2px 6px rgba(84,36,255,.04);
+  pointer-events:none;
+}
+
+body .shell header.top #wnLanguageFlag {
+  display:block;
+  font-family:"Apple Color Emoji",
+    "Segoe UI Emoji",sans-serif;
+  font-size:20px!important;
+  line-height:1!important;
+}
+
+body .shell header.top #language {
+  position:absolute!important;
+  inset:0!important;
+  display:block!important;
+  width:100%!important;
+  min-width:0!important;
+  max-width:100%!important;
+  height:44px!important;
+  min-height:44px!important;
+  max-height:44px!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  opacity:0!important;
+  cursor:pointer!important;
+  font-size:16px!important;
+  z-index:2!important;
+}
+
+body .shell header.top
+.wn-language-picker:focus-within
+.wn-language-visual {
+  outline:2px solid #5424ff;
+  outline-offset:2px;
+}
+
+body .shell header.top [hidden] {
+  display:none!important;
+}
+
+/* SMALL MOBILE HEADER */
+
+@media(max-width:390px) {
+
+  body .shell header.top {
+    gap:5px!important;
+  }
+
+  body .shell header.top > .brand {
+    gap:5px!important;
+  }
+
+  body .shell header.top .brandmark,
+  body .shell header.top .brandmark img {
+    width:28px!important;
+    height:28px!important;
+    min-width:28px!important;
+  }
+
+  body .shell header.top .brandmark {
+    flex-basis:28px!important;
+  }
+
+  body .shell header.top .worknely-brandname {
+    font-size:17px!important;
+  }
+
+  body .shell header.top .worknely-brandname small {
+    font-size:6px!important;
+    letter-spacing:.4px!important;
+  }
+
+  body .shell header.top .wn-auth-nav .wn-auth-btn {
+    font-size:10px!important;
+    padding:0 7px!important;
+  }
+}
+
+/* EXTRA SMALL SCREENS */
+
+@media(max-width:340px) {
+
+  body .shell header.top {
+    flex-wrap:wrap!important;
+    row-gap:4px!important;
+  }
+
+  body .shell header.top > .brand {
+    flex:1 1 calc(100% - 55px)!important;
+    order:0!important;
+  }
+
+  body .shell header.top > .header-tools {
+    order:1!important;
+  }
+
+  body .shell header.top > .wn-auth-nav {
+    order:2!important;
+    flex:1 1 100%!important;
+    justify-content:flex-end!important;
+  }
+}
+
+</style>
 
 </head>
 
@@ -384,56 +646,56 @@ body .shell .wn-builder-secondary button {
 
 <div class="shell">
 
-<!-- HEADER -->
+<!-- PREMIUM COMPACT HEADER -->
 
 <header class="top">
 
-  <a
-    class="brand"
-    href="#top"
-    aria-label="Worknely home"
-  >
+  <a class="brand"
+     href="#top"
+     aria-label="Worknely home">
 
     <span class="brandmark">
-
-      <img
-        src="worknely-mark.svg"
-        alt=""
-        width="36"
-        height="36"
-      >
-
+      <img src="worknely-mark.svg"
+           alt=""
+           width="32"
+           height="32">
     </span>
 
     <span class="worknely-brandname">
-
       Worknely
-
       <small>PEOPLE TECHNOLOGY</small>
-
     </span>
 
   </a>
 
   <div class="header-tools">
 
-    <label for="language" class="sr-only">
-      Interface language
-    </label>
+    <div class="wn-language-picker">
 
-    <select
-      id="language"
-      aria-label="Interface language"
-    >
+      <label for="language" class="sr-only">
+        Interface language
+      </label>
 
-      <option value="en">🇬🇧 English</option>
-      <option value="ro">🇷🇴 Română</option>
-      <option value="it">🇮🇹 Italiano</option>
-      <option value="de">🇩🇪 Deutsch</option>
-      <option value="fr">🇫🇷 Français</option>
-      <option value="es">🇪🇸 Español</option>
+      <span class="wn-language-visual"
+            aria-hidden="true">
 
-    </select>
+        <span id="wnLanguageFlag">🇬🇧</span>
+
+      </span>
+
+      <select id="language"
+              aria-label="Interface language">
+
+        <option value="en">🇬🇧 English</option>
+        <option value="ro">🇷🇴 Română</option>
+        <option value="it">🇮🇹 Italiano</option>
+        <option value="de">🇩🇪 Deutsch</option>
+        <option value="fr">🇫🇷 Français</option>
+        <option value="es">🇪🇸 Español</option>
+
+      </select>
+
+    </div>
 
   </div>
 
@@ -443,34 +705,26 @@ body .shell .wn-builder-secondary button {
 
 <!-- LANDING PAGE HERO -->
 
-<section
-  class="hero"
-  aria-labelledby="worknelyHeroTitle"
->
+<section class="hero"
+aria-labelledby="worknelyHeroTitle">
 
   <span class="eyebrow">
     ✦ YOUR CAREER, CONNECTED
   </span>
 
   <h1 id="worknelyHeroTitle">
-
     Build your career.
     <em>Shape your future.</em>
-
   </h1>
 
   <p>
-
     Create professional resumes, compare your skills
     with job requirements, and take your next career
     step with confidence.
-
   </p>
 
-  <nav
-    class="hero-actions"
-    aria-label="Career tools"
-  >
+  <nav class="hero-actions"
+       aria-label="Career tools">
 
     <a class="primary" href="#builder">
       Build my resume
@@ -484,31 +738,20 @@ body .shell .wn-builder-secondary button {
 
 </section>
 
-<!-- COMPACT TOOL NAVIGATION -->
+<!-- TOOL NAVIGATION -->
 
-<nav
-  class="wn-tool-navigation"
-  aria-label="Worknely tools"
->
+<nav class="wn-tool-navigation"
+     aria-label="Worknely tools">
 
-  <a
-    href="#ai-studio"
-    data-wn-tool="ai-studio"
-  >
+  <a href="#ai-studio" data-wn-tool="ai-studio">
     Writing Studio
   </a>
 
-  <a
-    href="#builder"
-    data-wn-tool="builder"
-  >
+  <a href="#builder" data-wn-tool="builder">
     Resume Builder
   </a>
 
-  <a
-    href="#comparison"
-    data-wn-tool="comparison"
-  >
+  <a href="#comparison" data-wn-tool="comparison">
     Career Analysis
   </a>
 
@@ -518,16 +761,14 @@ body .shell .wn-builder-secondary button {
 
 </nav>
 
-<!-- RESUME WRITING STUDIO -->
+<!-- WRITING STUDIO -->
 
-<section
-  class="workspace ai-preview wn-tool-view"
-  id="ai-studio"
-  data-wn-view="ai-studio"
-  aria-labelledby="studioHeading"
-  tabindex="-1"
-  hidden
->
+<section class="workspace ai-preview wn-tool-view"
+id="ai-studio"
+data-wn-view="ai-studio"
+aria-labelledby="studioHeading"
+tabindex="-1"
+hidden>
 
   <div class="section-head">
 
@@ -542,11 +783,9 @@ body .shell .wn-builder-secondary button {
       </h2>
 
       <p id="studioIntro">
-
         Transform your experience into professional
         resume content. Highlight your verified skills,
         responsibilities, and achievements.
-
       </p>
 
     </div>
@@ -561,13 +800,11 @@ body .shell .wn-builder-secondary button {
         Target role
       </span>
 
-      <input
-        id="studioRole"
-        type="text"
-        maxlength="120"
-        autocomplete="off"
-        placeholder="e.g. Customer Support Specialist"
-      >
+      <input id="studioRole"
+             type="text"
+             maxlength="120"
+             autocomplete="off"
+             placeholder="e.g. Customer Support Specialist">
 
     </label>
 
@@ -578,15 +815,8 @@ body .shell .wn-builder-secondary button {
       </span>
 
       <select id="studioTone">
-
-        <option value="concise">
-          Concise
-        </option>
-
-        <option value="results">
-          Results-focused
-        </option>
-
+        <option value="concise">Concise</option>
+        <option value="results">Results-focused</option>
       </select>
 
     </label>
@@ -597,11 +827,9 @@ body .shell .wn-builder-secondary button {
         Verified experience
       </span>
 
-      <textarea
-        id="studioExperience"
-        rows="4"
-        placeholder="Describe your real duties and achievements."
-      ></textarea>
+      <textarea id="studioExperience"
+                rows="4"
+                placeholder="Describe your real duties and achievements."></textarea>
 
     </label>
 
@@ -611,11 +839,9 @@ body .shell .wn-builder-secondary button {
         Verified skills
       </span>
 
-      <textarea
-        id="studioSkills"
-        rows="4"
-        placeholder="e.g. Excel, customer service, CRM"
-      ></textarea>
+      <textarea id="studioSkills"
+                rows="4"
+                placeholder="e.g. Excel, customer service, CRM"></textarea>
 
     </label>
 
@@ -623,48 +849,38 @@ body .shell .wn-builder-secondary button {
 
   <div class="actions">
 
-    <button
-      class="primary"
-      id="studioDraft"
-      type="button"
-    >
+    <button class="primary"
+            id="studioDraft"
+            type="button">
       Create structured draft
     </button>
 
-    <button
-      class="ghost"
-      id="studioToBuilder"
-      type="button"
-    >
+    <button class="ghost"
+            id="studioToBuilder"
+            type="button">
       Copy draft to Resume Builder
     </button>
 
   </div>
 
-  <p
-    class="message"
-    id="studioStatus"
-    role="status"
-    aria-live="polite"
-  ></p>
+  <p class="message"
+     id="studioStatus"
+     role="status"
+     aria-live="polite"></p>
 
-  <pre
-    class="builder-preview"
-    id="studioOutput"
-    aria-label="Writing studio draft"
-  ></pre>
+  <pre class="builder-preview"
+       id="studioOutput"
+       aria-label="Writing studio draft"></pre>
 
 </section>
 
 <!-- PROFESSIONAL RESUME BUILDER -->
 
-<section
-  class="workspace builder wn-tool-view"
-  id="builder"
-  data-wn-view="builder"
-  aria-labelledby="builderTitle"
-  tabindex="-1"
->
+<section class="workspace builder wn-tool-view"
+id="builder"
+data-wn-view="builder"
+aria-labelledby="builderTitle"
+tabindex="-1">
 
   <div class="section-head">
 
@@ -674,21 +890,15 @@ body .shell .wn-builder-secondary button {
         PROFESSIONAL RESUME BUILDER
       </span>
 
-      <h2
-        id="builderTitle"
-        data-i18n="builderTitle"
-      >
+      <h2 id="builderTitle"
+          data-i18n="builderTitle">
         Create your ATS-friendly resume
       </h2>
 
-      <p
-        id="builderIntro"
-        data-i18n="builderIntro"
-      >
-
+      <p id="builderIntro"
+         data-i18n="builderIntro">
         Build a professional resume using your
         verified experience, education, and skills.
-
       </p>
 
     </div>
@@ -701,12 +911,10 @@ body .shell .wn-builder-secondary button {
 
       Full name
 
-      <input
-        id="bName"
-        type="text"
-        autocomplete="name"
-        placeholder="Your name"
-      >
+      <input id="bName"
+             type="text"
+             autocomplete="name"
+             placeholder="Your name">
 
     </label>
 
@@ -714,11 +922,9 @@ body .shell .wn-builder-secondary button {
 
       Professional title
 
-      <input
-        id="bTitle"
-        type="text"
-        placeholder="Customer Support Specialist"
-      >
+      <input id="bTitle"
+             type="text"
+             placeholder="Customer Support Specialist">
 
     </label>
 
@@ -726,11 +932,9 @@ body .shell .wn-builder-secondary button {
 
       Contact (optional)
 
-      <input
-        id="bContact"
-        type="text"
-        placeholder="Email · City · LinkedIn"
-      >
+      <input id="bContact"
+             type="text"
+             placeholder="Email · City · LinkedIn">
 
     </label>
 
@@ -738,11 +942,9 @@ body .shell .wn-builder-secondary button {
 
       Education
 
-      <textarea
-        id="bEducation"
-        rows="3"
-        placeholder="Degrees and qualifications"
-      ></textarea>
+      <textarea id="bEducation"
+                rows="3"
+                placeholder="Degrees and qualifications"></textarea>
 
     </label>
 
@@ -750,11 +952,9 @@ body .shell .wn-builder-secondary button {
 
       Professional summary
 
-      <textarea
-        id="bSummary"
-        rows="3"
-        placeholder="Your professional background"
-      ></textarea>
+      <textarea id="bSummary"
+                rows="3"
+                placeholder="Your professional background"></textarea>
 
     </label>
 
@@ -762,11 +962,9 @@ body .shell .wn-builder-secondary button {
 
       Experience
 
-      <textarea
-        id="bExperience"
-        rows="4"
-        placeholder="Role, employer, dates and real achievements"
-      ></textarea>
+      <textarea id="bExperience"
+                rows="4"
+                placeholder="Role, employer, dates and real achievements"></textarea>
 
     </label>
 
@@ -774,28 +972,22 @@ body .shell .wn-builder-secondary button {
 
       Skills
 
-      <textarea
-        id="bSkills"
-        rows="3"
-        placeholder="Your actual skills"
-      ></textarea>
+      <textarea id="bSkills"
+                rows="3"
+                placeholder="Your actual skills"></textarea>
 
     </label>
 
   </div>
 
-  <!-- COMPACT BUILDER ACTIONS -->
-
   <div class="wn-builder-actions">
 
     <div class="wn-builder-primary">
 
-      <button
-        class="primary"
-        id="buildResume"
-        data-i18n="buildResume"
-        type="button"
-      >
+      <button class="primary"
+              id="buildResume"
+              data-i18n="buildResume"
+              type="button">
         Generate resume
       </button>
 
@@ -803,20 +995,16 @@ body .shell .wn-builder-secondary button {
 
     <div class="wn-builder-secondary">
 
-      <button
-        class="ghost"
-        id="saveToAccount"
-        type="button"
-      >
+      <button class="ghost"
+              id="saveToAccount"
+              type="button">
         Save to My Account
       </button>
 
-      <button
-        class="ghost"
-        id="exportResume"
-        data-i18n="exportResume"
-        type="button"
-      >
+      <button class="ghost"
+              id="exportResume"
+              data-i18n="exportResume"
+              type="button">
         Export resume PDF
       </button>
 
@@ -824,38 +1012,30 @@ body .shell .wn-builder-secondary button {
 
   </div>
 
-  <p
-    class="message"
-    id="saveAccountStatus"
-    role="status"
-    aria-live="polite"
-  ></p>
+  <p class="message"
+     id="saveAccountStatus"
+     role="status"
+     aria-live="polite"></p>
 
-  <p
-    class="message"
-    id="builderMessage"
-    role="status"
-    aria-live="polite"
-  ></p>
+  <p class="message"
+     id="builderMessage"
+     role="status"
+     aria-live="polite"></p>
 
-  <pre
-    class="builder-preview"
-    id="builderPreview"
-    aria-label="Resume preview"
-  ></pre>
+  <pre class="builder-preview"
+       id="builderPreview"
+       aria-label="Resume preview"></pre>
 
 </section>
 
 <!-- CAREER COMPATIBILITY ANALYSIS -->
 
-<section
-  class="workspace wn-tool-view"
-  id="comparison"
-  data-wn-view="comparison"
-  aria-labelledby="workspaceTitle"
-  tabindex="-1"
-  hidden
->
+<section class="workspace wn-tool-view"
+id="comparison"
+data-wn-view="comparison"
+aria-labelledby="workspaceTitle"
+tabindex="-1"
+hidden>
 
   <div class="section-head">
 
@@ -865,62 +1045,47 @@ body .shell .wn-builder-secondary button {
         CAREER COMPATIBILITY ANALYSIS
       </span>
 
-      <h2
-        id="workspaceTitle"
-        data-i18n="workspaceTitle"
-      >
+      <h2 id="workspaceTitle"
+          data-i18n="workspaceTitle">
         Resume &amp; job comparison
       </h2>
 
       <p>
-
         Compare your resume with job requirements
         and identify relevant skills and potential gaps.
-
       </p>
 
     </div>
 
-    <button
-      class="ghost"
-      id="sample"
-      data-i18n="sample"
-      type="button"
-    >
+    <button class="ghost"
+            id="sample"
+            data-i18n="sample"
+            type="button">
       ✦ Load example
     </button>
 
   </div>
 
-  <!-- DOCUMENT IMPORT -->
-
   <div class="import-panel">
 
-    <label
-      id="uploadLabel"
-      data-i18n="uploadLabel"
-      for="resumeFile"
-    >
+    <label id="uploadLabel"
+           data-i18n="uploadLabel"
+           for="resumeFile">
 
       <strong>Upload your resume</strong>
-
       (PDF or DOCX)
 
     </label>
 
-    <input
-      id="resumeFile"
-      type="file"
-      accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-      aria-describedby="fileStatus"
-    >
+    <input id="resumeFile"
+           type="file"
+           accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+           aria-describedby="fileStatus">
 
-    <p
-      class="hint"
-      id="fileStatus"
-      role="status"
-      aria-live="polite"
-    >
+    <p class="hint"
+       id="fileStatus"
+       role="status"
+       aria-live="polite">
 
       Text-based PDF and DOCX files are supported.
       Scanned PDFs and legacy DOC files are not supported.
@@ -936,17 +1101,13 @@ body .shell .wn-builder-secondary button {
     <div class="field">
 
       <label for="resume">
-
         01 <strong>Your resume</strong>
-
       </label>
 
-      <textarea
-        id="resume"
-        spellcheck="true"
-        aria-describedby="resumeWords"
-        placeholder="Paste your professional summary, experience, education and skills here..."
-      ></textarea>
+      <textarea id="resume"
+                spellcheck="true"
+                aria-describedby="resumeWords"
+                placeholder="Paste your professional summary, experience, education and skills here..."></textarea>
 
       <div class="field-foot">
 
@@ -954,9 +1115,7 @@ body .shell .wn-builder-secondary button {
           Remove personal contact details before testing.
         </span>
 
-        <span id="resumeWords">
-          0 words
-        </span>
+        <span id="resumeWords">0 words</span>
 
       </div>
 
@@ -965,17 +1124,13 @@ body .shell .wn-builder-secondary button {
     <div class="field">
 
       <label for="job">
-
         02 <strong>Job description</strong>
-
       </label>
 
-      <textarea
-        id="job"
-        spellcheck="true"
-        aria-describedby="jobWords"
-        placeholder="Paste the job responsibilities, required skills and qualifications here..."
-      ></textarea>
+      <textarea id="job"
+                spellcheck="true"
+                aria-describedby="jobWords"
+                placeholder="Paste the job responsibilities, required skills and qualifications here..."></textarea>
 
       <div class="field-foot">
 
@@ -983,9 +1138,7 @@ body .shell .wn-builder-secondary button {
           Remove unnecessary personal information.
         </span>
 
-        <span id="jobWords">
-          0 words
-        </span>
+        <span id="jobWords">0 words</span>
 
       </div>
 
@@ -995,47 +1148,38 @@ body .shell .wn-builder-secondary button {
 
   <div class="actions">
 
-    <button
-      class="primary"
-      id="analyze"
-      data-i18n="analyze"
-      type="button"
-    >
+    <button class="primary"
+            id="analyze"
+            data-i18n="analyze"
+            type="button">
 
       Analyze compatibility
-
       <span aria-hidden="true">→</span>
 
     </button>
 
-    <button
-      class="ghost"
-      id="clear"
-      data-i18n="clear"
-      type="button"
-    >
+    <button class="ghost"
+            id="clear"
+            data-i18n="clear"
+            type="button">
       Clear all
     </button>
 
   </div>
 
-  <p
-    class="message"
-    id="message"
-    role="status"
-    aria-live="polite"
-  ></p>
+  <p class="message"
+     id="message"
+     role="status"
+     aria-live="polite"></p>
 
 </section>
 
 <!-- COMPATIBILITY REPORT -->
 
-<section
-  class="results hidden wn-tool-view"
-  id="results"
-  aria-live="polite"
-  aria-labelledby="reportTitle"
->
+<section class="results hidden wn-tool-view"
+id="results"
+aria-live="polite"
+aria-labelledby="reportTitle">
 
   <div class="results-head">
 
@@ -1050,29 +1194,23 @@ body .shell .wn-builder-secondary button {
       </h2>
 
       <p>
-
         Understand your resume's keyword coverage
         and identify opportunities for improvement.
-
       </p>
 
     </div>
 
     <div class="export-actions">
 
-      <button
-        class="ghost"
-        id="download"
-        type="button"
-      >
+      <button class="ghost"
+              id="download"
+              type="button">
         ↓ Download TXT
       </button>
 
-      <button
-        class="ghost"
-        id="printPdf"
-        type="button"
-      >
+      <button class="ghost"
+              id="printPdf"
+              type="button">
         ↓ Save PDF
       </button>
 
@@ -1080,14 +1218,10 @@ body .shell .wn-builder-secondary button {
 
   </div>
 
-  <p
-    class="export-message"
-    id="exportMessage"
-    role="status"
-    aria-live="polite"
-  ></p>
-
-  <!-- KEYWORD MATCH SCORE -->
+  <p class="export-message"
+     id="exportMessage"
+     role="status"
+     aria-live="polite"></p>
 
   <div class="score-layout">
 
@@ -1106,60 +1240,41 @@ body .shell .wn-builder-secondary button {
       </div>
 
       <p>
-
         Estimated coverage of recognized skills
         mentioned in the job description.
-
       </p>
 
       <small>
-
         Not an ATS score or hiring prediction.
-
       </small>
 
     </div>
 
   </div>
 
-  <!-- COMPACT CAREER STATISTICS -->
-
   <div class="stats">
 
     <div class="stat">
-
       <span>Matched skills</span>
-
       <strong id="matchedCount">0</strong>
-
     </div>
 
     <div class="stat">
-
       <span>Skills to review</span>
-
       <strong id="missingCount">0</strong>
-
     </div>
 
     <div class="stat">
-
       <span>Resume length</span>
-
       <strong id="wordCount">0 words</strong>
-
     </div>
 
   </div>
 
-  <!-- ESTIMATED ATS READINESS -->
-
   <article class="report-card ats-card">
 
-    <h3
-      id="atsHeading"
-      data-i18n="atsHeading"
-    >
+    <h3 id="atsHeading"
+        data-i18n="atsHeading">
       Estimated ATS readiness
     </h3>
 
@@ -1170,49 +1285,35 @@ body .shell .wn-builder-secondary button {
       <div>
 
         <p id="atsExplainer">
-
           A transparent heuristic combining keyword
           coverage, section headings and evidence
           of achievements.
-
         </p>
 
         <small id="atsCaution">
-
           Not an official ATS score.
           Text input cannot assess PDF layout
           or parsing quality.
-
         </small>
 
       </div>
 
     </div>
 
-    <div
-      class="structure-findings"
-      id="atsFactors"
-    ></div>
+    <div class="structure-findings"
+         id="atsFactors"></div>
 
   </article>
 
-  <!-- CV STRUCTURE REVIEW -->
-
-  <article
-    class="report-card"
-    id="structureCard"
-  >
+  <article class="report-card"
+           id="structureCard">
 
     <h3>CV structure review</h3>
 
-    <div
-      class="structure-findings"
-      id="structureFindings"
-    ></div>
+    <div class="structure-findings"
+         id="structureFindings"></div>
 
   </article>
-
-  <!-- MATCHED AND MISSING SKILLS -->
 
   <div class="report-grid">
 
@@ -1220,10 +1321,7 @@ body .shell .wn-builder-secondary button {
 
       <h3>✓ Matched skills</h3>
 
-      <div
-        class="chips"
-        id="matched"
-      ></div>
+      <div class="chips" id="matched"></div>
 
     </article>
 
@@ -1231,16 +1329,11 @@ body .shell .wn-builder-secondary button {
 
       <h3>⌕ Skills not found in CV</h3>
 
-      <div
-        class="chips"
-        id="missing"
-      ></div>
+      <div class="chips" id="missing"></div>
 
     </article>
 
   </div>
-
-  <!-- PERSONALIZED RECOMMENDATIONS -->
 
   <article class="report-card rec">
 
@@ -1264,11 +1357,9 @@ body .shell .wn-builder-secondary button {
 
 <!-- WORKNELY ACCOUNT -->
 
-<section
-  id="worknelyAccount"
-  class="workspace"
-  aria-labelledby="accountTitle"
->
+<section id="worknelyAccount"
+         class="workspace"
+         aria-labelledby="accountTitle">
 
   <div class="section-head">
 
@@ -1283,31 +1374,25 @@ body .shell .wn-builder-secondary button {
       </h2>
 
       <p>
-
         Create an account to save and manage
         your resumes securely.
-
       </p>
 
     </div>
 
   </div>
 
-  <form
-    id="worknelyAuthForm"
-    class="builder-grid"
-  >
+  <form id="worknelyAuthForm"
+        class="builder-grid">
 
     <label for="authEmail">
 
       Email
 
-      <input
-        id="authEmail"
-        type="email"
-        autocomplete="email"
-        required
-      >
+      <input id="authEmail"
+             type="email"
+             autocomplete="email"
+             required>
 
     </label>
 
@@ -1315,40 +1400,32 @@ body .shell .wn-builder-secondary button {
 
       Password
 
-      <input
-        id="authPassword"
-        type="password"
-        autocomplete="current-password"
-        minlength="6"
-        required
-      >
+      <input id="authPassword"
+             type="password"
+             autocomplete="current-password"
+             minlength="6"
+             required>
 
     </label>
 
     <div class="actions">
 
-      <button
-        id="authSignUp"
-        type="button"
-        class="primary"
-      >
+      <button id="authSignUp"
+              type="button"
+              class="primary">
         Sign Up
       </button>
 
-      <button
-        id="authLogin"
-        type="submit"
-        class="ghost"
-      >
+      <button id="authLogin"
+              type="submit"
+              class="ghost">
         Log In
       </button>
 
-      <button
-        id="authLogout"
-        type="button"
-        class="ghost"
-        hidden
-      >
+      <button id="authLogout"
+              type="button"
+              class="ghost"
+              hidden>
         Log Out
       </button>
 
@@ -1356,18 +1433,14 @@ body .shell .wn-builder-secondary button {
 
   </form>
 
-  <p
-    id="authStatus"
-    class="message"
-    role="status"
-    aria-live="polite"
-  ></p>
+  <p id="authStatus"
+     class="message"
+     role="status"
+     aria-live="polite"></p>
 
 </section>
 
 </main>
-
-<!-- FOOTER -->
 
 <footer>
 
@@ -1385,58 +1458,124 @@ body .shell .wn-builder-secondary button {
 
 <!-- CORE FUNCTIONAL MODULES -->
 
-<script
-  defer
-  src="script.js?v=7.5"
-></script>
+<script defer src="script.js?v=7.5"></script>
 
-<script
-  defer
-  src="studio.js?v=5.1"
-></script>
+<script defer src="studio.js?v=5.1"></script>
 
-<script
-  defer
-  src="worknely-i18n.js?v=3.1"
-></script>
+<script defer src="worknely-i18n.js?v=3.1"></script>
 
-<script
-  defer
-  src="worknely-report-i18n.js?v=1.0"
-></script>
+<script defer src="worknely-report-i18n.js?v=1.0"></script>
 
-<script
-  defer
-  src="worknely-premium-pdf.js?v=7.5"
-></script>
+<script defer src="worknely-premium-pdf.js?v=7.5"></script>
 
-<!-- SUPABASE AUTHENTICATION V7.6 -->
+<!-- VALIDATED SUPABASE AUTHENTICATION -->
 
-<script
-  type="module"
-  src="worknely-auth.js?v=7.6"
-></script>
+<script type="module"
+src="worknely-auth.js?v=7.6"></script>
 
-<!--
-  WORKNELY V7.12.1
-  COMPACT AUTHENTICATION UI HOTFIX
+<!-- PRESERVE VALIDATED V7.12.1 AUTHENTICATION UI -->
 
-  Fixed 44px authentication buttons.
-  Compact Login / Signup / Recovery.
-  Authentication status classification.
--->
+<script defer
+src="worknely-saas-ui.js?v=7.12.1"></script>
 
-<script
-  defer
-  src="worknely-saas-ui.js?v=7.12.1"
-></script>
+<!-- ACCOUNT SAVING AND EDITING -->
 
-<!-- ACCOUNT SAVING & EDITING V7.9 -->
+<script type="module"
+src="worknely-save-account.js?v=7.9"></script>
 
-<script
-  type="module"
-  src="worknely-save-account.js?v=7.9"
-></script>
+<!-- V7.12.2 FLAG LANGUAGE SYNCHRONIZATION -->
+
+<script>
+(() => {
+
+  "use strict";
+
+  const flags = {
+    en:"🇬🇧",
+    ro:"🇷🇴",
+    it:"🇮🇹",
+    de:"🇩🇪",
+    fr:"🇫🇷",
+    es:"🇪🇸"
+  };
+
+  const languageNames = {
+    en:"English",
+    ro:"Română",
+    it:"Italiano",
+    de:"Deutsch",
+    fr:"Français",
+    es:"Español"
+  };
+
+  function initializeLanguageFlag() {
+
+    const select =
+      document.getElementById("language");
+
+    const flag =
+      document.getElementById("wnLanguageFlag");
+
+    if (!select || !flag) return;
+
+    function updateFlag() {
+
+      const language =
+        Object.prototype.hasOwnProperty.call(
+          flags,select.value
+        )
+        ? select.value
+        : "en";
+
+      flag.textContent = flags[language];
+
+      select.setAttribute(
+        "aria-label",
+        "Interface language: " +
+        languageNames[language]
+      );
+
+    }
+
+    select.addEventListener("change",updateFlag);
+    select.addEventListener("input",updateFlag);
+
+    updateFlag();
+
+    window.addEventListener("load",updateFlag,{
+      once:true
+    });
+
+    window.addEventListener("pageshow",updateFlag);
+
+    new MutationObserver(updateFlag).observe(
+      select,
+      {
+        childList:true,
+        subtree:true,
+        attributes:true,
+        attributeFilter:["selected"]
+      }
+    );
+
+  }
+
+  if (document.readyState === "loading") {
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      initializeLanguageFlag,
+      {once:true}
+    );
+
+  } else {
+
+    initializeLanguageFlag();
+
+  }
+
+})();
+</script>
 
 <!-- TOOL NAVIGATION -->
 
@@ -1454,7 +1593,7 @@ body .shell .wn-builder-secondary button {
   function getActiveTool() {
 
     const hash = window.location.hash
-      .replace("#", "")
+      .replace("#","")
       .toLowerCase();
 
     if (hash === "results") {
@@ -1464,6 +1603,7 @@ body .shell .wn-builder-secondary button {
     return toolIds.includes(hash)
       ? hash
       : "builder";
+
   }
 
   function updateToolNavigation() {
@@ -1486,8 +1626,7 @@ body .shell .wn-builder-secondary button {
       if (link.dataset.wnTool === active) {
 
         link.setAttribute(
-          "aria-current",
-          "page"
+          "aria-current","page"
         );
 
       } else {
@@ -1502,10 +1641,7 @@ body .shell .wn-builder-secondary button {
       document.getElementById("results");
 
     if (report) {
-
-      report.hidden =
-        active !== "comparison";
-
+      report.hidden = active !== "comparison";
     }
 
     const target =
@@ -1516,15 +1652,14 @@ body .shell .wn-builder-secondary button {
       requestAnimationFrame(() => {
 
         target.scrollIntoView({
-
           block:"start",
           behavior:"auto"
-
         });
 
       });
 
     }
+
   }
 
   window.addEventListener(
@@ -1556,16 +1691,13 @@ body .shell .wn-builder-secondary button {
   "use strict";
 
   const ids = [
-
     "builderMessage",
     "saveAccountStatus",
     "exportMessage",
     "studioStatus"
-
   ];
 
   const successPatterns = [
-
     /success/i,
     /generated/i,
     /created/i,
@@ -1575,11 +1707,9 @@ body .shell .wn-builder-secondary button {
     /ready/i,
     /download started/i,
     /draft copied/i
-
   ];
 
   const errorPatterns = [
-
     /failed/i,
     /error/i,
     /unable/i,
@@ -1588,28 +1718,24 @@ body .shell .wn-builder-secondary button {
     /not supported/i,
     /could not/i,
     /cannot/i
-
   ];
 
   function classify(message) {
 
-    if (errorPatterns.some(pattern =>
-      pattern.test(message)
+    if (errorPatterns.some(
+      pattern => pattern.test(message)
     )) {
-
       return "error";
-
     }
 
-    if (successPatterns.some(pattern =>
-      pattern.test(message)
+    if (successPatterns.some(
+      pattern => pattern.test(message)
     )) {
-
       return "success";
-
     }
 
     return "info";
+
   }
 
   function updateStatus(element) {
@@ -1618,21 +1744,17 @@ body .shell .wn-builder-secondary button {
       element.textContent.trim();
 
     element.classList.remove(
-
       "worknely-status-success",
       "worknely-status-error",
       "worknely-status-info"
-
     );
 
     if (!message) return;
 
     element.classList.add(
-
-      "worknely-status-" +
-      classify(message)
-
+      "worknely-status-" + classify(message)
     );
+
   }
 
   function initialize() {
@@ -1648,12 +1770,10 @@ body .shell .wn-builder-secondary button {
         () => updateStatus(element)
       );
 
-      observer.observe(element, {
-
+      observer.observe(element,{
         childList:true,
         characterData:true,
         subtree:true
-
       });
 
       updateStatus(element);
@@ -1665,11 +1785,9 @@ body .shell .wn-builder-secondary button {
   if (document.readyState === "loading") {
 
     document.addEventListener(
-
       "DOMContentLoaded",
       initialize,
-      { once:true }
-
+      {once:true}
     );
 
   } else {
@@ -1683,12 +1801,10 @@ body .shell .wn-builder-secondary button {
 
 <!-- SUCCESS CELEBRATION -->
 
-<script
-  defer
-  src="worknely-celebration.js?v=7.5"
-></script>
+<script defer
+src="worknely-celebration.js?v=7.5"></script>
 
-<!-- END WORKNELY V7.12.1 -->
+<!-- END WORKNELY V7.12.2 -->
 
 </body>
 </html>
