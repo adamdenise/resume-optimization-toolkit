@@ -1,6 +1,585 @@
-/* Worknely V5.1 corporate visual layer — load AFTER style.css */
+
+/*
+ * WORKNELY V7.12
+ * Global Compact Design System
+ * Corporate Visual Layer
+ *
+ * Premium SaaS Identity
+ * Compact Landing Experience
+ * Mobile First Design
+ * Professional Typography
+ * Lightweight Visual Components
+ *
+ * LOAD AFTER style.css
+ * LOAD BEFORE worknely-electric.css
+ */
+
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@600;700;800&display=swap');
-:root{--wn-navy:#0B1F3B;--wn-blue:#2563EB;--wn-violet:#7C3AED;--wn-cyan:#06B6D4;--wn-bg:#F3F6FB;--wn-white:#fff;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--wn-navy);background:var(--wn-bg)}
-body{background:var(--wn-bg)}.shell{max-width:1200px}.top{border-bottom:1px solid #dce5f2}.brand{color:var(--wn-navy);font-family:Manrope,Inter,sans-serif;font-weight:800;letter-spacing:-.8px}.brandmark{background:var(--wn-navy);overflow:hidden;padding:7px}.brandmark img{display:block;width:100%;height:100%;object-fit:contain}.brand-light{color:var(--wn-navy)}.brand small{color:#657b9c;letter-spacing:1.65px}.version{color:#3352a3;background:#e9efff;border-color:#d9e5ff}.hero{max-width:none;position:relative;overflow:hidden;border-radius:28px;margin:28px 0 32px;padding:76px 54px 82px;background:radial-gradient(circle at 96% 10%,rgba(124,58,237,.46),transparent 38%),linear-gradient(120deg,#0B1F3B 5%,#10386c 62%,#4526a2 110%);box-shadow:0 22px 50px rgba(11,31,59,.15)}.hero:after{content:"";position:absolute;right:-8%;bottom:-112px;width:75%;height:175px;border-radius:50%;transform:rotate(-8deg);background:linear-gradient(100deg,rgba(6,182,212,.45),rgba(124,58,237,.65));pointer-events:none}.hero .eyebrow{color:#91dafa}.hero h1{max-width:790px;color:#fff;font-family:Manrope,Inter,sans-serif;letter-spacing:-2.6px}.hero em{color:#a7d6ff}.hero p{max-width:730px;color:#d8e6fb}.hero-meta{position:relative;z-index:1;color:#e5edff}.workspace,.results{border-color:#e2e9f4;box-shadow:0 15px 44px rgba(17,42,84,.055)}.section-head h2,.results-head h2{font-family:Manrope,Inter,sans-serif;color:var(--wn-navy)}.eyebrow,.overline,.field label{color:var(--wn-blue)}.primary{background:linear-gradient(110deg,var(--wn-blue),var(--wn-violet));box-shadow:0 9px 22px rgba(37,99,235,.19)}.ghost{background:#eef3ff;color:#284f9f;border-color:#dce6fa}.primary:hover{filter:brightness(1.05)}.ghost:hover{background:#e5edff}.field textarea:focus,.builder-grid input:focus,.builder-grid textarea:focus,.ai-preview select:focus{outline:2px solid #9ab7ff;outline-offset:1px;border-color:var(--wn-blue)}.ring{background:conic-gradient(var(--wn-blue) calc(var(--score)*1%),#dfe6f7 0)}.ring strong,.ats-main strong{color:var(--wn-blue)}.ai-preview{border-color:#d8e5ff}.studio-notice{background:#edf4ff;color:#344f7a}footer{border-top:1px solid #e2e9f4}.worknely-brandname{display:block}.worknely-brandname .brand-light{color:var(--wn-navy)}
-@media(max-width:700px){.hero{margin:18px 0 25px;padding:50px 24px 66px;border-radius:21px}.hero h1{letter-spacing:-1.5px}.hero:after{bottom:-135px}.brandmark{padding:5px}.top{gap:8px}.version{max-width:110px;text-align:center}}
-@media(max-width:380px){.brand small{font-size:7px;letter-spacing:1px}.header-tools select{max-width:105px}.hero{padding-left:19px;padding-right:19px}}
+
+/* CORPORATE DESIGN TOKENS */
+
+:root {
+  --wn-navy: #0B1F3B;
+  --wn-blue: #2563EB;
+  --wn-violet: #7C3AED;
+  --wn-cyan: #06B6D4;
+  --wn-bg: #F3F6FB;
+  --wn-white: #ffffff;
+
+  --wn-theme-radius: 16px;
+  --wn-theme-gap: 10px;
+  --wn-theme-action-height: 40px;
+
+  font-family: Inter, -apple-system,
+    BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+  color: var(--wn-navy);
+  background: var(--wn-bg);
+}
+
+body {
+  background: var(--wn-bg);
+}
+
+/* GLOBAL CONTAINER */
+
+.shell {
+  max-width: 1200px;
+}
+
+/* COMPACT CORPORATE HEADER */
+
+.top {
+  border-bottom: 1px solid #dce5f2;
+  padding: 14px 0;
+  gap: 10px;
+}
+
+/* WORKNELY BRAND */
+
+.brand {
+  color: var(--wn-navy);
+
+  font-family:
+    Manrope,
+    Inter,
+    sans-serif;
+
+  font-weight: 800;
+  font-size: 19px;
+  letter-spacing: -.6px;
+  gap: 9px;
+}
+
+.brandmark {
+  background: var(--wn-navy);
+  overflow: hidden;
+
+  width: 38px;
+  height: 38px;
+  padding: 6px;
+
+  border-radius: 11px;
+  flex-shrink: 0;
+}
+
+.brandmark img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.brand-light {
+  color: var(--wn-navy);
+}
+
+.brand small {
+  color: #657b9c;
+  font-size: 8px;
+  letter-spacing: 1.4px;
+}
+
+.worknely-brandname {
+  display: block;
+}
+
+.worknely-brandname .brand-light {
+  color: var(--wn-navy);
+}
+
+/* COMPACT VERSION INDICATOR */
+
+.version {
+  color: #3352a3;
+  background: #e9efff;
+  border-color: #d9e5ff;
+
+  padding: 6px 9px;
+  font-size: 10px;
+  letter-spacing: .6px;
+}
+
+/* V7.12 COMPACT LANDING HERO */
+
+.hero {
+  max-width: none;
+  position: relative;
+  overflow: hidden;
+
+  border-radius: 18px;
+
+  margin: 14px 0 18px;
+  padding: 32px 28px 36px;
+
+  background:
+    radial-gradient(
+      circle at 96% 10%,
+      rgba(124,58,237,.46),
+      transparent 38%
+    ),
+    linear-gradient(
+      120deg,
+      #0B1F3B 5%,
+      #10386c 62%,
+      #4526a2 110%
+    );
+
+  box-shadow:
+    0 10px 28px rgba(11,31,59,.11);
+}
+
+/* COMPACT HERO DECORATION */
+
+.hero:after {
+  content: "";
+
+  position: absolute;
+  right: -8%;
+  bottom: -78px;
+
+  width: 70%;
+  height: 115px;
+
+  border-radius: 50%;
+  transform: rotate(-8deg);
+
+  background: linear-gradient(
+    100deg,
+    rgba(6,182,212,.45),
+    rgba(124,58,237,.65)
+  );
+
+  pointer-events: none;
+}
+
+/* HERO CONTENT LAYER */
+
+.hero > * {
+  position: relative;
+  z-index: 1;
+}
+
+.hero .eyebrow {
+  color: #91dafa;
+  font-size: 10px;
+  letter-spacing: 1.7px;
+}
+
+/* COMPACT HERO TYPOGRAPHY */
+
+.hero h1 {
+  max-width: 790px;
+
+  color: #fff;
+
+  font-family:
+    Manrope,
+    Inter,
+    sans-serif;
+
+  font-size: clamp(30px,5vw,52px);
+  line-height: 1.13;
+
+  letter-spacing: -1.8px;
+  margin: 12px 0;
+}
+
+.hero em {
+  color: #a7d6ff;
+}
+
+.hero p {
+  max-width: 650px;
+  color: #d8e6fb;
+
+  font-size: 15px;
+  line-height: 1.6;
+
+  margin: 10px 0;
+}
+
+.hero-meta {
+  position: relative;
+  z-index: 1;
+
+  color: #e5edff;
+
+  gap: 10px;
+  font-size: 12px;
+  margin-top: 16px;
+}
+
+/* PREMIUM COMPACT WORKSPACE */
+
+.workspace,
+.results {
+  border-color: #e2e9f4;
+
+  border-radius: 18px;
+  padding: 20px;
+  margin-bottom: 16px;
+
+  box-shadow:
+    0 7px 24px rgba(17,42,84,.045);
+}
+
+/* COMPACT SECTION TYPOGRAPHY */
+
+.section-head,
+.results-head {
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.section-head h2,
+.results-head h2 {
+  font-family:
+    Manrope,
+    Inter,
+    sans-serif;
+
+  color: var(--wn-navy);
+
+  font-size: 23px;
+  line-height: 1.25;
+  letter-spacing: -.6px;
+
+  margin: 5px 0;
+}
+
+.eyebrow,
+.overline,
+.field label {
+  color: var(--wn-blue);
+}
+
+/* COMPACT PRIMARY ACTIONS */
+
+.primary {
+  background: linear-gradient(
+    110deg,
+    var(--wn-blue),
+    var(--wn-violet)
+  );
+
+  min-width: 0;
+  min-height: var(--wn-theme-action-height);
+
+  padding: 10px 14px;
+
+  border-radius: 10px;
+
+  font-size: 13px;
+  line-height: 1.3;
+
+  box-shadow:
+    0 4px 12px rgba(37,99,235,.14);
+}
+
+/* COMPACT SECONDARY ACTIONS */
+
+.ghost {
+  background: #eef3ff;
+  color: #284f9f;
+  border-color: #dce6fa;
+
+  min-width: 0;
+  min-height: var(--wn-theme-action-height);
+
+  padding: 10px 14px;
+
+  border-radius: 10px;
+
+  font-size: 13px;
+  line-height: 1.3;
+}
+
+.primary:hover:not(:disabled) {
+  filter: brightness(1.05);
+}
+
+.ghost:hover:not(:disabled) {
+  background: #e5edff;
+}
+
+/* FORM FOCUS STATES */
+
+.field textarea:focus,
+.builder-grid input:focus,
+.builder-grid textarea:focus,
+.ai-preview select:focus {
+  outline: 2px solid #9ab7ff;
+  outline-offset: 1px;
+  border-color: var(--wn-blue);
+}
+
+/* ATS SCORE IDENTITY */
+
+.ring {
+  background: conic-gradient(
+    var(--wn-blue)
+    calc(var(--score)*1%),
+    #dfe6f7 0
+  );
+}
+
+.ring strong,
+.ats-main strong {
+  color: var(--wn-blue);
+}
+
+/* RESUME WRITING STUDIO */
+
+.ai-preview {
+  border-color: #d8e5ff;
+}
+
+.studio-notice {
+  background: #edf4ff;
+  color: #344f7a;
+
+  padding: 10px 12px;
+  border-radius: 10px;
+
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+/* COMPACT CORPORATE FOOTER */
+
+footer {
+  border-top: 1px solid #e2e9f4;
+
+  padding: 18px 0 24px;
+
+  gap: 10px;
+  font-size: 11px;
+}
+
+/* V7.12 TABLET AND MOBILE */
+
+@media (max-width: 700px) {
+
+  /* MOBILE HEADER */
+
+  .top {
+    padding: 10px 0;
+    gap: 8px;
+  }
+
+  .brand {
+    font-size: 17px;
+    gap: 7px;
+  }
+
+  .brandmark {
+    width: 34px;
+    height: 34px;
+    padding: 5px;
+    border-radius: 9px;
+  }
+
+  .brand small {
+    font-size: 7px;
+    letter-spacing: 1.2px;
+  }
+
+  .version {
+    max-width: 110px;
+
+    padding: 5px 7px;
+
+    font-size: 9px;
+    letter-spacing: .4px;
+    text-align: center;
+  }
+
+  /* MOBILE COMPACT LANDING */
+
+  .hero {
+    margin: 12px 0 14px;
+
+    padding: 24px 18px 26px;
+
+    border-radius: 15px;
+
+    box-shadow:
+      0 7px 20px rgba(11,31,59,.09);
+  }
+
+  .hero h1 {
+    font-size: clamp(29px,7vw,40px);
+    line-height: 1.15;
+    letter-spacing: -1.2px;
+
+    margin: 10px 0;
+  }
+
+  .hero p {
+    font-size: 14px;
+    line-height: 1.6;
+    margin: 8px 0;
+  }
+
+  .hero .eyebrow {
+    font-size: 9px;
+    letter-spacing: 1.3px;
+  }
+
+  .hero-meta {
+    gap: 8px;
+    font-size: 11px;
+    margin-top: 12px;
+  }
+
+  .hero:after {
+    bottom: -83px;
+    height: 110px;
+    width: 85%;
+  }
+
+  /* MOBILE WORKSPACE CARDS */
+
+  .workspace,
+  .results {
+    padding: 15px;
+    border-radius: 15px;
+    margin-bottom: 12px;
+  }
+
+  .section-head,
+  .results-head {
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .section-head h2,
+  .results-head h2 {
+    font-size: 21px;
+    line-height: 1.25;
+    margin: 4px 0;
+  }
+
+  /* MOBILE ACTIONS */
+
+  .primary,
+  .ghost {
+    min-width: 0;
+    min-height: 40px;
+
+    padding: 9px 12px;
+
+    border-radius: 9px;
+
+    font-size: 12px;
+    line-height: 1.3;
+  }
+
+  .actions > .primary,
+  .actions > .ghost,
+  .export-actions > button {
+    min-height: 44px;
+  }
+
+  /* MOBILE FOOTER */
+
+  footer {
+    padding: 14px 0 20px;
+    gap: 6px;
+  }
+}
+
+/* SMALL IPHONE SCREENS */
+
+@media (max-width: 390px) {
+
+  .brand {
+    font-size: 15px;
+  }
+
+  .brandmark {
+    width: 32px;
+    height: 32px;
+  }
+
+  .brand small {
+    font-size: 7px;
+    letter-spacing: 1px;
+  }
+
+  .header-tools select {
+    max-width: 105px;
+  }
+
+  .hero {
+    margin: 10px 0 12px;
+    padding: 20px 15px 22px;
+    border-radius: 13px;
+  }
+
+  .hero h1 {
+    font-size: 29px;
+    letter-spacing: -1px;
+  }
+
+  .hero p {
+    font-size: 13px;
+  }
+
+  .workspace,
+  .results {
+    padding: 12px;
+    border-radius: 13px;
+  }
+
+  .section-head h2,
+  .results-head h2 {
+    font-size: 19px;
+  }
+
+  .primary,
+  .ghost {
+    padding: 9px 10px;
+    font-size: 12px;
+  }
+
+  .studio-notice {
+    padding: 9px 10px;
+    font-size: 11px;
+  }
+}
+
+/* ACCESSIBILITY */
+
+@media (prefers-reduced-motion: reduce) {
+
+  html {
+    scroll-behavior: auto;
+  }
+
+  .primary,
+  .ghost {
+    transition: none;
+  }
+}
