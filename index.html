@@ -12,6 +12,7 @@
   name="description"
   content="Worknely helps you build professional resumes, review CV structure, compare skills with job requirements, and explore career opportunities."
 >
+
 <meta name="application-name" content="Worknely">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Worknely">
@@ -23,7 +24,14 @@
   rel="canonical"
   href="https://adamdenise.github.io/resume-optimization-toolkit/"
 >
-<link rel="icon" type="image/svg+xml" href="worknely-favicon.svg">
+
+<link
+  rel="icon"
+  type="image/svg+xml"
+  href="worknely-favicon.svg"
+>
+
+<!-- WORKNELY CORE STYLES -->
 
 <link rel="stylesheet" href="style.css?v=5.0">
 <link rel="stylesheet" href="worknely-theme.css?v=5.1">
@@ -31,17 +39,21 @@
 
 <style>
 /*
- * WORKNELY V7.11
- * Main page layout + Premium Conversion Header.
+ * WORKNELY V7.12
+ * Global Compact Edition
+ *
+ * Mobile First SaaS Experience
+ * Compact Tool Navigation
+ * Compact Resume Builder
+ * Compact Career Analysis
+ * Premium Authentication
+ * Responsive Status Messages
  *
  * Compatible with:
- * - Premium Resume Workspace V7.11
- * - Resume Save & Edit V7.9
- * - Authentication V7.6
- * - Premium SaaS UI V7.8.2
- *
- * Authentication modal and premium banner
- * are managed by worknely-saas-ui.js V7.8.2.
+ * Resume Workspace V7.11.1
+ * Resume Save & Edit V7.9
+ * Authentication V7.6
+ * Premium SaaS UI V7.8.2
  */
 
 .sr-only {
@@ -89,85 +101,97 @@ textarea:focus-visible {
   outline:none;
 }
 
-/* TOOL NAVIGATION */
+/* COMPACT TOOL NAVIGATION */
 
 .wn-tool-navigation {
   display:flex;
   flex-wrap:wrap;
-  gap:10px;
-  margin:22px 0;
+  gap:7px;
+  margin:12px 0 14px;
 }
 
 .wn-tool-navigation a {
   display:inline-flex;
   align-items:center;
   justify-content:center;
-  padding:12px 16px;
+  min-height:40px;
+  padding:8px 12px;
   border:1px solid #e5dbfa;
-  border-radius:13px;
+  border-radius:9px;
   background:#fff;
   color:#5424ff;
   font-weight:750;
-  font-size:14px;
+  font-size:13px;
+  line-height:1.3;
   text-align:center;
   text-decoration:none;
 }
 
 .wn-tool-navigation a[aria-current="page"] {
-  background:linear-gradient(105deg,#5626ff,#ec22ad);
+  background:linear-gradient(
+    105deg,
+    #5626ff,
+    #ec22ad
+  );
+
   border-color:transparent;
   color:#fff;
 }
 
-/* RESUME BUILDER ACTIONS */
+/* COMPACT RESUME BUILDER ACTIONS */
 
 .wn-builder-actions {
   display:grid;
-  gap:12px;
-  margin-top:22px;
+  gap:8px;
+  margin-top:12px;
 }
 
 .wn-builder-primary {
   display:flex;
 }
 
-.wn-builder-primary .primary {
+body .shell .wn-builder-primary .primary {
   width:100%;
-  min-height:54px;
+  min-height:42px;
+  padding:10px 14px;
+  border-radius:10px;
+  font-size:13px;
 }
 
 .wn-builder-secondary {
   display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:12px;
+  grid-template-columns:
+    repeat(2,minmax(0,1fr));
+  gap:8px;
 }
 
-.wn-builder-secondary button {
+body .shell .wn-builder-secondary button {
   width:100%;
   min-width:0;
-  min-height:48px;
-  padding:12px 10px;
-  font-size:14px;
+  min-height:40px;
+  padding:8px 10px;
+  border-radius:9px;
+  font-size:12px;
   line-height:1.3;
   white-space:normal;
 }
 
-/* STATUS MESSAGES */
+/* COMPACT STATUS MESSAGES */
 
 #builderMessage,
 #saveAccountStatus,
 #exportMessage,
 #studioStatus {
   display:none;
-  margin:16px 0;
-  padding:16px 18px;
-  border-radius:16px;
+  margin:10px 0;
+  padding:10px 12px;
+  border-radius:10px;
   border:1px solid transparent;
-  font-size:14px;
+  font-size:12px;
   font-weight:600;
-  line-height:1.6;
+  line-height:1.5;
   overflow-wrap:anywhere;
-  box-shadow:0 6px 20px rgba(40,20,90,.04);
+  box-shadow:0 4px 12px rgba(40,20,90,.035);
 }
 
 #builderMessage:not(:empty),
@@ -195,13 +219,65 @@ textarea:focus-visible {
   border-color:#e1d7ff !important;
 }
 
+/* COMPACT CAREER ANALYSIS REPORT */
+
+#results .score-layout {
+  grid-template-columns:minmax(0,1fr);
+  margin-bottom:10px;
+}
+
+#results .stats {
+  grid-template-columns:
+    repeat(3,minmax(0,1fr));
+  margin-bottom:12px;
+}
+
+#results .stat {
+  flex-direction:column;
+  align-items:flex-start;
+  min-width:0;
+  gap:5px;
+}
+
+#results .stat strong {
+  overflow-wrap:anywhere;
+}
+
+#results .ats-card {
+  margin-top:12px;
+}
+
+/* DOCUMENT IMPORT */
+
+#resumeFile {
+  font-size:13px;
+  max-width:100%;
+}
+
+#resumeFile::file-selector-button {
+  min-height:40px;
+  padding:8px 12px;
+  margin-right:8px;
+  border:1px solid #e4d8ff;
+  border-radius:9px;
+  background:#f3efff;
+  color:#5424ff;
+  font-family:inherit;
+  font-size:12px;
+  font-weight:700;
+  cursor:pointer;
+}
+
 /* MOBILE OPTIMIZATION */
 
-@media (max-width:600px) {
+@media (max-width:700px) {
+
   .wn-tool-navigation {
     flex-wrap:nowrap;
     overflow-x:auto;
-    padding:3px 0 10px;
+    gap:6px;
+    margin:10px 0 12px;
+    padding:2px 0 7px;
     -webkit-overflow-scrolling:touch;
     scrollbar-width:none;
   }
@@ -212,95 +288,189 @@ textarea:focus-visible {
 
   .wn-tool-navigation a {
     flex:0 0 auto;
+    min-height:44px;
+    padding:8px 10px;
+    font-size:12px;
+    border-radius:9px;
+  }
+
+  .wn-builder-actions {
+    gap:7px;
+    margin-top:10px;
+  }
+
+  body .shell .wn-builder-primary .primary {
+    min-height:44px;
     font-size:13px;
-    padding:11px 13px;
   }
 
   .wn-builder-secondary {
-    gap:9px;
+    gap:7px;
   }
 
-  .wn-builder-secondary button {
-    font-size:13px;
-    padding:12px 7px;
+  body .shell .wn-builder-secondary button {
+    min-height:44px;
+    padding:8px 6px;
+    font-size:12px;
   }
 
   #builderMessage,
   #saveAccountStatus,
   #exportMessage,
   #studioStatus {
-    padding:14px 16px;
-    border-radius:14px;
+    margin:8px 0;
+    padding:9px 10px;
+    border-radius:9px;
+    font-size:12px;
+  }
+
+  #results .stats {
+    gap:7px;
+  }
+
+  #results .stat {
+    padding:10px 8px;
+  }
+
+  #results .stat span {
+    font-size:11px;
+    line-height:1.35;
+  }
+
+  #results .stat strong {
+    font-size:17px;
+  }
+
+  #resumeFile::file-selector-button {
+    min-height:44px;
   }
 }
 
+/* EXTRA SMALL SCREENS */
+
+@media (max-width:340px) {
+
+  .wn-builder-secondary {
+    grid-template-columns:1fr;
+  }
+
+  #results .stats {
+    grid-template-columns:1fr;
+  }
+}
+
+/* ACCESSIBILITY */
+
 @media (prefers-reduced-motion:reduce) {
+
   html {
     scroll-behavior:auto;
   }
 }
 </style>
+
+<!-- WORKNELY V7.12 GLOBAL COMPACT DESIGN SYSTEM -->
+
+<link
+  rel="stylesheet"
+  href="worknely-compact.css?v=7.12"
+  media="screen"
+>
+
 </head>
 
 <body>
+
 <div class="shell">
 
 <!-- HEADER -->
 
 <header class="top">
-  <a class="brand" href="#top" aria-label="Worknely home">
+
+  <a
+    class="brand"
+    href="#top"
+    aria-label="Worknely home"
+  >
+
     <span class="brandmark">
+
       <img
         src="worknely-mark.svg"
         alt=""
         width="36"
         height="36"
       >
+
     </span>
 
     <span class="worknely-brandname">
+
       Worknely
+
       <small>PEOPLE TECHNOLOGY</small>
+
     </span>
+
   </a>
 
   <div class="header-tools">
+
     <label for="language" class="sr-only">
       Interface language
     </label>
 
-    <select id="language" aria-label="Interface language">
+    <select
+      id="language"
+      aria-label="Interface language"
+    >
+
       <option value="en">🇬🇧 English</option>
       <option value="ro">🇷🇴 Română</option>
       <option value="it">🇮🇹 Italiano</option>
       <option value="de">🇩🇪 Deutsch</option>
       <option value="fr">🇫🇷 Français</option>
       <option value="es">🇪🇸 Español</option>
+
     </select>
+
   </div>
+
 </header>
 
 <main id="top">
 
-<!-- HERO -->
+<!-- LANDING PAGE HERO -->
 
-<section class="hero" aria-labelledby="worknelyHeroTitle">
+<section
+  class="hero"
+  aria-labelledby="worknelyHeroTitle"
+>
+
   <span class="eyebrow">
     ✦ YOUR CAREER, CONNECTED
   </span>
 
   <h1 id="worknelyHeroTitle">
+
     Build your career.
     <em>Shape your future.</em>
+
   </h1>
 
   <p>
+
     Create professional resumes, compare your skills
     with job requirements, and take your next career
     step with confidence.
+
   </p>
 
-  <nav class="hero-actions" aria-label="Career tools">
+  <nav
+    class="hero-actions"
+    aria-label="Career tools"
+  >
+
     <a class="primary" href="#builder">
       Build my resume
     </a>
@@ -308,30 +478,46 @@ textarea:focus-visible {
     <a class="ghost" href="#comparison">
       Analyze compatibility
     </a>
+
   </nav>
+
 </section>
 
-<!-- TOOL NAVIGATION -->
+<!-- COMPACT TOOL NAVIGATION -->
 
-<nav class="wn-tool-navigation" aria-label="Worknely tools">
-  <a href="#ai-studio" data-wn-tool="ai-studio">
+<nav
+  class="wn-tool-navigation"
+  aria-label="Worknely tools"
+>
+
+  <a
+    href="#ai-studio"
+    data-wn-tool="ai-studio"
+  >
     Writing Studio
   </a>
 
-  <a href="#builder" data-wn-tool="builder">
+  <a
+    href="#builder"
+    data-wn-tool="builder"
+  >
     Resume Builder
   </a>
 
-  <a href="#comparison" data-wn-tool="comparison">
+  <a
+    href="#comparison"
+    data-wn-tool="comparison"
+  >
     Career Analysis
   </a>
 
   <a href="pricing.html">
     Pricing &amp; Plans
   </a>
+
 </nav>
 
-<!-- WRITING STUDIO -->
+<!-- RESUME WRITING STUDIO -->
 
 <section
   class="workspace ai-preview wn-tool-view"
@@ -341,8 +527,11 @@ textarea:focus-visible {
   tabindex="-1"
   hidden
 >
+
   <div class="section-head">
+
     <div>
+
       <span class="overline">
         WORKNELY CAREER STUDIO
       </span>
@@ -352,16 +541,25 @@ textarea:focus-visible {
       </h2>
 
       <p id="studioIntro">
+
         Transform your experience into professional
         resume content. Highlight your verified skills,
         responsibilities, and achievements.
+
       </p>
+
     </div>
+
   </div>
 
   <div class="builder-grid">
+
     <label for="studioRole">
-      <span id="studioRoleLabel">Target role</span>
+
+      <span id="studioRoleLabel">
+        Target role
+      </span>
+
       <input
         id="studioRole"
         type="text"
@@ -369,17 +567,31 @@ textarea:focus-visible {
         autocomplete="off"
         placeholder="e.g. Customer Support Specialist"
       >
+
     </label>
 
     <label for="studioTone">
-      <span id="studioToneLabel">Writing style</span>
+
+      <span id="studioToneLabel">
+        Writing style
+      </span>
+
       <select id="studioTone">
-        <option value="concise">Concise</option>
-        <option value="results">Results-focused</option>
+
+        <option value="concise">
+          Concise
+        </option>
+
+        <option value="results">
+          Results-focused
+        </option>
+
       </select>
+
     </label>
 
     <label for="studioExperience">
+
       <span id="studioExperienceLabel">
         Verified experience
       </span>
@@ -389,9 +601,11 @@ textarea:focus-visible {
         rows="4"
         placeholder="Describe your real duties and achievements."
       ></textarea>
+
     </label>
 
     <label for="studioSkills">
+
       <span id="studioSkillsLabel">
         Verified skills
       </span>
@@ -401,10 +615,13 @@ textarea:focus-visible {
         rows="4"
         placeholder="e.g. Excel, customer service, CRM"
       ></textarea>
+
     </label>
+
   </div>
 
   <div class="actions">
+
     <button
       class="primary"
       id="studioDraft"
@@ -420,6 +637,7 @@ textarea:focus-visible {
     >
       Copy draft to Resume Builder
     </button>
+
   </div>
 
   <p
@@ -434,9 +652,10 @@ textarea:focus-visible {
     id="studioOutput"
     aria-label="Writing studio draft"
   ></pre>
+
 </section>
 
-<!-- RESUME BUILDER -->
+<!-- PROFESSIONAL RESUME BUILDER -->
 
 <section
   class="workspace builder wn-tool-view"
@@ -445,91 +664,131 @@ textarea:focus-visible {
   aria-labelledby="builderTitle"
   tabindex="-1"
 >
+
   <div class="section-head">
+
     <div>
+
       <span class="overline">
         PROFESSIONAL RESUME BUILDER
       </span>
 
-      <h2 id="builderTitle" data-i18n="builderTitle">
+      <h2
+        id="builderTitle"
+        data-i18n="builderTitle"
+      >
         Create your ATS-friendly resume
       </h2>
 
-      <p id="builderIntro" data-i18n="builderIntro">
+      <p
+        id="builderIntro"
+        data-i18n="builderIntro"
+      >
+
         Build a professional resume using your
         verified experience, education, and skills.
+
       </p>
+
     </div>
+
   </div>
 
   <div class="builder-grid">
+
     <label for="bName">
+
       Full name
+
       <input
         id="bName"
         type="text"
         autocomplete="name"
         placeholder="Your name"
       >
+
     </label>
 
     <label for="bTitle">
+
       Professional title
+
       <input
         id="bTitle"
         type="text"
         placeholder="Customer Support Specialist"
       >
+
     </label>
 
     <label for="bContact">
+
       Contact (optional)
+
       <input
         id="bContact"
         type="text"
         placeholder="Email · City · LinkedIn"
       >
+
     </label>
 
     <label for="bEducation">
+
       Education
+
       <textarea
         id="bEducation"
         rows="3"
         placeholder="Degrees and qualifications"
       ></textarea>
+
     </label>
 
     <label for="bSummary">
+
       Professional summary
+
       <textarea
         id="bSummary"
-        rows="4"
+        rows="3"
         placeholder="Your professional background"
       ></textarea>
+
     </label>
 
     <label for="bExperience">
+
       Experience
+
       <textarea
         id="bExperience"
-        rows="5"
+        rows="4"
         placeholder="Role, employer, dates and real achievements"
       ></textarea>
+
     </label>
 
     <label for="bSkills">
+
       Skills
+
       <textarea
         id="bSkills"
-        rows="4"
+        rows="3"
         placeholder="Your actual skills"
       ></textarea>
+
     </label>
+
   </div>
 
+  <!-- COMPACT BUILDER ACTIONS -->
+
   <div class="wn-builder-actions">
+
     <div class="wn-builder-primary">
+
       <button
         class="primary"
         id="buildResume"
@@ -538,9 +797,11 @@ textarea:focus-visible {
       >
         Generate resume
       </button>
+
     </div>
 
     <div class="wn-builder-secondary">
+
       <button
         class="ghost"
         id="saveToAccount"
@@ -557,7 +818,9 @@ textarea:focus-visible {
       >
         Export resume PDF
       </button>
+
     </div>
+
   </div>
 
   <p
@@ -579,9 +842,10 @@ textarea:focus-visible {
     id="builderPreview"
     aria-label="Resume preview"
   ></pre>
+
 </section>
 
-<!-- CAREER ANALYSIS -->
+<!-- CAREER COMPATIBILITY ANALYSIS -->
 
 <section
   class="workspace wn-tool-view"
@@ -591,20 +855,29 @@ textarea:focus-visible {
   tabindex="-1"
   hidden
 >
+
   <div class="section-head">
+
     <div>
+
       <span class="overline">
         CAREER COMPATIBILITY ANALYSIS
       </span>
 
-      <h2 id="workspaceTitle" data-i18n="workspaceTitle">
+      <h2
+        id="workspaceTitle"
+        data-i18n="workspaceTitle"
+      >
         Resume &amp; job comparison
       </h2>
 
       <p>
+
         Compare your resume with job requirements
         and identify relevant skills and potential gaps.
+
       </p>
+
     </div>
 
     <button
@@ -615,16 +888,23 @@ textarea:focus-visible {
     >
       ✦ Load example
     </button>
+
   </div>
 
+  <!-- DOCUMENT IMPORT -->
+
   <div class="import-panel">
+
     <label
       id="uploadLabel"
       data-i18n="uploadLabel"
       for="resumeFile"
     >
+
       <strong>Upload your resume</strong>
+
       (PDF or DOCX)
+
     </label>
 
     <input
@@ -640,17 +920,24 @@ textarea:focus-visible {
       role="status"
       aria-live="polite"
     >
+
       Text-based PDF and DOCX files are supported.
       Scanned PDFs and legacy DOC files are not supported.
       Files are processed locally in your browser using
       parsing libraries loaded from a CDN.
+
     </p>
+
   </div>
 
   <div class="input-grid">
+
     <div class="field">
+
       <label for="resume">
+
         01 <strong>Your resume</strong>
+
       </label>
 
       <textarea
@@ -661,17 +948,25 @@ textarea:focus-visible {
       ></textarea>
 
       <div class="field-foot">
+
         <span>
           Remove personal contact details before testing.
         </span>
 
-        <span id="resumeWords">0 words</span>
+        <span id="resumeWords">
+          0 words
+        </span>
+
       </div>
+
     </div>
 
     <div class="field">
+
       <label for="job">
+
         02 <strong>Job description</strong>
+
       </label>
 
       <textarea
@@ -682,24 +977,34 @@ textarea:focus-visible {
       ></textarea>
 
       <div class="field-foot">
+
         <span>
           Remove unnecessary personal information.
         </span>
 
-        <span id="jobWords">0 words</span>
+        <span id="jobWords">
+          0 words
+        </span>
+
       </div>
+
     </div>
+
   </div>
 
   <div class="actions">
+
     <button
       class="primary"
       id="analyze"
       data-i18n="analyze"
       type="button"
     >
+
       Analyze compatibility
+
       <span aria-hidden="true">→</span>
+
     </button>
 
     <button
@@ -710,6 +1015,7 @@ textarea:focus-visible {
     >
       Clear all
     </button>
+
   </div>
 
   <p
@@ -718,6 +1024,7 @@ textarea:focus-visible {
     role="status"
     aria-live="polite"
   ></p>
+
 </section>
 
 <!-- COMPATIBILITY REPORT -->
@@ -728,8 +1035,11 @@ textarea:focus-visible {
   aria-live="polite"
   aria-labelledby="reportTitle"
 >
+
   <div class="results-head">
+
     <div>
+
       <span class="overline">
         YOUR CAREER INSIGHTS
       </span>
@@ -739,12 +1049,16 @@ textarea:focus-visible {
       </h2>
 
       <p>
+
         Understand your resume's keyword coverage
         and identify opportunities for improvement.
+
       </p>
+
     </div>
 
     <div class="export-actions">
+
       <button
         class="ghost"
         id="download"
@@ -760,7 +1074,9 @@ textarea:focus-visible {
       >
         ↓ Save PDF
       </button>
+
     </div>
+
   </div>
 
   <p
@@ -770,113 +1086,193 @@ textarea:focus-visible {
     aria-live="polite"
   ></p>
 
+  <!-- KEYWORD MATCH SCORE -->
+
   <div class="score-layout">
+
     <div class="score-card">
+
       <div class="ring" id="ring">
+
         <div>
+
           <strong id="score">0%</strong>
+
           <span>keyword match</span>
+
         </div>
+
       </div>
 
       <p>
+
         Estimated coverage of recognized skills
         mentioned in the job description.
+
       </p>
 
       <small>
+
         Not an ATS score or hiring prediction.
+
       </small>
+
     </div>
+
   </div>
+
+  <!-- COMPACT CAREER STATISTICS -->
 
   <div class="stats">
+
     <div class="stat">
+
       <span>Matched skills</span>
+
       <strong id="matchedCount">0</strong>
+
     </div>
 
     <div class="stat">
+
       <span>Skills to review</span>
+
       <strong id="missingCount">0</strong>
+
     </div>
 
     <div class="stat">
+
       <span>Resume length</span>
+
       <strong id="wordCount">0 words</strong>
+
     </div>
+
   </div>
 
+  <!-- ESTIMATED ATS READINESS -->
+
   <article class="report-card ats-card">
-    <h3 id="atsHeading" data-i18n="atsHeading">
+
+    <h3
+      id="atsHeading"
+      data-i18n="atsHeading"
+    >
       Estimated ATS readiness
     </h3>
 
     <div class="ats-main">
+
       <strong id="atsScore">—</strong>
 
       <div>
+
         <p id="atsExplainer">
+
           A transparent heuristic combining keyword
           coverage, section headings and evidence
           of achievements.
+
         </p>
 
         <small id="atsCaution">
+
           Not an official ATS score.
           Text input cannot assess PDF layout
           or parsing quality.
+
         </small>
+
       </div>
+
     </div>
 
-    <div class="structure-findings" id="atsFactors"></div>
+    <div
+      class="structure-findings"
+      id="atsFactors"
+    ></div>
+
   </article>
 
-  <article class="report-card" id="structureCard">
+  <!-- CV STRUCTURE REVIEW -->
+
+  <article
+    class="report-card"
+    id="structureCard"
+  >
+
     <h3>CV structure review</h3>
 
     <div
       class="structure-findings"
       id="structureFindings"
     ></div>
+
   </article>
 
+  <!-- MATCHED AND MISSING SKILLS -->
+
   <div class="report-grid">
+
     <article class="report-card">
+
       <h3>✓ Matched skills</h3>
-      <div class="chips" id="matched"></div>
+
+      <div
+        class="chips"
+        id="matched"
+      ></div>
+
     </article>
 
     <article class="report-card">
+
       <h3>⌕ Skills not found in CV</h3>
-      <div class="chips" id="missing"></div>
+
+      <div
+        class="chips"
+        id="missing"
+      ></div>
+
     </article>
+
   </div>
 
+  <!-- PERSONALIZED RECOMMENDATIONS -->
+
   <article class="report-card rec">
+
     <h3>✦ Personalized recommendations</h3>
+
     <ol id="recommendations"></ol>
+
   </article>
 
   <p class="disclaimer">
+
     This is a browser-based, rule-based keyword comparison.
     It recognizes a limited skills dictionary and some
     synonyms. It cannot assess actual proficiency,
     job suitability, or recruitment outcomes.
     Only claim skills you truly have.
+
   </p>
+
 </section>
 
-<!-- ACCOUNT -->
+<!-- WORKNELY ACCOUNT -->
 
 <section
   id="worknelyAccount"
   class="workspace"
   aria-labelledby="accountTitle"
 >
+
   <div class="section-head">
+
     <div>
+
       <span class="overline">
         WORKNELY ACCOUNT
       </span>
@@ -886,14 +1282,23 @@ textarea:focus-visible {
       </h2>
 
       <p>
+
         Create an account to save and manage
         your resumes securely.
+
       </p>
+
     </div>
+
   </div>
 
-  <form id="worknelyAuthForm" class="builder-grid">
+  <form
+    id="worknelyAuthForm"
+    class="builder-grid"
+  >
+
     <label for="authEmail">
+
       Email
 
       <input
@@ -902,9 +1307,11 @@ textarea:focus-visible {
         autocomplete="email"
         required
       >
+
     </label>
 
     <label for="authPassword">
+
       Password
 
       <input
@@ -914,9 +1321,11 @@ textarea:focus-visible {
         minlength="6"
         required
       >
+
     </label>
 
     <div class="actions">
+
       <button
         id="authSignUp"
         type="button"
@@ -941,7 +1350,9 @@ textarea:focus-visible {
       >
         Log Out
       </button>
+
     </div>
+
   </form>
 
   <p
@@ -950,6 +1361,7 @@ textarea:focus-visible {
     role="status"
     aria-live="polite"
   ></p>
+
 </section>
 
 </main>
@@ -957,23 +1369,45 @@ textarea:focus-visible {
 <!-- FOOTER -->
 
 <footer>
-  <span>© 2026 Worknely · People Technology</span>
-  <span>Build. Improve. Grow.</span>
+
+  <span>
+    © 2026 Worknely · People Technology
+  </span>
+
+  <span>
+    Build. Improve. Grow.
+  </span>
+
 </footer>
 
 </div>
 
-<!-- FUNCTIONAL MODULES -->
+<!-- CORE FUNCTIONAL MODULES -->
 
-<script defer src="script.js?v=7.5"></script>
+<script
+  defer
+  src="script.js?v=7.5"
+></script>
 
-<script defer src="studio.js?v=5.1"></script>
+<script
+  defer
+  src="studio.js?v=5.1"
+></script>
 
-<script defer src="worknely-i18n.js?v=3.1"></script>
+<script
+  defer
+  src="worknely-i18n.js?v=3.1"
+></script>
 
-<script defer src="worknely-report-i18n.js?v=1.0"></script>
+<script
+  defer
+  src="worknely-report-i18n.js?v=1.0"
+></script>
 
-<script defer src="worknely-premium-pdf.js?v=7.5"></script>
+<script
+  defer
+  src="worknely-premium-pdf.js?v=7.5"
+></script>
 
 <!-- SUPABASE AUTHENTICATION V7.6 -->
 
@@ -1000,6 +1434,7 @@ textarea:focus-visible {
 
 <script>
 (() => {
+
   "use strict";
 
   const toolIds = [
@@ -1009,6 +1444,7 @@ textarea:focus-visible {
   ];
 
   function getActiveTool() {
+
     const hash = window.location.hash
       .replace("#", "")
       .toLowerCase();
@@ -1023,40 +1459,63 @@ textarea:focus-visible {
   }
 
   function updateToolNavigation() {
+
     const active = getActiveTool();
 
     document.querySelectorAll(
       ".wn-tool-view[data-wn-view]"
     ).forEach(section => {
+
       section.hidden =
         section.dataset.wnView !== active;
+
     });
 
     document.querySelectorAll(
       ".wn-tool-navigation [data-wn-tool]"
     ).forEach(link => {
+
       if (link.dataset.wnTool === active) {
-        link.setAttribute("aria-current", "page");
+
+        link.setAttribute(
+          "aria-current",
+          "page"
+        );
+
       } else {
+
         link.removeAttribute("aria-current");
+
       }
+
     });
 
-    const report = document.getElementById("results");
+    const report =
+      document.getElementById("results");
 
     if (report) {
-      report.hidden = active !== "comparison";
+
+      report.hidden =
+        active !== "comparison";
+
     }
 
-    const target = document.getElementById(active);
+    const target =
+      document.getElementById(active);
 
     if (target && window.location.hash) {
+
       requestAnimationFrame(() => {
+
         target.scrollIntoView({
-          block: "start",
-          behavior: "auto"
+
+          block:"start",
+          behavior:"auto"
+
         });
+
       });
+
     }
   }
 
@@ -1066,13 +1525,18 @@ textarea:focus-visible {
   );
 
   if (document.readyState === "loading") {
+
     document.addEventListener(
       "DOMContentLoaded",
       updateToolNavigation
     );
+
   } else {
+
     updateToolNavigation();
+
   }
+
 })();
 </script>
 
@@ -1080,16 +1544,20 @@ textarea:focus-visible {
 
 <script>
 (() => {
+
   "use strict";
 
   const ids = [
+
     "builderMessage",
     "saveAccountStatus",
     "exportMessage",
     "studioStatus"
+
   ];
 
   const successPatterns = [
+
     /success/i,
     /generated/i,
     /created/i,
@@ -1099,9 +1567,11 @@ textarea:focus-visible {
     /ready/i,
     /download started/i,
     /draft copied/i
+
   ];
 
   const errorPatterns = [
+
     /failed/i,
     /error/i,
     /unable/i,
@@ -1110,43 +1580,60 @@ textarea:focus-visible {
     /not supported/i,
     /could not/i,
     /cannot/i
+
   ];
 
   function classify(message) {
+
     if (errorPatterns.some(pattern =>
       pattern.test(message)
     )) {
+
       return "error";
+
     }
 
     if (successPatterns.some(pattern =>
       pattern.test(message)
     )) {
+
       return "success";
+
     }
 
     return "info";
   }
 
   function updateStatus(element) {
-    const message = element.textContent.trim();
+
+    const message =
+      element.textContent.trim();
 
     element.classList.remove(
+
       "worknely-status-success",
       "worknely-status-error",
       "worknely-status-info"
+
     );
 
     if (!message) return;
 
     element.classList.add(
-      "worknely-status-" + classify(message)
+
+      "worknely-status-" +
+      classify(message)
+
     );
   }
 
   function initialize() {
+
     ids.forEach(id => {
-      const element = document.getElementById(id);
+
+      const element =
+        document.getElementById(id);
+
       if (!element) return;
 
       const observer = new MutationObserver(
@@ -1154,24 +1641,35 @@ textarea:focus-visible {
       );
 
       observer.observe(element, {
+
         childList:true,
         characterData:true,
         subtree:true
+
       });
 
       updateStatus(element);
+
     });
+
   }
 
   if (document.readyState === "loading") {
+
     document.addEventListener(
+
       "DOMContentLoaded",
       initialize,
       { once:true }
+
     );
+
   } else {
+
     initialize();
+
   }
+
 })();
 </script>
 
@@ -1181,6 +1679,8 @@ textarea:focus-visible {
   defer
   src="worknely-celebration.js?v=7.5"
 ></script>
+
+<!-- END WORKNELY V7.12 -->
 
 </body>
 </html>
