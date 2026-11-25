@@ -1,6 +1,6 @@
 
 /*
- * WORKNELY V7.18.1
+ * WORKNELY V7.18.1.2
  * Career Intelligence Interface
  * International Edition
  * Local Processing
@@ -9,7 +9,7 @@
 (function () {
   "use strict";
 
-  const VERSION = "7.18.1";
+  const VERSION = "7.18.1.2";
   const ROOT_ID = "wnCareerIntelligence";
 
   const LANGUAGES = [
@@ -708,6 +708,51 @@
         margin:14px 0;
       }
 
+
+      /* Career Intelligence responsive safeguards */
+      #wnCareerIntelligence,
+      #wnCareerIntelligence .wnci-panel,
+      #wnCareerIntelligence .wnci-grid,
+      #wnCareerIntelligence .wnci-field,
+      #wnCareerIntelligence .wnci-list,
+      #wnCareerIntelligence .wnci-task,
+      #wnCareerIntelligence .wnci-diagnostics {
+        min-width:0;
+        max-width:100%;
+      }
+
+      #wnCareerIntelligence .wnci-tool > span:last-child,
+      #wnCareerIntelligence .wnci-task > div {
+        min-width:0;
+        overflow-wrap:anywhere;
+        white-space:normal;
+      }
+
+      #wnCareerIntelligence button {
+        min-width:0;
+        max-width:100%;
+        overflow-wrap:anywhere;
+        white-space:normal;
+      }
+
+      #wnCareerIntelligence [hidden] {
+        display:none !important;
+      }
+
+      #wnCareerIntelligence .wnci-skill-priority {
+        font-size:11px;
+        font-weight:700;
+        color:#5424ff;
+        margin:4px 0;
+      }
+
+      #wnCareerIntelligence .wnci-skill-guidance {
+        color:#746c85;
+        font-size:13px;
+        line-height:1.6;
+        margin:5px 0 12px;
+      }
+
       @media(max-width:360px) {
         .wnci-grid {
           grid-template-columns:1fr;
@@ -1240,6 +1285,48 @@
     );
   }
 
+
+  function renderSkillGapList(title, items) {
+    if (!Array.isArray(items) || !items.length) return;
+
+    const list = make("ul", "wnci-list");
+    const seen = new Set();
+
+    items.forEach(item => {
+      const name = typeof item === "string"
+        ? item.trim()
+        : String(item?.name || item?.keyword || "").trim();
+
+      if (!name) return;
+
+      const key = String(item?.id || name).toLowerCase();
+
+      if (seen.has(key)) return;
+      seen.add(key);
+
+      const li = make("li");
+      li.appendChild(make("strong", "", name));
+
+      if (item?.priorityLabel) {
+        li.appendChild(
+          make("p", "wnci-skill-priority", item.priorityLabel)
+        );
+      }
+
+      if (item?.recommendation) {
+        li.appendChild(
+          make("p", "wnci-skill-guidance", item.recommendation)
+        );
+      }
+
+      list.appendChild(li);
+    });
+
+    if (list.childElementCount) {
+      refs.output.append(make("h3", "", title), list);
+    }
+  }
+
   function renderScore(result) {
     const score =
       result.estimatedATSReadiness ??
@@ -1315,6 +1402,17 @@
         (result.questions || [])
           .map(itemText)
           .join("\n\n")
+      );
+
+    } else if (id === "skill-gap") {
+      renderScore(result);
+
+      renderSkillGapList(
+        tr("matched"), result.matchedSkills
+      );
+
+      renderSkillGapList(
+        tr("missing"), result.missingSkills
       );
 
     } else {
@@ -1732,6 +1830,6 @@
 })();
 
 /*
- * END WORKNELY V7.18.1
+ * END WORKNELY V7.18.1.2
  * Career Intelligence Interface
  */
