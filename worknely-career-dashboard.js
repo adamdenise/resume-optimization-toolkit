@@ -1,10 +1,10 @@
 
-/* Worknely V7.18.0 — Career Intelligence Dashboard */
+/* Worknely V7.18.1 — Career Intelligence Dashboard */
 
 (() => {
   'use strict';
 
-  const VERSION = '7.18.0';
+  const VERSION = '7.18.1';
 
   const dictionaries = {
 
@@ -473,4 +473,115 @@
 
   }
 
+})();
+
+/* WORKNELY V7.18.1 — Dynamic Dashboard Integration */
+(() => {
+  "use strict";
+  const completed = new Set();
+  const metrics = [null, null, null, null];
+  const labels = {
+    en:["Available","Completed tools","No analysis history connected yet."],
+    ro:["Disponibil","Instrumente finalizate","Istoricul analizelor nu este încă conectat."],
+    it:["Disponibile","Strumenti completati","Storico non ancora collegato."],
+    de:["Verfügbar","Abgeschlossene Werkzeuge","Analyseverlauf noch nicht verbunden."],
+    fr:["Disponible","Outils terminés","Historique non connecté."],
+    es:["Disponible","Herramientas completadas","Historial aún no conectado."]
+  };
+  function language() {
+    return String(
+      window.WorknelyLocalization?.getLanguage?.() ||
+      document.getElementById("language")?.value ||
+      "en"
+    ).toLowerCase().split("-")[0];
+  }
+  function score(value) {
+    return typeof value === "number" &&
+      Number.isFinite(value) &&
+      value >= 0 && value <= 100
+      ? Math.round(value) + "%" : null;
+  }
+  function update() {
+    const root = document.getElementById("wnCareerDashboard");
+    if (!root) return;
+    const d = labels[language()] || labels.en;
+    root.querySelectorAll(".wnd-card").forEach((card,i) => {
+      const value = card.querySelector(".wnd-value");
+      const note = card.querySelector("small");
+      if (metrics[i] !== null) {
+        if (value) value.textContent = metrics[i];
+        if (note) note.textContent = d[0];
+      }
+    });
+    const footer = root.lastElementChild;
+    if (footer && footer.tagName === "P") {
+      footer.textContent = completed.size
+        ? d[1] + ": " + completed.size + "/7"
+        : d[2];
+    }
+  }
+  function reset() {
+    completed.clear();
+    metrics.fill(null);
+    window.WorknelyCareerDashboard?.refresh?.();
+    update();
+  }
+  document.addEventListener(
+    "worknely:careerdashboardresult", event => {
+      const {module,result,progress} = event.detail || {};
+      if (module === "career-action-plan" && progress) {
+        if (Number.isFinite(progress.total) &&
+            Number.isFinite(progress.completed) &&
+            progress.total > 0) {
+          metrics[3] = score(progress.completed / progress.total * 100);
+          completed.add(module);
+        }
+      } else if (result?.ok) {
+        completed.add(module);
+        if (module === "ats") {
+          metrics[0] = score(
+            result.estimatedATSReadiness ??
+            result.estimatedScore ??
+            result.matchScore
+          );
+        }
+        if (module === "career-match") {
+          metrics[1] = score(
+            result.estimatedCareerMatch ??
+            result.estimatedScore ??
+            result.matchScore
+          );
+        }
+        if (module === "skill-gap") {
+          const missing = result.missingSkills ??
+            result.missingKeywords;
+          metrics[2] = Array.isArray(missing)
+            ? String(missing.length) : null;
+        }
+      }
+      window.WorknelyCareerDashboard?.refresh?.();
+      update();
+    }
+  );
+  document.addEventListener(
+    "worknely:careercontextcleared", event => {
+      if (event.detail?.reason !== "languageChanged") reset();
+    }
+  );
+  function refreshLater() {
+    Promise.resolve().then(update);
+  }
+  document.addEventListener("worknely:languagechange",refreshLater);
+  document.addEventListener("worknely:localizationready",refreshLater);
+  document.addEventListener("worknely:workspacechange",refreshLater);
+  document.addEventListener("change",event => {
+    if (event.target?.id === "language") refreshLater();
+  });
+  window.addEventListener("pageshow",refreshLater);
+  window.addEventListener("pagehide",reset);
+  window.WorknelyCareerDashboardData = Object.freeze({
+    version:"7.18.1",
+    refresh:update,
+    reset
+  });
 })();
