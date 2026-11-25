@@ -1,48 +1,50 @@
 
 /*
- * WORKNELY V7.16.11
- * Professional PDF Export Recovery
+ * WORKNELY V7.16.12
+ * Professional PDF Stability Fix
+ * CDN Recovery and Unicode Support
  * Direct PDF Generation
  * iOS Download and Sharing
  * Six Language Interface
- * Resume Builder Synchronization
  * A4 / US Letter
  * Local Processing
  */
 
 (() => {
-
   "use strict";
 
-  const VERSION = "7.16.11";
+  const VERSION = "7.16.12";
   const ROOT_ID = "wnProfessionalPDFExport";
   const STYLE_ID = "wn-professional-pdf-styles";
 
-  const PDF_LIBRARY =
-    "https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js";
+  const PDF_LIBRARIES = [
+    "https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js",
+    "https://unpkg.com/jspdf@2.5.2/dist/jspdf.umd.min.js"
+  ];
+
+  const FONT_SOURCES = [
+    "https://cdn.jsdelivr.net/gh/notofonts/noto-fonts@main/hinted/ttf/NotoSans/",
+    "https://raw.githubusercontent.com/notofonts/noto-fonts/main/hinted/ttf/NotoSans/"
+  ];
 
   const LANGUAGES = [
     "en", "ro", "it", "de", "fr", "es"
   ];
 
   const FORMATS = Object.freeze({
-
     a4: {
       name: "A4",
       size: "210 × 297 mm",
       css: "A4"
     },
-
     letter: {
       name: "US Letter",
       size: "216 × 279 mm",
       css: "letter"
     }
-
   });
 
   const FIELD_MAP = {
-
     fullName: "bName",
     professionalTitle: "bTitle",
     contact: "bContact",
@@ -50,18 +52,15 @@
     summary: "bSummary",
     experience: "bExperience",
     skills: "bSkills"
-
   };
 
   const languageNames = {
-
     en: "English",
     ro: "Română",
     it: "Italiano",
     de: "Deutsch",
     fr: "Français",
     es: "Español"
-
   };
 
   let root = null;
@@ -74,13 +73,13 @@
   let fontPromise = null;
   let preparedFile = null;
   let preparedURL = null;
+  let documentRevision = 0;
+  let lastError = null;
 
   /* INTERNATIONAL DICTIONARY */
 
   const translations = {
-
     en: {
-
       overline: "WORKNELY DESIGN STUDIO",
       title: "Professional PDF Export",
       description: "Create a professional PDF using your selected resume design.",
@@ -94,7 +93,10 @@
       ready: "Your PDF is ready to download or share.",
       empty: "Complete your resume before exporting.",
       unavailable: "The template engine is unavailable.",
-      failed: "Unable to generate the PDF. Check your connection and try again.",
+      failed: "Unable to generate the PDF.",
+      libraryError: "The PDF library could not be loaded. Please try again.",
+      fontError: "The document fonts could not be loaded. Please try again.",
+      changed: "The document has changed. Generate the PDF again.",
       download: "Download PDF",
       share: "Share / Save PDF",
       open: "Open PDF",
@@ -107,11 +109,9 @@
       education: "Education",
       skills: "Skills",
       contact: "Contact"
-
     },
 
     ro: {
-
       overline: "WORKNELY DESIGN STUDIO",
       title: "Export PDF profesional",
       description: "Creează un PDF profesional folosind designul selectat.",
@@ -125,7 +125,10 @@
       ready: "PDF-ul este pregătit pentru descărcare sau partajare.",
       empty: "Completează CV-ul înainte de export.",
       unavailable: "Motorul de șabloane nu este disponibil.",
-      failed: "PDF-ul nu a putut fi generat. Verifică internetul și încearcă din nou.",
+      failed: "PDF-ul nu a putut fi generat.",
+      libraryError: "Biblioteca PDF nu a putut fi încărcată. Încearcă din nou.",
+      fontError: "Fonturile documentului nu au putut fi încărcate. Încearcă din nou.",
+      changed: "Documentul a fost modificat. Generează PDF-ul din nou.",
       download: "Descarcă PDF",
       share: "Partajează / Salvează PDF",
       open: "Deschide PDF",
@@ -138,11 +141,9 @@
       education: "Educație",
       skills: "Competențe",
       contact: "Contact"
-
     },
 
     it: {
-
       overline: "WORKNELY DESIGN STUDIO",
       title: "Esportazione PDF professionale",
       description: "Crea un PDF professionale utilizzando il modello selezionato.",
@@ -156,7 +157,10 @@
       ready: "Il PDF è pronto per essere scaricato o condiviso.",
       empty: "Completa il curriculum prima di esportarlo.",
       unavailable: "Il motore dei modelli non è disponibile.",
-      failed: "Impossibile generare il PDF. Controlla la connessione e riprova.",
+      failed: "Impossibile generare il PDF.",
+      libraryError: "Impossibile caricare la libreria PDF. Riprova.",
+      fontError: "Impossibile caricare i caratteri del documento. Riprova.",
+      changed: "Il documento è stato modificato. Genera nuovamente il PDF.",
       download: "Scarica PDF",
       share: "Condividi / Salva PDF",
       open: "Apri PDF",
@@ -169,11 +173,9 @@
       education: "Formazione",
       skills: "Competenze",
       contact: "Contatti"
-
     },
 
     de: {
-
       overline: "WORKNELY DESIGN STUDIO",
       title: "Professioneller PDF-Export",
       description: "Erstelle ein professionelles PDF mit deiner ausgewählten Vorlage.",
@@ -187,7 +189,10 @@
       ready: "Dein PDF steht zum Download bereit.",
       empty: "Vervollständige deinen Lebenslauf vor dem Export.",
       unavailable: "Die Vorlagenfunktion ist nicht verfügbar.",
-      failed: "PDF konnte nicht erstellt werden. Prüfe deine Internetverbindung.",
+      failed: "PDF konnte nicht erstellt werden.",
+      libraryError: "Die PDF-Bibliothek konnte nicht geladen werden.",
+      fontError: "Die Schriftarten konnten nicht geladen werden.",
+      changed: "Das Dokument wurde geändert. Erstelle das PDF erneut.",
       download: "PDF herunterladen",
       share: "PDF teilen / speichern",
       open: "PDF öffnen",
@@ -200,11 +205,9 @@
       education: "Ausbildung",
       skills: "Fähigkeiten",
       contact: "Kontakt"
-
     },
 
     fr: {
-
       overline: "WORKNELY DESIGN STUDIO",
       title: "Export PDF professionnel",
       description: "Créez un PDF professionnel avec votre modèle sélectionné.",
@@ -218,7 +221,10 @@
       ready: "Votre PDF est prêt à être téléchargé ou partagé.",
       empty: "Complétez votre CV avant de l'exporter.",
       unavailable: "Le moteur de modèles est indisponible.",
-      failed: "Impossible de générer le PDF. Vérifiez votre connexion.",
+      failed: "Impossible de générer le PDF.",
+      libraryError: "Impossible de charger la bibliothèque PDF. Réessayez.",
+      fontError: "Impossible de charger les polices du document.",
+      changed: "Le document a été modifié. Générez à nouveau le PDF.",
       download: "Télécharger le PDF",
       share: "Partager / Enregistrer le PDF",
       open: "Ouvrir le PDF",
@@ -231,11 +237,9 @@
       education: "Formation",
       skills: "Compétences",
       contact: "Coordonnées"
-
     },
 
     es: {
-
       overline: "WORKNELY DESIGN STUDIO",
       title: "Exportación PDF profesional",
       description: "Crea un PDF profesional con tu plantilla seleccionada.",
@@ -249,7 +253,10 @@
       ready: "Tu PDF está listo para descargar o compartir.",
       empty: "Completa tu currículum antes de exportarlo.",
       unavailable: "El motor de plantillas no está disponible.",
-      failed: "No se pudo generar el PDF. Comprueba tu conexión.",
+      failed: "No se pudo generar el PDF.",
+      libraryError: "No se pudo cargar la biblioteca PDF. Inténtalo de nuevo.",
+      fontError: "No se pudieron cargar las fuentes del documento.",
+      changed: "El documento ha cambiado. Genera el PDF de nuevo.",
       download: "Descargar PDF",
       share: "Compartir / Guardar PDF",
       open: "Abrir PDF",
@@ -262,15 +269,12 @@
       education: "Formación",
       skills: "Competencias",
       contact: "Contacto"
-
     }
-
   };
 
   /* LANGUAGE */
 
   function normalizeLanguage(value) {
-
     const code = String(value || "")
       .toLowerCase()
       .split("-")[0];
@@ -278,471 +282,357 @@
     return LANGUAGES.includes(code)
       ? code
       : "en";
-
   }
 
   function getLanguage() {
-
     let stored = null;
 
     try {
-
       stored = localStorage.getItem(
         "worknely.language"
       );
-
     } catch {}
 
     return normalizeLanguage(
-
       window.WorknelyLocalization
         ?.getLanguage?.() ||
-
       stored ||
-
       document.documentElement.lang ||
-
       "en"
-
     );
-
   }
 
   function t(key, language = getLanguage()) {
-
     return translations[language]?.[key] ||
-
       translations.en[key] ||
-
       key;
-
   }
 
   function getDocumentLanguage() {
-
     return normalizeLanguage(
-
       window.WorknelyLivePreview
         ?.getDocumentLanguage?.() ||
-
       getLanguage()
-
     );
-
   }
 
   /* SAFE TEXT */
 
   function escapeHTML(value) {
-
     return String(value ?? "")
-
       .replace(/&/g, "&amp;")
       .replace(/</g, "&lt;")
       .replace(/>/g, "&gt;")
       .replace(/"/g, "&quot;")
       .replace(/'/g, "&#39;");
-
   }
 
   function normalizeFilename(value) {
-
     return String(value || "")
-
       .replace(/[<>:"/\\|?*\u0000-\u001f]/g, " ")
-
       .replace(/\.pdf$/i, "")
-
       .replace(/\s+/g, " ")
-
       .trim()
-
       .slice(0, 100)
-
       || t("defaultName");
-
   }
 
   function normalizeColor(value) {
-
     const color = String(value || "")
       .toLowerCase();
 
     return /^#[0-9a-f]{6}$/.test(color)
-
       ? color
-
       : "#242424";
-
   }
 
   function getEngine() {
-
     return window.WorknelyTemplates || null;
-
   }
 
   function engineAvailable() {
-
     const engine = getEngine();
 
     return Boolean(
-
       engine &&
-
       typeof engine.getState === "function" &&
-
       typeof engine.getTemplate === "function"
-
     );
-
   }
 
-  /* RESUME DATA RECOVERY */
+  /* RESUME DATA */
 
   function normalizeContent(content = {}) {
-
     const result = {};
 
     Object.keys(FIELD_MAP).forEach(key => {
-
       result[key] =
-
         typeof content?.[key] === "string"
-
           ? content[key].trim()
-
           : "";
-
     });
 
     return result;
-
   }
 
   function hasContent(content) {
-
     return Object.keys(FIELD_MAP).some(key =>
-
       typeof content?.[key] === "string" &&
-
       content[key].trim().length > 0
-
     );
-
   }
 
   function readBuilderFields() {
-
     const content = {};
-
     let found = false;
 
     Object.entries(FIELD_MAP).forEach(
-
       ([key, id]) => {
-
         const field = document.getElementById(id);
 
         if (field) {
-
           found = true;
-
           content[key] = String(
-
             field.value || ""
-
           ).trim();
-
         }
-
       }
-
     );
 
     return {
-
       found,
-
       content: normalizeContent(content)
-
     };
-
   }
 
   function readResume() {
-
-    /*
-     * The actual builder fields are the
-     * primary source of truth.
-     */
-
     const builder = readBuilderFields();
 
     if (builder.found) {
-
       return builder.content;
-
     }
 
     if (typeof customReader === "function") {
-
       try {
-
         const content = normalizeContent(
-
           customReader()
-
         );
 
         if (hasContent(content)) {
-
           return content;
-
         }
-
       } catch {}
-
     }
 
     try {
-
       return normalizeContent(
-
         window.WorknelyLivePreview
-
           ?.readResume?.() || {}
-
       );
-
     } catch {
-
       return normalizeContent();
-
     }
-
   }
 
-  /* PDF LIBRARY */
+  /* ERROR MANAGEMENT */
+
+  function createError(code) {
+    const error = new Error(code);
+    error.worknelyCode = code;
+    return error;
+  }
+
+  /* PDF LIBRARY RECOVERY */
+
+  function loadScript(url) {
+    return new Promise((resolve, reject) => {
+      const script = document.createElement("script");
+
+      let finished = false;
+
+      const timer = setTimeout(() => {
+        finish(false);
+      }, 15000);
+
+      function finish(success) {
+        if (finished) return;
+
+        finished = true;
+
+        clearTimeout(timer);
+
+        script.onload = null;
+        script.onerror = null;
+
+        if (
+          success &&
+          typeof window.jspdf?.jsPDF === "function"
+        ) {
+          resolve(window.jspdf.jsPDF);
+        } else {
+          script.remove();
+          reject(createError("libraryError"));
+        }
+      }
+
+      script.src = url;
+      script.async = true;
+      script.crossOrigin = "anonymous";
+      script.referrerPolicy = "no-referrer";
+
+      script.onload = () => finish(true);
+      script.onerror = () => finish(false);
+
+      document.head.appendChild(script);
+    });
+  }
 
   function loadPDFLibrary() {
-
-    if (window.jspdf?.jsPDF) {
-
+    if (typeof window.jspdf?.jsPDF === "function") {
       return Promise.resolve(
-
         window.jspdf.jsPDF
-
       );
-
     }
 
     if (libraryPromise) {
-
       return libraryPromise;
-
     }
 
-    libraryPromise = new Promise(
-
-      (resolve, reject) => {
-
-        const script = document.createElement(
-
-          "script"
-
-        );
-
-        script.src = PDF_LIBRARY;
-
-        script.async = true;
-
-        script.crossOrigin = "anonymous";
-
-        script.onload = () => {
-
-          if (window.jspdf?.jsPDF) {
-
-            resolve(window.jspdf.jsPDF);
-
-          } else {
-
-            script.remove();
-
-            reject(new Error(
-
-              "PDF library unavailable"
-
-            ));
-
-          }
-
-        };
-
-        script.onerror = () => {
-
-          script.remove();
-
-          reject(new Error(
-
-            "PDF library loading failed"
-
-          ));
-
-        };
-
-        document.head.appendChild(script);
-
+    libraryPromise = (async () => {
+      for (const source of PDF_LIBRARIES) {
+        try {
+          return await loadScript(source);
+        } catch {}
       }
 
-    ).catch(error => {
-
+      throw createError("libraryError");
+    })().catch(error => {
       libraryPromise = null;
-
       throw error;
-
     });
 
     return libraryPromise;
-
   }
 
   /* UNICODE FONT SUPPORT */
 
-  const FONT_BASE =
-
-    "https://cdn.jsdelivr.net/gh/notofonts/noto-fonts@main/hinted/ttf/NotoSans/";
-
   function bufferToBase64(buffer) {
-
     const bytes = new Uint8Array(buffer);
-
     let binary = "";
 
-    const chunkSize = 8192;
-
     for (
-
       let i = 0;
-
       i < bytes.length;
-
-      i += chunkSize
-
+      i += 8192
     ) {
-
       binary += String.fromCharCode(
-
-        ...bytes.subarray(i, i + chunkSize)
-
+        ...bytes.subarray(i, i + 8192)
       );
-
     }
 
     return btoa(binary);
-
   }
 
   async function fetchFont(filename) {
+    for (const base of FONT_SOURCES) {
+      const controller = new AbortController();
 
-    const response = await fetch(
+      const timer = setTimeout(
+        () => controller.abort(),
+        15000
+      );
 
-      FONT_BASE + filename,
+      try {
+        const response = await fetch(
+          base + filename,
+          {
+            credentials: "omit",
+            referrerPolicy: "no-referrer",
+            signal: controller.signal
+          }
+        );
 
-      {
+        if (!response.ok) {
+          throw createError("fontError");
+        }
 
-        credentials: "omit",
+        const buffer = await response.arrayBuffer();
 
-        referrerPolicy: "no-referrer"
+        if (buffer.byteLength < 1000) {
+          throw createError("fontError");
+        }
 
+        const signature = new DataView(buffer)
+          .getUint32(0);
+
+        if (signature !== 0x00010000) {
+          throw createError("fontError");
+        }
+
+        return bufferToBase64(buffer);
+
+      } catch {
+        // Try the next available font source.
+      } finally {
+        clearTimeout(timer);
       }
-
-    );
-
-    if (!response.ok) {
-
-      throw new Error("Font loading failed");
-
     }
 
-    return bufferToBase64(
-
-      await response.arrayBuffer()
-
-    );
-
+    throw createError("fontError");
   }
 
   function loadFonts() {
-
     if (fontPromise) {
-
       return fontPromise;
-
     }
 
     fontPromise = Promise.all([
-
       fetchFont("NotoSans-Regular.ttf"),
-
       fetchFont("NotoSans-Bold.ttf")
-
     ]).catch(error => {
-
       fontPromise = null;
-
       throw error;
-
     });
 
     return fontPromise;
-
   }
 
   function registerFonts(pdf, fonts) {
-
     pdf.addFileToVFS(
-
       "NotoSans-Regular.ttf",
-
       fonts[0]
-
     );
 
     pdf.addFont(
-
       "NotoSans-Regular.ttf",
-
       "WorknelySans",
-
       "normal"
-
     );
 
     pdf.addFileToVFS(
-
       "NotoSans-Bold.ttf",
-
       fonts[1]
-
     );
 
     pdf.addFont(
-
       "NotoSans-Bold.ttf",
-
       "WorknelySans",
-
       "bold"
-
     );
 
+    const registered = pdf.getFontList();
+
+    if (
+      !registered.WorknelySans?.includes("normal") ||
+      !registered.WorknelySans?.includes("bold")
+    ) {
+      throw createError("fontError");
+    }
   }
 
   /* INTERFACE STYLES */
 
   const CSS = `
-
     .wn-pdf-export,
     .wn-pdf-export * {
       box-sizing:border-box;
@@ -949,7 +839,6 @@
     }
 
     @media(max-width:600px) {
-
       .wn-pdf-export {
         padding:12px;
       }
@@ -958,85 +847,60 @@
       .wn-pdf-details {
         grid-template-columns:1fr;
       }
-
     }
 
     @media print {
-
       .wn-pdf-export {
         display:none!important;
       }
-
     }
-
   `;
 
   function installStyles() {
-
     if (document.getElementById(STYLE_ID)) {
-
       return;
-
     }
 
-    const style = document.createElement(
-
-      "style"
-
-    );
+    const style = document.createElement("style");
 
     style.id = STYLE_ID;
-
     style.textContent = CSS;
 
     document.head.appendChild(style);
-
   }
 
   /* STATUS */
 
   function setStatus(key = "") {
-
     statusKey = key;
 
     const status = root?.querySelector(
-
       "[data-wn-pdf-status]"
-
     );
 
     if (!status) return;
 
     status.textContent = key ? t(key) : "";
-
     status.hidden = !key;
 
     status.dataset.type = [
-
       "empty",
-
       "unavailable",
-
       "failed",
-
+      "libraryError",
+      "fontError",
+      "changed",
       "shareFailed"
-
     ].includes(key)
-
       ? "error"
-
       : "info";
-
   }
 
   function setBusy(value) {
-
     exporting = Boolean(value);
 
     const button = root?.querySelector(
-
       "[data-wn-pdf-export]"
-
     );
 
     if (!button) return;
@@ -1044,191 +908,114 @@
     button.disabled = exporting;
 
     button.textContent = exporting
-
       ? t("preparing")
-
       : t("export");
 
     button.setAttribute(
-
       "aria-busy",
-
       String(exporting)
-
     );
-
   }
 
   /* PDF DOCUMENT GENERATION */
 
   function createPDF(
-
     JsPDF,
-
     fonts,
-
     content,
-
     settings
-
   ) {
-
     const pdf = new JsPDF({
-
       orientation: "portrait",
-
       unit: "mm",
-
       format: settings.paperFormat,
-
       compress: true,
-
       putOnlyUsedFonts: true
-
     });
 
     registerFonts(pdf, fonts);
 
     const width = pdf.internal.pageSize
-
       .getWidth();
 
     const height = pdf.internal.pageSize
-
       .getHeight();
 
     const margin = 15;
-
     const bodyWidth = width - margin * 2;
-
     const bottom = height - 16;
 
     const template = settings.templateId;
-
     const accent = settings.accentColor;
 
     const isATS = template === "ats";
-
     const isClassic = template === "classic";
-
     const isExecutive = template === "executive";
-
     const isModern = template === "modern";
-
     const isCreative = template === "creative";
 
     const headingColor = isATS
-
       ? "#242424"
-
       : accent;
 
     let y = margin;
 
-    let pageNumber = 1;
-
     pdf.setProperties({
-
       title: settings.filename,
-
       author: content.fullName || "",
-
       subject: content.professionalTitle || "",
-
       creator: "Worknely"
-
     });
 
     function setFont(
-
       size,
-
       weight = "normal",
-
       color = "#242424"
-
     ) {
-
       pdf.setFont(
-
         "WorknelySans",
-
         weight
-
       );
 
       pdf.setFontSize(size);
-
       pdf.setTextColor(color);
-
     }
 
     function drawPageDecoration() {
-
       if (isModern) {
-
         pdf.setFillColor(accent);
 
         pdf.rect(
-
           0, 0, width, 4, "F"
-
         );
-
       }
 
       if (isCreative) {
-
         pdf.setFillColor(accent);
 
         pdf.rect(
-
           0, 0, 4, height, "F"
-
         );
-
       }
-
     }
 
     function newPage() {
-
       pdf.addPage();
-
-      pageNumber += 1;
-
       drawPageDecoration();
-
       y = margin;
-
     }
 
     function ensureSpace(required) {
-
       if (y + required > bottom) {
-
         newPage();
-
       }
-
     }
 
-    function writeText(
-
-      value,
-
-      options = {}
-
-    ) {
-
+    function writeText(value, options = {}) {
       const text = String(value || "")
-
         .replace(/\r\n/g, "\n")
-
         .replace(/\r/g, "\n")
-
         .replace(/\t/g, "    ")
-
         .trim();
 
       if (!text) return;
@@ -1236,301 +1023,211 @@
       const size = options.size || 10;
 
       const lineHeight =
-
         options.lineHeight || 4.8;
 
       const align = options.align || "left";
-
       const weight = options.weight || "normal";
-
       const color = options.color || "#242424";
 
-      const paragraphs = text.split("\n");
+      const left = options.left ?? margin;
 
-      paragraphs.forEach(paragraph => {
+      const availableWidth =
+        options.width ?? bodyWidth;
 
+      text.split("\n").forEach(paragraph => {
         if (!paragraph.trim()) {
-
           ensureSpace(2.5);
-
           y += 2.5;
-
           return;
-
         }
 
         setFont(size, weight, color);
 
         const lines = pdf.splitTextToSize(
-
           paragraph.trim(),
-
-          bodyWidth
-
+          availableWidth
         );
 
         lines.forEach(line => {
-
           ensureSpace(lineHeight);
 
           setFont(size, weight, color);
 
           const x = align === "center"
-
-            ? width / 2
-
-            : margin;
+            ? left + availableWidth / 2
+            : left;
 
           pdf.text(
-
             line,
-
             x,
-
             y,
-
             { align }
-
           );
 
           y += lineHeight;
-
         });
-
       });
-
     }
 
     function divider(color = "#d5d5d5") {
-
       pdf.setDrawColor(color);
-
       pdf.setLineWidth(0.3);
 
       pdf.line(
-
         margin,
-
         y,
-
         width - margin,
-
         y
-
       );
-
     }
 
     function section(key, value) {
-
       if (!String(value || "").trim()) {
-
         return;
-
       }
 
-      ensureSpace(19);
+      ensureSpace(23);
 
       y += 4;
 
       writeText(
-
         t(key, settings.documentLanguage)
-
           .toLocaleUpperCase(
-
             settings.documentLanguage
-
           ),
-
         {
-
           size: 11,
-
           weight: "bold",
-
           color: headingColor,
-
           lineHeight: 5.5
-
         }
-
       );
 
       divider(
-
         isATS ? "#bcbcbc" : accent
-
       );
 
       y += 5;
 
       writeText(value, {
-
         size: 10,
-
         lineHeight: 4.8
-
       });
 
       y += 2;
-
     }
 
     drawPageDecoration();
 
     /* HEADER */
 
-    if (isExecutive) {
+    const headerLeft = isExecutive
+      ? margin + 5
+      : margin;
 
+    const headerWidth = width
+      - headerLeft
+      - margin;
+
+    if (isExecutive) {
       pdf.setFillColor(accent);
 
       pdf.rect(
-
         margin,
-
         y - 4,
-
         2,
-
         18,
-
         "F"
-
       );
 
       y += 3;
-
     }
 
     writeText(
-
       content.fullName || settings.filename,
-
       {
-
         size: isClassic ? 23 : 25,
-
         weight: "bold",
-
         color: isATS
-
           ? "#171717"
-
           : accent,
-
         align: isClassic
-
           ? "center"
-
           : "left",
-
-        lineHeight: 10
-
+        lineHeight: 10,
+        left: headerLeft,
+        width: headerWidth
       }
-
     );
 
     if (content.professionalTitle) {
-
       writeText(
-
         content.professionalTitle,
-
         {
-
           size: 12,
-
           weight: "bold",
-
           color: "#343434",
-
           align: isClassic
-
             ? "center"
-
             : "left",
-
-          lineHeight: 6
-
+          lineHeight: 6,
+          left: headerLeft,
+          width: headerWidth
         }
-
       );
-
     }
 
     y += 2;
 
     if (content.contact) {
-
       writeText(content.contact, {
-
         size: 9,
-
         color: "#505050",
-
         align: isClassic
-
           ? "center"
-
           : "left",
-
-        lineHeight: 4.5
-
+        lineHeight: 4.5,
+        left: headerLeft,
+        width: headerWidth
       });
-
     }
 
     y += 3;
 
     divider(
-
       isATS ? "#777777" : accent
-
     );
 
     y += 4;
 
-    /* DOCUMENT SECTIONS */
-
     section("summary", content.summary);
-
     section("experience", content.experience);
-
     section("education", content.education);
-
     section("skills", content.skills);
 
     return pdf;
-
   }
 
   /* PREPARED FILE MANAGEMENT */
 
   function clearPreparedFile() {
+    documentRevision += 1;
 
     if (preparedURL) {
-
       URL.revokeObjectURL(preparedURL);
-
     }
 
     preparedURL = null;
-
     preparedFile = null;
 
     updateFileActions();
-
   }
 
   function updateFileActions() {
-
     if (!root) return;
 
     const actions = root.querySelector(
-
       "[data-wn-pdf-actions]"
-
     );
 
     if (!actions) return;
@@ -1538,339 +1235,237 @@
     actions.hidden = !preparedFile;
 
     const download = actions.querySelector(
-
       "[data-wn-pdf-download]"
-
     );
 
     const open = actions.querySelector(
-
       "[data-wn-pdf-open]"
-
     );
 
     const share = actions.querySelector(
-
       "[data-wn-pdf-share]"
-
     );
 
     if (!preparedFile || !preparedURL) {
-
       download?.removeAttribute("href");
-
       open?.removeAttribute("href");
-
       return;
-
     }
 
-    download.href = preparedURL;
+    if (download) {
+      download.href = preparedURL;
+      download.download = preparedFile.name;
+    }
 
-    download.download = preparedFile.name;
-
-    open.href = preparedURL;
+    if (open) {
+      open.href = preparedURL;
+    }
 
     if (share) {
-
       let canShare = false;
 
       try {
-
         canShare = Boolean(
-
           navigator.share &&
-
           navigator.canShare?.({
-
             files: [preparedFile]
-
           })
-
         );
-
       } catch {}
 
       share.hidden = !canShare;
-
     }
-
   }
 
   /* NATIVE iOS SHARING */
 
   async function sharePDF() {
-
     if (!preparedFile) return;
 
     try {
-
       if (
-
         !navigator.share ||
-
         !navigator.canShare?.({
-
           files: [preparedFile]
-
         })
-
       ) {
-
         setStatus("shareFailed");
-
         return;
-
       }
 
       await navigator.share({
-
         files: [preparedFile],
-
         title: preparedFile.name
-
       });
 
     } catch (error) {
-
       if (error?.name !== "AbortError") {
-
         setStatus("shareFailed");
-
       }
-
     }
-
   }
 
   /* EXPORT API */
 
   async function exportResume(options = {}) {
-
     if (exporting) {
-
       return {
-
         ok: false,
-
         reason: "busy"
-
       };
-
     }
 
     if (!engineAvailable()) {
-
       setStatus("unavailable");
 
       return {
-
         ok: false,
-
         reason: "unavailable"
-
       };
-
     }
 
     const engine = getEngine();
-
     const state = engine.getState();
 
     const content = options.content
-
       ? normalizeContent(options.content)
-
       : readResume();
 
     if (!hasContent(content)) {
-
       clearPreparedFile();
-
       setStatus("empty");
 
       return {
-
         ok: false,
-
         reason: "empty"
-
       };
-
     }
 
     const filenameInput = root?.querySelector(
-
       "[data-wn-pdf-filename]"
-
     );
 
     const selectedFormat =
-
       options.paperFormat || paperFormat;
 
     const requestedTemplate =
-
       options.templateId || state.templateId;
 
     const validTemplates = [
-
       "ats",
-
       "classic",
-
       "executive",
-
       "modern",
-
       "creative"
-
     ];
 
     const templateId = validTemplates.includes(
-
       requestedTemplate
-
     )
-
       ? requestedTemplate
-
       : "ats";
 
     const template = engine.getTemplate(
-
       templateId
-
     );
 
     const settings = {
-
       templateId,
 
       accentColor: normalizeColor(
-
         options.accentColor ||
-
         (
-
           templateId === state.templateId
-
             ? state.accentColor
-
             : template?.accent
-
         )
-
       ),
 
       documentLanguage: normalizeLanguage(
-
         options.documentLanguage ||
-
         getDocumentLanguage()
-
       ),
 
       paperFormat:
-
         Object.prototype.hasOwnProperty.call(
-
           FORMATS,
-
           selectedFormat
-
         )
-
           ? selectedFormat
-
           : "a4",
 
       filename: normalizeFilename(
-
         options.filename ||
-
         filenameInput?.value ||
-
         content.fullName ||
-
         t("defaultName")
-
       )
-
     };
 
     clearPreparedFile();
 
-    setBusy(true);
+    const revision = documentRevision;
 
+    lastError = null;
+
+    setBusy(true);
     setStatus("");
 
     try {
-
       const [JsPDF, fonts] =
-
         await Promise.all([
-
           loadPDFLibrary(),
-
           loadFonts()
-
         ]);
 
+      if (revision !== documentRevision) {
+        throw createError("changed");
+      }
+
       const pdf = createPDF(
-
         JsPDF,
-
         fonts,
-
         content,
-
         settings
-
       );
 
       const blob = pdf.output("blob");
 
-      const filename =
+      if (!blob || blob.size < 100) {
+        throw createError("failed");
+      }
 
+      const signature = await blob
+        .slice(0, 5)
+        .text();
+
+      if (signature !== "%PDF-") {
+        throw createError("failed");
+      }
+
+      if (revision !== documentRevision) {
+        throw createError("changed");
+      }
+
+      const filename =
         settings.filename + ".pdf";
 
       const file = new File(
-
         [blob],
-
         filename,
-
         {
-
           type: "application/pdf"
-
         }
-
       );
 
-      /*
-       * Dashboard and other consumers
-       * may request a file without mounting
-       * the export interface.
-       */
-
       if (options.returnFile === true) {
-
         return {
-
           ok: true,
-
           file,
-
           blob,
-
           filename,
-
           paperFormat: settings.paperFormat
-
         };
-
       }
 
       preparedFile = file;
@@ -1878,195 +1473,136 @@
       preparedURL = URL.createObjectURL(file);
 
       updateFileActions();
-
       setStatus("ready");
 
       document.dispatchEvent(
-
         new CustomEvent(
-
           "worknely:pdfprepared",
-
           {
-
             detail: {
-
               version: VERSION,
-
               templateId: settings.templateId,
-
               paperFormat: settings.paperFormat,
-
               documentLanguage:
-
                 settings.documentLanguage
-
             }
-
           }
-
         )
-
       );
 
       return {
-
         ok: true,
-
         file,
-
         blob,
-
         filename,
-
         paperFormat: settings.paperFormat
-
       };
 
     } catch (error) {
+      const code = [
+        "libraryError",
+        "fontError",
+        "changed",
+        "failed"
+      ].includes(error?.worknelyCode)
+        ? error.worknelyCode
+        : "failed";
+
+      lastError = code;
 
       console.warn(
-
-        "Worknely PDF generation failed:",
-
+        "Worknely PDF:",
+        code,
         error?.name || "Error"
-
       );
 
-      setStatus("failed");
+      setStatus(code);
 
       return {
-
         ok: false,
-
-        reason: "failed"
-
+        reason: code
       };
 
     } finally {
-
       setBusy(false);
-
     }
-
   }
 
   /* DESIGN SYNCHRONIZATION */
 
   function refresh() {
-
     if (!root || !engineAvailable()) {
-
       return false;
-
     }
 
     const engine = getEngine();
-
     const state = engine.getState();
 
     const template = engine.getTemplate(
-
       state.templateId
-
     );
 
     const templateName = root.querySelector(
-
       "[data-wn-pdf-template]"
-
     );
 
     const color = root.querySelector(
-
       "[data-wn-pdf-color]"
-
     );
 
     const colorValue = root.querySelector(
-
       "[data-wn-pdf-color-value]"
-
     );
 
     const language = root.querySelector(
-
       "[data-wn-pdf-language]"
-
     );
 
     const filename = root.querySelector(
-
       "[data-wn-pdf-filename]"
-
     );
 
     if (templateName) {
-
       templateName.textContent =
-
         template?.name || state.templateId;
-
     }
 
     if (color) {
-
       color.style.backgroundColor =
-
         normalizeColor(state.accentColor);
-
     }
 
     if (colorValue) {
-
       colorValue.textContent =
-
         normalizeColor(state.accentColor)
-
           .toUpperCase();
-
     }
 
     if (language) {
-
       language.textContent =
-
         languageNames[getDocumentLanguage()];
-
     }
 
     if (filename && !filename.value.trim()) {
-
       filename.placeholder = normalizeFilename(
-
         readResume().fullName ||
-
         t("defaultName")
-
       );
-
     }
 
     if (
-
       statusKey === "empty" &&
-
       hasContent(readResume())
-
     ) {
-
       setStatus("");
-
     }
 
     return true;
-
   }
 
   /* EXPORT INTERFACE */
 
   function renderInterface() {
-
     if (!root) return false;
 
     installStyles();
@@ -2074,783 +1610,487 @@
     renderedLanguage = getLanguage();
 
     const previousFilename = root.querySelector(
-
       "[data-wn-pdf-filename]"
-
     )?.value || "";
 
     root.setAttribute(
-
       "aria-label",
-
       t("title")
-
     );
 
     if (!engineAvailable()) {
-
       root.textContent = t("unavailable");
-
       return false;
-
     }
 
     root.innerHTML = `
-
       <span class="wn-pdf-overline">
-
         ${escapeHTML(t("overline"))}
-
       </span>
 
       <h2>${escapeHTML(t("title"))}</h2>
 
       <p class="wn-pdf-description">
-
         ${escapeHTML(t("description"))}
-
       </p>
 
       <div class="wn-pdf-settings">
 
         <div class="wn-pdf-field">
-
           <label for="wnPDFPaperFormat">
-
             ${escapeHTML(t("format"))}
-
           </label>
 
           <select
-
             id="wnPDFPaperFormat"
-
             data-wn-pdf-format
-
           >
-
             <option value="a4">
-
               A4 — 210 × 297 mm
-
             </option>
 
             <option value="letter">
-
               US Letter — 8.5 × 11 in
-
             </option>
-
           </select>
-
         </div>
 
         <div class="wn-pdf-field">
-
           <label for="wnPDFDocumentName">
-
             ${escapeHTML(t("filename"))}
-
           </label>
 
           <input
-
             type="text"
-
             id="wnPDFDocumentName"
-
             data-wn-pdf-filename
-
             maxlength="100"
-
             autocomplete="off"
-
           >
-
         </div>
-
       </div>
 
       <div class="wn-pdf-details">
 
         <div>
-
           <span class="wn-pdf-detail-label">
-
             ${escapeHTML(t("template"))}
-
           </span>
 
           <strong
-
             class="wn-pdf-detail-value"
-
             data-wn-pdf-template
-
           ></strong>
-
         </div>
 
         <div>
-
           <span class="wn-pdf-detail-label">
-
             ${escapeHTML(t("color"))}
-
           </span>
 
           <strong class="wn-pdf-detail-value">
-
             <span
-
               class="wn-pdf-color"
-
               data-wn-pdf-color
-
               aria-hidden="true"
-
             ></span>
 
             <span
-
               data-wn-pdf-color-value
-
             ></span>
-
           </strong>
-
         </div>
 
         <div>
-
           <span class="wn-pdf-detail-label">
-
             ${escapeHTML(t("language"))}
-
           </span>
 
           <strong
-
             class="wn-pdf-detail-value"
-
             data-wn-pdf-language
-
           ></strong>
-
         </div>
-
       </div>
 
       <button
-
         type="button"
-
         class="wn-pdf-button"
-
         data-wn-pdf-export
-
       >
-
         ${escapeHTML(t("export"))}
-
       </button>
 
       <p
-
         class="wn-pdf-status"
-
         data-wn-pdf-status
-
         role="status"
-
         aria-live="polite"
-
         hidden
-
       ></p>
 
       <div
-
         class="wn-pdf-file-actions"
-
         data-wn-pdf-actions
-
         hidden
-
       >
 
         <button
-
           type="button"
-
           data-wn-pdf-share
-
         >
-
           ${escapeHTML(t("share"))}
-
         </button>
 
         <a data-wn-pdf-download>
-
           ${escapeHTML(t("download"))}
-
         </a>
 
         <a
-
           data-wn-pdf-open
-
           target="_blank"
-
           rel="noopener noreferrer"
-
         >
-
           ${escapeHTML(t("open"))}
-
         </a>
 
       </div>
 
       <p class="wn-pdf-notice">
-
         ${escapeHTML(t("privacy"))}
-
       </p>
 
       <p class="wn-pdf-notice">
-
         ${escapeHTML(t("note"))}
-
       </p>
-
     `;
 
     root.querySelector(
-
       "[data-wn-pdf-format]"
-
     ).value = paperFormat;
 
     root.querySelector(
-
       "[data-wn-pdf-filename]"
-
     ).value = previousFilename;
 
     refresh();
-
     updateFileActions();
-
     setStatus(statusKey);
-
     setBusy(exporting);
 
     return true;
-
   }
 
   /* PAPER FORMAT */
 
   function setPaperFormat(format) {
-
     if (
-
       !Object.prototype.hasOwnProperty.call(
-
         FORMATS,
-
         format
-
       )
-
     ) {
-
       return false;
-
     }
 
     if (paperFormat !== format) {
-
       clearPreparedFile();
-
       setStatus("");
-
     }
 
     paperFormat = format;
 
     const select = root?.querySelector(
-
       "[data-wn-pdf-format]"
-
     );
 
     if (select) {
-
       select.value = format;
-
     }
 
     return true;
-
   }
 
   /* USER INTERACTIONS */
 
   function handleClick(event) {
-
     if (!(event.target instanceof Element)) {
-
       return;
-
     }
 
     const exportButton = event.target.closest(
-
       "[data-wn-pdf-export]"
-
     );
 
     const shareButton = event.target.closest(
-
       "[data-wn-pdf-share]"
-
     );
 
     if (
-
       exportButton &&
-
-      root.contains(exportButton)
-
+      root?.contains(exportButton)
     ) {
-
+      event.preventDefault();
       exportResume();
-
     }
 
     if (
-
       shareButton &&
-
-      root.contains(shareButton)
-
+      root?.contains(shareButton)
     ) {
-
+      event.preventDefault();
       sharePDF();
-
     }
-
   }
 
   function handleChange(event) {
-
     if (
-
       event.target.matches?.(
-
         "[data-wn-pdf-format]"
-
       )
-
     ) {
-
       setPaperFormat(event.target.value);
-
     }
-
   }
 
   function handleInput(event) {
-
     if (
-
       event.target.matches?.(
-
         "[data-wn-pdf-filename]"
-
       )
-
     ) {
-
       clearPreparedFile();
-
       setStatus("");
-
     }
-
   }
 
   /* MOUNTING */
 
   function mount(
-
     target = "#" + ROOT_ID,
-
     options = {}
-
   ) {
-
     let element;
 
     try {
-
       element = typeof target === "string"
-
         ? document.querySelector(target)
-
         : target;
-
     } catch {
-
       return false;
-
     }
 
     if (!element || element.nodeType !== 1) {
-
       return false;
-
     }
 
     if (root && root !== element) {
-
       unmount();
-
     }
 
     if (root !== element) {
-
       root = element;
 
       root.classList.add("wn-pdf-export");
 
-      root.setAttribute("role", "region");
+      root.setAttribute(
+        "role",
+        "region"
+      );
 
       root.addEventListener(
-
         "click",
-
         handleClick
-
       );
 
       root.addEventListener(
-
         "change",
-
         handleChange
-
       );
 
       root.addEventListener(
-
         "input",
-
         handleInput
-
       );
-
     }
 
     if (
-
       typeof options.readContent === "function"
-
     ) {
-
       customReader = options.readContent;
-
     }
 
     const ready = renderInterface();
 
     if (ready) {
-
       document.dispatchEvent(
-
         new CustomEvent(
-
           "worknely:pdfexportready",
-
           {
-
             detail: {
-
               version: VERSION
-
             }
-
           }
-
         )
-
       );
-
     }
 
     return ready;
-
   }
 
   function unmount() {
-
     if (!root) return false;
 
     clearPreparedFile();
 
     root.removeEventListener(
-
       "click",
-
       handleClick
-
     );
 
     root.removeEventListener(
-
       "change",
-
       handleChange
-
     );
 
     root.removeEventListener(
-
       "input",
-
       handleInput
-
     );
 
     root.innerHTML = "";
 
-    root.classList.remove("wn-pdf-export");
+    root.classList.remove(
+      "wn-pdf-export"
+    );
 
     root.removeAttribute("role");
-
     root.removeAttribute("aria-label");
 
     root = null;
-
     customReader = null;
-
     statusKey = "";
 
     return true;
-
   }
 
   /* SYNCHRONIZATION EVENTS */
 
   function refreshLanguage() {
-
     if (
-
       root &&
-
       renderedLanguage !== getLanguage()
-
     ) {
-
       renderInterface();
-
     }
-
   }
 
   function invalidateDocument() {
-
     clearPreparedFile();
-
     setStatus("");
-
     refresh();
-
   }
 
   document.addEventListener(
-
     "worknely:languagechange",
-
     refreshLanguage
-
   );
 
   document.addEventListener(
-
     "worknely:localizationready",
-
     refreshLanguage
-
   );
 
-  document.addEventListener(
-
+  [
     "worknely:templatechange",
-
-    invalidateDocument
-
-  );
-
-  document.addEventListener(
-
     "worknely:resumechange",
-
-    invalidateDocument
-
-  );
-
-  document.addEventListener(
-
     "worknely:designrestored",
-
-    invalidateDocument
-
-  );
-
-  document.addEventListener(
-
     "worknely:designcontextcleared",
-
-    invalidateDocument
-
-  );
+    "worknely:accountresumeloaded"
+  ].forEach(eventName => {
+    document.addEventListener(
+      eventName,
+      invalidateDocument
+    );
+  });
 
   document.addEventListener(
-
     "worknely:previewready",
-
     refresh
-
   );
 
   document.addEventListener(
-
     "input",
-
     event => {
-
       if (
-
         Object.values(FIELD_MAP)
-
           .includes(event.target?.id)
-
       ) {
-
         invalidateDocument();
-
       }
-
     }
-
   );
 
   document.addEventListener(
-
     "change",
-
     event => {
-
       if (
-
         event.target.matches?.(
-
           "[data-preview-language]"
-
         )
-
       ) {
-
         queueMicrotask(
-
           invalidateDocument
-
         );
-
       }
-
     }
-
   );
 
   /* AUTOMATIC MOUNT */
 
   function autoMount() {
-
     const element = document.getElementById(
-
       ROOT_ID
-
     );
 
     if (element && root !== element) {
-
       return mount(element);
-
     }
 
     return false;
-
   }
 
   document.addEventListener(
-
     "worknely:templatesready",
-
     () => {
-
       if (root) {
-
         renderInterface();
-
       } else {
-
         autoMount();
-
       }
-
     }
-
   );
 
   window.addEventListener(
-
     "pageshow",
-
     () => {
-
       refreshLanguage();
-
       refresh();
-
     }
-
   );
 
   /* PUBLIC API */
 
   window.WorknelyPDFExport = Object.freeze({
-
     version: VERSION,
 
     mount,
-
     unmount,
-
     refresh,
-
     exportResume,
-
     setPaperFormat,
-
     normalizeFilename,
-
     readResume,
-
     clearPreparedFile,
 
     formats: FORMATS,
@@ -2858,62 +2098,41 @@
     isMounted: () => Boolean(root),
 
     getState: () => ({
-
       version: VERSION,
-
       mounted: Boolean(root),
-
       paperFormat,
-
       exporting,
-
       documentLanguage: getDocumentLanguage(),
-
-      fileReady: Boolean(preparedFile)
-
+      fileReady: Boolean(preparedFile),
+      lastError
     })
-
   });
 
   /* INITIALIZATION */
 
   function initialize() {
-
     autoMount();
 
     console.info(
-
       "Worknely V" +
-
       VERSION +
-
       " Professional PDF Export ready."
-
     );
-
   }
 
   if (document.readyState === "loading") {
-
     document.addEventListener(
-
       "DOMContentLoaded",
-
       initialize,
-
       { once: true }
-
     );
-
   } else {
-
     initialize();
-
   }
 
 })();
 
 /*
- * END WORKNELY V7.16.11
- * PROFESSIONAL PDF EXPORT RECOVERY
+ * END WORKNELY V7.16.12
+ * PROFESSIONAL PDF STABILITY FIX
  */
