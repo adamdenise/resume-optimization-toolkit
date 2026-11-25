@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,7 +17,7 @@
 <link rel="canonical" href="https://adamdenise.github.io/resume-optimization-toolkit/">
 <link rel="icon" type="image/svg+xml" href="worknely-favicon.svg">
 
-<!-- WORKNELY V7.16.13 PROFESSIONAL DESIGN STUDIO -->
+<!-- WORKNELY V7.17.8.3 CAREER INTELLIGENCE -->
 
 <link rel="stylesheet" href="style.css?v=7.12.1">
 <link rel="stylesheet" href="worknely-theme.css?v=7.12.1">
@@ -391,6 +392,141 @@ body .shell:not(.wn-home-active) .wn-pro-banner {
   display:none!important;
 }
 
+/* CAREER INTELLIGENCE LANDING */
+
+#wnCareerLanding {
+  box-sizing:border-box;
+  position:relative;
+  display:grid;
+  grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);
+  gap:24px;
+  align-items:center;
+  width:100%;
+  max-width:1020px;
+  margin:24px auto;
+  padding:30px;
+  border:1px solid #e5d9ff;
+  border-radius:22px;
+  background:linear-gradient(135deg,#f6f1ff,#fff,#fff0fa);
+  box-shadow:0 10px 32px rgba(84,36,255,.06);
+}
+
+#wnCareerLanding h2 {
+  margin:10px 0;
+  color:var(--wn-ink);
+  font-size:clamp(24px,4vw,36px);
+  line-height:1.15;
+  letter-spacing:-.8px;
+}
+
+#wnCareerLanding p {
+  color:var(--wn-muted);
+  font-size:14px;
+  line-height:1.65;
+  margin:0 0 18px;
+}
+
+.wn-career-kicker {
+  display:inline-block;
+  color:var(--wn-purple);
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:1.3px;
+}
+
+#wnCareerLanding .wn-career-launch {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  box-sizing:border-box;
+  min-height:46px;
+  max-width:100%;
+  padding:12px 18px;
+  border-radius:11px;
+  background:var(--wn-gradient);
+  color:#fff;
+  font-size:13px;
+  font-weight:750;
+  text-decoration:none;
+  line-height:1.4;
+  text-align:center;
+}
+
+.wn-career-feature-grid {
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:8px;
+}
+
+.wn-career-feature {
+  display:flex;
+  align-items:center;
+  gap:8px;
+  min-width:0;
+  padding:12px 10px;
+  border:1px solid #e9e2f4;
+  border-radius:11px;
+  background:#fff;
+  color:var(--wn-ink);
+  font-size:12px;
+  font-weight:700;
+  line-height:1.4;
+  overflow-wrap:anywhere;
+}
+
+.wn-career-feature svg {
+  flex:0 0 18px;
+  width:18px;
+  height:18px;
+  color:var(--wn-purple);
+}
+
+.wn-career-feature:last-child {
+  grid-column:1/-1;
+}
+
+#career-intelligence,
+#wnCareerIntelligence {
+  width:100%;
+  min-width:0;
+  max-width:100%;
+  box-sizing:border-box;
+  overflow-wrap:anywhere;
+}
+
+#career-intelligence {
+  scroll-margin-top:12px;
+}
+
+#wnCareerIntelligence input,
+#wnCareerIntelligence select,
+#wnCareerIntelligence textarea {
+  max-width:100%;
+  box-sizing:border-box;
+}
+
+#wnCareerIntelligence button {
+  touch-action:manipulation;
+}
+
+#wnCareerIntegrationStatus {
+  padding:12px;
+  margin:10px 0;
+  border:1px solid #e1d7ff;
+  border-radius:10px;
+  background:#f3efff;
+  color:#5424ff;
+  font-size:13px;
+  line-height:1.5;
+}
+
+#wnCareerIntegrationStatus[data-error="true"] {
+  background:#fff1f2;
+  border-color:#fecdd3;
+  color:#b42332;
+}
+
 /* WORKSPACE NAVIGATION */
 
 .wn-tool-navigation {
@@ -597,7 +733,6 @@ body .shell .wn-builder-secondary button {
 /* MOBILE OPTIMIZATION */
 
 @media(max-width:700px) {
-
   body .shell #wnLanding .wn-landing-actions {
     justify-content:center;
     margin-top:18px;
@@ -610,6 +745,25 @@ body .shell .wn-builder-secondary button {
     min-height:48px;
     font-size:14px;
     padding:13px 18px;
+  }
+
+  #wnCareerLanding {
+    grid-template-columns:minmax(0,1fr);
+    gap:16px;
+    margin:18px auto;
+    padding:20px 16px;
+    border-radius:16px;
+  }
+
+  #wnCareerLanding .wn-career-launch {
+    width:100%;
+    min-height:44px;
+  }
+
+  #wnCareerIntelligence input,
+  #wnCareerIntelligence select,
+  #wnCareerIntelligence textarea {
+    font-size:16px;
   }
 
   .wn-tool-navigation {
@@ -696,7 +850,6 @@ body .shell .wn-builder-secondary button {
 }
 
 @media(max-width:480px) {
-
   html:not([lang="en"]) body .shell header.top {
     flex-wrap:wrap!important;
     row-gap:5px!important;
@@ -719,7 +872,6 @@ body .shell .wn-builder-secondary button {
 }
 
 @media(max-width:390px) {
-
   body .shell header.top {
     gap:5px!important;
   }
@@ -751,7 +903,6 @@ body .shell .wn-builder-secondary button {
 }
 
 @media(max-width:340px) {
-
   body .shell header.top {
     flex-wrap:wrap!important;
     row-gap:4px!important;
@@ -773,7 +924,8 @@ body .shell .wn-builder-secondary button {
   }
 
   .wn-builder-secondary,
-  #results .stats {
+  #results .stats,
+  .wn-career-feature-grid {
     grid-template-columns:1fr;
   }
 }
@@ -784,7 +936,8 @@ body .shell .wn-builder-secondary button {
   }
 
   #wnLanding *,
-  #wnDesignStudio * {
+  #wnDesignStudio *,
+  #wnCareerIntelligence * {
     animation:none!important;
     transition:none!important;
   }
@@ -971,7 +1124,7 @@ body .shell .wn-builder-secondary button {
       </g>
 
       <path d="M365 38l4 11 11 4-11 4-4 11-4-11-11-4 11-4Z" fill="#ec22ad" opacity=".65"/>
-      <path d="M45 87l3 8 8 3-8 3-3 8-3-8-8-3 8-3Z" fill="#5424ff" opacity=".55"/>
+      <path d="M45 87l3 8 8 3-8 3-3 8-3-8-8-3Z" fill="#5424ff" opacity=".55"/>
 
     </svg>
 
@@ -1078,6 +1231,100 @@ body .shell .wn-builder-secondary button {
 
 </section>
 
+<!-- NEW CAREER INTELLIGENCE LANDING SECTION -->
+
+<section id="wnCareerLanding" aria-labelledby="wnCareerLandingTitle">
+
+  <div>
+
+    <span class="wn-career-kicker" id="wnCareerLandingKicker">
+      ✦ ADVANCED CAREER TOOLS
+    </span>
+
+    <h2 id="wnCareerLandingTitle">
+      Career Intelligence
+    </h2>
+
+    <p id="wnCareerLandingDescription">
+      Understand your professional profile, identify skills to develop, prepare for interviews and create a structured plan for your next career move.
+    </p>
+
+    <a class="wn-career-launch" href="#career-intelligence">
+
+      <span id="wnCareerLandingButton">
+        Explore Career Intelligence
+      </span>
+
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M5 12h14m-7-7 7 7-7 7"/>
+      </svg>
+
+    </a>
+
+  </div>
+
+  <div class="wn-career-feature-grid">
+
+    <div class="wn-career-feature">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M3 3v18h18M7 16v-4m5 4V8m5 8V5"/>
+      </svg>
+      <span id="wnCareerFeatureATS">Advanced ATS analysis</span>
+    </div>
+
+    <div class="wn-career-feature">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="11" cy="11" r="7"/>
+        <path d="m16 16 5 5M8 11h6"/>
+      </svg>
+      <span id="wnCareerFeatureSkills">Skill gap analysis</span>
+    </div>
+
+    <div class="wn-career-feature">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M12 3v4m0 10v4M3 12h4m10 0h4"/>
+        <circle cx="12" cy="12" r="6"/>
+      </svg>
+      <span id="wnCareerFeatureOptimize">Resume optimization</span>
+    </div>
+
+    <div class="wn-career-feature">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="9"/>
+        <circle cx="12" cy="12" r="5"/>
+        <circle cx="12" cy="12" r="1"/>
+      </svg>
+      <span id="wnCareerFeatureMatch">Career matching</span>
+    </div>
+
+    <div class="wn-career-feature">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M21 11a8 8 0 0 1-8 8H7l-4 3V11a8 8 0 0 1 8-8h2a8 8 0 0 1 8 8Z"/>
+        <path d="M8 11h8"/>
+      </svg>
+      <span id="wnCareerFeatureInterview">Interview preparation</span>
+    </div>
+
+    <div class="wn-career-feature">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="3" y="5" width="18" height="14" rx="2"/>
+        <path d="m3 7 9 6 9-6"/>
+      </svg>
+      <span id="wnCareerFeatureLetter">Cover letter studio</span>
+    </div>
+
+    <div class="wn-career-feature">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="3" y="5" width="18" height="16" rx="2"/>
+        <path d="M7 3v4m10-4v4M3 10h18m-13 5 3 3 5-5"/>
+      </svg>
+      <span id="wnCareerFeaturePlan">Personal career action plan</span>
+    </div>
+
+  </div>
+
+</section>
+
 <!-- PLATFORM BENEFITS -->
 
 <section class="wn-benefits" aria-label="Worknely benefits">
@@ -1161,6 +1408,10 @@ body .shell .wn-builder-secondary button {
 
   <a href="#comparison" data-wn-tool="comparison" id="wnNavAnalysis">
     Career Analysis
+  </a>
+
+  <a href="#career-intelligence" data-wn-tool="career-intelligence" id="wnNavCareerIntelligence">
+    Career Intelligence
   </a>
 
   <a href="pricing.html" id="wnNavPricing">
@@ -1578,6 +1829,42 @@ body .shell .wn-builder-secondary button {
 
 </section>
 
+<!-- CAREER INTELLIGENCE WORKSPACE -->
+
+<section class="workspace wn-tool-view" id="career-intelligence" data-wn-view="career-intelligence" aria-labelledby="wnCareerWorkspaceTitle" tabindex="-1" hidden>
+
+  <div class="section-head">
+
+    <div>
+
+      <span class="overline" id="wnCareerWorkspaceKicker">
+        WORKNELY CAREER INTELLIGENCE
+      </span>
+
+      <h2 id="wnCareerWorkspaceTitle">
+        Your career intelligence workspace
+      </h2>
+
+      <p id="wnCareerWorkspaceDescription">
+        Analyze your resume, review your skills, prepare your applications and plan your professional development.
+      </p>
+
+    </div>
+
+  </div>
+
+  <p id="wnCareerIntegrationStatus" role="status" aria-live="polite">
+    Loading Career Intelligence…
+  </p>
+
+  <div id="wnCareerIntelligence"></div>
+
+  <noscript>
+    Career Intelligence requires JavaScript.
+  </noscript>
+
+</section>
+
 <!-- WORKNELY ACCOUNT -->
 
 <section id="worknelyAccount" class="workspace" aria-labelledby="accountTitle">
@@ -1646,7 +1933,7 @@ body .shell .wn-builder-secondary button {
 
 </div>
 
-<!-- WORKNELY V7.16.13 FUNCTIONAL MODULES -->
+<!-- EXISTING FUNCTIONAL MODULES -->
 
 <script defer src="worknely-localization.js?v=7.15"></script>
 
@@ -1681,6 +1968,12 @@ body .shell .wn-builder-secondary button {
 <script defer src="worknely-saas-ui.js?v=7.15"></script>
 
 <script type="module" src="worknely-save-account.js?v=7.16.8"></script>
+
+<!-- CAREER INTELLIGENCE INTEGRATION -->
+
+<script defer src="worknely-career-controller.js?v=7.17.8.1"></script>
+
+<script defer src="worknely-career-interface.js?v=7.17.8.2"></script>
 
 <!-- LANGUAGE FLAG SYNCHRONIZATION -->
 
@@ -1778,7 +2071,7 @@ body .shell .wn-builder-secondary button {
 })();
 </script>
 
-<!-- WORKSPACE ROUTER -->
+<!-- WORKSPACE ROUTER V7.17.8.3 -->
 
 <script>
 (() => {
@@ -1788,7 +2081,8 @@ body .shell .wn-builder-secondary button {
   const toolIds = [
     "ai-studio",
     "builder",
-    "comparison"
+    "comparison",
+    "career-intelligence"
   ];
 
   let activeView = "home";
@@ -1805,6 +2099,13 @@ body .shell .wn-builder-secondary button {
 
     if (hash === "worknelyaccount") {
       return activeView;
+    }
+
+    if (
+      hash === "wncareerintelligence" ||
+      hash === "career"
+    ) {
+      return "career-intelligence";
     }
 
     if (toolIds.includes(hash)) {
@@ -2501,6 +2802,453 @@ body .shell .wn-builder-secondary button {
 })();
 </script>
 
+<!-- CAREER INTELLIGENCE INTERNATIONAL EDITION -->
+
+<script>
+(() => {
+
+  "use strict";
+
+  const VERSION = "7.17.8.3";
+
+  const ids = [
+    "wnCareerLandingKicker",
+    "wnCareerLandingTitle",
+    "wnCareerLandingDescription",
+    "wnCareerLandingButton",
+    "wnCareerFeatureATS",
+    "wnCareerFeatureSkills",
+    "wnCareerFeatureOptimize",
+    "wnCareerFeatureMatch",
+    "wnCareerFeatureInterview",
+    "wnCareerFeatureLetter",
+    "wnCareerFeaturePlan",
+    "wnNavCareerIntelligence",
+    "wnCareerWorkspaceKicker",
+    "wnCareerWorkspaceTitle",
+    "wnCareerWorkspaceDescription"
+  ];
+
+  const translations = {
+
+    en:[
+      "✦ ADVANCED CAREER TOOLS",
+      "Career Intelligence",
+      "Understand your professional profile, identify skills to develop, prepare for interviews and create a structured plan for your next career move.",
+      "Explore Career Intelligence",
+      "Advanced ATS analysis",
+      "Skill gap analysis",
+      "Resume optimization",
+      "Career matching",
+      "Interview preparation",
+      "Cover letter studio",
+      "Personal career action plan",
+      "Career Intelligence",
+      "WORKNELY CAREER INTELLIGENCE",
+      "Your career intelligence workspace",
+      "Analyze your resume, review your skills, prepare your applications and plan your professional development."
+    ],
+
+    ro:[
+      "✦ INSTRUMENTE AVANSATE DE CARIERĂ",
+      "Inteligență profesională",
+      "Înțelege-ți profilul profesional, identifică abilitățile de dezvoltat, pregătește-te pentru interviuri și creează un plan structurat pentru următorul pas în carieră.",
+      "Explorează Career Intelligence",
+      "Analiză ATS avansată",
+      "Analiza competențelor lipsă",
+      "Optimizarea CV-ului",
+      "Compatibilitate profesională",
+      "Pregătire pentru interviu",
+      "Studio de scrisori de intenție",
+      "Plan personal de carieră",
+      "Inteligență profesională",
+      "WORKNELY INTELIGENȚĂ PROFESIONALĂ",
+      "Spațiul tău de dezvoltare profesională",
+      "Analizează CV-ul, evaluează competențele, pregătește candidaturile și planifică dezvoltarea profesională."
+    ],
+
+    it:[
+      "✦ STRUMENTI AVANZATI PER LA CARRIERA",
+      "Intelligenza professionale",
+      "Comprendi il tuo profilo professionale, individua le competenze da sviluppare, preparati ai colloqui e crea un piano strutturato per il prossimo passo della tua carriera.",
+      "Esplora Career Intelligence",
+      "Analisi ATS avanzata",
+      "Analisi delle competenze mancanti",
+      "Ottimizzazione del CV",
+      "Compatibilità professionale",
+      "Preparazione ai colloqui",
+      "Studio lettere di presentazione",
+      "Piano personale di carriera",
+      "Intelligenza professionale",
+      "WORKNELY INTELLIGENZA PROFESSIONALE",
+      "Il tuo spazio di sviluppo professionale",
+      "Analizza il tuo CV, valuta le competenze, prepara le candidature e pianifica il tuo sviluppo professionale."
+    ],
+
+    de:[
+      "✦ ERWEITERTE KARRIEREWERKZEUGE",
+      "Karriere-Intelligenz",
+      "Verstehe dein berufliches Profil, erkenne Entwicklungsmöglichkeiten, bereite dich auf Vorstellungsgespräche vor und erstelle einen strukturierten Karriereplan.",
+      "Karriere-Intelligenz entdecken",
+      "Erweiterte ATS-Analyse",
+      "Kompetenzlückenanalyse",
+      "Lebenslaufoptimierung",
+      "Berufliche Übereinstimmung",
+      "Interviewvorbereitung",
+      "Anschreiben-Studio",
+      "Persönlicher Karriereplan",
+      "Karriere-Intelligenz",
+      "WORKNELY KARRIERE-INTELLIGENZ",
+      "Dein Bereich für Karriereentwicklung",
+      "Analysiere deinen Lebenslauf, überprüfe deine Fähigkeiten, bereite Bewerbungen vor und plane deine berufliche Entwicklung."
+    ],
+
+    fr:[
+      "✦ OUTILS DE CARRIÈRE AVANCÉS",
+      "Intelligence professionnelle",
+      "Comprenez votre profil professionnel, identifiez les compétences à développer, préparez vos entretiens et créez un plan structuré pour votre prochaine étape.",
+      "Explorer Career Intelligence",
+      "Analyse ATS avancée",
+      "Analyse des compétences manquantes",
+      "Optimisation du CV",
+      "Compatibilité professionnelle",
+      "Préparation aux entretiens",
+      "Studio de lettres de motivation",
+      "Plan de carrière personnel",
+      "Intelligence professionnelle",
+      "WORKNELY INTELLIGENCE PROFESSIONNELLE",
+      "Votre espace de développement professionnel",
+      "Analysez votre CV, évaluez vos compétences, préparez vos candidatures et planifiez votre développement professionnel."
+    ],
+
+    es:[
+      "✦ HERRAMIENTAS PROFESIONALES AVANZADAS",
+      "Inteligencia profesional",
+      "Comprende tu perfil profesional, identifica las habilidades que debes desarrollar, prepárate para entrevistas y crea un plan estructurado para tu próximo paso profesional.",
+      "Explorar Career Intelligence",
+      "Análisis ATS avanzado",
+      "Análisis de habilidades faltantes",
+      "Optimización del CV",
+      "Compatibilidad profesional",
+      "Preparación de entrevistas",
+      "Estudio de cartas de presentación",
+      "Plan personal de carrera",
+      "Inteligencia profesional",
+      "WORKNELY INTELIGENCIA PROFESIONAL",
+      "Tu espacio de desarrollo profesional",
+      "Analiza tu CV, revisa tus habilidades, prepara tus candidaturas y planifica tu desarrollo profesional."
+    ]
+
+  };
+
+  const statusTranslations = {
+
+    en:{
+      loading:"Loading Career Intelligence…",
+      unavailable:"Career Intelligence could not initialize. Refresh the page and try again."
+    },
+
+    ro:{
+      loading:"Se încarcă Career Intelligence…",
+      unavailable:"Career Intelligence nu a putut fi inițializat. Reîncarcă pagina și încearcă din nou."
+    },
+
+    it:{
+      loading:"Caricamento di Career Intelligence…",
+      unavailable:"Impossibile inizializzare Career Intelligence. Ricarica la pagina e riprova."
+    },
+
+    de:{
+      loading:"Karriere-Intelligenz wird geladen…",
+      unavailable:"Karriere-Intelligenz konnte nicht gestartet werden. Lade die Seite neu und versuche es erneut."
+    },
+
+    fr:{
+      loading:"Chargement de Career Intelligence…",
+      unavailable:"Impossible d’initialiser Career Intelligence. Actualisez la page et réessayez."
+    },
+
+    es:{
+      loading:"Cargando Career Intelligence…",
+      unavailable:"No se pudo iniciar Career Intelligence. Recarga la página e inténtalo de nuevo."
+    }
+
+  };
+
+  const engineDefinitions = [
+    ["ats","WorknelyCareerIntelligence"],
+    ["skills","WorknelySkillGap"],
+    ["optimization","WorknelyResumeOptimizer"],
+    ["matching","WorknelyCareerMatch"],
+    ["interview","WorknelyInterviewPreparation"],
+    ["coverLetter","WorknelyCoverLetter"],
+    ["actionPlan","WorknelyCareerActionPlan"]
+  ];
+
+  let initialized = false;
+  let statusState = "loading";
+  let statusTimer = null;
+
+  function getLanguage() {
+
+    const select = document.getElementById("language");
+
+    const language = select?.value || "en";
+
+    return Object.prototype.hasOwnProperty.call(
+      translations,
+      language
+    ) ? language : "en";
+
+  }
+
+  function getModuleStatus() {
+
+    const engines = {};
+
+    engineDefinitions.forEach(([name,api]) => {
+
+      engines[name] = {
+        available:Boolean(window[api]),
+        version:window[api]?.version || null
+      };
+
+    });
+
+    const root = document.getElementById(
+      "wnCareerIntelligence"
+    );
+
+    return {
+      version:VERSION,
+      rootAvailable:Boolean(root),
+      interfaceRendered:Boolean(
+        root?.childElementCount
+      ),
+      engines,
+      availableEngines:Object.values(engines)
+        .filter(engine => engine.available).length
+    };
+
+  }
+
+  function updateTranslations() {
+
+    const language = getLanguage();
+
+    const dictionary = translations[language];
+
+    ids.forEach((id,index) => {
+
+      const element = document.getElementById(id);
+
+      if (
+        element &&
+        typeof dictionary[index] === "string" &&
+        element.textContent !== dictionary[index]
+      ) {
+
+        element.textContent = dictionary[index];
+
+      }
+
+    });
+
+    updateStatus();
+
+  }
+
+  function updateStatus() {
+
+    const root = document.getElementById(
+      "wnCareerIntelligence"
+    );
+
+    const status = document.getElementById(
+      "wnCareerIntegrationStatus"
+    );
+
+    if (!root || !status) return;
+
+    if (root.childElementCount > 0) {
+
+      status.hidden = true;
+
+      if (statusTimer !== null) {
+        clearTimeout(statusTimer);
+        statusTimer = null;
+      }
+
+      return;
+
+    }
+
+    status.hidden = false;
+
+    status.dataset.error = String(
+      statusState === "unavailable"
+    );
+
+    const dictionary = statusTranslations[getLanguage()];
+
+    const message = dictionary[statusState];
+
+    if (status.textContent !== message) {
+      status.textContent = message;
+    }
+
+  }
+
+  function checkWorkspace() {
+
+    const workspace = document.getElementById(
+      "career-intelligence"
+    );
+
+    const root = document.getElementById(
+      "wnCareerIntelligence"
+    );
+
+    if (!workspace || !root) return;
+
+    updateStatus();
+
+    if (workspace.hidden) {
+
+      if (statusTimer !== null) {
+        clearTimeout(statusTimer);
+        statusTimer = null;
+      }
+
+      return;
+
+    }
+
+    if (
+      root.childElementCount === 0 &&
+      statusTimer === null
+    ) {
+
+      statusState = "loading";
+
+      updateStatus();
+
+      statusTimer = setTimeout(() => {
+
+        statusTimer = null;
+
+        if (root.childElementCount === 0) {
+          statusState = "unavailable";
+        }
+
+        updateStatus();
+
+      },20000);
+
+    }
+
+  }
+
+  function initialize() {
+
+    if (initialized) {
+
+      updateTranslations();
+
+      checkWorkspace();
+
+      return;
+
+    }
+
+    const select = document.getElementById("language");
+
+    const root = document.getElementById(
+      "wnCareerIntelligence"
+    );
+
+    if (!select || !root) return;
+
+    initialized = true;
+
+    select.addEventListener(
+      "change",
+      updateTranslations
+    );
+
+    select.addEventListener(
+      "input",
+      updateTranslations
+    );
+
+    document.addEventListener(
+      "worknely:languagechange",
+      updateTranslations
+    );
+
+    document.addEventListener(
+      "worknely:localizationready",
+      updateTranslations
+    );
+
+    document.addEventListener(
+      "worknely:workspacechange",
+      checkWorkspace
+    );
+
+    window.addEventListener(
+      "pageshow",
+      initialize
+    );
+
+    window.addEventListener(
+      "load",
+      initialize,
+      {once:true}
+    );
+
+    new MutationObserver(
+      updateStatus
+    ).observe(root,{
+      childList:true,
+      subtree:true
+    });
+
+    updateTranslations();
+
+    checkWorkspace();
+
+  }
+
+  window.WorknelyCareerHTML = Object.freeze({
+
+    version:VERSION,
+
+    getLanguage,
+
+    getModuleStatus,
+
+    refresh:updateTranslations
+
+  });
+
+  if (document.readyState === "loading") {
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      initialize,
+      {once:true}
+    );
+
+  } else {
+
+    initialize();
+
+  }
+
+})();
+</script>
+
 <!-- PREMIUM STATUS MESSAGES -->
 
 <script>
@@ -3106,7 +3854,54 @@ body .shell .wn-builder-secondary button {
 
 <script defer src="worknely-celebration.js?v=7.5"></script>
 
-<!-- END WORKNELY V7.16.13 PROFESSIONAL DESIGN STUDIO -->
+<!-- WORKNELY APPLICATION VERSION -->
+
+<script>
+(() => {
+
+  "use strict";
+
+  window.WorknelyApplication = Object.freeze({
+
+    name:"Worknely",
+
+    version:"7.17.8.3",
+
+    release:"Career Intelligence HTML & Navigation Integration",
+
+    languages:Object.freeze([
+      "en",
+      "ro",
+      "it",
+      "de",
+      "fr",
+      "es"
+    ]),
+
+    getStatus() {
+
+      return {
+
+        version:"7.17.8.3",
+
+        career:
+          window.WorknelyCareerHTML
+            ?.getModuleStatus?.() || null,
+
+        design:
+          window.WorknelyDesignStudio
+            ?.getModuleStatus?.() || null
+
+      };
+
+    }
+
+  });
+
+})();
+</script>
+
+<!-- END WORKNELY V7.17.8.3 -->
 
 </body>
 </html>
