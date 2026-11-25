@@ -1,6 +1,6 @@
 
 /*
- * WORKNELY V7.17.9.2
+ * WORKNELY V7.18.1
  * Career Intelligence Interface
  * International Edition
  * Local Processing
@@ -9,7 +9,7 @@
 (function () {
   "use strict";
 
-  const VERSION = "7.17.9.2";
+  const VERSION = "7.18.1";
   const ROOT_ID = "wnCareerIntelligence";
 
   const LANGUAGES = [
@@ -1363,6 +1363,10 @@
 
     const progress = session.getProgress();
 
+    document.dispatchEvent(new CustomEvent("worknely:careerdashboardresult", {
+      detail: { module: "career-action-plan", progress: { completed: progress.completed, total: progress.total } }
+    }));
+
     refs.output.appendChild(
       make(
         "h3", "",
@@ -1507,6 +1511,10 @@
         lastResult = result;
 
         renderResult(id, result);
+
+        document.dispatchEvent(new CustomEvent("worknely:careerdashboardresult", {
+          detail: { module: id, result }
+        }));
       }
 
       setStatus("");
@@ -1724,6 +1732,6 @@
 })();
 
 /*
- * END WORKNELY V7.17.9.2
+ * END WORKNELY V7.18.1
  * Career Intelligence Interface
  */
