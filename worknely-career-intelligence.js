@@ -1,5 +1,5 @@
 /*
- * WORKNELY V7.17.1
+ * WORKNELY V7.18.1.1
  * Advanced ATS Intelligence Engine
  * International Career Intelligence
  * Local Processing Architecture
@@ -10,7 +10,7 @@
 
   "use strict";
 
-  const VERSION = "7.17.1";
+  const VERSION = "7.18.1.1";
 
   const LANGUAGES = Object.freeze([
     "en", "ro", "it", "de", "fr", "es"
@@ -490,119 +490,243 @@
 
   }
 
-  function extractKeywords(text, limit = 40) {
 
-    const tokens = tokenize(text);
+  /* ADVANCED PROFESSIONAL KEYWORD INTELLIGENCE */
 
-    const frequencies = new Map();
+  const PROFESSIONAL_TERMS = [
+    ["google analytics", "ga4", "google analytics 4"],
+    ["google ads", "google adwords"],
+    ["content marketing", "marketing de continut", "marketing dei contenuti", "marketing de contenidos"],
+    ["digital marketing", "marketing digital", "marketing digitale", "digitales marketing"],
+    ["email marketing", "e mail marketing"],
+    ["social media management", "gestion des reseaux sociaux", "gestione social media"],
+    ["search engine optimization", "seo"],
+    ["keyword research", "cercetarea cuvintelor cheie"],
+    ["campaign management", "gestion des campagnes", "gestione campagne"],
+    ["campaign optimization", "optimizarea campaniilor"],
+    ["data analysis", "analiza datelor", "analisi dei dati", "datenanalyse", "analyse de donnees", "analisis de datos"],
+    ["communication skills", "competente de comunicare", "capacita comunicative", "kommunikationsfahigkeit", "competences en communication", "habilidades de comunicacion"],
+    ["analytical skills", "competente analitice", "capacita analitiche", "analytische fahigkeiten"],
+    ["customer relationship management", "crm"],
+    ["project management", "management de proiect", "gestione progetti", "projektmanagement", "gestion de projet", "gestion de proyectos"],
+    ["team leadership", "team management"],
+    ["problem solving", "rezolvarea problemelor", "risoluzione dei problemi", "problemlosung", "resolution de problemes", "resolucion de problemas"],
+    ["time management", "gestionarea timpului"],
+    ["customer service", "servizio clienti", "kundenservice", "service client", "atencion al cliente"],
+    ["software development", "sviluppo software", "softwareentwicklung"],
+    ["software developer"],
+    ["web development", "sviluppo web"],
+    ["javascript", "js"],
+    ["typescript"],
+    ["python"],
+    ["java"],
+    ["html"],
+    ["css"],
+    ["sql"],
+    ["cplusplus"],
+    ["csharp"],
+    ["dotnet"],
+    ["nodejs"],
+    ["react"],
+    ["angular"],
+    ["vue"],
+    ["git"],
+    ["github"],
+    ["docker"],
+    ["kubernetes"],
+    ["rest api"],
+    ["machine learning", "apprentissage automatique"],
+    ["artificial intelligence", "inteligenta artificiala", "intelligenza artificiale", "intelligence artificielle"],
+    ["cybersecurity", "cyber security"],
+    ["cloud computing"],
+    ["microsoft excel", "excel"],
+    ["microsoft word"],
+    ["financial reporting"],
+    ["financial analysis", "analiza financiara"],
+    ["accounting", "contabilitate", "contabilita", "buchhaltung", "comptabilite", "contabilidad"],
+    ["bookkeeping"],
+    ["budget management"],
+    ["payroll"],
+    ["risk management"],
+    ["patient care", "ingrijirea pacientilor", "assistenza ai pazienti", "patientenpflege", "soins aux patients", "atencion al paciente"],
+    ["nursing", "assistenza infermieristica", "krankenpflege", "soins infirmiers", "enfermeria"],
+    ["infection control", "controlul infectiilor"],
+    ["first aid", "prim ajutor", "primo soccorso", "erste hilfe", "premiers secours", "primeros auxilios"],
+    ["medication administration", "administrarea medicamentelor"],
+    ["vital signs", "semne vitale", "parametri vitali"],
+    ["construction safety", "sicurezza sul lavoro"],
+    ["masonry", "zidarie", "muratura", "mauerwerk", "maconnerie", "albanileria"],
+    ["bricklaying"],
+    ["concrete work", "lavori in calcestruzzo"],
+    ["formwork", "cofraje", "casseratura", "schalung"],
+    ["welding", "sudura", "saldatura", "schweissen", "soudage", "soldadura"],
+    ["plumbing", "instalatii sanitare"],
+    ["electrical installation", "impianti elettrici"],
+    ["technical drawings", "disegno tecnico"],
+    ["inventory management"],
+    ["supply chain management"],
+    ["warehouse management"],
+    ["forklift operation"],
+    ["quality control", "controlul calitatii", "controllo qualita", "qualitatskontrolle", "controle qualite", "control de calidad"],
+    ["food safety", "siguranta alimentara", "sicurezza alimentare"],
+    ["haccp"],
+    ["food preparation"],
+    ["hospitality management"],
+    ["recruitment", "recrutare", "selezione del personale"],
+    ["human resources", "resurse umane", "risorse umane", "ressources humaines", "recursos humanos"],
+    ["talent acquisition"],
+    ["employee relations"],
+    ["classroom management"],
+    ["lesson planning"],
+    ["curriculum development"],
+    ["sales management"],
+    ["lead generation"],
+    ["negotiation", "negociere", "negoziazione"],
+    ["business development"],
+    ["strategic planning"],
+    ["performance reporting"],
+    ["teamwork", "lucru in echipa", "lavoro di squadra", "travail en equipe", "trabajo en equipo"]
+  ];
 
-    tokens.forEach(word => {
+  const EXTRA_STOP_WORDS = new Set((
+    "a an i me my we us it its he she his her is am be been being " +
+    "in on at to of as by or if so not but up out over under " +
+    "who what when where which how looking seeking hiring required " +
+    "preferred essential desirable strong excellent good ability " +
+    "experience experienced skills skill knowledge candidate candidates " +
+    "role position job work working years year responsibilities requirements " +
+    "company team join opportunity successful relevant including such " +
+    "minimum maximum demonstrated proven ideally also using use " +
+    "un o al ai ale pe cu se sa mai mult foarte cautam cauta " +
+    "cerinte responsabilitati necesar necesara obligatoriu experienta " +
+    "candidat candidati post functie cunostinte competente abilitati " +
+    "il lo gli le di da a e o un si nel sul sulla tra fra " +
+    "richiesto richiesta requisiti esperienza candidato capacita " +
+    "cerchiamo lavoro posizione conoscenza ottima buona " +
+    "zu im am an es er sie wir ihr ich nicht fur zum zur " +
+    "gesucht erfahrung kenntnisse erforderlich voraussetzungen " +
+    "bewerber stelle aufgaben gute sehr " +
+    "le du un et en au ce il elle ils elles on ne pas " +
+    "recherche rechercheons recherchons requis requise experience " +
+    "candidat poste missions competences connaissances bonne " +
+    "el y en a un se al lo su nos no es muy " +
+    "buscamos buscamos experiencia requerido requerida requisitos " +
+    "candidato puesto habilidades conocimientos excelente"
+  ).trim().split(/\s+/));
 
-      if (
+  function professionalIndex(text) {
+    const normalized = " " + normalizeText(text) + " ";
+    const counts = new Map();
+    const covered = new Set();
 
-        word.length < 2 ||
+    PROFESSIONAL_TERMS.forEach(group => {
+      let frequency = 0;
 
-        STOP_WORDS.has(word) ||
+      group.forEach(alias => {
+        const phrase = normalizeText(alias);
+        const needle = " " + phrase + " ";
+        let start = 0;
+        let found = 0;
 
-        /^\d+$/.test(word)
+        while ((start = normalized.indexOf(needle, start)) !== -1) {
+          found++;
+          start += needle.length - 1;
+        }
 
-      ) return;
+        if (found) {
+          frequency += found;
+          phrase.split(" ").forEach(word => covered.add(word));
+        }
+      });
 
-      frequencies.set(
-
-        word,
-
-        (frequencies.get(word) || 0) + 1
-
-      );
-
+      if (frequency) {
+        counts.set(group[0], frequency);
+      }
     });
 
-    return [...frequencies.entries()]
+    return { counts, covered, normalized };
+  }
 
-      .sort((a, b) =>
+  function extractKeywords(text, limit = 40) {
+    const index = professionalIndex(text);
+    const frequencies = new Map();
 
-        b[1] - a[1] ||
+    tokenize(text).forEach(word => {
+      if (
+        word.length < 2 ||
+        STOP_WORDS.has(word) ||
+        EXTRA_STOP_WORDS.has(word) ||
+        index.covered.has(word) ||
+        /^\d+$/.test(word)
+      ) return;
 
-        a[0].localeCompare(b[0])
+      frequencies.set(word, (frequencies.get(word) || 0) + 1);
+    });
 
-      )
-
-      .slice(0, clamp(limit, 1, 100))
-
+    const recognized = [...index.counts.entries()]
       .map(([keyword, frequency]) => ({
-
         keyword,
-
-        frequency
-
+        frequency,
+        recognized: true
       }));
 
+    const fallback = [...frequencies.entries()]
+      .map(([keyword, frequency]) => ({
+        keyword,
+        frequency,
+        recognized: false
+      }));
+
+    return [...recognized, ...fallback]
+      .sort((a, b) =>
+        Number(b.recognized) - Number(a.recognized) ||
+        b.frequency - a.frequency ||
+        a.keyword.localeCompare(b.keyword)
+      )
+      .slice(0, clamp(limit, 1, 100));
   }
 
   function analyzeKeywords(resume, job) {
-
-    const resumeTokens = new Set(
-      tokenize(resume)
-    );
-
-    const keywords =
-      extractKeywords(job, 40);
+    const resumeIndex = professionalIndex(resume);
+    const resumeTokens = new Set(tokenize(resume));
+    const keywords = extractKeywords(job, 40);
 
     const matched = [];
-
     const missing = [];
 
     let totalWeight = 0;
-
     let matchedWeight = 0;
 
     keywords.forEach(item => {
+      const weight =
+        Math.min(item.frequency, 3) *
+        (item.recognized ? 3 : 1);
 
-      const weight = Math.min(
-        item.frequency, 3
-      );
+      const present = item.recognized
+        ? resumeIndex.counts.has(item.keyword)
+        : resumeTokens.has(item.keyword);
 
       totalWeight += weight;
 
-      if (resumeTokens.has(item.keyword)) {
-
+      if (present) {
         matched.push(item.keyword);
-
         matchedWeight += weight;
-
       } else {
-
         missing.push(item.keyword);
-
       }
-
     });
 
     return {
-
       available: keywords.length > 0,
-
       score: totalWeight
-
-        ? round(
-            matchedWeight / totalWeight * 100
-          )
-
+        ? round(matchedWeight / totalWeight * 100)
         : null,
-
       total: keywords.length,
-
       matched,
-
       missing,
-
       matchedCount: matched.length,
-
       missingCount: missing.length
-
     };
-
   }
 
   function analyzeStructure(content) {
@@ -690,38 +814,32 @@
 
   }
 
-  function analyzeSkills(content, job) {
 
+  function analyzeSkills(content, job) {
     const data = normalizeContent(content);
 
     const skills = unique(
-
       data.skills
-
         .split(/[,;\n|•]+/)
-
         .map(value => value.trim())
-
         .filter(Boolean)
-
     ).slice(0, 100);
 
-    const jobTokens = new Set(
-      tokenize(job)
-    );
+    const jobIndex = professionalIndex(job);
 
     const matched = skills.filter(skill => {
+      const phrase = normalizeText(skill);
+      if (!phrase) return false;
 
-      const words = tokenize(skill)
+      const group = PROFESSIONAL_TERMS.find(
+        aliases => aliases.some(
+          alias => normalizeText(alias) === phrase
+        )
+      );
 
-        .filter(word => !STOP_WORDS.has(word));
-
-      return words.length > 0 &&
-
-        words.every(
-          word => jobTokens.has(word)
-        );
-
+      return group
+        ? jobIndex.counts.has(group[0])
+        : jobIndex.normalized.includes(" " + phrase + " ");
     });
 
     const unmatched = skills.filter(
@@ -731,27 +849,15 @@
     const hasJob = safeText(job).length > 0;
 
     return {
-
       available: hasJob && skills.length > 0,
-
       score: hasJob && skills.length
-
-        ? round(
-            matched.length / skills.length * 100
-          )
-
+        ? round(matched.length / skills.length * 100)
         : null,
-
       listedSkills: skills,
-
       matchedSkills: matched,
-
       unmatchedSkills: unmatched,
-
       skillCount: skills.length
-
     };
-
   }
 
   function analyzeAchievements(content) {
@@ -1396,7 +1502,7 @@
 })();
 
 /*
- * END WORKNELY V7.17.1
+ * END WORKNELY V7.18.1.1
  *
  * Advanced ATS Intelligence
  * Weighted Career Analysis
