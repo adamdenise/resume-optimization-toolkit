@@ -1,5 +1,5 @@
 /*
- * WORKNELY V7.17.2
+ * WORKNELY V7.18.1.2
  * Skill Gap Intelligence
  * International Career Development
  * Privacy-First Local Processing
@@ -10,7 +10,7 @@
 
   "use strict";
 
-  const VERSION = "7.17.2";
+  const VERSION = "7.18.1.2";
 
   const LANGUAGES = [
     "en", "ro", "it", "de", "fr", "es"
@@ -211,7 +211,100 @@
 
   /* INTERNATIONAL SKILL CATALOG */
 
+  const SKILL_GUIDANCE = {
+  "googleads": [
+    "Practice creating and optimizing advertising campaigns.",
+    "Exersează crearea și optimizarea campaniilor publicitare.",
+    "Esercitati a creare e ottimizzare campagne pubblicitarie.",
+    "Übe die Erstellung und Optimierung von Werbekampagnen.",
+    "Entraînez-vous à créer et optimiser des campagnes publicitaires.",
+    "Practica la creación y optimización de campañas publicitarias."
+  ],
+  "crm": [
+    "Practice managing customer records and sales pipelines in a CRM.",
+    "Exersează gestionarea clienților și a oportunităților comerciale într-un CRM.",
+    "Esercitati a gestire clienti e opportunità in un CRM.",
+    "Übe die Verwaltung von Kunden und Verkaufschancen in einem CRM.",
+    "Entraînez-vous à gérer les clients et opportunités dans un CRM.",
+    "Practica la gestión de clientes y oportunidades en un CRM."
+  ],
+  "dataanalysis": [
+    "Practice interpreting datasets and creating reports.",
+    "Exersează interpretarea datelor și realizarea rapoartelor.",
+    "Esercitati a interpretare dati e creare report.",
+    "Übe die Datenauswertung und Berichterstellung.",
+    "Entraînez-vous à interpréter les données et créer des rapports.",
+    "Practica la interpretación de datos y la elaboración de informes."
+  ],
+  "campaignmanagement": [
+    "Build a sample campaign plan with objectives and performance indicators.",
+    "Construiește un plan de campanie cu obiective și indicatori de performanță.",
+    "Crea un piano di campagna con obiettivi e indicatori.",
+    "Erstelle einen Kampagnenplan mit Zielen und Kennzahlen.",
+    "Créez un plan de campagne avec objectifs et indicateurs.",
+    "Crea un plan de campaña con objetivos e indicadores."
+  ],
+  "communication": [
+    "Practice clear professional communication and document real examples.",
+    "Exersează comunicarea profesională clară și documentează exemple reale.",
+    "Esercitati nella comunicazione professionale e documenta esempi reali.",
+    "Übe klare berufliche Kommunikation und dokumentiere Beispiele.",
+    "Pratiquez la communication professionnelle et documentez des exemples.",
+    "Practica la comunicación profesional y documenta ejemplos reales."
+  ],
+  "analyticalskills": [
+    "Practice interpreting performance indicators and solving practical problems.",
+    "Exersează interpretarea indicatorilor de performanță și rezolvarea problemelor practice.",
+    "Esercitati a interpretare indicatori e risolvere problemi pratici.",
+    "Übe die Interpretation von Kennzahlen und praktische Problemlösung.",
+    "Entraînez-vous à interpréter les indicateurs et résoudre des problèmes.",
+    "Practica la interpretación de indicadores y la resolución de problemas."
+  ],
+  "contentmarketing": [
+    "Create a content calendar and measure audience engagement.",
+    "Creează un calendar editorial și măsoară interacțiunea publicului.",
+    "Crea un calendario editoriale e misura il coinvolgimento.",
+    "Erstelle einen Redaktionsplan und miss die Interaktionen.",
+    "Créez un calendrier éditorial et mesurez les interactions.",
+    "Crea un calendario editorial y mide la interacción."
+  ],
+  "keywordresearch": [
+    "Practice grouping search terms by intent.",
+    "Exersează gruparea termenilor de căutare după intenție.",
+    "Raggruppa le parole chiave per intento.",
+    "Gruppiere Suchbegriffe nach Suchintention.",
+    "Regroupez les mots-clés par intention.",
+    "Agrupa palabras clave según la intención."
+  ],
+  "performancereporting": [
+    "Create a sample report with measurable indicators.",
+    "Creează un raport demonstrativ cu indicatori măsurabili.",
+    "Crea un report con indicatori misurabili.",
+    "Erstelle einen Bericht mit messbaren Kennzahlen.",
+    "Créez un rapport avec des indicateurs mesurables.",
+    "Crea un informe con indicadores medibles."
+  ],
+  "campaignoptimization": [
+    "Practice comparing campaign results and testing improvements.",
+    "Exersează compararea rezultatelor campaniilor și testarea îmbunătățirilor.",
+    "Confronta i risultati delle campagne e testa miglioramenti.",
+    "Vergleiche Kampagnenergebnisse und teste Verbesserungen.",
+    "Comparez les résultats et testez des améliorations.",
+    "Compara resultados de campañas y prueba mejoras."
+  ]
+};
+
   const CATALOG = [
+
+    ["googleads","digital","Google Ads",["google ads","google adwords"]],
+    ["contentmarketing","commercial","Content Marketing",["content marketing","marketing de continut","marketing dei contenuti","content marketing","marketing de contenu","marketing de contenidos"]],
+    ["dataanalysis","technical","Data Analysis",["data analysis","analiza datelor","analisi dei dati","datenanalyse","analyse de donnees","analisis de datos"]],
+    ["campaignmanagement","commercial","Campaign Management",["campaign management","gestionarea campaniilor","gestione campagne","kampagnenmanagement","gestion des campagnes","gestion de campanas"]],
+    ["analyticalskills","interpersonal","Analytical Skills",["analytical skills","analytical abilities","competente analitice","capacita analitiche","analytische fahigkeiten","competences analytiques","habilidades analiticas"]],
+    ["keywordresearch","digital","Keyword Research",["keyword research","cercetarea cuvintelor cheie","ricerca parole chiave","keyword recherche","recherche de mots cles","investigacion de palabras clave"]],
+    ["performancereporting","digital","Performance Reporting",["performance reporting","raportarea performantei","reportistica delle prestazioni","leistungsberichte","rapports de performance","informes de rendimiento"]],
+    ["campaignoptimization","commercial","Campaign Optimization",["campaign optimization","optimizarea campaniilor","ottimizzazione campagne","kampagnenoptimierung","optimisation des campagnes","optimizacion de campanas"]],
+
 
     ["javascript", "technical", "JavaScript",
       ["javascript", "js"]],
@@ -885,7 +978,7 @@
 
         : t("verify", language) +
           " " +
-          t("develop", language)
+          (SKILL_GUIDANCE[skill.id]?.[LANGUAGES.indexOf(normalizeLanguage(language))] || t("develop", language))
 
     };
 
@@ -1600,7 +1693,7 @@
 })();
 
 /*
- * END WORKNELY V7.17.2
+ * END WORKNELY V7.18.1.2
  *
  * International Skill Recognition
  * Weighted Skill Coverage
