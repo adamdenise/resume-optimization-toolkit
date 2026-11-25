@@ -1,6 +1,6 @@
 
 /*
- * WORKNELY V7.18.1.1
+ * WORKNELY V7.18.1.2
  * Career Intelligence Controller
  * Automatic Initialization & Diagnostics
  * International Integration
@@ -10,7 +10,7 @@
 (function () {
   "use strict";
 
-  const VERSION = "7.18.1.1";
+  const VERSION = "7.18.1.2";
 
   const LANGUAGES = Object.freeze([
     "en", "ro", "it", "de", "fr", "es"
@@ -28,7 +28,7 @@
       id: "skill-gap",
       global: "WorknelySkillGap",
       file: "worknely-skill-gap.js",
-      version: "7.17.2",
+      version: "7.18.1.2",
       method: "analyze"
     },
     {
@@ -1427,7 +1427,7 @@
 })();
 
 /*
- * END WORKNELY V7.18.1.1
+ * END WORKNELY V7.18.1.2
  * Automatic Initialization
  * Module Loading Diagnostics
  * International Integration
