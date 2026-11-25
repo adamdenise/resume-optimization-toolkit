@@ -1,6 +1,6 @@
 
 /*
- * WORKNELY V7.17.9.1
+ * WORKNELY V7.18.1.1
  * Career Intelligence Controller
  * Automatic Initialization & Diagnostics
  * International Integration
@@ -10,7 +10,7 @@
 (function () {
   "use strict";
 
-  const VERSION = "7.17.9.1";
+  const VERSION = "7.18.1.1";
 
   const LANGUAGES = Object.freeze([
     "en", "ro", "it", "de", "fr", "es"
@@ -21,7 +21,7 @@
       id: "ats",
       global: "WorknelyCareerIntelligence",
       file: "worknely-career-intelligence.js",
-      version: "7.17.1",
+      version: "7.18.1.1",
       method: "analyze"
     },
     {
@@ -1427,7 +1427,7 @@
 })();
 
 /*
- * END WORKNELY V7.17.9.1
+ * END WORKNELY V7.18.1.1
  * Automatic Initialization
  * Module Loading Diagnostics
  * International Integration
