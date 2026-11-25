@@ -1,18 +1,13 @@
 
 /*
- * WORKNELY V7.15
+ * WORKNELY V7.17.9.3
  * International SaaS Interface
+ * Career Intelligence Account Navigation
  * Six International Languages
  * Authentication & Account Navigation
  * Responsive Authentication Modal
  * Premium Conversion Banner
  * Persistent Localization Integration
- *
- * Compatible with:
- * worknely-auth.js V7.15
- * worknely-localization.js V7.15
- * worknely-compact.css V7.12
- * Worknely V7.13 Landing Experience
  *
  * WORKNELY — PEOPLE TECHNOLOGY
  */
@@ -21,7 +16,7 @@
 
   "use strict";
 
-  const VERSION = "7.15";
+  const VERSION = "7.17.9.3";
 
   const keys = [
     "login",
@@ -49,7 +44,8 @@
     "proSubtitle",
     "proCta",
     "proLabel",
-    "accountOverline"
+    "accountOverline",
+    "careerIntelligence"
   ];
 
   const dictionary = {
@@ -80,7 +76,8 @@
       "Explore upcoming Pro & Premium features. No payment required.",
       "Explore Pro Plans",
       "Explore Worknely Pro plans",
-      "YOUR WORKNELY ACCOUNT"
+      "YOUR WORKNELY ACCOUNT",
+      "Career Intelligence"
     ],
 
     ro: [
@@ -109,7 +106,8 @@
       "Explorează viitoarele funcții Pro și Premium. Nu este necesară nicio plată.",
       "Explorează planurile Pro",
       "Explorează abonamentele Worknely Pro",
-      "CONTUL TĂU WORKNELY"
+      "CONTUL TĂU WORKNELY",
+      "Inteligență profesională"
     ],
 
     it: [
@@ -138,7 +136,8 @@
       "Esplora le prossime funzionalità Pro e Premium. Nessun pagamento richiesto.",
       "Esplora i piani Pro",
       "Esplora i piani Worknely Pro",
-      "IL TUO ACCOUNT WORKNELY"
+      "IL TUO ACCOUNT WORKNELY",
+      "Intelligenza professionale"
     ],
 
     de: [
@@ -167,7 +166,8 @@
       "Entdecke kommende Pro- und Premium-Funktionen. Keine Zahlung erforderlich.",
       "Pro-Tarife entdecken",
       "Worknely Pro-Tarife entdecken",
-      "DEIN WORKNELY-KONTO"
+      "DEIN WORKNELY-KONTO",
+      "Karriere-Intelligenz"
     ],
 
     fr: [
@@ -196,7 +196,8 @@
       "Découvrez les prochaines fonctionnalités Pro et Premium. Aucun paiement requis.",
       "Découvrir les offres Pro",
       "Découvrir les offres Worknely Pro",
-      "VOTRE COMPTE WORKNELY"
+      "VOTRE COMPTE WORKNELY",
+      "Intelligence de carrière"
     ],
 
     es: [
@@ -225,7 +226,8 @@
       "Explora las próximas funciones Pro y Premium. No se requiere ningún pago.",
       "Explorar planes Pro",
       "Explorar los planes Worknely Pro",
-      "TU CUENTA WORKNELY"
+      "TU CUENTA WORKNELY",
+      "Inteligencia profesional"
     ]
 
   };
@@ -262,10 +264,7 @@
 
   function setText(element, value) {
 
-    if (
-      element &&
-      element.textContent !== value
-    ) {
+    if (element && element.textContent !== value) {
       element.textContent = value;
     }
 
@@ -310,8 +309,6 @@
     style.id = "wn-auth-layout-v715";
 
     style.textContent = `
-
-      /* ACCOUNT NAVIGATION */
 
       body .wn-auth-nav {
         display:flex;
@@ -426,7 +423,20 @@
         font-weight:750!important;
       }
 
-      /* HIGH SPECIFICITY VISIBILITY PROTECTION */
+      body .wn-menu-panel .wn-menu-career {
+        color:#5424ff!important;
+        font-weight:750!important;
+      }
+
+      body .wn-menu-panel .wn-menu-career[aria-current="page"] {
+        background:#f1edff!important;
+      }
+
+      body .wn-menu-panel a:focus-visible,
+      body .wn-menu-panel button:focus-visible {
+        outline:2px solid #5424ff;
+        outline-offset:-2px;
+      }
 
       body .wn-auth-nav [hidden],
       body .wn-auth-nav .wn-auth-btn[hidden],
@@ -437,8 +447,6 @@
       body .shell header.top .wn-auth-nav .wn-menu-panel[hidden] {
         display:none!important;
       }
-
-      /* PREMIUM CONVERSION BANNER */
 
       body .wn-pro-banner {
         box-sizing:border-box;
@@ -562,8 +570,6 @@
         outline-offset:3px;
       }
 
-      /* AUTHENTICATION MODAL */
-
       body dialog#wnAuthDialog.wn-dialog {
         box-sizing:border-box!important;
         position:fixed!important;
@@ -615,8 +621,6 @@
         display:none!important;
       }
 
-      /* MODAL HEADER */
-
       body #wnAuthDialog .wn-dialog-head {
         position:sticky;
         top:0;
@@ -658,8 +662,6 @@
         line-height:1!important;
         cursor:pointer;
       }
-
-      /* ACCOUNT CONTENT VISIBILITY */
 
       body #wnAuthDialog #worknelyAccount {
         display:block!important;
@@ -720,8 +722,6 @@
         line-height:1.5;
       }
 
-      /* AUTHENTICATION FORM */
-
       body #wnAuthDialog #worknelyAuthForm {
         display:grid!important;
         visibility:visible!important;
@@ -755,8 +755,6 @@
         font-size:13px;
         font-weight:650;
       }
-
-      /* EMAIL AND PASSWORD FIELDS */
 
       body #wnAuthDialog #authEmail,
       body #wnAuthDialog #authPassword {
@@ -792,8 +790,6 @@
         outline:2px solid rgba(84,36,255,.15);
         outline-offset:1px;
       }
-
-      /* PASSWORD RECOVERY */
 
       body #wnAuthDialog .wn-forgot-row {
         display:flex!important;
@@ -843,8 +839,6 @@
       body #wnAuthDialog #wnResendConfirmation[hidden] {
         display:none!important;
       }
-
-      /* AUTHENTICATION ACTIONS */
 
       body #wnAuthDialog #worknelyAuthForm > .actions {
         display:flex!important;
@@ -926,8 +920,6 @@
         display:contents!important;
       }
 
-      /* LOGIN AND SIGNUP SWITCH */
-
       body #wnAuthDialog .wn-auth-switch {
         display:flex;
         justify-content:center;
@@ -964,8 +956,6 @@
         cursor:pointer;
       }
 
-      /* EMAIL CONFIRMATION SUPPORT */
-
       body #wnAuthDialog .wn-auth-support {
         margin:8px 0 0;
         padding:9px 0 0;
@@ -979,8 +969,6 @@
         font-size:11px;
         line-height:1.5;
       }
-
-      /* INTERNATIONAL STATUS MESSAGES */
 
       body #wnAuthDialog #authStatus {
         box-sizing:border-box!important;
@@ -997,7 +985,7 @@
         overflow-wrap:anywhere;
         font-size:12px!important;
         font-weight:500!important;
-        line-height:1.5!important;
+        line-height:1.5;
       }
 
       body #wnAuthDialog #authStatus:empty {
@@ -1022,15 +1010,11 @@
         border-color:#e1d7ff!important;
       }
 
-      /* ACCESSIBILITY */
-
       #wnAuthDialog button:focus-visible,
       #wnAuthDialog input:focus-visible {
         outline:3px solid #6a3bff;
         outline-offset:2px;
       }
-
-      /* MOBILE OPTIMIZATION */
 
       @media(max-width:600px) {
 
@@ -1108,8 +1092,6 @@
 
       }
 
-      /* LONG INTERNATIONAL LABELS */
-
       @media(max-width:480px) {
 
         html:not([lang="en"]) body .shell header.top {
@@ -1156,8 +1138,6 @@
 
       }
 
-      /* FINAL VISIBILITY PROTECTION */
-
       body #wnAuthDialog #worknelyAuthForm > label[hidden],
       body #wnAuthDialog #worknelyAuthForm input[hidden],
       body #wnAuthDialog #worknelyAuthForm .actions[hidden],
@@ -1180,28 +1160,19 @@
       const message = status.textContent.trim();
 
       if (!message) {
-
         delete status.dataset.wnAuthStatus;
         return;
-
       }
 
-      const explicitType =
-        status.dataset.wnAuthType;
+      const explicitType = status.dataset.wnAuthType;
 
-      if (
-        ["success", "error", "info"]
-          .includes(explicitType)
-      ) {
+      if (["success", "error", "info"].includes(explicitType)) {
 
-        status.dataset.wnAuthStatus =
-          explicitType;
+        status.dataset.wnAuthStatus = explicitType;
 
         return;
 
       }
-
-      /* Legacy authentication compatibility */
 
       const errorPattern =
         /error|failed|invalid|incorrect|unable|cannot|could not|expired|not confirmed|not successful|denied|too many|rate limit|please enter|must be|required|at least|not match/i;
@@ -1212,13 +1183,9 @@
       let type = "info";
 
       if (errorPattern.test(message)) {
-
         type = "error";
-
       } else if (successPattern.test(message)) {
-
         type = "success";
-
       }
 
       status.dataset.wnAuthStatus = type;
@@ -1230,13 +1197,11 @@
     );
 
     statusObserver.observe(status, {
-
       childList:true,
       characterData:true,
       subtree:true,
       attributes:true,
       attributeFilter:["data-wn-auth-type"]
-
     });
 
     updateAuthStatus();
@@ -1254,14 +1219,10 @@
 
     const makeButton = (label, className) => {
 
-      const button =
-        document.createElement("button");
+      const button = document.createElement("button");
 
       button.type = "button";
-
-      button.className =
-        "wn-auth-btn " + className;
-
+      button.className = "wn-auth-btn " + className;
       button.textContent = label;
 
       return button;
@@ -1278,12 +1239,9 @@
       "wn-signup"
     );
 
-    const accountWrap =
-      document.createElement("div");
+    const accountWrap = document.createElement("div");
 
-    accountWrap.className =
-      "wn-account-menu";
-
+    accountWrap.className = "wn-account-menu";
     accountWrap.hidden = true;
 
     const accountBtn = makeButton(
@@ -1291,15 +1249,8 @@
       "wn-account"
     );
 
-    accountBtn.setAttribute(
-      "aria-expanded",
-      "false"
-    );
-
-    accountBtn.setAttribute(
-      "aria-controls",
-      "wnAccountMenu"
-    );
+    accountBtn.setAttribute("aria-expanded", "false");
+    accountBtn.setAttribute("aria-controls", "wnAccountMenu");
 
     const menu = document.createElement("div");
 
@@ -1318,50 +1269,121 @@
 
     }
 
-    function menuLink(
-      key,
-      href,
-      className = ""
-    ) {
+    function menuLink(key, href, className = "") {
 
-      const link =
-        document.createElement("a");
+      const link = document.createElement("a");
 
       link.textContent = t(key);
       link.href = href;
-
       link.dataset.wnSaasKey = key;
 
       if (className) {
-
         link.className = className;
-
       }
 
-      link.addEventListener(
-        "click",
-        closeMenu
-      );
+      link.addEventListener("click", closeMenu);
 
       return link;
 
     }
 
-    const divider =
-      document.createElement("div");
+    /* CAREER INTELLIGENCE ROUTER INTEGRATION */
 
-    divider.className = "wn-menu-divider";
+    function getWorkspaceHref(view) {
 
-    divider.setAttribute(
-      "role",
-      "separator"
+      const workspace = document.getElementById(view);
+
+      if (workspace) {
+        return "#" + view;
+      }
+
+      return "index.html#" + view;
+
+    }
+
+    const careerLink = menuLink(
+      "careerIntelligence",
+      getWorkspaceHref("career-intelligence"),
+      "wn-menu-career"
     );
 
-    const logoutBtn =
-      document.createElement("button");
+    careerLink.id = "wnAccountCareerIntelligence";
+
+    careerLink.addEventListener("click", event => {
+
+      if (
+        event.defaultPrevented ||
+        event.ctrlKey ||
+        event.metaKey ||
+        event.shiftKey ||
+        event.altKey ||
+        event.button !== 0
+      ) {
+        return;
+      }
+
+      const workspace =
+        document.getElementById("career-intelligence");
+
+      if (!workspace) {
+        return;
+      }
+
+      event.preventDefault();
+
+      closeMenu();
+
+      if (window.location.hash !== "#career-intelligence") {
+
+        window.location.hash = "career-intelligence";
+
+      } else {
+
+        workspace.scrollIntoView({
+          behavior:"auto",
+          block:"start"
+        });
+
+      }
+
+    });
+
+    function syncCareerNavigation() {
+
+      const active =
+        window.location.hash.toLowerCase() ===
+        "#career-intelligence";
+
+      if (active) {
+
+        careerLink.setAttribute(
+          "aria-current",
+          "page"
+        );
+
+      } else {
+
+        careerLink.removeAttribute(
+          "aria-current"
+        );
+
+      }
+
+      careerLink.setAttribute(
+        "href",
+        getWorkspaceHref("career-intelligence")
+      );
+
+    }
+
+    const divider = document.createElement("div");
+
+    divider.className = "wn-menu-divider";
+    divider.setAttribute("role", "separator");
+
+    const logoutBtn = document.createElement("button");
 
     logoutBtn.type = "button";
-
     logoutBtn.textContent = t("logout");
 
     menu.append(
@@ -1378,8 +1400,10 @@
 
       menuLink(
         "builder",
-        "index.html#builder"
+        getWorkspaceHref("builder")
       ),
+
+      careerLink,
 
       menuLink(
         "pricing",
@@ -1397,23 +1421,32 @@
 
     );
 
-    accountWrap.append(
-      accountBtn,
-      menu
-    );
+    accountWrap.append(accountBtn, menu);
 
-    nav.append(
-      loginBtn,
-      signupBtn,
-      accountWrap
-    );
+    nav.append(loginBtn, signupBtn, accountWrap);
 
     header.appendChild(nav);
 
+    syncCareerNavigation();
+
+    window.addEventListener(
+      "hashchange",
+      syncCareerNavigation
+    );
+
+    document.addEventListener(
+      "worknely:workspacechange",
+      syncCareerNavigation
+    );
+
+    window.addEventListener(
+      "pageshow",
+      syncCareerNavigation
+    );
+
     /* PREMIUM CONVERSION BANNER */
 
-    const banner =
-      document.createElement("aside");
+    const banner = document.createElement("aside");
 
     banner.className = "wn-pro-banner";
 
@@ -1422,75 +1455,46 @@
       t("proLabel")
     );
 
-    const copy =
-      document.createElement("div");
-
+    const copy = document.createElement("div");
     copy.className = "wn-pro-copy";
 
-    const icon =
-      document.createElement("span");
+    const icon = document.createElement("span");
 
     icon.className = "wn-pro-icon";
-
-    icon.setAttribute(
-      "aria-hidden",
-      "true"
-    );
-
+    icon.setAttribute("aria-hidden", "true");
     icon.textContent = "✦";
 
-    const textWrap =
-      document.createElement("div");
-
+    const textWrap = document.createElement("div");
     textWrap.className = "wn-pro-text";
 
-    const kicker =
-      document.createElement("span");
+    const kicker = document.createElement("span");
 
     kicker.className = "wn-pro-kicker";
     kicker.textContent = "WORKNELY PRO";
 
-    const title =
-      document.createElement("strong");
+    const title = document.createElement("strong");
 
     title.className = "wn-pro-title";
     title.textContent = t("proTitle");
 
-    const subtitle =
-      document.createElement("span");
+    const subtitle = document.createElement("span");
 
     subtitle.className = "wn-pro-subtitle";
+    subtitle.textContent = t("proSubtitle");
 
-    subtitle.textContent =
-      t("proSubtitle");
+    textWrap.append(kicker, title, subtitle);
 
-    textWrap.append(
-      kicker,
-      title,
-      subtitle
-    );
+    copy.append(icon, textWrap);
 
-    copy.append(
-      icon,
-      textWrap
-    );
-
-    const cta =
-      document.createElement("a");
+    const cta = document.createElement("a");
 
     cta.className = "wn-pro-cta";
     cta.href = "pricing.html";
+    cta.textContent = t("proCta") + " →";
 
-    cta.textContent =
-      t("proCta") + " →";
+    banner.append(copy, cta);
 
-    banner.append(
-      copy,
-      cta
-    );
-
-    const premiumSlot =
-      $("wnPremiumSlot");
+    const premiumSlot = $("wnPremiumSlot");
 
     if (premiumSlot) {
 
@@ -1507,11 +1511,9 @@
 
     /* AUTHENTICATION MODAL */
 
-    const dialog =
-      document.createElement("dialog");
+    const dialog = document.createElement("dialog");
 
     dialog.id = "wnAuthDialog";
-
     dialog.className = "wn-dialog";
 
     dialog.setAttribute(
@@ -1519,26 +1521,19 @@
       t("accountDialog")
     );
 
-    const dialogHead =
-      document.createElement("div");
+    const dialogHead = document.createElement("div");
 
-    dialogHead.className =
-      "wn-dialog-head";
+    dialogHead.className = "wn-dialog-head";
 
-    const brand =
-      document.createElement("strong");
+    const brand = document.createElement("strong");
 
     brand.className = "wn-dialog-brand";
-
     brand.textContent = "✦ Worknely";
 
-    const closeBtn =
-      document.createElement("button");
+    const closeBtn = document.createElement("button");
 
     closeBtn.type = "button";
-
     closeBtn.className = "wn-close";
-
     closeBtn.textContent = "×";
 
     closeBtn.setAttribute(
@@ -1546,10 +1541,7 @@
       t("close")
     );
 
-    dialogHead.append(
-      brand,
-      closeBtn
-    );
+    dialogHead.append(brand, closeBtn);
 
     /* RESTORE ACCOUNT VISIBILITY */
 
@@ -1562,58 +1554,28 @@
         "wn-tool-view"
       );
 
-      section.removeAttribute(
-        "data-wn-view"
-      );
+      section.removeAttribute("data-wn-view");
+      section.removeAttribute("aria-hidden");
+      section.removeAttribute("inert");
 
-      section.removeAttribute(
-        "aria-hidden"
-      );
-
-      section.removeAttribute(
-        "inert"
-      );
-
-      section.style.removeProperty(
-        "display"
-      );
-
-      section.style.removeProperty(
-        "visibility"
-      );
-
-      section.style.removeProperty(
-        "opacity"
-      );
+      section.style.removeProperty("display");
+      section.style.removeProperty("visibility");
+      section.style.removeProperty("opacity");
 
       form.hidden = false;
 
       form.classList.remove("hidden");
 
-      form.removeAttribute(
-        "aria-hidden"
-      );
-
+      form.removeAttribute("aria-hidden");
       form.removeAttribute("inert");
 
-      form.style.removeProperty(
-        "display"
-      );
-
-      form.style.removeProperty(
-        "visibility"
-      );
-
-      form.style.removeProperty(
-        "opacity"
-      );
+      form.style.removeProperty("display");
+      form.style.removeProperty("visibility");
+      form.style.removeProperty("opacity");
 
     }
 
-    dialog.append(
-      dialogHead,
-      section
-    );
+    dialog.append(dialogHead, section);
 
     document.body.appendChild(dialog);
 
@@ -1629,38 +1591,27 @@
 
     /* AUTHENTICATION MODE SWITCH */
 
-    const switchRow =
-      document.createElement("div");
+    const switchRow = document.createElement("div");
 
-    switchRow.className =
-      "wn-auth-switch";
+    switchRow.className = "wn-auth-switch";
 
-    const switchText =
-      document.createElement("span");
+    const switchText = document.createElement("span");
 
-    const switchButton =
-      document.createElement("button");
+    const switchButton = document.createElement("button");
 
     switchButton.type = "button";
 
-    switchRow.append(
-      switchText,
-      switchButton
-    );
+    switchRow.append(switchText, switchButton);
 
     /* CONFIRMATION EMAIL SUPPORT */
 
-    const support =
-      document.createElement("div");
+    const support = document.createElement("div");
 
-    support.className =
-      "wn-auth-support";
+    support.className = "wn-auth-support";
 
-    const supportText =
-      document.createElement("p");
+    const supportText = document.createElement("p");
 
-    supportText.textContent =
-      t("confirmationHelp");
+    supportText.textContent = t("confirmationHelp");
 
     support.appendChild(supportText);
 
@@ -1676,11 +1627,9 @@
 
     /* PASSWORD RECOVERY ROW */
 
-    const forgotRow =
-      document.createElement("div");
+    const forgotRow = document.createElement("div");
 
-    forgotRow.className =
-      "wn-forgot-row";
+    forgotRow.className = "wn-forgot-row";
 
     const passwordLabel =
       password.closest("label") ||
@@ -1709,12 +1658,9 @@
 
     function isRecovery() {
 
-      const update =
-        $("wnUpdatePassword");
+      const update = $("wnUpdatePassword");
 
-      return !!(
-        update && !update.hidden
-      );
+      return !!(update && !update.hidden);
 
     }
 
@@ -1729,15 +1675,8 @@
 
       if (isRecovery()) {
 
-        setText(
-          heading,
-          t("recoveryTitle")
-        );
-
-        setText(
-          intro,
-          t("recoveryIntro")
-        );
+        setText(heading, t("recoveryTitle"));
+        setText(intro, t("recoveryIntro"));
 
       } else {
 
@@ -1784,25 +1723,10 @@
 
       translationScheduled = false;
 
-      setText(
-        loginBtn,
-        t("login")
-      );
-
-      setText(
-        signupBtn,
-        t("signup")
-      );
-
-      setText(
-        accountBtn,
-        t("account") + " ▾"
-      );
-
-      setText(
-        logoutBtn,
-        t("logout")
-      );
+      setText(loginBtn, t("login"));
+      setText(signupBtn, t("signup"));
+      setText(accountBtn, t("account") + " ▾");
+      setText(logoutBtn, t("logout"));
 
       menu.querySelectorAll(
         "[data-wn-saas-key]"
@@ -1836,31 +1760,23 @@
       );
 
       /*
-       * The existing landing localization owns
-       * the banner text inside wnPremiumSlot.
-       * Avoid competing translation observers.
+       * Existing landing localization owns
+       * the premium banner inside wnPremiumSlot.
        */
 
       if (!premiumSlot) {
 
-        setText(
-          title,
-          t("proTitle")
-        );
+        setText(title, t("proTitle"));
 
-        setText(
-          subtitle,
-          t("proSubtitle")
-        );
+        setText(subtitle, t("proSubtitle"));
 
-        setText(
-          cta,
-          t("proCta") + " →"
-        );
+        setText(cta, t("proCta") + " →");
 
       }
 
       translateModalContent();
+
+      syncCareerNavigation();
 
       updateAuthStatus();
 
@@ -1872,9 +1788,7 @@
 
       translationScheduled = true;
 
-      queueMicrotask(
-        translateInterface
-      );
+      queueMicrotask(translateInterface);
 
     }
 
@@ -1894,24 +1808,19 @@
 
       }
 
-      const authenticated =
-        !logout.hidden;
+      const authenticated = !logout.hidden;
 
       if (!authenticated) {
 
-        login.hidden =
-          mode !== "login";
+        login.hidden = mode !== "login";
 
-        signup.hidden =
-          mode !== "signup";
+        signup.hidden = mode !== "signup";
 
       }
 
-      const forgot =
-        $("wnResetPassword");
+      const forgot = $("wnResetPassword");
 
-      const resend =
-        $("wnResendConfirmation");
+      const resend = $("wnResendConfirmation");
 
       if (forgot) {
 
@@ -1939,8 +1848,7 @@
         mode !== "login" ||
         !resend;
 
-      switchRow.hidden =
-        authenticated;
+      switchRow.hidden = authenticated;
 
       password.autocomplete =
         mode === "signup"
@@ -1955,35 +1863,25 @@
 
     function positionSecurityControls() {
 
-      const security =
-        $("wnSecurityActions");
+      const security = $("wnSecurityActions");
 
-      const forgot =
-        $("wnResetPassword");
+      const forgot = $("wnResetPassword");
 
-      const resend =
-        $("wnResendConfirmation");
+      const resend = $("wnResendConfirmation");
 
-      const update =
-        $("wnUpdatePassword");
+      const update = $("wnUpdatePassword");
 
-      if (
-        !security ||
-        !forgot ||
-        !resend ||
-        !update
-      ) {
+      if (!security || !forgot || !resend || !update) {
 
         return false;
 
       }
 
-      const actions =
-        Array.from(form.children)
-          .find(element =>
-            element.classList.contains("actions") &&
-            element.id !== "wnSecurityActions"
-          );
+      const actions = Array.from(form.children)
+        .find(element =>
+          element.classList.contains("actions") &&
+          element.id !== "wnSecurityActions"
+        );
 
       if (!actions) return false;
 
@@ -2021,8 +1919,7 @@
 
         switchRow.hidden = true;
 
-        password.autocomplete =
-          "new-password";
+        password.autocomplete = "new-password";
 
         translateModalContent();
 
@@ -2063,72 +1960,56 @@
 
     function observeRecovery() {
 
-      const update =
-        $("wnUpdatePassword");
+      const update = $("wnUpdatePassword");
 
-      if (
-        !update ||
-        recoveryObserver
-      ) return;
+      if (!update || recoveryObserver) return;
 
-      recoveryObserver =
-        new MutationObserver(() => {
+      recoveryObserver = new MutationObserver(() => {
 
-          syncSecurity();
+        syncSecurity();
 
-          syncAuth();
+        syncAuth();
 
-          if (isRecovery()) {
+        if (isRecovery()) {
 
-            showAuthDialog();
-
-          }
-
-        });
-
-      recoveryObserver.observe(
-        update,
-        {
-
-          attributes:true,
-
-          attributeFilter:[
-            "hidden"
-          ]
-
-        }
-      );
-
-    }
-
-    /* ASYNCHRONOUS SECURITY CONTROLS */
-
-    const securityObserver =
-      new MutationObserver(() => {
-
-        if (positionSecurityControls()) {
-
-          securityObserver.disconnect();
-
-          syncSecurity();
-
-          observeRecovery();
-
-          if (isRecovery()) {
-
-            showAuthDialog();
-
-          }
+          showAuthDialog();
 
         }
 
       });
 
-    securityObserver.observe(form, {
+      recoveryObserver.observe(update, {
+        attributes:true,
+        attributeFilter:["hidden"]
+      });
 
+    }
+
+    /* ASYNCHRONOUS SECURITY CONTROLS */
+
+    const securityObserver = new MutationObserver(() => {
+
+      if (positionSecurityControls()) {
+
+        securityObserver.disconnect();
+
+        syncSecurity();
+
+        observeRecovery();
+
+        if (isRecovery()) {
+
+          showAuthDialog();
+
+        }
+
+      }
+
+    });
+
+    securityObserver.observe(form, {
       childList:true,
       subtree:true
-
     });
 
     if (positionSecurityControls()) {
@@ -2177,8 +2058,7 @@
 
     function syncAuth() {
 
-      const recovering =
-        isRecovery();
+      const recovering = isRecovery();
 
       const authenticated =
         !logout.hidden &&
@@ -2193,10 +2073,7 @@
       accountWrap.hidden =
         !authenticated;
 
-      if (
-        authenticated &&
-        dialog.open
-      ) {
+      if (authenticated && dialog.open) {
 
         closeDialog();
 
@@ -2229,9 +2106,7 @@
       const hash =
         window.location.hash.toLowerCase();
 
-      if (
-        hash !== "#worknelyaccount"
-      ) return;
+      if (hash !== "#worknelyaccount") return;
 
       if (isRecovery()) {
 
@@ -2253,192 +2128,146 @@
 
     /* AUTHENTICATION EVENTS */
 
-    loginBtn.addEventListener(
-      "click",
-      () => {
+    loginBtn.addEventListener("click", () => {
 
-        openAuth("login");
+      openAuth("login");
 
+    });
+
+    signupBtn.addEventListener("click", () => {
+
+      openAuth("signup");
+
+    });
+
+    switchButton.addEventListener("click", () => {
+
+      if (form.getAttribute("aria-busy") === "true") {
+        return;
       }
-    );
 
-    signupBtn.addEventListener(
-      "click",
-      () => {
+      setMode(
+        mode === "login"
+          ? "signup"
+          : "login"
+      );
 
-        openAuth("signup");
-
-      }
-    );
-
-    switchButton.addEventListener(
-      "click",
-      () => {
-
-        if (
-          form.getAttribute("aria-busy") === "true"
-        ) return;
-
-        setMode(
-          mode === "login"
-            ? "signup"
-            : "login"
-        );
-
-      }
-    );
+    });
 
     closeBtn.addEventListener(
       "click",
       closeDialog
     );
 
-    dialog.addEventListener(
-      "click",
-      event => {
+    dialog.addEventListener("click", event => {
 
-        if (
-          event.target !== dialog
-        ) return;
+      if (event.target !== dialog) return;
 
-        const rect =
-          dialog.getBoundingClientRect();
+      const rect = dialog.getBoundingClientRect();
 
-        const outside =
+      const outside =
+        event.clientX < rect.left ||
+        event.clientX > rect.right ||
+        event.clientY < rect.top ||
+        event.clientY > rect.bottom;
 
-          event.clientX < rect.left ||
-          event.clientX > rect.right ||
-          event.clientY < rect.top ||
-          event.clientY > rect.bottom;
+      if (outside) {
 
-        if (outside) {
-
-          closeDialog();
-
-        }
+        closeDialog();
 
       }
-    );
 
-    accountBtn.addEventListener(
-      "click",
-      () => {
+    });
 
-        const opening =
-          menu.hidden;
+    accountBtn.addEventListener("click", () => {
 
-        menu.hidden =
-          !opening;
+      const opening = menu.hidden;
 
-        accountBtn.setAttribute(
-          "aria-expanded",
-          String(opening)
-        );
+      menu.hidden = !opening;
+
+      accountBtn.setAttribute(
+        "aria-expanded",
+        String(opening)
+      );
+
+      if (opening) {
+
+        syncCareerNavigation();
 
       }
-    );
 
-    logoutBtn.addEventListener(
-      "click",
-      () => {
+    });
+
+    logoutBtn.addEventListener("click", () => {
+
+      closeMenu();
+
+      logout.click();
+
+    });
+
+    document.addEventListener("click", event => {
+
+      if (!accountWrap.contains(event.target)) {
 
         closeMenu();
 
-        logout.click();
+      }
+
+    });
+
+    document.addEventListener("keydown", event => {
+
+      if (event.key === "Escape" && !menu.hidden) {
+
+        closeMenu();
+
+        accountBtn.focus();
 
       }
-    );
 
-    document.addEventListener(
-      "click",
-      event => {
-
-        if (
-          !accountWrap.contains(
-            event.target
-          )
-        ) {
-
-          closeMenu();
-
-        }
-
-      }
-    );
-
-    document.addEventListener(
-      "keydown",
-      event => {
-
-        if (
-          event.key === "Escape" &&
-          !menu.hidden
-        ) {
-
-          closeMenu();
-
-          accountBtn.focus();
-
-        }
-
-      }
-    );
+    });
 
     window.addEventListener(
       "hashchange",
       handleAccountLink
     );
 
-    document.addEventListener(
-      "click",
-      event => {
+    document.addEventListener("click", event => {
 
-        const target =
-          event.target;
+      const target = event.target;
 
-        if (
-          !(target instanceof Element)
-        ) return;
+      if (!(target instanceof Element)) return;
 
-        const link = target.closest(
-          'a[href="#worknelyAccount"]'
-        );
+      const link = target.closest(
+        'a[href="#worknelyAccount"]'
+      );
 
-        if (!link) return;
+      if (!link) return;
 
-        event.preventDefault();
+      event.preventDefault();
 
-        if (
-          logout.hidden ||
-          isRecovery()
-        ) {
+      if (logout.hidden || isRecovery()) {
 
-          openAuth("login");
+        openAuth("login");
 
-        } else {
+      } else {
 
-          window.location.href =
-            "dashboard.html";
-
-        }
+        window.location.href = "dashboard.html";
 
       }
-    );
+
+    });
 
     /* SESSION STATE OBSERVER */
 
-    new MutationObserver(
-      syncAuth
-    ).observe(logout, {
-
+    new MutationObserver(syncAuth).observe(logout, {
       attributes:true,
-
       attributeFilter:[
         "hidden",
         "style",
         "class"
       ]
-
     });
 
     /* INTERNATIONAL LANGUAGE EVENTS */
@@ -2453,23 +2282,20 @@
       scheduleTranslation
     );
 
-    document.addEventListener(
-      "change",
-      event => {
+    document.addEventListener("change", event => {
 
-        if (
-          event.target instanceof HTMLSelectElement &&
-          event.target.matches(
-            "#language, [data-wn-language]"
-          )
-        ) {
+      if (
+        event.target instanceof HTMLSelectElement &&
+        event.target.matches(
+          "#language, [data-wn-language]"
+        )
+      ) {
 
-          scheduleTranslation();
-
-        }
+        scheduleTranslation();
 
       }
-    );
+
+    });
 
     window.addEventListener(
       "pageshow",
@@ -2485,6 +2311,8 @@
     translateInterface();
 
     updateAuthStatus();
+
+    syncCareerNavigation();
 
     if (isRecovery()) {
 
@@ -2506,9 +2334,7 @@
 
   }
 
-  if (
-    document.readyState === "loading"
-  ) {
+  if (document.readyState === "loading") {
 
     document.addEventListener(
       "DOMContentLoaded",
@@ -2525,7 +2351,8 @@
 })();
 
 /*
- * END WORKNELY V7.15
+ * END WORKNELY V7.17.9.3
+ * CAREER INTELLIGENCE ACCOUNT NAVIGATION
  * INTERNATIONAL SAAS INTERFACE
  * WORKNELY — PEOPLE TECHNOLOGY
  */
