@@ -16,7 +16,7 @@
 <link rel="canonical" href="https://adamdenise.github.io/resume-optimization-toolkit/">
 <link rel="icon" type="image/svg+xml" href="worknely-favicon.svg">
 
-<!-- WORKNELY V7.16.7 PROFESSIONAL DESIGN STUDIO -->
+<!-- WORKNELY V7.16.13 PROFESSIONAL DESIGN STUDIO -->
 
 <link rel="stylesheet" href="style.css?v=7.12.1">
 <link rel="stylesheet" href="worknely-theme.css?v=7.12.1">
@@ -1295,29 +1295,19 @@ body .shell .wn-builder-secondary button {
 
   </div>
 
-  <!-- V7.16.7 PROFESSIONAL DESIGN STUDIO -->
+  <!-- PROFESSIONAL DESIGN STUDIO -->
 
   <div id="wnDesignStudio">
 
-    <!-- FIVE PROFESSIONAL RESUME TEMPLATES -->
-
     <div id="wnTemplateGallery"></div>
-
-    <!-- CUSTOM ACCENT COLORS -->
 
     <div id="wnColorCustomization"></div>
 
-    <!-- LIVE RESUME PREVIEW -->
-
     <div id="wnLivePreview"></div>
-
-    <!-- PROFESSIONAL A4 / LETTER EXPORT -->
 
     <div id="wnProfessionalPDFExport"></div>
 
   </div>
-
-  <!-- EXISTING BUILDER ACTIONS -->
 
   <div class="wn-builder-actions">
 
@@ -1656,7 +1646,7 @@ body .shell .wn-builder-secondary button {
 
 </div>
 
-<!-- WORKNELY V7.16.7 FUNCTIONAL MODULES -->
+<!-- WORKNELY V7.16.13 FUNCTIONAL MODULES -->
 
 <script defer src="worknely-localization.js?v=7.15"></script>
 
@@ -1680,7 +1670,7 @@ body .shell .wn-builder-secondary button {
 
 <script defer src="worknely-color-customization.js?v=7.16.4"></script>
 
-<script defer src="worknely-pdf-export.js?v=7.16.5"></script>
+<script defer src="worknely-pdf-export.js?v=7.16.13"></script>
 
 <script defer src="worknely-template-persistence.js?v=7.16.6"></script>
 
@@ -1690,7 +1680,7 @@ body .shell .wn-builder-secondary button {
 
 <script defer src="worknely-saas-ui.js?v=7.15"></script>
 
-<script type="module" src="worknely-save-account.js?v=7.14"></script>
+<script type="module" src="worknely-save-account.js?v=7.16.8"></script>
 
 <!-- LANGUAGE FLAG SYNCHRONIZATION -->
 
@@ -2694,17 +2684,16 @@ body .shell .wn-builder-secondary button {
 })();
 </script>
 
-<!-- WORKNELY V7.16.7 DESIGN STUDIO CONTROLLER -->
+<!-- WORKNELY V7.16.13 DESIGN STUDIO CONTROLLER -->
 
 <script>
 (() => {
 
   "use strict";
 
-  const VERSION = "7.16.7";
+  const VERSION = "7.16.13";
 
   let scheduled = false;
-
   let initialized = false;
 
   const moduleDefinitions = [
@@ -2740,17 +2729,11 @@ body .shell .wn-builder-secondary button {
     const fields = {
 
       fullName:"bName",
-
       professionalTitle:"bTitle",
-
       contact:"bContact",
-
       education:"bEducation",
-
       summary:"bSummary",
-
       experience:"bExperience",
-
       skills:"bSkills"
 
     };
@@ -2957,6 +2940,9 @@ body .shell .wn-builder-secondary button {
       pdf:
         Boolean(window.WorknelyPDFExport),
 
+      pdfVersion:
+        window.WorknelyPDFExport?.version || null,
+
       persistence:
         Boolean(window.WorknelyTemplatePersistence),
 
@@ -2964,7 +2950,10 @@ body .shell .wn-builder-secondary button {
         Boolean(window.WorknelyLocalization),
 
       accountClient:
-        Boolean(window.worknelySupabase)
+        Boolean(window.worknelySupabase),
+
+      accountPersistenceVersion:
+        window.WorknelyAccountPersistence?.version || null
 
     };
 
@@ -3025,6 +3014,30 @@ body .shell .wn-builder-secondary button {
   document.addEventListener(
 
     "worknely:localizationready",
+
+    scheduleRefresh
+
+  );
+
+  document.addEventListener(
+
+    "worknely:templatesready",
+
+    scheduleRefresh
+
+  );
+
+  document.addEventListener(
+
+    "worknely:pdfexportready",
+
+    scheduleRefresh
+
+  );
+
+  document.addEventListener(
+
+    "worknely:designrestored",
 
     scheduleRefresh
 
@@ -3093,7 +3106,7 @@ body .shell .wn-builder-secondary button {
 
 <script defer src="worknely-celebration.js?v=7.5"></script>
 
-<!-- END WORKNELY V7.16.7 PROFESSIONAL DESIGN STUDIO -->
+<!-- END WORKNELY V7.16.13 PROFESSIONAL DESIGN STUDIO -->
 
 </body>
 </html>
