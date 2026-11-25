@@ -1,8 +1,9 @@
 
 /*
- * WORKNELY V7.16.12
+ * WORKNELY V7.16.13
  * Professional International Dashboard
- * Unified Direct PDF Export Integration
+ * Unified Direct PDF Export
+ * PDF Engine V7.16.12 Compatibility
  * Persistent Document Design
  * People Technology
  */
@@ -10,7 +11,9 @@
 import { createClient } from
   "https://esm.sh/@supabase/supabase-js@2";
 
-const VERSION = "7.16.12";
+const VERSION = "7.16.13";
+const PDF_VERSION = "7.16.12";
+const TEMPLATE_VERSION = "7.16.1";
 
 const SITE_URL =
   "https://adamdenise.github.io/resume-optimization-toolkit/";
@@ -502,6 +505,33 @@ const dictionary = {
     "Este currículum está vacío."
   ],
 
+  pdfLibraryError: [
+    "Unable to load the PDF library. Check your connection and retry.",
+    "Biblioteca PDF nu a putut fi încărcată. Verifică internetul și reîncearcă.",
+    "Impossibile caricare la libreria PDF. Controlla la connessione e riprova.",
+    "PDF-Bibliothek konnte nicht geladen werden. Verbindung prüfen.",
+    "Impossible de charger la bibliothèque PDF. Vérifiez votre connexion.",
+    "No se pudo cargar la biblioteca PDF. Comprueba tu conexión."
+  ],
+
+  pdfFontError: [
+    "Unable to load the professional PDF fonts. Please retry.",
+    "Fonturile PDF nu au putut fi încărcate. Încearcă din nou.",
+    "Impossibile caricare i font PDF. Riprova.",
+    "PDF-Schriftarten konnten nicht geladen werden.",
+    "Impossible de charger les polices PDF.",
+    "No se pudieron cargar las fuentes PDF."
+  ],
+
+  pdfChanged: [
+    "The document context changed. Please export again.",
+    "Contextul documentului s-a schimbat. Repetă exportul.",
+    "Il contesto del documento è cambiato. Esporta di nuovo.",
+    "Dokumentkontext geändert. Bitte erneut exportieren.",
+    "Le contexte du document a changé. Exportez à nouveau.",
+    "El contexto del documento cambió. Exporta de nuevo."
+  ],
+
   share: [
     "Save / Share PDF",
     "Salvează / Partajează PDF",
@@ -578,20 +608,15 @@ const dictionary = {
 };
 
 function getLanguage() {
-
   let language =
     window.WorknelyLocalization?.getLanguage?.();
 
   if (!language) {
-
     try {
-
       language = localStorage.getItem(
         "worknely.language"
       );
-
     } catch {}
-
   }
 
   language = String(
@@ -599,16 +624,11 @@ function getLanguage() {
   ).toLowerCase().split("-")[0];
 
   return LANGUAGES.includes(language)
-    ? language
-    : "en";
-
+    ? language : "en";
 }
 
 function t(key, variables = {}) {
-
-  const index = LANGUAGES.indexOf(
-    getLanguage()
-  );
+  const index = LANGUAGES.indexOf(getLanguage());
 
   const value =
     dictionary[key]?.[index] ||
@@ -624,7 +644,6 @@ function t(key, variables = {}) {
         ? String(variables[name])
         : match
   );
-
 }
 
 function locale() {
@@ -632,174 +651,154 @@ function locale() {
 }
 
 function formatNumber(value) {
-  return new Intl.NumberFormat(
-    locale()
-  ).format(value);
+  return new Intl.NumberFormat(locale()).format(value);
 }
 
 /* PROFESSIONAL TEMPLATE REGISTRY */
 
 const TEMPLATE_REGISTRY = Object.freeze({
-
   ats: {
     name: "ATS Professional",
     accent: "#242424",
     membership: "Free"
   },
-
   classic: {
     name: "Classic",
     accent: "#343434",
     membership: "Free"
   },
-
   executive: {
     name: "Executive",
     accent: "#172b45",
     membership: "Pro"
   },
-
   modern: {
     name: "Modern",
     accent: "#5424ff",
     membership: "Pro"
   },
-
   creative: {
     name: "Creative",
     accent: "#ec22ad",
     membership: "Premium"
   }
-
 });
 
 const DEFAULT_DESIGN = Object.freeze({
-
   version: 1,
   templateId: "ats",
   accentColor: "#242424",
   customColor: null,
   documentLanguage: null,
   paperFormat: "a4"
-
 });
 
 function normalizeColor(value) {
-
   return typeof value === "string" &&
     /^#[0-9a-f]{6}$/i.test(value)
       ? value.toLowerCase()
       : null;
-
 }
 
 function normalizeDesign(value) {
-
   const source =
     value &&
     typeof value === "object" &&
     !Array.isArray(value)
-      ? value
-      : {};
+      ? value : {};
 
   const templateId =
     Object.prototype.hasOwnProperty.call(
       TEMPLATE_REGISTRY,
       source.templateId
     )
-      ? source.templateId
-      : "ats";
+      ? source.templateId : "ats";
 
-  const template =
-    TEMPLATE_REGISTRY[templateId];
+  const template = TEMPLATE_REGISTRY[templateId];
 
-  let customColor =
-    normalizeColor(source.customColor);
+  let customColor = normalizeColor(source.customColor);
 
   if (
     !Object.prototype.hasOwnProperty.call(
       source, "customColor"
     )
   ) {
+    const legacyColor = normalizeColor(source.accentColor);
 
-    const legacyColor =
-      normalizeColor(source.accentColor);
-
-    if (
-      legacyColor &&
-      legacyColor !== template.accent
-    ) {
+    if (legacyColor && legacyColor !== template.accent) {
       customColor = legacyColor;
     }
-
   }
 
   return {
-
     version: 1,
     templateId,
-
-    accentColor:
-      customColor || template.accent,
-
+    accentColor: customColor || template.accent,
     customColor,
-
     documentLanguage:
       LANGUAGES.includes(source.documentLanguage)
-        ? source.documentLanguage
-        : null,
-
+        ? source.documentLanguage : null,
     paperFormat:
       source.paperFormat === "letter"
-        ? "letter"
-        : "a4"
-
+        ? "letter" : "a4"
   };
-
 }
 
 function getDesign(resume) {
   return normalizeDesign(resume?.design);
 }
 
-/* SHARED PDF ENGINE LOADER */
+/* VERSION-AWARE PDF ENGINE LOADER */
 
 const modulePromises = new Map();
 
-function loadModule(path, validator) {
+function isPDFEngineReady() {
+  const engine = window.WorknelyPDFExport;
 
+  return Boolean(
+    engine &&
+    engine.version === PDF_VERSION &&
+    typeof engine.exportResume === "function"
+  );
+}
+
+function isDesignEngineReady() {
+  return Boolean(
+    window.WorknelyTemplates?.renderResume
+  );
+}
+
+function loadModule(path, validator) {
   if (validator()) {
     return Promise.resolve(true);
   }
 
   if (modulePromises.has(path)) {
-    return modulePromises.get(path);
+    return modulePromises.get(path).then(success => {
+      if (success && validator()) return true;
+
+      modulePromises.delete(path);
+      return false;
+    });
   }
 
   const promise = new Promise(resolve => {
-
-    const script =
-      document.createElement("script");
+    const script = document.createElement("script");
 
     let completed = false;
 
     const finish = success => {
-
       if (completed) return;
 
       completed = true;
-
       clearTimeout(timer);
 
       script.onload = null;
       script.onerror = null;
 
-      if (!success) {
-        script.remove();
-      }
+      if (!success) script.remove();
 
       resolve(success);
-
     };
 
     const timer = setTimeout(
@@ -807,10 +806,7 @@ function loadModule(path, validator) {
       20000
     );
 
-    script.src = new URL(
-      path, SITE_URL
-    ).href;
-
+    script.src = new URL(path, SITE_URL).href;
     script.async = true;
 
     script.onload = () =>
@@ -820,59 +816,33 @@ function loadModule(path, validator) {
       finish(false);
 
     document.head.appendChild(script);
-
   });
 
   modulePromises.set(path, promise);
 
   promise.then(success => {
-
-    if (!success) {
-      modulePromises.delete(path);
-    }
-
+    if (!success) modulePromises.delete(path);
   });
 
   return promise;
-
 }
 
 async function loadDesignEngine() {
-
   return loadModule(
-
-    "worknely-templates.js?v=7.16.1",
-
-    () => Boolean(
-      window.WorknelyTemplates?.renderResume
-    )
-
+    "worknely-templates.js?v=" + TEMPLATE_VERSION,
+    isDesignEngineReady
   );
-
 }
 
 async function loadPDFEngine() {
-
   if (!await loadDesignEngine()) {
     return false;
   }
 
   return loadModule(
-
-    "worknely-pdf-export.js?v=7.16.11",
-
-    () => Boolean(
-
-      window.WorknelyPDFExport?.version ===
-        "7.16.11" &&
-
-      typeof window.WorknelyPDFExport
-        ?.exportResume === "function"
-
-    )
-
+    "worknely-pdf-export.js?v=" + PDF_VERSION,
+    isPDFEngineReady
   );
-
 }
 
 /* APPLICATION STATE */
@@ -893,21 +863,20 @@ let loadingKey = "checking";
 
 let preparedPDF = null;
 let preparedPDFURL = null;
+let pdfGeneration = 0;
+let lastPDFError = null;
 
 const statusMessages = new Map();
 
 /* DASHBOARD STYLES */
 
 function installDesignStyles() {
-
   if ($("wnDashboardDesignStyles")) return;
 
   const style = document.createElement("style");
-
   style.id = "wnDashboardDesignStyles";
 
   style.textContent = `
-
     #resumeList .wn-document-design {
       display:flex;
       align-items:center;
@@ -959,7 +928,9 @@ function installDesignStyles() {
       margin:auto;
       width:420px;
       max-width:calc(100% - 28px);
+      max-height:calc(100vh - 32px);
       max-height:calc(100dvh - 32px);
+      box-sizing:border-box;
       padding:22px;
       border:1px solid #e9e2f4;
       border-radius:20px;
@@ -1043,6 +1014,13 @@ function installDesignStyles() {
       text-decoration:none;
       text-align:center;
       cursor:pointer;
+      touch-action:manipulation;
+    }
+
+    .wn-dashboard-pdf-actions svg {
+      width:19px;
+      height:19px;
+      flex:0 0 19px;
     }
 
     .wn-dashboard-pdf-actions .wn-pdf-primary {
@@ -1060,89 +1038,77 @@ function installDesignStyles() {
       display:none!important;
     }
 
+    @media(max-width:480px) {
+      #wnDashboardPDFDialog {
+        padding:18px;
+      }
+
+      #wnDashboardPDFDialog h2 {
+        font-size:21px;
+      }
+    }
   `;
 
   document.head.appendChild(style);
-
 }
 
 /* STATUS MANAGEMENT */
 
 function setStatus(key = "", type = "info") {
-
   statusMessages.set(resumeStatus, key);
 
-  resumeStatus.textContent =
-    key ? t(key) : "";
+  resumeStatus.textContent = key ? t(key) : "";
 
   if (key) {
     resumeStatus.dataset.status = type;
   } else {
     delete resumeStatus.dataset.status;
   }
-
 }
 
 function setDialogStatus(element, key = "") {
-
   if (!element) return;
 
   statusMessages.set(element, key);
-
-  element.textContent =
-    key ? t(key) : "";
-
+  element.textContent = key ? t(key) : "";
 }
 
 function reportError(operation, error) {
-
   console.error(
     "Worknely dashboard:",
     operation,
     error?.code || error?.name || "Error"
   );
-
 }
 
 function updateActionLabels() {
-
   saveButton.textContent = t(
     activeOperation === "save"
       ? "saving"
-      : editingResumeId
-        ? "update"
-        : "save"
+      : editingResumeId ? "update" : "save"
   );
 
   renameConfirm.textContent = t(
     activeOperation === "rename"
-      ? "saving"
-      : "saveName"
+      ? "saving" : "saveName"
   );
 
   duplicateConfirm.textContent = t(
     activeOperation === "duplicate"
-      ? "creating"
-      : "createCopy"
+      ? "creating" : "createCopy"
   );
 
   deleteConfirm.textContent = t(
     activeOperation === "delete"
-      ? "deleting"
-      : "delete"
+      ? "deleting" : "delete"
   );
-
 }
 
 function setBusy(busy, operation = "") {
-
   isBusy = Boolean(busy);
-
-  activeOperation =
-    isBusy ? operation : "";
+  activeOperation = isBusy ? operation : "";
 
   const controls = [
-
     saveButton,
     newButton,
     logoutButton,
@@ -1160,15 +1126,10 @@ function setBusy(busy, operation = "") {
     deleteCancel,
     resumeTitle,
     ...Object.values(fields)
-
   ];
 
   controls.forEach(element => {
-
-    if (element) {
-      element.disabled = isBusy;
-    }
-
+    if (element) element.disabled = isBusy;
   });
 
   resumeList.querySelectorAll("button")
@@ -1182,7 +1143,6 @@ function setBusy(busy, operation = "") {
   );
 
   updateActionLabels();
-
 }
 
 /* SESSION PROTECTION */
@@ -1193,24 +1153,19 @@ function showApp() {
 }
 
 function showLoading(key) {
-
   loadingKey = key;
   loading.hidden = false;
   loading.textContent = t(key);
   app.hidden = true;
-
 }
 
 function redirectToLogin() {
-
   window.location.replace(
     SITE_URL + "#worknelyAccount"
   );
-
 }
 
 function clearSession() {
-
   sessionGeneration++;
 
   clearPreparedPDF();
@@ -1224,6 +1179,8 @@ function clearSession() {
   selectedDuplicateId = null;
   selectedDeleteId = null;
 
+  lastPDFError = null;
+
   resumeForm.reset();
   fillResumeForm({});
 
@@ -1236,9 +1193,7 @@ function clearSession() {
     duplicateDialog,
     deleteDialog
   ].forEach(dialog => {
-
     if (dialog.open) dialog.close();
-
   });
 
   resumeList.replaceChildren();
@@ -1258,21 +1213,17 @@ function clearSession() {
   statusMessages.clear();
 
   showLoading("signingOut");
-
 }
 
 function verifyOwner(userId, generation) {
-
   return currentUser?.id === userId &&
     sessionGeneration === generation;
-
 }
 
 async function verifyAuthenticatedOwner(
   userId,
   generation
 ) {
-
   if (!verifyOwner(userId, generation)) {
     return false;
   }
@@ -1283,29 +1234,21 @@ async function verifyAuthenticatedOwner(
   return !error &&
     data?.user?.id === userId &&
     verifyOwner(userId, generation);
-
 }
 
 /* DOCUMENT UTILITIES */
 
 function findResume(id) {
-
   return savedResumes.find(
     item => String(item.id) === String(id)
   );
-
 }
 
 function getDocumentTitle(resume) {
-
-  return String(
-    resume?.title || t("untitled")
-  );
-
+  return String(resume?.title || t("untitled"));
 }
 
 function formatDate(date) {
-
   if (!date) return t("unknownDate");
 
   const parsed = new Date(date);
@@ -1322,69 +1265,52 @@ function formatDate(date) {
       day: "numeric"
     }
   );
-
 }
 
 function timestamp(date) {
-
   const value = Date.parse(date || "");
 
-  return Number.isFinite(value)
-    ? value
-    : 0;
-
+  return Number.isFinite(value) ? value : 0;
 }
 
 function normalizeSearch(value) {
-
   return String(value || "")
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
     .toLowerCase()
     .trim();
-
 }
 
 function normalizeContent(content) {
-
   const result = {};
 
   Object.keys(fields).forEach(key => {
-
     result[key] =
       typeof content?.[key] === "string"
-        ? content[key]
-        : "";
-
+        ? content[key] : "";
   });
 
   return result;
-
 }
 
 function hasContent(content) {
-
   return Object.values(content).some(
     value =>
       typeof value === "string" &&
       value.trim().length > 0
   );
-
 }
 
 /* SVG ICON SYSTEM */
 
-const SVG_NS =
-  "http://www.w3.org/2000/svg";
+const SVG_NS = "http://www.w3.org/2000/svg";
 
 function createIcon(name = "document") {
-
   const svg = document.createElementNS(
     SVG_NS, "svg"
   );
 
   const attributes = {
-
     viewBox: "0 0 24 24",
     fill: "none",
     stroke: "currentColor",
@@ -1393,37 +1319,30 @@ function createIcon(name = "document") {
     "stroke-linejoin": "round",
     "aria-hidden": "true",
     focusable: "false"
-
   };
 
   Object.entries(attributes)
     .forEach(([key, value]) => {
-
       svg.setAttribute(key, value);
-
     });
 
   const paths = {
-
     document: [
       "M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z",
       "M14 2v6h6",
       "M8 13h8",
       "M8 17h8"
     ],
-
     plus: [
       "M12 5v14",
       "M5 12h14"
     ],
-
     filePlus: [
       "M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z",
       "M14 2v6h6",
       "M12 11v6",
       "M9 14h6"
     ],
-
     trash: [
       "M3 6h18",
       "M8 6V4h8v2",
@@ -1431,76 +1350,58 @@ function createIcon(name = "document") {
       "M10 10v6",
       "M14 10v6"
     ],
-
     rename: [
       "M16 3l5 5",
       "M4 20l4-1L21 6a2.8 2.8 0 0 0-4-4L4 15Z"
     ],
-
     duplicate: [
       "M9 9h11v11H9Z",
       "M15 9V4H4v11h5"
     ],
-
     download: [
       "M12 3v12",
       "M7 10l5 5 5-5",
       "M4 17v4h16v-4"
     ],
-
     check: [
       "M5 12l4 4L19 6"
     ],
-
     share: [
       "M12 16V3",
       "M7 8l5-5 5 5",
       "M5 12v8h14v-8"
     ]
-
   };
 
   if (name === "more") {
-
     [5, 12, 19].forEach(x => {
-
-      const circle =
-        document.createElementNS(
-          SVG_NS, "circle"
-        );
+      const circle = document.createElementNS(
+        SVG_NS, "circle"
+      );
 
       circle.setAttribute("cx", x);
       circle.setAttribute("cy", "12");
       circle.setAttribute("r", "1.7");
-      circle.setAttribute(
-        "fill", "currentColor"
-      );
+      circle.setAttribute("fill", "currentColor");
       circle.setAttribute("stroke", "none");
 
       svg.appendChild(circle);
-
     });
 
     return svg;
-
   }
 
   (paths[name] || paths.document)
     .forEach(value => {
-
-      const path =
-        document.createElementNS(
-          SVG_NS, "path"
-        );
+      const path = document.createElementNS(
+        SVG_NS, "path"
+      );
 
       path.setAttribute("d", value);
-
       svg.appendChild(path);
-
     });
 
   return svg;
-
 }
 
 /* BUTTON FACTORY */
@@ -1512,75 +1413,55 @@ function createButton(
   handler,
   iconOnly = false
 ) {
-
-  const button =
-    document.createElement("button");
+  const button = document.createElement("button");
 
   button.type = "button";
   button.className = className;
   button.disabled = isBusy;
   button.title = label;
 
-  button.setAttribute(
-    "aria-label", label
-  );
+  button.setAttribute("aria-label", label);
 
   if (iconName) {
     button.appendChild(createIcon(iconName));
   }
 
   if (!iconOnly) {
-
     button.appendChild(
       document.createTextNode(label)
     );
-
   }
 
-  button.addEventListener(
-    "click", handler
-  );
+  button.addEventListener("click", handler);
 
   return button;
-
 }
 
 /* RESUME CONTENT */
 
 function getResumeContent() {
-
   const content = {};
 
   Object.entries(fields)
     .forEach(([key, element]) => {
-
-      content[key] =
-        element?.value.trim() || "";
-
+      content[key] = element?.value.trim() || "";
     });
 
   return content;
-
 }
 
 function fillResumeForm(content = {}) {
-
-  const safeContent =
-    normalizeContent(content);
+  const safeContent = normalizeContent(content);
 
   Object.entries(fields)
     .forEach(([key, element]) => {
-
       if (element) {
         element.value = safeContent[key];
       }
-
     });
-
 }
 
 function resetForm(options = {}) {
-
   const {
     focus = true,
     announce = true
@@ -1589,9 +1470,7 @@ function resetForm(options = {}) {
   editingResumeId = null;
 
   resumeForm.reset();
-
   fillResumeForm({});
-
   updateActionLabels();
 
   if (announce) {
@@ -1599,115 +1478,80 @@ function resetForm(options = {}) {
   }
 
   if (focus) {
-
     quickCreate.open = true;
     resumeTitle.focus();
-
   }
-
 }
 
 /* BUILDER INTEGRATION */
 
 function getBuilderEditURL(resumeId) {
+  const url = new URL("index.html", SITE_URL);
 
-  const url = new URL(
-    "index.html", SITE_URL
-  );
-
-  url.searchParams.set(
-    "edit", String(resumeId)
-  );
-
+  url.searchParams.set("edit", String(resumeId));
   url.hash = "builder";
 
   return url.toString();
-
 }
 
 function getNewResumeURL() {
-
-  const url = new URL(
-    "index.html", SITE_URL
-  );
+  const url = new URL("index.html", SITE_URL);
 
   url.hash = "builder";
 
   return url.toString();
-
 }
 
 function openInResumeBuilder(id) {
-
   if (isBusy || !currentUser) return;
 
   const resume = findResume(id);
 
   if (!resume) {
-
     setStatus("notFound", "error");
-
     return;
-
   }
 
   window.location.assign(
     getBuilderEditURL(resume.id)
   );
-
 }
 
 /* SEARCH AND SORT */
 
 function getFilteredResumes() {
-
   const words = normalizeSearch(
     searchInput.value
   ).split(/\s+/).filter(Boolean);
 
-  const results = savedResumes.filter(
-    resume => {
+  const results = savedResumes.filter(resume => {
+    if (!words.length) return true;
 
-      if (!words.length) return true;
+    const content = normalizeContent(resume.content);
+    const design = getDesign(resume);
+    const template = TEMPLATE_REGISTRY[design.templateId];
 
-      const content =
-        normalizeContent(resume.content);
+    const searchable = normalizeSearch([
+      resume.title,
+      content.fullName,
+      content.professionalTitle,
+      content.education,
+      content.summary,
+      content.experience,
+      content.skills,
+      template.name,
+      design.paperFormat,
+      design.documentLanguage
+    ].join(" "));
 
-      const design = getDesign(resume);
-
-      const template =
-        TEMPLATE_REGISTRY[design.templateId];
-
-      const searchable = normalizeSearch(
-
-        [
-          resume.title,
-          content.fullName,
-          content.professionalTitle,
-          content.education,
-          content.summary,
-          content.experience,
-          content.skills,
-          template.name,
-          design.paperFormat,
-          design.documentLanguage
-        ].join(" ")
-
-      );
-
-      return words.every(
-        word => searchable.includes(word)
-      );
-
-    }
-  );
+    return words.every(
+      word => searchable.includes(word)
+    );
+  });
 
   results.sort((a, b) => {
-
     switch (sortInput.value) {
-
       case "updated-asc":
-
         return timestamp(
           a.updated_at || a.created_at
         ) - timestamp(
@@ -1715,69 +1559,51 @@ function getFilteredResumes() {
         );
 
       case "created-desc":
-
         return timestamp(b.created_at) -
           timestamp(a.created_at);
 
       case "created-asc":
-
         return timestamp(a.created_at) -
           timestamp(b.created_at);
 
       case "title-asc":
-
-        return getDocumentTitle(a)
-          .localeCompare(
-            getDocumentTitle(b),
-            locale(),
-            { sensitivity: "base" }
-          );
+        return getDocumentTitle(a).localeCompare(
+          getDocumentTitle(b),
+          locale(),
+          { sensitivity: "base" }
+        );
 
       case "title-desc":
-
-        return getDocumentTitle(b)
-          .localeCompare(
-            getDocumentTitle(a),
-            locale(),
-            { sensitivity: "base" }
-          );
+        return getDocumentTitle(b).localeCompare(
+          getDocumentTitle(a),
+          locale(),
+          { sensitivity: "base" }
+        );
 
       default:
-
         return timestamp(
           b.updated_at || b.created_at
         ) - timestamp(
           a.updated_at || a.created_at
         );
-
     }
-
   });
 
   return results;
-
 }
 
 function clearDocumentSearch() {
-
   searchInput.value = "";
-
   renderResumes();
-
   searchInput.focus();
-
 }
 
 /* DOCUMENT MENUS */
 
-function closeDocumentMenus(
-  restoreFocus = false
-) {
-
+function closeDocumentMenus(restoreFocus = false) {
   resumeList
     .querySelectorAll(".wn-document-menu")
     .forEach(menu => {
-
       const panel = menu.querySelector(
         ".wn-document-menu-panel"
       );
@@ -1786,58 +1612,36 @@ function closeDocumentMenus(
         ".wn-document-menu-button"
       );
 
-      const wasOpen =
-        panel && !panel.hidden;
+      const wasOpen = panel && !panel.hidden;
 
       if (panel) panel.hidden = true;
 
       if (button) {
-
-        button.setAttribute(
-          "aria-expanded", "false"
-        );
+        button.setAttribute("aria-expanded", "false");
 
         if (restoreFocus && wasOpen) {
           button.focus();
         }
-
       }
-
     });
-
 }
 
 function createDocumentMenu(resume) {
+  const wrapper = document.createElement("div");
+  wrapper.className = "wn-document-menu";
 
-  const wrapper =
-    document.createElement("div");
-
-  wrapper.className =
-    "wn-document-menu";
-
-  const panel =
-    document.createElement("div");
-
-  panel.className =
-    "wn-document-menu-panel";
-
-  panel.id =
-    "wn-menu-" + String(resume.id);
-
+  const panel = document.createElement("div");
+  panel.className = "wn-document-menu-panel";
+  panel.id = "wn-menu-" + String(resume.id);
   panel.hidden = true;
 
   const trigger = createButton(
-
     "outline wn-document-menu-button",
-
     t("more", {
       name: getDocumentTitle(resume)
     }),
-
     "more",
-
     event => {
-
       event.stopPropagation();
 
       if (isBusy) return;
@@ -1847,466 +1651,245 @@ function createDocumentMenu(resume) {
       closeDocumentMenus();
 
       if (!wasOpen) {
-
         panel.hidden = false;
-
-        trigger.setAttribute(
-          "aria-expanded", "true"
-        );
-
-        panel.querySelector(
-          "button"
-        )?.focus();
-
+        trigger.setAttribute("aria-expanded", "true");
+        panel.querySelector("button")?.focus();
       }
-
     },
-
     true
-
   );
 
-  trigger.setAttribute(
-    "aria-expanded", "false"
-  );
+  trigger.setAttribute("aria-expanded", "false");
+  trigger.setAttribute("aria-controls", panel.id);
 
-  trigger.setAttribute(
-    "aria-controls", panel.id
-  );
-
-  function menuAction(
-    key,
-    icon,
-    handler,
-    danger = false
-  ) {
-
+  function menuAction(key, icon, handler, danger = false) {
     return createButton(
-
       danger ? "wn-danger-action" : "",
-
       t(key),
-
       icon,
-
       () => {
-
         closeDocumentMenus(true);
-
         handler(resume.id);
-
       }
-
     );
-
   }
 
-  const divider =
-    document.createElement("div");
-
-  divider.className =
-    "wn-document-menu-divider";
-
-  divider.setAttribute(
-    "aria-hidden", "true"
-  );
+  const divider = document.createElement("div");
+  divider.className = "wn-document-menu-divider";
+  divider.setAttribute("aria-hidden", "true");
 
   panel.append(
-
-    menuAction(
-      "rename",
-      "rename",
-      openRenameDialog
-    ),
-
-    menuAction(
-      "duplicate",
-      "duplicate",
-      openDuplicateDialog
-    ),
-
-    menuAction(
-      "download",
-      "download",
-      downloadResumePDF
-    ),
-
+    menuAction("rename", "rename", openRenameDialog),
+    menuAction("duplicate", "duplicate", openDuplicateDialog),
+    menuAction("download", "download", downloadResumePDF),
     divider,
-
-    menuAction(
-      "delete",
-      "trash",
-      openDeleteDialog,
-      true
-    )
-
+    menuAction("delete", "trash", openDeleteDialog, true)
   );
 
   wrapper.append(trigger, panel);
 
   return wrapper;
-
 }
 
 /* DESIGN METADATA */
 
 function createDesignMetadata(resume) {
-
   const design = getDesign(resume);
+  const template = TEMPLATE_REGISTRY[design.templateId];
 
-  const template =
-    TEMPLATE_REGISTRY[design.templateId];
+  const wrapper = document.createElement("div");
+  wrapper.className = "wn-document-design";
+  wrapper.setAttribute("aria-label", t("design"));
 
-  const wrapper =
-    document.createElement("div");
+  const templateLabel = document.createElement("span");
+  templateLabel.className = "wn-template-label";
 
-  wrapper.className =
-    "wn-document-design";
-
-  wrapper.setAttribute(
-    "aria-label", t("design")
-  );
-
-  const templateLabel =
-    document.createElement("span");
-
-  templateLabel.className =
-    "wn-template-label";
-
-  const color =
-    document.createElement("span");
-
-  color.className =
-    "wn-design-color";
-
-  color.style.backgroundColor =
-    design.accentColor;
-
+  const color = document.createElement("span");
+  color.className = "wn-design-color";
+  color.style.backgroundColor = design.accentColor;
   color.title = design.accentColor;
-
-  color.setAttribute(
-    "aria-hidden", "true"
-  );
+  color.setAttribute("aria-hidden", "true");
 
   templateLabel.append(
-
     color,
-
-    document.createTextNode(
-      template.name
-    )
-
+    document.createTextNode(template.name)
   );
 
-  const paper =
-    document.createElement("span");
-
-  paper.className =
-    "wn-paper-label";
+  const paper = document.createElement("span");
+  paper.className = "wn-paper-label";
 
   paper.textContent =
     design.paperFormat === "letter"
-      ? "US Letter"
-      : "A4";
+      ? "US Letter" : "A4";
 
-  wrapper.append(
-    templateLabel,
-    paper
-  );
+  wrapper.append(templateLabel, paper);
 
   if (design.documentLanguage) {
+    const language = document.createElement("span");
 
-    const language =
-      document.createElement("span");
-
-    language.className =
-      "wn-document-language";
-
+    language.className = "wn-document-language";
     language.textContent =
       design.documentLanguage.toUpperCase();
 
     wrapper.appendChild(language);
-
   }
 
   return wrapper;
-
 }
 
 /* DOCUMENT CARDS */
 
 function createResumeCard(resume) {
-
-  const card =
-    document.createElement("article");
+  const card = document.createElement("article");
 
   card.className = "resume-item";
+  card.dataset.resumeId = String(resume.id);
 
-  card.dataset.resumeId =
-    String(resume.id);
-
-  const info =
-    document.createElement("div");
-
+  const info = document.createElement("div");
   info.className = "resume-info";
 
-  const icon =
-    document.createElement("span");
-
+  const icon = document.createElement("span");
   icon.className = "resume-icon";
+  icon.appendChild(createIcon("document"));
 
-  icon.appendChild(
-    createIcon("document")
-  );
+  const details = document.createElement("div");
+  details.className = "resume-details";
 
-  const details =
-    document.createElement("div");
+  const title = document.createElement("strong");
+  title.textContent = getDocumentTitle(resume);
 
-  details.className =
-    "resume-details";
-
-  const title =
-    document.createElement("strong");
-
-  title.textContent =
-    getDocumentTitle(resume);
-
-  const date =
-    document.createElement("small");
+  const date = document.createElement("small");
 
   date.textContent = t("date", {
-
     date: formatDate(
-      resume.updated_at ||
-      resume.created_at
+      resume.updated_at || resume.created_at
     )
-
   });
 
   details.append(
-
     title,
-
     date,
-
     createDesignMetadata(resume)
-
   );
 
   info.append(icon, details);
 
-  const actions =
-    document.createElement("div");
-
+  const actions = document.createElement("div");
   actions.className = "actions";
 
   const editButton = createButton(
-
     "outline resume-edit-button",
-
     t("edit") + " ↗",
-
     null,
-
-    () => openInResumeBuilder(
-      resume.id
-    )
-
+    () => openInResumeBuilder(resume.id)
   );
 
   editButton.setAttribute(
-
     "aria-label",
-
     t("editName", {
-
       name: getDocumentTitle(resume)
-
     })
-
   );
 
   const pdfButton = createButton(
-
     "outline wn-document-pdf-button",
-
     t("download"),
-
     "download",
-
-    () => downloadResumePDF(
-      resume.id
-    ),
-
+    () => downloadResumePDF(resume.id),
     true
-
   );
 
   actions.append(
-
     editButton,
-
     pdfButton,
-
     createDocumentMenu(resume)
-
   );
 
   card.append(info, actions);
 
   return card;
-
 }
 
 /* EMPTY STATE */
 
 function createEmptyState() {
-
-  const empty =
-    document.createElement("div");
-
+  const empty = document.createElement("div");
   empty.className = "resume-empty";
 
-  const icon =
-    document.createElement("div");
+  const icon = document.createElement("div");
+  icon.className = "resume-empty-icon";
+  icon.appendChild(createIcon("filePlus"));
 
-  icon.className =
-    "resume-empty-icon";
+  const heading = document.createElement("h3");
+  heading.textContent = t("emptyTitle");
 
-  icon.appendChild(
-    createIcon("filePlus")
-  );
+  const description = document.createElement("p");
+  description.textContent = t("emptyDescription");
 
-  const heading =
-    document.createElement("h3");
-
-  heading.textContent =
-    t("emptyTitle");
-
-  const description =
-    document.createElement("p");
-
-  description.textContent =
-    t("emptyDescription");
-
-  const link =
-    document.createElement("a");
-
+  const link = document.createElement("a");
   link.className = "button";
-
   link.href = getNewResumeURL();
 
   link.append(
-
     createIcon("plus"),
-
-    document.createTextNode(
-      t("firstResume")
-    )
-
+    document.createTextNode(t("firstResume"))
   );
 
-  empty.append(
-    icon,
-    heading,
-    description,
-    link
-  );
+  empty.append(icon, heading, description, link);
 
   return empty;
-
 }
 
 /* DOCUMENT COUNTERS */
 
 function updateResumeCounters() {
-
-  const count = formatNumber(
-    savedResumes.length
-  );
+  const count = formatNumber(savedResumes.length);
 
   resumeCount.textContent = count;
-
-  workspaceResumeCount.textContent =
-    count;
-
+  workspaceResumeCount.textContent = count;
 }
 
 /* WORKSPACE RENDERING */
 
 function renderResumes() {
-
   closeDocumentMenus();
 
   resumeList.replaceChildren();
 
-  clearSearch.hidden =
-    !searchInput.value.length;
-
+  clearSearch.hidden = !searchInput.value.length;
   noSearchResults.hidden = true;
 
   if (!resumesLoaded) {
-
     searchResultCount.textContent = "";
-
     return;
-
   }
 
   updateResumeCounters();
 
-  const filtered =
-    getFilteredResumes();
+  const filtered = getFilteredResumes();
 
-  searchResultCount.textContent = t(
-
-    "results",
-
-    {
-
-      count: formatNumber(
-        filtered.length
-      ),
-
-      total: formatNumber(
-        savedResumes.length
-      )
-
-    }
-
-  );
+  searchResultCount.textContent = t("results", {
+    count: formatNumber(filtered.length),
+    total: formatNumber(savedResumes.length)
+  });
 
   if (!savedResumes.length) {
-
-    resumeList.appendChild(
-      createEmptyState()
-    );
-
+    resumeList.appendChild(createEmptyState());
     return;
-
   }
 
   if (!filtered.length) {
-
     noSearchResults.hidden = false;
-
     return;
-
   }
 
-  const fragment =
-    document.createDocumentFragment();
+  const fragment = document.createDocumentFragment();
 
   filtered.forEach(resume => {
-
-    fragment.appendChild(
-      createResumeCard(resume)
-    );
-
+    fragment.appendChild(createResumeCard(resume));
   });
 
   resumeList.appendChild(fragment);
-
 }
 
 /* SUPABASE DOCUMENT STORAGE */
@@ -2315,45 +1898,30 @@ const DOCUMENT_COLUMNS =
   "id,title,content,design,created_at,updated_at";
 
 function storeDocument(documentData) {
-
   savedResumes = savedResumes.filter(
-
-    item => String(item.id) !==
-      String(documentData.id)
-
+    item => String(item.id) !== String(documentData.id)
   );
 
   savedResumes.unshift(documentData);
-
   resumesLoaded = true;
-
 }
 
 async function loadResumes() {
-
   if (!currentUser) return false;
 
   const userId = currentUser.id;
-
-  const generation =
-    sessionGeneration;
+  const generation = sessionGeneration;
 
   setStatus("loading");
 
   try {
-
-    const { data, error } =
-      await supabase
-
-        .from("resumes")
-
-        .select(DOCUMENT_COLUMNS)
-
-        .eq("user_id", userId)
-
-        .order("updated_at", {
-          ascending: false
-        });
+    const { data, error } = await supabase
+      .from("resumes")
+      .select(DOCUMENT_COLUMNS)
+      .eq("user_id", userId)
+      .order("updated_at", {
+        ascending: false
+      });
 
     if (error) throw error;
 
@@ -2361,259 +1929,165 @@ async function loadResumes() {
       return false;
     }
 
-    savedResumes =
-      Array.isArray(data) ? data : [];
-
+    savedResumes = Array.isArray(data) ? data : [];
     resumesLoaded = true;
 
     renderResumes();
-
     setStatus("");
 
     return true;
 
   } catch (error) {
-
     reportError("load", error);
 
     if (verifyOwner(userId, generation)) {
-
       setStatus("loadError", "error");
-
     }
 
     return false;
-
   }
-
 }
 
 /* SAVE OR UPDATE DOCUMENT */
 
 async function saveResume(event) {
-
   event.preventDefault();
 
   if (isBusy || !currentUser) return;
 
-  const title =
-    resumeTitle.value.trim().slice(0, 120);
+  const title = resumeTitle.value.trim().slice(0, 120);
 
   if (!title) {
-
     setStatus("titleRequired", "error");
-
     resumeTitle.focus();
-
     return;
-
   }
 
   const userId = currentUser.id;
-
-  const generation =
-    sessionGeneration;
-
-  const documentId =
-    editingResumeId;
-
-  const wasEditing =
-    Boolean(documentId);
+  const generation = sessionGeneration;
+  const documentId = editingResumeId;
+  const wasEditing = Boolean(documentId);
 
   const payload = {
-
     title,
-
     content: getResumeContent(),
-
-    updated_at:
-      new Date().toISOString()
-
+    updated_at: new Date().toISOString()
   };
 
   setBusy(true, "save");
-
   setStatus("saving");
 
   try {
-
-    if (
-      !await verifyAuthenticatedOwner(
-        userId, generation
-      )
-    ) {
-
+    if (!await verifyAuthenticatedOwner(userId, generation)) {
       throw new Error("Session changed");
-
     }
 
     let result;
 
     if (documentId) {
-
       result = await supabase
-
         .from("resumes")
-
         .update(payload)
-
         .eq("id", documentId)
-
         .eq("user_id", userId)
-
         .select(DOCUMENT_COLUMNS)
-
         .single();
-
     } else {
-
       result = await supabase
-
         .from("resumes")
-
         .insert({
-
           ...payload,
-
           user_id: userId,
-
           design: {
-
             ...DEFAULT_DESIGN,
-
-            documentLanguage:
-              getLanguage()
-
+            documentLanguage: getLanguage()
           }
-
         })
-
         .select(DOCUMENT_COLUMNS)
-
         .single();
-
     }
 
-    if (result.error) {
-      throw result.error;
-    }
+    if (result.error) throw result.error;
 
-    if (!verifyOwner(userId, generation)) {
-      return;
-    }
+    if (!verifyOwner(userId, generation)) return;
 
     if (!result.data?.id) {
       throw new Error("Missing save confirmation");
     }
 
     storeDocument(result.data);
-
-    editingResumeId =
-      result.data.id;
+    editingResumeId = result.data.id;
 
     renderResumes();
 
     setStatus(
-
-      wasEditing
-        ? "updated"
-        : "saved",
-
+      wasEditing ? "updated" : "saved",
       "success"
-
     );
 
     quickCreate.open = false;
 
   } catch (error) {
-
     reportError("save", error);
 
     if (verifyOwner(userId, generation)) {
       setStatus("saveError", "error");
     }
-
   } finally {
-
-    setBusy(false);
-
+    if (verifyOwner(userId, generation)) {
+      setBusy(false);
+    }
   }
-
 }
 
 /* DIALOG MANAGEMENT */
 
 function showDialog(dialog) {
-
   if (dialog.open) return true;
 
   try {
-
-    if (
-      typeof dialog.showModal !== "function"
-    ) {
-
+    if (typeof dialog.showModal !== "function") {
       throw new Error("Dialog unsupported");
-
     }
 
     dialog.showModal();
-
     return true;
 
   } catch (error) {
-
     reportError("dialog", error);
-
     setStatus("browserError", "error");
-
     return false;
-
   }
-
 }
 
 function closeDialog(dialog) {
-
   if (dialog?.open) dialog.close();
-
 }
 
 /* RENAME DOCUMENT */
 
 function openRenameDialog(id) {
-
   if (isBusy || !currentUser) return;
 
   const resume = findResume(id);
 
   if (!resume) {
-
     setStatus("notFound", "error");
-
     return;
-
   }
 
   selectedRenameId = resume.id;
-
-  renameInput.value =
-    getDocumentTitle(resume);
+  renameInput.value = getDocumentTitle(resume);
 
   setDialogStatus(renameStatus);
 
   if (showDialog(renameDialog)) {
-
     renameInput.focus();
-
     renameInput.select();
-
   }
-
 }
 
 async function renameResume(event) {
-
   event.preventDefault();
 
   if (
@@ -2623,69 +2097,38 @@ async function renameResume(event) {
   ) return;
 
   const id = selectedRenameId;
-
   const userId = currentUser.id;
+  const generation = sessionGeneration;
 
-  const generation =
-    sessionGeneration;
-
-  const title =
-    renameInput.value.trim().slice(0, 120);
+  const title = renameInput.value.trim().slice(0, 120);
 
   if (!title) {
-
-    setDialogStatus(
-      renameStatus,
-      "nameRequired"
-    );
-
+    setDialogStatus(renameStatus, "nameRequired");
     return;
-
   }
 
   setBusy(true, "rename");
-
   setDialogStatus(renameStatus);
 
   try {
-
-    if (
-      !await verifyAuthenticatedOwner(
-        userId, generation
-      )
-    ) {
-
+    if (!await verifyAuthenticatedOwner(userId, generation)) {
       throw new Error("Session changed");
-
     }
 
-    const { data, error } =
-      await supabase
-
-        .from("resumes")
-
-        .update({
-
-          title,
-
-          updated_at:
-            new Date().toISOString()
-
-        })
-
-        .eq("id", id)
-
-        .eq("user_id", userId)
-
-        .select(DOCUMENT_COLUMNS)
-
-        .single();
+    const { data, error } = await supabase
+      .from("resumes")
+      .update({
+        title,
+        updated_at: new Date().toISOString()
+      })
+      .eq("id", id)
+      .eq("user_id", userId)
+      .select(DOCUMENT_COLUMNS)
+      .single();
 
     if (error) throw error;
 
-    if (!verifyOwner(userId, generation)) {
-      return;
-    }
+    if (!verifyOwner(userId, generation)) return;
 
     if (!data?.id) {
       throw new Error("Missing rename confirmation");
@@ -2693,85 +2136,58 @@ async function renameResume(event) {
 
     storeDocument(data);
 
-    if (
-      String(editingResumeId) === String(id)
-    ) {
-
+    if (String(editingResumeId) === String(id)) {
       resumeTitle.value = title;
-
     }
 
     closeDialog(renameDialog);
-
     selectedRenameId = null;
 
     renderResumes();
-
     setStatus("renamed", "success");
 
   } catch (error) {
-
     reportError("rename", error);
 
     if (verifyOwner(userId, generation)) {
-
-      setDialogStatus(
-        renameStatus,
-        "renameError"
-      );
-
+      setDialogStatus(renameStatus, "renameError");
     }
-
   } finally {
-
-    setBusy(false);
-
+    if (verifyOwner(userId, generation)) {
+      setBusy(false);
+    }
   }
-
 }
 
 /* DESIGN-AWARE DUPLICATION */
 
 function openDuplicateDialog(id) {
-
   if (isBusy || !currentUser) return;
 
   const resume = findResume(id);
 
   if (!resume) {
-
     setStatus("notFound", "error");
-
     return;
-
   }
 
   selectedDuplicateId = resume.id;
 
-  const suffix =
-    " (" + t("copy") + ")";
+  const suffix = " (" + t("copy") + ")";
 
   duplicateInput.value =
-
     getDocumentTitle(resume)
-      .slice(0, 120 - suffix.length) +
-
-    suffix;
+      .slice(0, 120 - suffix.length) + suffix;
 
   setDialogStatus(duplicateStatus);
 
   if (showDialog(duplicateDialog)) {
-
     duplicateInput.focus();
-
     duplicateInput.select();
-
   }
-
 }
 
 async function duplicateResume(event) {
-
   event.preventDefault();
 
   if (
@@ -2781,112 +2197,65 @@ async function duplicateResume(event) {
   ) return;
 
   const userId = currentUser.id;
-
-  const generation =
-    sessionGeneration;
-
-  const originalId =
-    selectedDuplicateId;
+  const generation = sessionGeneration;
+  const originalId = selectedDuplicateId;
 
   const title =
     duplicateInput.value.trim().slice(0, 120);
 
   if (!title) {
-
-    setDialogStatus(
-      duplicateStatus,
-      "nameRequired"
-    );
-
+    setDialogStatus(duplicateStatus, "nameRequired");
     return;
-
   }
 
   setBusy(true, "duplicate");
-
   setDialogStatus(duplicateStatus);
 
   try {
-
-    if (
-      !await verifyAuthenticatedOwner(
-        userId, generation
-      )
-    ) {
-
+    if (!await verifyAuthenticatedOwner(userId, generation)) {
       throw new Error("Session changed");
-
     }
 
-    const originalResult =
-      await supabase
-
-        .from("resumes")
-
-        .select(DOCUMENT_COLUMNS)
-
-        .eq("id", originalId)
-
-        .eq("user_id", userId)
-
-        .single();
+    const originalResult = await supabase
+      .from("resumes")
+      .select(DOCUMENT_COLUMNS)
+      .eq("id", originalId)
+      .eq("user_id", userId)
+      .single();
 
     if (originalResult.error) {
       throw originalResult.error;
     }
 
-    if (!verifyOwner(userId, generation)) {
-      return;
-    }
+    if (!verifyOwner(userId, generation)) return;
 
-    const original =
-      originalResult.data;
+    const original = originalResult.data;
 
     if (!original?.id) {
       throw new Error("Original document not found");
     }
 
     const content = JSON.parse(
-
-      JSON.stringify(
-        original.content || {}
-      )
-
+      JSON.stringify(original.content || {})
     );
 
-    const design = normalizeDesign(
-      original.design
-    );
+    const design = normalizeDesign(original.design);
 
-    const { data, error } =
-      await supabase
-
-        .from("resumes")
-
-        .insert({
-
-          user_id: userId,
-
-          title,
-
-          content,
-
-          design,
-
-          updated_at:
-            new Date().toISOString()
-
-        })
-
-        .select(DOCUMENT_COLUMNS)
-
-        .single();
+    const { data, error } = await supabase
+      .from("resumes")
+      .insert({
+        user_id: userId,
+        title,
+        content,
+        design,
+        updated_at: new Date().toISOString()
+      })
+      .select(DOCUMENT_COLUMNS)
+      .single();
 
     if (error) throw error;
 
-    if (!verifyOwner(userId, generation)) {
-      return;
-    }
+    if (!verifyOwner(userId, generation)) return;
 
     if (!data?.id) {
       throw new Error("Missing copy confirmation");
@@ -2895,67 +2264,50 @@ async function duplicateResume(event) {
     storeDocument(data);
 
     closeDialog(duplicateDialog);
-
     selectedDuplicateId = null;
 
     searchInput.value = "";
 
     renderResumes();
-
     setStatus("duplicated", "success");
 
   } catch (error) {
-
     reportError("duplicate", error);
 
     if (verifyOwner(userId, generation)) {
-
-      setDialogStatus(
-        duplicateStatus,
-        "duplicateError"
-      );
-
+      setDialogStatus(duplicateStatus, "duplicateError");
     }
-
   } finally {
-
-    setBusy(false);
-
+    if (verifyOwner(userId, generation)) {
+      setBusy(false);
+    }
   }
-
 }
 
 /* DOCUMENT DELETE */
 
 function openDeleteDialog(id) {
-
   if (isBusy || !currentUser) return;
 
   const resume = findResume(id);
 
   if (!resume) {
-
     setStatus("notFound", "error");
-
     return;
-
   }
 
   selectedDeleteId = resume.id;
 
-  deleteResumeName.textContent =
-    getDocumentTitle(resume);
+  deleteResumeName.textContent = getDocumentTitle(resume);
 
   setDialogStatus(deleteStatus);
 
   if (showDialog(deleteDialog)) {
     deleteCancel.focus();
   }
-
 }
 
 async function deleteResume() {
-
   if (
     isBusy ||
     !currentUser ||
@@ -2963,113 +2315,88 @@ async function deleteResume() {
   ) return;
 
   const id = selectedDeleteId;
-
   const userId = currentUser.id;
-
-  const generation =
-    sessionGeneration;
+  const generation = sessionGeneration;
 
   setBusy(true, "delete");
-
   setDialogStatus(deleteStatus);
 
   try {
-
-    if (
-      !await verifyAuthenticatedOwner(
-        userId, generation
-      )
-    ) {
-
+    if (!await verifyAuthenticatedOwner(userId, generation)) {
       throw new Error("Session changed");
-
     }
 
-    const { data, error } =
-      await supabase
-
-        .from("resumes")
-
-        .delete()
-
-        .eq("id", id)
-
-        .eq("user_id", userId)
-
-        .select("id");
+    const { data, error } = await supabase
+      .from("resumes")
+      .delete()
+      .eq("id", id)
+      .eq("user_id", userId)
+      .select("id");
 
     if (error) throw error;
 
-    if (!verifyOwner(userId, generation)) {
-      return;
-    }
+    if (!verifyOwner(userId, generation)) return;
 
-    if (
-      !data?.some(
-        item => String(item.id) === String(id)
-      )
-    ) {
-
+    if (!data?.some(
+      item => String(item.id) === String(id)
+    )) {
       throw new Error("Missing delete confirmation");
-
     }
 
     if (
-
       editingResumeId !== null &&
-
       String(editingResumeId) === String(id)
-
     ) {
-
       resetForm({
         focus: false,
         announce: false
       });
+    }
 
+    if (String(preparedPDF?.resumeId) === String(id)) {
+      clearPreparedPDF();
     }
 
     savedResumes = savedResumes.filter(
-
       item => String(item.id) !== String(id)
-
     );
 
     closeDialog(deleteDialog);
-
     selectedDeleteId = null;
 
     renderResumes();
-
     setStatus("deleted", "success");
 
   } catch (error) {
-
     reportError("delete", error);
 
     if (verifyOwner(userId, generation)) {
-
-      setDialogStatus(
-        deleteStatus,
-        "deleteError"
-      );
-
+      setDialogStatus(deleteStatus, "deleteError");
     }
-
   } finally {
-
-    setBusy(false);
-
+    if (verifyOwner(userId, generation)) {
+      setBusy(false);
+    }
   }
-
 }
 
 /* DIRECT PDF FILE MANAGEMENT */
 
-function clearPreparedPDF() {
+function releasePDFResources() {
+  if (preparedPDFURL) {
+    URL.revokeObjectURL(preparedPDFURL);
+  }
 
-  const dialog =
-    $("wnDashboardPDFDialog");
+  preparedPDFURL = null;
+  preparedPDF = null;
+}
+
+function clearPreparedPDF() {
+  pdfGeneration++;
+
+  const dialog = $("wnDashboardPDFDialog");
+
+  releasePDFResources();
 
   if (dialog?.open) {
     dialog.close();
@@ -3079,924 +2406,667 @@ function clearPreparedPDF() {
     dialog.replaceChildren();
   }
 
-  if (preparedPDFURL) {
-
-    URL.revokeObjectURL(
-      preparedPDFURL
-    );
-
-  }
-
-  preparedPDFURL = null;
-  preparedPDF = null;
-
-  window.WorknelyPDFExport
-    ?.clearPreparedFile?.();
-
+  window.WorknelyPDFExport?.clearPreparedFile?.();
 }
 
 function normalizePDFFilename(value) {
-
-  const name = String(
-    value || t("untitled")
-  )
-
+  const name = String(value || t("untitled"))
     .replace(/[<>:"/\\|?*\u0000-\u001f]/g, " ")
-
     .replace(/\.pdf$/i, "")
-
     .replace(/\s+/g, " ")
-
     .trim()
-
     .slice(0, 100);
 
   return (name || "Worknely Resume") + ".pdf";
-
 }
 
 function canSharePDF(file) {
-
   try {
-
     return typeof navigator.share === "function" &&
-
       typeof navigator.canShare === "function" &&
-
       navigator.canShare({
         files: [file]
       });
-
   } catch {
-
     return false;
-
   }
+}
 
+function isPreparedPDFValid() {
+  return Boolean(
+    preparedPDF &&
+    preparedPDFURL &&
+    currentUser &&
+    preparedPDF.ownerId === currentUser.id &&
+    preparedPDF.sessionGeneration === sessionGeneration &&
+    preparedPDF.pdfGeneration === pdfGeneration
+  );
 }
 
 /* NATIVE PDF SHARING */
 
 async function sharePreparedPDF() {
+  if (!isPreparedPDFValid()) {
+    clearPreparedPDF();
+    return;
+  }
 
-  const file = preparedPDF?.file;
-
-  if (!file || !currentUser) return;
+  const file = preparedPDF.file;
 
   if (!canSharePDF(file)) {
-
     $("wnDashboardPDFDownload")?.focus();
-
     return;
-
   }
 
   try {
-
     await navigator.share({
-
       files: [file],
-
       title: file.name
-
     });
 
   } catch (error) {
-
-    if (error?.name === "AbortError") {
-      return;
-    }
+    if (error?.name === "AbortError") return;
 
     reportError("share", error);
 
-    const message =
-      $("wnDashboardPDFMessage");
+    const message = $("wnDashboardPDFMessage");
 
     if (message) {
       message.textContent = t("pdfHelp");
     }
 
     $("wnDashboardPDFDownload")?.focus();
-
   }
-
 }
 
 /* PROFESSIONAL PDF DELIVERY DIALOG */
 
 function getPDFDialog() {
-
-  let dialog =
-    $("wnDashboardPDFDialog");
+  let dialog = $("wnDashboardPDFDialog");
 
   if (dialog) return dialog;
 
-  dialog =
-    document.createElement("dialog");
+  dialog = document.createElement("dialog");
 
-  dialog.id =
-    "wnDashboardPDFDialog";
+  dialog.id = "wnDashboardPDFDialog";
 
   dialog.setAttribute(
     "aria-labelledby",
     "wnDashboardPDFHeading"
   );
 
-  dialog.addEventListener(
-    "close",
-    () => {
+  dialog.addEventListener("close", () => {
+    if (dialog.open) return;
 
-      if (preparedPDFURL) {
+    pdfGeneration++;
 
-        URL.revokeObjectURL(
-          preparedPDFURL
-        );
+    releasePDFResources();
+    dialog.replaceChildren();
 
-      }
-
-      preparedPDFURL = null;
-      preparedPDF = null;
-
-      dialog.replaceChildren();
-
-      window.WorknelyPDFExport
-        ?.clearPreparedFile?.();
-
-    }
-  );
+    window.WorknelyPDFExport?.clearPreparedFile?.();
+  });
 
   document.body.appendChild(dialog);
 
   return dialog;
-
 }
 
 function renderPDFDialog() {
-
-  if (!preparedPDF || !preparedPDFURL) {
-    return false;
-  }
+  if (!isPreparedPDFValid()) return false;
 
   const dialog = getPDFDialog();
 
-  const { file, design } =
-    preparedPDF;
+  const { file, design } = preparedPDF;
 
   dialog.replaceChildren();
 
-  const icon =
-    document.createElement("div");
+  const icon = document.createElement("div");
+  icon.className = "wn-pdf-success-icon";
+  icon.appendChild(createIcon("check"));
 
-  icon.className =
-    "wn-pdf-success-icon";
+  const heading = document.createElement("h2");
+  heading.id = "wnDashboardPDFHeading";
+  heading.textContent = t("pdfReady");
 
-  icon.appendChild(
-    createIcon("check")
-  );
+  const filename = document.createElement("div");
+  filename.className = "wn-dashboard-pdf-file";
+  filename.textContent = file.name;
 
-  const heading =
-    document.createElement("h2");
-
-  heading.id =
-    "wnDashboardPDFHeading";
-
-  heading.textContent =
-    t("pdfReady");
-
-  const filename =
-    document.createElement("div");
-
-  filename.className =
-    "wn-dashboard-pdf-file";
-
-  filename.textContent =
-    file.name;
-
-  const metadata =
-    document.createElement("p");
+  const metadata = document.createElement("p");
 
   metadata.textContent = [
-
-    TEMPLATE_REGISTRY[
-      design.templateId
-    ].name,
-
-    design.paperFormat === "letter"
-      ? "US Letter"
-      : "A4",
-
-    design.documentLanguage.toUpperCase(),
-
-    Math.max(
-      1,
-      Math.round(file.size / 1024)
-    ) + " KB"
-
+    TEMPLATE_REGISTRY[design.templateId].name,
+    design.paperFormat === "letter" ? "US Letter" : "A4",
+    (design.documentLanguage || "en").toUpperCase(),
+    Math.max(1, Math.round(file.size / 1024)) + " KB"
   ].join(" · ");
 
-  const message =
-    document.createElement("p");
+  const message = document.createElement("p");
+  message.id = "wnDashboardPDFMessage";
+  message.textContent = t("pdfHelp");
 
-  message.id =
-    "wnDashboardPDFMessage";
-
-  message.textContent =
-    t("pdfHelp");
-
-  const actions =
-    document.createElement("div");
-
-  actions.className =
-    "wn-dashboard-pdf-actions";
+  const actions = document.createElement("div");
+  actions.className = "wn-dashboard-pdf-actions";
 
   const shareButton = createButton(
-
     "wn-pdf-primary",
-
     t("share"),
-
     "share",
-
     sharePreparedPDF
-
   );
 
   shareButton.disabled = false;
+  shareButton.hidden = !canSharePDF(file);
 
-  shareButton.hidden =
-    !canSharePDF(file);
+  const download = document.createElement("a");
 
-  const download =
-    document.createElement("a");
+  download.id = "wnDashboardPDFDownload";
 
-  download.id =
-    "wnDashboardPDFDownload";
+  download.className = shareButton.hidden
+    ? "wn-pdf-primary"
+    : "wn-pdf-secondary";
 
-  download.className =
-    shareButton.hidden
-      ? "wn-pdf-primary"
-      : "wn-pdf-secondary";
-
-  download.href =
-    preparedPDFURL;
-
-  download.download =
-    file.name;
+  download.href = preparedPDFURL;
+  download.download = file.name;
 
   download.append(
-
     createIcon("download"),
-
-    document.createTextNode(
-      t("download")
-    )
-
+    document.createTextNode(t("download"))
   );
 
-  const open =
-    document.createElement("a");
+  download.addEventListener("click", event => {
+    if (!isPreparedPDFValid()) {
+      event.preventDefault();
+      clearPreparedPDF();
+    }
+  });
 
-  open.className =
-    "wn-pdf-secondary";
+  const open = document.createElement("a");
 
-  open.href =
-    preparedPDFURL;
+  open.className = "wn-pdf-secondary";
+  open.href = preparedPDFURL;
+  open.target = "_blank";
+  open.rel = "noopener noreferrer";
+  open.textContent = t("openPDF");
 
-  open.target =
-    "_blank";
-
-  open.rel =
-    "noopener noreferrer";
-
-  open.textContent =
-    t("openPDF");
+  open.addEventListener("click", event => {
+    if (!isPreparedPDFValid()) {
+      event.preventDefault();
+      clearPreparedPDF();
+    }
+  });
 
   const closeButton = createButton(
-
     "wn-pdf-secondary",
-
     t("close"),
-
     null,
-
-    () => clearPreparedPDF()
-
+    clearPreparedPDF
   );
 
   closeButton.disabled = false;
 
   actions.append(
-
     shareButton,
-
     download,
-
     open,
-
     closeButton
-
   );
 
-  const privacy =
-    document.createElement("p");
-
-  privacy.textContent =
-    t("pdfPrivate");
+  const privacy = document.createElement("p");
+  privacy.textContent = t("pdfPrivate");
 
   dialog.append(
-
     icon,
-
     heading,
-
     filename,
-
     metadata,
-
     message,
-
     actions,
-
     privacy
-
   );
 
   return true;
+}
 
+/* PDF ERROR DIAGNOSTICS */
+
+function getPDFErrorKey(reason) {
+  switch (reason) {
+    case "libraryError":
+      return "pdfLibraryError";
+
+    case "fontError":
+      return "pdfFontError";
+
+    case "empty":
+      return "pdfEmpty";
+
+    case "changed":
+      return "pdfChanged";
+
+    case "unavailable":
+      return "designUnavailable";
+
+    default:
+      return "pdfError";
+  }
+}
+
+function normalizePDFError(reason) {
+  const allowed = [
+    "libraryError",
+    "fontError",
+    "empty",
+    "changed",
+    "unavailable",
+    "busy",
+    "failed"
+  ];
+
+  return allowed.includes(reason)
+    ? reason : "failed";
 }
 
 /* UNIFIED PROFESSIONAL PDF EXPORT */
 
 async function downloadResumePDF(id) {
-
   if (isBusy || !currentUser) return;
 
   if (!findResume(id)) {
-
     setStatus("notFound", "error");
-
     return;
-
   }
 
   const userId = currentUser.id;
-
-  const generation =
-    sessionGeneration;
+  const generation = sessionGeneration;
 
   clearPreparedPDF();
 
-  setBusy(true, "pdf");
+  const exportGeneration = pdfGeneration;
 
+  lastPDFError = null;
+
+  setBusy(true, "pdf");
   setStatus("pdfPreparing");
 
+  const validContext = () =>
+    verifyOwner(userId, generation) &&
+    exportGeneration === pdfGeneration;
+
   try {
-
-    if (
-      !await verifyAuthenticatedOwner(
-        userId, generation
-      )
-    ) {
-
+    if (!await verifyAuthenticatedOwner(userId, generation)) {
       throw new Error("Session changed");
-
     }
 
+    if (!validContext()) return;
+
     /*
-     * Fetch the latest saved content
-     * and the exact document design.
+     * Always fetch the latest saved document
+     * and its persistent design.
      */
 
-    const { data: resume, error } =
-      await supabase
-
-        .from("resumes")
-
-        .select(DOCUMENT_COLUMNS)
-
-        .eq("id", id)
-
-        .eq("user_id", userId)
-
-        .single();
+    const { data: resume, error } = await supabase
+      .from("resumes")
+      .select(DOCUMENT_COLUMNS)
+      .eq("id", id)
+      .eq("user_id", userId)
+      .single();
 
     if (error) throw error;
 
-    if (!verifyOwner(userId, generation)) {
-      return;
-    }
+    if (!validContext()) return;
 
     if (!resume?.id) {
-
       setStatus("notFound", "error");
-
       return;
-
     }
 
-    const content =
-      normalizeContent(resume.content);
+    const content = normalizeContent(resume.content);
 
     if (!hasContent(content)) {
-
+      lastPDFError = "empty";
       setStatus("pdfEmpty", "error");
-
       return;
-
     }
+
+    const savedDesign = getDesign(resume);
 
     const design = {
-
-      ...getDesign(resume),
-
+      ...savedDesign,
       documentLanguage:
-        getDesign(resume).documentLanguage ||
-        "en"
-
+        savedDesign.documentLanguage || "en"
     };
 
-    const engineReady =
-      await loadPDFEngine();
+    const engineReady = await loadPDFEngine();
 
-    if (!verifyOwner(userId, generation)) {
+    if (!validContext()) return;
+
+    if (!engineReady || !isPDFEngineReady()) {
+      lastPDFError = "unavailable";
+      setStatus("designUnavailable", "error");
       return;
     }
 
-    if (!engineReady) {
+    const engine = window.WorknelyPDFExport;
+
+    const filename = normalizePDFFilename(
+      getDocumentTitle(resume)
+    );
+
+    /*
+     * Shared professional PDF engine V7.16.12.
+     * Direct file generation.
+     * No window.print().
+     * No HTML print popup.
+     * No changes to the saved document design.
+     */
+
+    const result = await engine.exportResume({
+      content,
+      templateId: design.templateId,
+      accentColor: design.accentColor,
+      documentLanguage: design.documentLanguage,
+      paperFormat: design.paperFormat,
+      filename,
+      returnFile: true
+    });
+
+    if (!validContext()) return;
+
+    if (!await verifyAuthenticatedOwner(userId, generation)) {
+      engine.clearPreparedFile?.();
+      setStatus("sessionError", "error");
+      return;
+    }
+
+    if (!validContext()) return;
+
+    if (!result?.ok) {
+      lastPDFError = normalizePDFError(
+        result?.reason ||
+        engine.getState?.()?.lastError
+      );
 
       setStatus(
-        "designUnavailable",
+        getPDFErrorKey(lastPDFError),
         "error"
       );
 
       return;
-
-    }
-
-    const engine =
-      window.WorknelyPDFExport;
-
-    const filename =
-      normalizePDFFilename(
-        getDocumentTitle(resume)
-      );
-
-    /*
-     * Shared PDF engine V7.16.11.
-     *
-     * No window.print().
-     * No HTML print popup.
-     * No changes to active builder design.
-     */
-
-    const result =
-      await engine.exportResume({
-
-        content,
-
-        templateId:
-          design.templateId,
-
-        accentColor:
-          design.accentColor,
-
-        documentLanguage:
-          design.documentLanguage,
-
-        paperFormat:
-          design.paperFormat,
-
-        filename,
-
-        returnFile: true
-
-      });
-
-    if (
-      !await verifyAuthenticatedOwner(
-        userId, generation
-      )
-    ) {
-
-      engine.clearPreparedFile?.();
-
-      return;
-
-    }
-
-    if (!result?.ok) {
-
-      throw new Error(
-        "PDF generation failed"
-      );
-
     }
 
     const blob =
       result.file instanceof Blob
-        ? result.file
-        : result.blob;
+        ? result.file : result.blob;
 
-    if (
-      !(blob instanceof Blob) ||
-      blob.size < 5
-    ) {
-
-      throw new Error(
-        "Missing PDF file"
-      );
-
+    if (!(blob instanceof Blob) || blob.size < 5) {
+      throw new Error("Missing PDF file");
     }
 
     /*
-     * Validate the PDF signature before
-     * presenting the generated document.
+     * Verify the generated PDF signature.
      */
 
-    const signature =
-      await blob.slice(0, 5).text();
+    const signature = await blob.slice(0, 5).text();
 
     if (signature !== "%PDF-") {
-
-      throw new Error(
-        "Invalid PDF signature"
-      );
-
+      throw new Error("Invalid PDF signature");
     }
 
-    if (!verifyOwner(userId, generation)) {
-      return;
-    }
+    if (!validContext()) return;
 
     const file = new File(
-
       [blob],
-
       filename,
-
       {
         type: "application/pdf",
         lastModified: Date.now()
       }
-
     );
 
     preparedPDF = {
-
       file,
-
       design,
-
       ownerId: userId,
-
-      resumeId: resume.id
-
+      resumeId: resume.id,
+      sessionGeneration: generation,
+      pdfGeneration: exportGeneration
     };
 
-    preparedPDFURL =
-      URL.createObjectURL(file);
+    preparedPDFURL = URL.createObjectURL(file);
 
-    renderPDFDialog();
-
-    const dialog =
-      getPDFDialog();
-
-    if (!showDialog(dialog)) {
-
-      clearPreparedPDF();
-
-      return;
-
+    if (!renderPDFDialog()) {
+      throw new Error("PDF dialog rendering failed");
     }
 
-    setStatus(
-      "pdfReady",
-      "success"
-    );
+    const dialog = getPDFDialog();
+
+    if (!showDialog(dialog)) {
+      clearPreparedPDF();
+      return;
+    }
+
+    lastPDFError = null;
+
+    setStatus("pdfReady", "success");
 
     document.dispatchEvent(
-
       new CustomEvent(
-
         "worknely:dashboardpdfready",
-
         {
-
           detail: {
-
             version: VERSION,
-
-            templateId:
-              design.templateId,
-
-            paperFormat:
-              design.paperFormat,
-
-            documentLanguage:
-              design.documentLanguage
-
+            pdfEngineVersion: PDF_VERSION,
+            templateId: design.templateId,
+            paperFormat: design.paperFormat,
+            documentLanguage: design.documentLanguage
           }
-
         }
-
       )
-
     );
 
   } catch (error) {
-
     reportError("pdf", error);
 
-    clearPreparedPDF();
+    if (validContext()) {
+      lastPDFError = "failed";
 
-    if (verifyOwner(userId, generation)) {
-
+      clearPreparedPDF();
       setStatus("pdfError", "error");
-
     }
 
   } finally {
+    if (verifyOwner(userId, generation)) {
+      setBusy(false);
 
-    setBusy(false);
-
+      if (
+        exportGeneration !== pdfGeneration &&
+        statusMessages.get(resumeStatus) === "pdfPreparing"
+      ) {
+        setStatus("");
+      }
+    }
   }
-
 }
 
 /* INTERNATIONAL INTERFACE REFRESH */
 
 function refreshLanguage() {
-
   if (currentUser) {
-
-    welcome.textContent = t(
-
-      "welcome",
-
-      {
-
-        name:
-          currentUser.email ||
-          t("user")
-
-      }
-
-    );
-
+    welcome.textContent = t("welcome", {
+      name: currentUser.email || t("user")
+    });
   }
 
   if (!loading.hidden) {
-
-    loading.textContent =
-      t(loadingKey);
-
+    loading.textContent = t(loadingKey);
   }
 
-  statusMessages.forEach(
-
-    (key, element) => {
-
-      element.textContent =
-        key ? t(key) : "";
-
-    }
-
-  );
+  statusMessages.forEach((key, element) => {
+    element.textContent = key ? t(key) : "";
+  });
 
   updateActionLabels();
-
   renderResumes();
 
   if (
-    preparedPDF &&
+    isPreparedPDFValid() &&
     $("wnDashboardPDFDialog")?.open
   ) {
-
     renderPDFDialog();
-
   }
 
   if (selectedDeleteId !== null) {
-
-    const resume = findResume(
-      selectedDeleteId
-    );
+    const resume = findResume(selectedDeleteId);
 
     if (resume) {
-
       deleteResumeName.textContent =
         getDocumentTitle(resume);
-
     }
-
   }
-
 }
 
 /* LANGUAGE EVENTS */
 
 document.addEventListener(
-
   "worknely:languagechange",
-
   refreshLanguage
-
 );
 
 document.addEventListener(
-
   "worknely:localizationready",
-
   refreshLanguage
-
 );
 
-window.addEventListener(
+window.addEventListener("pageshow", event => {
+  refreshLanguage();
 
-  "pageshow",
+  if (
+    event.persisted &&
+    currentUser &&
+    !isBusy
+  ) {
+    const userId = currentUser.id;
+    const generation = sessionGeneration;
 
-  event => {
+    clearPreparedPDF();
 
-    refreshLanguage();
+    setBusy(true, "load");
 
-    if (
-      event.persisted &&
-      currentUser &&
-      !isBusy
-    ) {
+    verifyAuthenticatedOwner(userId, generation)
+      .then(valid => {
+        if (!verifyOwner(userId, generation)) {
+          return;
+        }
 
-      const userId =
-        currentUser.id;
+        if (!valid) {
+          clearSession();
+          redirectToLogin();
+          return;
+        }
 
-      const generation =
-        sessionGeneration;
+        return loadResumes();
+      })
+      .catch(error => {
+        reportError("session", error);
 
-      clearPreparedPDF();
-
-      setBusy(true, "load");
-
-      verifyAuthenticatedOwner(
-        userId, generation
-      )
-
-        .then(valid => {
-
-          if (!valid) {
-
-            clearSession();
-
-            redirectToLogin();
-
-            return;
-
-          }
-
-          return loadResumes();
-
-        })
-
-        .catch(error => {
-
-          reportError(
-            "session", error
-          );
-
-          setStatus(
-            "sessionError", "error"
-          );
-
-        })
-
-        .finally(() => {
-
+        if (verifyOwner(userId, generation)) {
+          setStatus("sessionError", "error");
+        }
+      })
+      .finally(() => {
+        if (verifyOwner(userId, generation)) {
           setBusy(false);
-
-        });
-
-    }
-
+        }
+      });
   }
+});
 
-);
-
-window.addEventListener(
-
-  "storage",
-
-  event => {
-
-    if (
-
-      event.key === "worknely.language" ||
-
-      event.key === null
-
-    ) {
-
-      refreshLanguage();
-
-    }
-
+window.addEventListener("storage", event => {
+  if (
+    event.key === "worknely.language" ||
+    event.key === null
+  ) {
+    refreshLanguage();
   }
-
-);
+});
 
 /* LOGOUT */
 
 async function logOut() {
-
   if (isBusy) return;
 
   setBusy(true, "logout");
 
   try {
-
-    const { error } =
-      await supabase.auth.signOut();
+    const { error } = await supabase.auth.signOut();
 
     if (error) throw error;
 
     clearSession();
-
     redirectToLogin();
 
   } catch (error) {
-
     reportError("logout", error);
 
     setBusy(false);
-
     setStatus("logoutError", "error");
 
-    window.alert(
-      t("logoutError")
-    );
-
+    window.alert(t("logoutError"));
   }
-
 }
 
 /* INITIALIZATION */
 
 async function initializeDashboard() {
-
   showLoading("checking");
 
   installDesignStyles();
 
-  /*
-   * Preload the shared template and
-   * PDF modules without blocking login.
-   */
-
-  loadPDFEngine().catch(() => {});
-
-  const generation =
-    sessionGeneration;
+  const generation = sessionGeneration;
 
   try {
+    const { data, error } = await supabase.auth.getUser();
 
-    const { data, error } =
-      await supabase.auth.getUser();
-
-    if (
-      generation !== sessionGeneration
-    ) return;
+    if (generation !== sessionGeneration) return;
 
     if (error || !data?.user) {
-
       redirectToLogin();
-
       return;
-
     }
 
     currentUser = data.user;
 
     refreshLanguage();
-
     showApp();
+
+    /*
+     * Preload the current PDF engine only
+     * after successful authentication.
+     */
+
+    loadPDFEngine().catch(() => {});
+
+    const userId = currentUser.id;
 
     setBusy(true, "load");
 
     try {
-
       await loadResumes();
 
     } finally {
-
-      setBusy(false);
-
+      if (verifyOwner(userId, generation)) {
+        setBusy(false);
+      }
     }
 
   } catch (error) {
-
     reportError("session", error);
 
-    showLoading("sessionError");
-
+    if (generation === sessionGeneration) {
+      showLoading("sessionError");
+    }
   }
-
 }
 
 /* FORM EVENTS */
@@ -4008,7 +3078,11 @@ resumeForm.addEventListener(
 
 newButton.addEventListener(
   "click",
-  () => resetForm()
+  () => {
+    if (!isBusy && currentUser) {
+      resetForm();
+    }
+  }
 );
 
 logoutButton.addEventListener(
@@ -4046,31 +3120,18 @@ renameForm.addEventListener(
 );
 
 renameCancel.addEventListener(
-
   "click",
-
   () => {
-
-    if (!isBusy) {
-      closeDialog(renameDialog);
-    }
-
+    if (!isBusy) closeDialog(renameDialog);
   }
-
 );
 
 renameDialog.addEventListener(
-
   "close",
-
   () => {
-
     selectedRenameId = null;
-
     setDialogStatus(renameStatus);
-
   }
-
 );
 
 /* DUPLICATE EVENTS */
@@ -4081,31 +3142,18 @@ duplicateForm.addEventListener(
 );
 
 duplicateCancel.addEventListener(
-
   "click",
-
   () => {
-
-    if (!isBusy) {
-      closeDialog(duplicateDialog);
-    }
-
+    if (!isBusy) closeDialog(duplicateDialog);
   }
-
 );
 
 duplicateDialog.addEventListener(
-
   "close",
-
   () => {
-
     selectedDuplicateId = null;
-
     setDialogStatus(duplicateStatus);
-
   }
-
 );
 
 /* DELETE EVENTS */
@@ -4116,152 +3164,80 @@ deleteConfirm.addEventListener(
 );
 
 deleteCancel.addEventListener(
-
   "click",
-
   () => {
-
-    if (!isBusy) {
-      closeDialog(deleteDialog);
-    }
-
+    if (!isBusy) closeDialog(deleteDialog);
   }
-
 );
 
 deleteDialog.addEventListener(
-
   "close",
-
   () => {
-
     selectedDeleteId = null;
-
     setDialogStatus(deleteStatus);
-
   }
-
 );
 
 /* DIALOG PROTECTION */
 
 [
-
   renameDialog,
-
   duplicateDialog,
-
   deleteDialog
-
 ].forEach(dialog => {
-
-  dialog.addEventListener(
-
-    "cancel",
-
-    event => {
-
-      if (isBusy) {
-        event.preventDefault();
-      }
-
+  dialog.addEventListener("cancel", event => {
+    if (isBusy) {
+      event.preventDefault();
     }
-
-  );
-
+  });
 });
 
 /* DOCUMENT MENU EVENTS */
 
-document.addEventListener(
-
-  "click",
-
-  event => {
-
-    if (
-
-      event.target instanceof Element &&
-
-      !event.target.closest(
-        ".wn-document-menu"
-      )
-
-    ) {
-
-      closeDocumentMenus();
-
-    }
-
-  }
-
-);
-
-document.addEventListener(
-
-  "keydown",
-
-  event => {
-
-    if (event.key === "Escape") {
-
-      closeDocumentMenus(true);
-
-    }
-
-  }
-
-);
-
-window.addEventListener(
-
-  "hashchange",
-
-  () => {
-
+document.addEventListener("click", event => {
+  if (
+    event.target instanceof Element &&
+    !event.target.closest(".wn-document-menu")
+  ) {
     closeDocumentMenus();
-
-    clearPreparedPDF();
-
   }
+});
 
-);
+document.addEventListener("keydown", event => {
+  if (event.key === "Escape") {
+    closeDocumentMenus(true);
+  }
+});
+
+window.addEventListener("hashchange", () => {
+  closeDocumentMenus();
+  clearPreparedPDF();
+});
+
+/* PRIVATE DOCUMENT LIFECYCLE */
+
+window.addEventListener("pagehide", () => {
+  clearPreparedPDF();
+});
 
 /* SUPABASE AUTH STATE */
 
-supabase.auth.onAuthStateChange(
-
-  (event, session) => {
-
-    if (event === "SIGNED_OUT") {
-
-      clearSession();
-
-      redirectToLogin();
-
-      return;
-
-    }
-
-    if (
-
-      currentUser &&
-
-      session?.user &&
-
-      session.user.id !== currentUser.id
-
-    ) {
-
-      clearSession();
-
-      window.location.reload();
-
-    }
-
+supabase.auth.onAuthStateChange((event, session) => {
+  if (event === "SIGNED_OUT") {
+    clearSession();
+    redirectToLogin();
+    return;
   }
 
-);
+  if (
+    currentUser &&
+    session?.user &&
+    session.user.id !== currentUser.id
+  ) {
+    clearSession();
+    window.location.reload();
+  }
+});
 
 /* PUBLIC DASHBOARD API */
 
@@ -4276,45 +3252,37 @@ window.WorknelyDashboard = Object.freeze({
   clearPreparedPDF,
 
   getTemplates: () =>
-
-    Object.entries(
-      TEMPLATE_REGISTRY
-    ).map(([id, template]) => ({
-
-      id,
-
-      ...template
-
-    })),
+    Object.entries(TEMPLATE_REGISTRY)
+      .map(([id, template]) => ({
+        id,
+        ...template
+      })),
 
   getState: () => ({
-
     version: VERSION,
 
-    authenticated:
-      Boolean(currentUser),
+    authenticated: Boolean(currentUser),
 
     resumesLoaded,
 
-    resumeCount:
-      savedResumes.length,
+    resumeCount: savedResumes.length,
 
     busy: isBusy,
 
-    designEngineReady:
-      Boolean(
-        window.WorknelyTemplates?.renderResume
-      ),
+    activeOperation,
 
-    pdfEngineReady:
-      Boolean(
-        window.WorknelyPDFExport?.version ===
-        "7.16.11"
-      ),
+    designEngineReady: isDesignEngineReady(),
 
-    pdfPrepared:
-      Boolean(preparedPDF)
+    pdfEngineReady: isPDFEngineReady(),
 
+    expectedPDFEngineVersion: PDF_VERSION,
+
+    actualPDFEngineVersion:
+      window.WorknelyPDFExport?.version || null,
+
+    pdfPrepared: isPreparedPDFValid(),
+
+    lastPDFError
   })
 
 });
@@ -4324,18 +3292,18 @@ window.WorknelyDashboard = Object.freeze({
 initializeDashboard();
 
 console.info(
-
   "Worknely V" + VERSION +
-
   " Professional Dashboard initialized."
-
 );
 
 /*
- * END WORKNELY V7.16.12
+ * END WORKNELY V7.16.13
  *
- * Unified Direct PDF Export
- * Professional Template Integration
+ * PDF Engine V7.16.12 Compatibility
+ * Direct Professional PDF Export
  * International SaaS Workspace
+ * Persistent Document Design
+ * Native iOS File Sharing
+ * Session-Aware PDF Lifecycle
  * People Technology
  */
