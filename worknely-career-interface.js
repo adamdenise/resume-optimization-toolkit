@@ -1,15 +1,15 @@
 
 /*
- * WORKNELY V7.18.1.2
+ * WORKNELY V7.18.2
  * Career Intelligence Interface
  * International Edition
- * Local Processing
+ * Local Processing & Optional Cloud History
  */
 
 (function () {
   "use strict";
 
-  const VERSION = "7.18.1.2";
+  const VERSION = "7.18.2";
   const ROOT_ID = "wnCareerIntelligence";
 
   const LANGUAGES = [
@@ -1373,6 +1373,270 @@
     refs.output.appendChild(copy);
   }
 
+
+
+  /* WORKNELY V7.18.2 — CLOUD HISTORY INTEGRATION */
+
+  const CLOUD = {
+    save: [
+      "Save to My Career History",
+      "Salvează în istoricul meu profesional",
+      "Salva nella cronologia professionale",
+      "Im Karriereverlauf speichern",
+      "Enregistrer dans mon historique",
+      "Guardar en mi historial profesional"
+    ],
+    saving: [
+      "Saving...",
+      "Se salvează...",
+      "Salvataggio...",
+      "Wird gespeichert...",
+      "Enregistrement...",
+      "Guardando..."
+    ],
+    saved: [
+      "Saved successfully",
+      "Salvat cu succes",
+      "Salvato correttamente",
+      "Erfolgreich gespeichert",
+      "Enregistré avec succès",
+      "Guardado correctamente"
+    ],
+    signin: [
+      "Sign in before saving. Generate the result again after signing in.",
+      "Autentifică-te înainte de salvare. Generează din nou rezultatul după autentificare.",
+      "Accedi prima di salvare. Genera nuovamente il risultato.",
+      "Melde dich an und erstelle das Ergebnis erneut.",
+      "Connectez-vous puis générez à nouveau le résultat.",
+      "Inicia sesión y genera nuevamente el resultado."
+    ],
+    privacy: [
+      "Save only numerical indicators and analysis metadata. Your original CV and generated text are not included.",
+      "Salvează doar indicatorii numerici și metadatele analizei. CV-ul original și textele generate nu sunt incluse.",
+      "Salva solo indicatori numerici e metadati. Il CV originale e i testi generati non sono inclusi.",
+      "Nur numerische Kennzahlen und Metadaten speichern. Lebenslauf und generierte Texte werden nicht gespeichert.",
+      "Seuls les indicateurs numériques et les métadonnées sont enregistrés. Le CV et les textes générés sont exclus.",
+      "Solo se guardan indicadores numéricos y metadatos. El CV y los textos generados no se incluyen."
+    ],
+    failed: [
+      "Saving could not be confirmed. Check your history before retrying.",
+      "Salvarea nu a putut fi confirmată. Verifică istoricul înainte de a reîncerca.",
+      "Salvataggio non confermato. Controlla la cronologia prima di riprovare.",
+      "Speichern nicht bestätigt. Prüfe zuerst deinen Verlauf.",
+      "Enregistrement non confirmé. Vérifiez votre historique avant de réessayer.",
+      "Guardado no confirmado. Revisa el historial antes de reintentar."
+    ],
+    unavailable: [
+      "Cloud storage is temporarily unavailable.",
+      "Stocarea cloud este temporar indisponibilă.",
+      "Archiviazione cloud temporaneamente non disponibile.",
+      "Cloud-Speicher vorübergehend nicht verfügbar.",
+      "Stockage cloud temporairement indisponible.",
+      "Almacenamiento en la nube temporalmente no disponible."
+    ],
+    history: [
+      "View My Career History",
+      "Vezi istoricul meu profesional",
+      "Visualizza la cronologia",
+      "Karriereverlauf anzeigen",
+      "Voir mon historique",
+      "Ver mi historial profesional"
+    ]
+  };
+
+  let cloudAuthEpoch = 0;
+  let cloudOwner = null;
+  let cloudClient = null;
+  let cloudSubscription = null;
+  let cloudRecovery = false;
+
+  function cloudText(key) {
+    return CLOUD[key][LANGUAGES.indexOf(getLanguage())]
+      || CLOUD[key][0];
+  }
+
+  function bindCloudAuth() {
+    const client = window.worknelySupabase;
+
+    if (!client?.auth) return false;
+
+    if (cloudClient === client && cloudSubscription) {
+      return true;
+    }
+
+    cloudSubscription?.unsubscribe();
+    cloudClient = client;
+    cloudOwner = null;
+    cloudAuthEpoch++;
+
+    const { data } = client.auth.onAuthStateChange(
+      (event, session) => {
+        const owner = session?.user?.id || null;
+
+        if (
+          event === "PASSWORD_RECOVERY" ||
+          event === "SIGNED_OUT" ||
+          owner !== cloudOwner
+        ) {
+          cloudAuthEpoch++;
+          cloudOwner = owner;
+          clearPrivateState();
+        }
+
+        if (event === "PASSWORD_RECOVERY") {
+          cloudRecovery = true;
+        } else if (
+          event === "SIGNED_OUT" ||
+          event === "USER_UPDATED"
+        ) {
+          cloudRecovery = false;
+        }
+      }
+    );
+
+    cloudSubscription = data?.subscription || null;
+    return Boolean(cloudSubscription);
+  }
+
+  function addCloudSave(id, result) {
+    if (!refs.output || !result) return;
+
+    const previous = refs.output.querySelector(
+      "[data-wnci-cloud-save]"
+    );
+
+    previous?.remove();
+
+    const ticket = revision;
+    const epoch = cloudAuthEpoch;
+    const owner = cloudOwner;
+
+    const panel = make("div", "wnci-panel");
+    panel.dataset.wnciCloudSave = "true";
+
+    const status = make("p", "wnci-intro", "");
+    status.setAttribute("role", "status");
+    status.setAttribute("aria-live", "polite");
+
+    let pending = false;
+    let saved = false;
+
+    function isCurrent() {
+      return (
+        revision === ticket &&
+        cloudAuthEpoch === epoch &&
+        cloudOwner === owner &&
+        activeTool === id &&
+        panel.isConnected
+      );
+    }
+
+    const saveButton = button(
+      cloudText("save"),
+      async () => {
+        if (pending || saved || !isCurrent()) return;
+
+        if (!owner || cloudRecovery) {
+          status.textContent = cloudText("signin");
+          return;
+        }
+
+        const storage = window.WorknelyCareerStorage;
+
+        if (!storage || !cloudClient?.auth) {
+          status.textContent = cloudText("unavailable");
+          return;
+        }
+
+        pending = true;
+        saveButton.disabled = true;
+        saveButton.textContent = cloudText("saving");
+
+        try {
+          const { data, error } =
+            await cloudClient.auth.getUser();
+
+          if (!isCurrent()) return;
+
+          if (error || data?.user?.id !== owner) {
+            status.textContent = cloudText("signin");
+            return;
+          }
+
+          await storage.save({
+            type: id,
+            result,
+            language: getLanguage(),
+            consent: true,
+            includeTargetRole: false
+          });
+
+          if (!isCurrent()) return;
+
+          saved = true;
+          status.textContent = cloudText("saved");
+
+        } catch {
+          if (isCurrent()) {
+            status.textContent = cloudText("failed");
+          }
+
+        } finally {
+          pending = false;
+
+          if (isCurrent()) {
+            saveButton.disabled = saved;
+            saveButton.textContent = saved
+              ? cloudText("saved")
+              : cloudText("save");
+          }
+        }
+      },
+      true
+    );
+
+    const historyButton = button(
+      cloudText("history"),
+      () => {
+        document.getElementById("wnCareerHistory")
+          ?.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+          });
+      }
+    );
+
+    panel.append(
+      make("p", "wnci-privacy", cloudText("privacy")),
+      saveButton,
+      historyButton,
+      status
+    );
+
+    refs.output.appendChild(panel);
+  }
+
+  document.addEventListener(
+    "DOMContentLoaded",
+    bindCloudAuth,
+    { once: true }
+  );
+
+  window.addEventListener("load", bindCloudAuth);
+  window.addEventListener("pageshow", bindCloudAuth);
+
+  document.addEventListener(
+    "worknely:workspacechange",
+    bindCloudAuth
+  );
+
+  if (document.readyState !== "loading") {
+    bindCloudAuth();
+  }
+
+  /* END CLOUD HISTORY INTEGRATION */
+
+
   function renderResult(id, result) {
     refs.output.replaceChildren();
     refs.output.hidden = false;
@@ -1453,6 +1717,7 @@
         )
       );
     }
+    addCloudSave(id, result);
   }
 
   function renderPlan(session) {
@@ -1530,6 +1795,14 @@
     refs.output.appendChild(
       make("p", "wnci-privacy", tr("privacy"))
     );
+    addCloudSave("career-action-plan", {
+      ok: true,
+      progress: {
+        completed: progress.completed,
+        total: progress.total
+      },
+      tasks: tasks.map(() => null)
+    });
   }
 
   async function runActiveTool() {
@@ -1830,6 +2103,6 @@
 })();
 
 /*
- * END WORKNELY V7.18.1.2
+ * END WORKNELY V7.18.2
  * Career Intelligence Interface
  */
