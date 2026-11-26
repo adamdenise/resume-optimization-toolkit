@@ -1,6 +1,6 @@
 
 /*
- * WORKNELY V7.18.2
+ * WORKNELY V7.18.2.2
  * Secure Career Storage Engine
  * Supabase Cloud Integration
  * Privacy-first Architecture
@@ -9,7 +9,7 @@
 (function () {
   "use strict";
 
-  const VERSION = "7.18.2";
+  const VERSION = "7.18.2.2";
   const TABLE = "career_analyses";
 
   const TYPES = new Set([
@@ -247,7 +247,22 @@
       throw new Error("ANALYSIS_FAILED");
     }
 
+    const expectedOwner = options.expectedUserId;
+
+    if (
+      typeof expectedOwner !== "string" ||
+      !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(expectedOwner)
+    ) {
+      throw new Error("OWNER_REQUIRED");
+    }
+
     const context = await getContext();
+
+    if (context.userId !== expectedOwner) {
+      throw new Error("OWNER_MISMATCH");
+    }
+
+    await verifyOwner(context);
 
     const payload = {
       user_id: context.userId,
@@ -285,10 +300,34 @@
         .single();
 
     if (error) {
-      throw new Error("SAVE_FAILED");
+      const code =
+        typeof error.code === "string" &&
+        /^[a-zA-Z0-9_-]{1,40}$/.test(error.code)
+          ? error.code
+          : "UNKNOWN";
+
+      console.warn(
+        "[Worknely Career Storage] SAVE_FAILED",
+        code
+      );
+
+      const failure = new Error(
+        "SAVE_FAILED:" + code
+      );
+
+      failure.code = code;
+      throw failure;
+    }
+
+    if (!data?.id) {
+      throw new Error("SAVE_NOT_CONFIRMED");
     }
 
     await verifyOwner(context);
+
+    if (context.userId !== expectedOwner) {
+      throw new Error("OWNER_MISMATCH");
+    }
 
     notify("saved", context.userId);
 
@@ -420,13 +459,13 @@
     });
 
   console.info(
-    "Worknely V7.18.2 Career Storage Engine ready."
+    "Worknely V7.18.2.2 Career Storage Engine ready."
   );
 
 })();
 
 /*
- * END WORKNELY V7.18.2
+ * END WORKNELY V7.18.2.2
  * SECURE CAREER STORAGE ENGINE
  * WORKNELY — PEOPLE TECHNOLOGY
  */
