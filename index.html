@@ -17,7 +17,7 @@
 <link rel="canonical" href="https://adamdenise.github.io/resume-optimization-toolkit/">
 <link rel="icon" type="image/svg+xml" href="worknely-favicon.svg">
 
-<!-- WORKNELY V7.18.1.4 CAREER INTELLIGENCE -->
+<!-- WORKNELY V7.18.1.7 PREMIUM MOBILE NAVIGATION -->
 
 <link rel="stylesheet" href="style.css?v=7.12.1">
 <link rel="stylesheet" href="worknely-theme.css?v=7.12.1">
@@ -1221,61 +1221,99 @@ body .shell .wn-builder-secondary button {
 /* END HERO BUTTON ALIGNMENT FIX */
 
 
-</style>
 
-<!-- WORKNELY V7.18.1.6 PREMIUM RESPONSIVE NAVIGATION -->
-<style>
+/* WORKNELY V7.18.1.7 PREMIUM MOBILE NAVIGATION */
+#wnMobileNavToggle {
+  display:none!important;
+}
 @media screen and (max-width:700px) {
-  body .shell:not(.wn-home-active) {
-    box-sizing:border-box!important;
-    width:100%!important;
-    max-width:100%!important;
+  body .shell:not(.wn-home-active) #top {
+    box-sizing:border-box;
     padding-inline:12px!important;
-    margin-inline:auto!important;
   }
   body .shell #wnWorkspaceNavigation:not([hidden]) {
     display:flex!important;
-    flex-direction:row!important;
+    flex-direction:column!important;
     flex-wrap:nowrap!important;
-    justify-content:flex-start!important;
-    align-items:center!important;
-    box-sizing:border-box!important;
     width:100%!important;
     min-width:0!important;
     max-width:100%!important;
-    gap:7px!important;
-    margin:12px 0 16px!important;
-    padding:4px 0 8px!important;
-    overflow-x:auto!important;
-    -webkit-overflow-scrolling:touch;
-    scrollbar-width:none;
-  }
-  body .shell #wnWorkspaceNavigation::-webkit-scrollbar {
-    display:none;
-  }
-  body .shell #wnWorkspaceNavigation > a {
-    display:inline-flex!important;
-    flex:0 0 auto!important;
-    align-items:center!important;
-    justify-content:center!important;
     box-sizing:border-box!important;
-    width:auto!important;
-    min-width:44px!important;
-    max-width:none!important;
-    min-height:44px!important;
-    padding:8px 12px!important;
-    margin:0!important;
-    font-size:12px!important;
-    line-height:1.3!important;
-    white-space:nowrap!important;
-    border-radius:10px!important;
+    overflow:visible!important;
+    gap:6px!important;
+    margin:12px 0 16px!important;
+    padding:0!important;
   }
-  body .shell #wnWorkspaceNavigation[hidden] {
+  body .shell #wnWorkspaceNavigation #wnMobileNavToggle {
+    display:flex!important;
+    align-items:center!important;
+    justify-content:space-between!important;
+    gap:12px!important;
+    width:100%!important;
+    min-height:48px!important;
+    box-sizing:border-box!important;
+    padding:12px 16px!important;
+    margin:0!important;
+    border:1px solid #e3d9ff!important;
+    border-radius:13px!important;
+    background:#fff!important;
+    color:#5424ff!important;
+    font-family:inherit!important;
+    font-size:14px!important;
+    font-weight:750!important;
+    text-align:left!important;
+    box-shadow:0 4px 16px rgba(84,36,255,.06)!important;
+    transform:none!important;
+  }
+  #wnMobileNavToggle svg,
+  #wnWorkspaceNavigation .wn-mobile-nav-icon {
+    width:19px;
+    height:19px;
+    flex:0 0 19px;
+  }
+  #wnMobileNavLabel {
+    flex:1;
+    min-width:0;
+    overflow-wrap:anywhere;
+  }
+  #wnMobileNavToggle[aria-expanded="true"] .wn-nav-chevron {
+    transform:rotate(180deg);
+  }
+  body .shell #wnWorkspaceNavigation:not(.wn-nav-open) > a {
+    display:none!important;
+  }
+  body .shell #wnWorkspaceNavigation.wn-nav-open > a {
+    display:flex!important;
+    align-items:center!important;
+    justify-content:flex-start!important;
+    gap:12px!important;
+    width:100%!important;
+    min-height:44px!important;
+    padding:11px 15px!important;
+    margin:0!important;
+    border-radius:10px!important;
+    text-align:left!important;
+    box-sizing:border-box!important;
+    font-size:13px!important;
+  }
+  #wnWorkspaceNavigation .wn-mobile-home-label {
+    display:inline!important;
+  }
+}
+@media screen and (min-width:701px) {
+  #wnWorkspaceNavigation .wn-mobile-nav-icon,
+  #wnWorkspaceNavigation .wn-mobile-home-label {
     display:none!important;
   }
 }
+@media print {
+  #wnWorkspaceNavigation {
+    display:none!important;
+  }
+}
+/* END PREMIUM MOBILE NAVIGATION */
+
 </style>
-<!-- END WORKNELY V7.18.1.6 PREMIUM RESPONSIVE NAVIGATION -->
 </head>
 
 <body>
@@ -4228,7 +4266,7 @@ body .shell .wn-builder-secondary button {
     });
 
     return {
-      version:"7.18.1.6",
+      version:"7.18.1.7",
       viewportWidth:width,
       documentWidth:document.documentElement.scrollWidth,
       horizontalOverflow:Math.max(0,document.documentElement.scrollWidth-width),
@@ -4237,7 +4275,7 @@ body .shell .wn-builder-secondary button {
   }
 
   window.WorknelyResponsive = Object.freeze({
-    version:"7.18.1.6",
+    version:"7.18.1.7",
     inspect
   });
 
@@ -4255,9 +4293,9 @@ body .shell .wn-builder-secondary button {
 
     name:"Worknely",
 
-    version:"7.18.1.6",
+    version:"7.18.1.7",
 
-    release:"Premium Responsive Navigation",
+    release:"Premium Mobile Navigation",
 
     languages:Object.freeze([
       "en",
@@ -4272,7 +4310,7 @@ body .shell .wn-builder-secondary button {
 
       return {
 
-        version:"7.18.1.6",
+        version:"7.18.1.7",
 
         career:
           window.WorknelyCareerHTML
@@ -4291,7 +4329,166 @@ body .shell .wn-builder-secondary button {
 })();
 </script>
 
-<!-- END WORKNELY V7.18.1.4 -->
+<!-- END WORKNELY V7.18.1.7 -->
+
+
+<!-- WORKNELY V7.18.1.7 MOBILE NAVIGATION CONTROLLER -->
+<script>
+(() => {
+  "use strict";
+
+  function initialize() {
+    const nav = document.getElementById("wnWorkspaceNavigation");
+    const language = document.getElementById("language");
+    if (!nav || document.getElementById("wnMobileNavToggle")) return;
+
+    const words = {
+      en:["Home","Career tools"],
+      ro:["Acasă","Instrumente de carieră"],
+      it:["Home","Strumenti di carriera"],
+      de:["Startseite","Karrierewerkzeuge"],
+      fr:["Accueil","Outils de carrière"],
+      es:["Inicio","Herramientas profesionales"]
+    };
+
+    const paths = {
+      menu:"M4 6h16M4 12h16M4 18h16",
+      chevron:"m6 9 6 6 6-6",
+      studio:"m12 3 2.5 6.5L21 12l-6.5 2.5L12 21l-2.5-6.5L3 12l6.5-2.5L12 3Z",
+      builder:"M14 2H6v20h12V6L14 2Zm0 0v5h5M9 12h6M9 16h6",
+      comparison:"M3 3v18h18M7 15l4-4 4 3 6-8",
+      career:"M12 3v4m0 10v4M3 12h4m10 0h4M12 6a6 6 0 1 0 0 12 6 6 0 0 0 0-12Z",
+      pricing:"M3 5h18v14H3zM3 10h18M7 15h3"
+    };
+
+    function icon(name, className) {
+      const ns = "http://www.w3.org/2000/svg";
+      const svg = document.createElementNS(ns,"svg");
+      svg.setAttribute("viewBox","0 0 24 24");
+      svg.setAttribute("fill","none");
+      svg.setAttribute("stroke","currentColor");
+      svg.setAttribute("stroke-width","1.8");
+      svg.setAttribute("stroke-linecap","round");
+      svg.setAttribute("stroke-linejoin","round");
+      svg.setAttribute("aria-hidden","true");
+      svg.setAttribute("class",className || "");
+      const path = document.createElementNS(ns,"path");
+      path.setAttribute("d",paths[name]);
+      svg.appendChild(path);
+      return svg;
+    }
+
+    const toggle = document.createElement("button");
+    toggle.id = "wnMobileNavToggle";
+    toggle.type = "button";
+    toggle.setAttribute("aria-expanded","false");
+
+    const label = document.createElement("span");
+    label.id = "wnMobileNavLabel";
+
+    toggle.append(
+      icon("menu"),
+      label,
+      icon("chevron","wn-nav-chevron")
+    );
+
+    nav.prepend(toggle);
+
+    const home = nav.querySelector(".wn-home-link");
+    const homeLabel = document.createElement("span");
+    homeLabel.className = "wn-mobile-home-label";
+    if (home) home.appendChild(homeLabel);
+
+    const icons = {
+      wnNavStudio:"studio",
+      wnNavBuilder:"builder",
+      wnNavAnalysis:"comparison",
+      wnNavCareerIntelligence:"career",
+      wnNavPricing:"pricing"
+    };
+
+    function setOpen(open) {
+      nav.classList.toggle("wn-nav-open",open);
+      toggle.setAttribute("aria-expanded",String(open));
+    }
+
+    function refresh() {
+      const dictionary = words[language?.value] || words.en;
+      const active = nav.querySelector('a[aria-current="page"]');
+      const text = active?.textContent.trim() || dictionary[1];
+
+      if (label.textContent !== text) label.textContent = text;
+      if (homeLabel.textContent !== dictionary[0]) {
+        homeLabel.textContent = dictionary[0];
+      }
+
+      Object.entries(icons).forEach(([id,name]) => {
+        const link = document.getElementById(id);
+        if (link && !link.querySelector(".wn-mobile-nav-icon")) {
+          link.prepend(icon(name,"wn-mobile-nav-icon"));
+        }
+      });
+
+      if (nav.hidden) setOpen(false);
+    }
+
+    toggle.addEventListener("click",() => {
+      setOpen(!nav.classList.contains("wn-nav-open"));
+    });
+
+    nav.addEventListener("click",event => {
+      if (event.target.closest("a")) setOpen(false);
+    });
+
+    document.addEventListener("click",event => {
+      if (!nav.contains(event.target)) setOpen(false);
+    });
+
+    document.addEventListener("keydown",event => {
+      if (event.key === "Escape" &&
+          nav.classList.contains("wn-nav-open")) {
+        setOpen(false);
+        toggle.focus();
+      }
+    });
+
+    document.addEventListener("worknely:workspacechange",() => {
+      setOpen(false);
+      refresh();
+    });
+
+    language?.addEventListener("change",refresh);
+    document.addEventListener("worknely:languagechange",refresh);
+    document.addEventListener("worknely:localizationready",refresh);
+
+    new MutationObserver(refresh).observe(nav,{
+      childList:true,
+      subtree:true,
+      characterData:true,
+      attributes:true,
+      attributeFilter:["aria-current","hidden"]
+    });
+
+    window.addEventListener("pageshow",() => {
+      setOpen(false);
+      refresh();
+    });
+
+    refresh();
+
+    window.WorknelyMobileNavigation = Object.freeze({
+      version:"7.18.1.7",
+      refresh
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded",initialize,{once:true});
+  } else {
+    initialize();
+  }
+})();
+</script>
 
 </body>
 </html>
