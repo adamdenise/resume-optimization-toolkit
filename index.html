@@ -4268,7 +4268,7 @@ body .shell .wn-builder-secondary button {
     });
 
     return {
-      version:"7.18.2",
+      version:"7.18.2.1",
       viewportWidth:width,
       documentWidth:document.documentElement.scrollWidth,
       horizontalOverflow:Math.max(0,document.documentElement.scrollWidth-width),
@@ -4277,7 +4277,7 @@ body .shell .wn-builder-secondary button {
   }
 
   window.WorknelyResponsive = Object.freeze({
-    version:"7.18.2",
+    version:"7.18.2.1",
     inspect
   });
 
@@ -4295,9 +4295,9 @@ body .shell .wn-builder-secondary button {
 
     name:"Worknely",
 
-    version:"7.18.2",
+    version:"7.18.2.1",
 
-    release: "Secure Cloud Storage & Analysis History",
+    release: "Cloud Integration Diagnostics",
 
     languages:Object.freeze([
       "en",
@@ -4312,7 +4312,7 @@ body .shell .wn-builder-secondary button {
 
       return {
 
-        version:"7.18.2",
+        version:"7.18.2.1",
 
         career:
           window.WorknelyCareerHTML
@@ -4479,7 +4479,7 @@ body .shell .wn-builder-secondary button {
     refresh();
 
     window.WorknelyMobileNavigation = Object.freeze({
-      version:"7.18.2",
+      version:"7.18.2.1",
       refresh
     });
   }
@@ -4491,6 +4491,100 @@ body .shell .wn-builder-secondary button {
   }
 })();
 </script>
+
+<!-- WORKNELY CLOUD DIAGNOSTICS V7.18.2.1 -->
+<script>
+(function () {
+  "use strict";
+
+  function mount() {
+    const root = document.getElementById("career-intelligence");
+    if (!root || document.getElementById("wnCloudDiagnostics")) return;
+
+    const panel = document.createElement("details");
+    panel.id = "wnCloudDiagnostics";
+    panel.style.cssText = "margin:16px 0;padding:16px;border:1px solid #e3d9ff;border-radius:12px;background:#f8f5ff;overflow-wrap:anywhere";
+
+    const title = document.createElement("summary");
+    title.textContent = "Cloud Diagnostics V7.18.2.1";
+    title.style.cssText = "color:#5424ff;font-weight:750;cursor:pointer";
+
+    const button = document.createElement("button");
+    button.type = "button";
+    button.textContent = "Run cloud diagnostics";
+    button.className = "ghost";
+    button.style.margin = "12px 0";
+
+    const report = document.createElement("pre");
+    report.style.cssText = "white-space:pre-wrap;overflow-wrap:anywhere;font-size:13px;line-height:1.7";
+    report.setAttribute("role","status");
+
+    panel.append(title,button,report);
+    root.appendChild(panel);
+
+    async function inspect() {
+      button.disabled = true;
+      const storage = window.WorknelyCareerStorage;
+      const client = window.worknelySupabase;
+      const history = window.WorknelyCareerHistory;
+      const lines = [
+        "Application: " + (window.WorknelyApplication?.version || "MISSING"),
+        "Storage engine: " + (storage?.version || "MISSING"),
+        "Storage save API: " + (typeof storage?.save === "function" ? "OK" : "MISSING"),
+        "History engine: " + (history?.version || "NOT DETECTED"),
+        "Supabase client: " + (client ? "OK" : "MISSING"),
+        "Authentication API: " + (client?.auth ? "OK" : "MISSING"),
+        "Database API: " + (typeof client?.from === "function" ? "OK" : "MISSING")
+      ];
+
+      report.textContent = lines.join("\n");
+
+      try {
+        if (client?.auth) {
+          const response = await client.auth.getUser();
+          const user = response.data?.user;
+
+          lines.push("Authenticated user: " + (user ? "YES" : "NO"));
+
+          if (response.error) {
+            lines.push("Auth error: " + (response.error.code || response.error.name || "UNKNOWN"));
+          }
+
+          if (user && typeof client.from === "function") {
+            const result = await client
+              .from("career_analyses")
+              .select("id")
+              .eq("user_id",user.id)
+              .limit(1);
+
+            lines.push("Database read: " + (result.error ? "FAILED" : "OK"));
+
+            if (result.error) {
+              lines.push("Database error code: " + (result.error.code || "UNKNOWN"));
+            }
+          } else {
+            lines.push("Database read: SKIPPED");
+          }
+        }
+      } catch (error) {
+        lines.push("Runtime error: " + (error?.name || "UNKNOWN"));
+      } finally {
+        report.textContent = lines.join("\n");
+        button.disabled = false;
+      }
+    }
+
+    button.addEventListener("click",inspect);
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded",mount,{once:true});
+  } else {
+    mount();
+  }
+})();
+</script>
+<!-- END WORKNELY CLOUD DIAGNOSTICS -->
 
 </body>
 </html>
