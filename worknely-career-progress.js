@@ -1,6 +1,6 @@
 
 /*
- * WORKNELY V7.18.3.2
+ * WORKNELY V7.18.3.4
  * Career Progress Visualization
  * International Edition
  * WORKNELY — PEOPLE TECHNOLOGY
@@ -9,7 +9,7 @@
 (function () {
   "use strict";
 
-  const VERSION = "7.18.3.2";
+  const VERSION = "7.18.3.4";
   const ROOT_ID = "wnCareerProgress";
   const SVG_NS = "http://www.w3.org/2000/svg";
 
@@ -246,9 +246,33 @@
       {
         day: "numeric",
         month: "short",
-        year: "numeric"
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit"
       }
     ).format(date);
+  }
+
+  const EXTRA = {
+    en: ["Average ATS score","Lowest ATS score","ATS analyses","Score increased","Score decreased","No score change"],
+    ro: ["Scor ATS mediu","Cel mai mic scor ATS","Analize ATS","Creștere a scorului","Scădere a scorului","Scor neschimbat"],
+    it: ["Punteggio ATS medio","Punteggio ATS minimo","Analisi ATS","Punteggio aumentato","Punteggio diminuito","Punteggio invariato"],
+    de: ["Durchschnittlicher ATS-Wert","Niedrigster ATS-Wert","ATS-Analysen","Wert gestiegen","Wert gesunken","Wert unverändert"],
+    fr: ["Score ATS moyen","Score ATS minimum","Analyses ATS","Score en hausse","Score en baisse","Score inchangé"],
+    es: ["Puntuación ATS media","Puntuación ATS mínima","Análisis ATS","Puntuación aumentada","Puntuación reducida","Puntuación sin cambios"]
+  };
+
+  function extra(index) {
+    return (EXTRA[language()] || EXTRA.en)[index];
+  }
+
+  function changeMetric(value) {
+    const card = metric(tr(4), formatChange(value));
+    if (!number(value)) return card;
+    const direction = value > 0 ? 3 : value < 0 ? 4 : 5;
+    card.classList.add(value > 0 ? "wnp-positive" : value < 0 ? "wnp-negative" : "wnp-neutral");
+    card.appendChild(node("small", "wnp-muted", extra(direction)));
+    return card;
   }
 
   function metric(label, value) {
@@ -639,6 +663,50 @@
         color:#20123f;
       }
 
+      #wnCareerProgress .wnp-positive .wnp-value {
+        color:#15803d;
+      }
+
+      #wnCareerProgress .wnp-negative .wnp-value {
+        color:#dc2626;
+      }
+
+      #wnCareerProgress .wnp-neutral .wnp-value {
+        color:#746c85;
+      }
+
+      #wnCareerProgress .wnp-extra-stats {
+        display:grid;
+        gap:12px;
+        padding:14px;
+        margin:12px 0;
+        background:#fff;
+        border:1px solid #e9e2f4;
+        border-radius:12px;
+        max-width:100%;
+        min-width:0;
+      }
+
+      #wnCareerProgress .wnp-card,
+      #wnCareerProgress .wnp-chart,
+      #wnCareerProgress .wnp-button,
+      #wnCareerProgress .wnp-grid,
+      #wnCareerProgress .wnp-dates,
+      #wnCareerProgress .wnp-row {
+        min-width:0;
+        max-width:100%;
+        overflow-wrap:anywhere;
+        white-space:normal;
+      }
+
+      #wnCareerProgress .wnp-dates {
+        flex-wrap:wrap;
+      }
+
+      #wnCareerProgress .wnp-value {
+        font-size:clamp(21px,4vw,32px);
+      }
+
       @media(max-width:700px) {
         #wnCareerProgress {
           padding:14px;
@@ -723,10 +791,7 @@
           tr(3),
           formatScore(snapshot.ats.bestScore)
         ),
-        metric(
-          tr(4),
-          formatChange(snapshot.ats.change)
-        ),
+        changeMetric(snapshot.ats.change),
         metric(
           tr(5),
           snapshot.totalAnalyses
@@ -737,6 +802,19 @@
         grid,
         node("h4", "", tr(6)),
         createChart(snapshot.ats.series),
+        (() => {
+          const stats = node("div", "wnp-extra-stats");
+          [
+            [extra(0), formatScore(snapshot.ats.averageScore)],
+            [extra(1), formatScore(snapshot.ats.lowestScore)],
+            [extra(2), snapshot.ats.count]
+          ].forEach(([label,value]) => {
+            const row = node("div", "wnp-row");
+            row.append(node("span","wnp-muted",label),node("strong","",value));
+            stats.appendChild(row);
+          });
+          return stats;
+        })(),
         node("h4", "", tr(19)),
         progressBar(
           tr(7),
@@ -899,12 +977,12 @@
   }
 
   console.info(
-    "Worknely V7.18.3.2 Career Progress Visualization ready."
+    "Worknely V7.18.3.4 Career Progress Visualization ready."
   );
 
 })();
 
 /*
- * END WORKNELY V7.18.3.2
+ * END WORKNELY V7.18.3.4
  * CAREER PROGRESS VISUALIZATION
  */
