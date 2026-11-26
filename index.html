@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1396,6 +1395,13 @@ body .shell header.top .wn-language-picker.wn-language-enhanced > .wn-language-v
 }
 /* END LANGUAGE SELECTOR REPAIR */
 
+
+/* JOB TRACKER RESPONSIVE INTEGRATION */
+#job-tracker,#wnJobTrackerMount,#wnJobPipelineMount,#wnJobCalendarMount,#wnJobAnalyticsMount{width:100%;max-width:100%;min-width:0;box-sizing:border-box;overflow-wrap:anywhere;}
+#job-tracker input,#job-tracker select,#job-tracker textarea,#job-tracker button{max-width:100%;min-width:0;box-sizing:border-box;}
+#wnJobTrackerMount,#wnJobPipelineMount,#wnJobCalendarMount,#wnJobAnalyticsMount{margin:16px 0;}
+@media(max-width:700px){#job-tracker input,#job-tracker select,#job-tracker textarea{font-size:16px;}}
+@media print{#job-tracker{display:none!important;}}
 </style>
 </head>
 
@@ -1862,6 +1868,8 @@ body .shell header.top .wn-language-picker.wn-language-enhanced > .wn-language-v
     Career Intelligence
   </a>
 
+  <a href="#job-tracker" data-wn-tool="job-tracker" id="wnNavJobTracker">Job Application Tracker</a>
+
   <a href="pricing.html" id="wnNavPricing">
     Pricing &amp; Plans
   </a>
@@ -2313,6 +2321,20 @@ body .shell header.top .wn-language-picker.wn-language-enhanced > .wn-language-v
 
 </section>
 
+<!-- WORKNELY JOB APPLICATION TRACKER V7.19.8.1 -->
+<section class="workspace wn-tool-view" id="job-tracker" data-wn-view="job-tracker" aria-labelledby="wnJobWorkspaceTitle" tabindex="-1" hidden>
+  <div class="section-head"><div>
+    <span class="overline">WORKNELY CAREER MANAGEMENT</span>
+    <h2 id="wnJobWorkspaceTitle">Job Application Tracker</h2>
+    <p id="wnJobWorkspaceDescription">Manage your applications, interviews and career opportunities.</p>
+  </div></div>
+  <div id="wnJobTrackerMount"></div>
+  <div id="wnJobPipelineMount"></div>
+  <div id="wnJobCalendarMount"></div>
+  <div id="wnJobAnalyticsMount"></div>
+  <noscript>Job Application Tracker requires JavaScript.</noscript>
+</section>
+
 <!-- WORKNELY ACCOUNT -->
 
 <section id="worknelyAccount" class="workspace" aria-labelledby="accountTitle">
@@ -2432,6 +2454,14 @@ body .shell header.top .wn-language-picker.wn-language-enhanced > .wn-language-v
 <script defer src="worknely-career-analytics.js?v=7.18.3.1"></script>
 <script defer src="worknely-career-progress.js?v=7.18.3.4"></script>
 
+<!-- JOB APPLICATION TRACKER MODULES -->
+<script defer src="worknely-job-localization.js?v=7.19.7"></script>
+<script defer src="worknely-job-storage.js?v=7.19.2"></script>
+<script defer src="worknely-job-interface.js?v=7.19.3"></script>
+<script defer src="worknely-job-pipeline.js?v=7.19.4"></script>
+<script defer src="worknely-job-calendar.js?v=7.19.5"></script>
+<script defer src="worknely-job-analytics.js?v=7.19.6"></script>
+
 <!-- LANGUAGE FLAG SYNCHRONIZATION -->
 
 <script>
@@ -2539,7 +2569,8 @@ body .shell header.top .wn-language-picker.wn-language-enhanced > .wn-language-v
     "ai-studio",
     "builder",
     "comparison",
-    "career-intelligence"
+    "career-intelligence",
+    "job-tracker"
   ];
 
   let activeView = "home";
@@ -4382,9 +4413,9 @@ body .shell header.top .wn-language-picker.wn-language-enhanced > .wn-language-v
 
     name:"Worknely",
 
-    version:"7.18.3.4.2",
+    version:"7.19.8.1",
 
-    release: "Language Selector Repair",
+    release: "Job Application Tracker Integration",
 
     languages:Object.freeze([
       "en",
@@ -4399,7 +4430,9 @@ body .shell header.top .wn-language-picker.wn-language-enhanced > .wn-language-v
 
       return {
 
-        version:"7.18.3.4.2",
+        version:"7.19.8.1",
+
+        jobs: window.WorknelyJobIntegration?.getStatus?.() || null,
 
         career:
           window.WorknelyCareerHTML
@@ -4447,6 +4480,7 @@ body .shell header.top .wn-language-picker.wn-language-enhanced > .wn-language-v
       builder:"M14 2H6v20h12V6L14 2Zm0 0v5h5M9 12h6M9 16h6",
       comparison:"M3 3v18h18M7 15l4-4 4 3 6-8",
       career:"M12 3v4m0 10v4M3 12h4m10 0h4M12 6a6 6 0 1 0 0 12 6 6 0 0 0 0-12Z",
+      jobs:"M3 7h18v14H3zM8 7V3h8v4M3 12h18M10 12v3h4v-3",
       pricing:"M3 5h18v14H3zM3 10h18M7 15h3"
     };
 
@@ -4493,6 +4527,7 @@ body .shell header.top .wn-language-picker.wn-language-enhanced > .wn-language-v
       wnNavBuilder:"builder",
       wnNavAnalysis:"comparison",
       wnNavCareerIntelligence:"career",
+      wnNavJobTracker:"jobs",
       wnNavPricing:"pricing"
     };
 
@@ -4824,6 +4859,114 @@ body .shell header.top .wn-language-picker.wn-language-enhanced > .wn-language-v
 })();
 </script>
 <!-- END WORKNELY LANGUAGE SELECTOR REPAIR -->
+
+
+<!-- WORKNELY JOB INTEGRATION V7.19.8.1 -->
+<script>
+(() => {
+  "use strict";
+  const VERSION = "7.19.8.1";
+  const modules = [
+    ["storage","WorknelyJobStorage"],
+    ["interface","WorknelyJobInterface"],
+    ["pipeline","WorknelyJobPipeline"],
+    ["calendar","WorknelyJobCalendar"],
+    ["analytics","WorknelyJobAnalytics"],
+    ["localization","WorknelyJobLocalization"]
+  ];
+  const words = {
+    en:["Job Application Tracker","Manage your applications, interviews and career opportunities."],
+    ro:["Gestionarea candidaturilor","Gestioneaza candidaturile, interviurile si oportunitatile profesionale."],
+    it:["Gestione candidature","Gestisci candidature, colloqui e opportunita professionali."],
+    de:["Bewerbungsmanager","Verwalte Bewerbungen, Vorstellungsgespraeche und Karrierechancen."],
+    fr:["Suivi des candidatures","Gerez vos candidatures, entretiens et opportunites professionnelles."],
+    es:["Seguimiento de candidaturas","Gestiona tus candidaturas, entrevistas y oportunidades profesionales."]
+  };
+  function translate() {
+    const lang = document.getElementById("language")?.value || "en";
+    const dictionary = words[lang] || words.en;
+    const title = document.getElementById("wnJobWorkspaceTitle");
+    const desc = document.getElementById("wnJobWorkspaceDescription");
+    const nav = document.getElementById("wnNavJobTracker");
+    if (title && title.textContent !== dictionary[0]) title.textContent = dictionary[0];
+    if (desc && desc.textContent !== dictionary[1]) desc.textContent = dictionary[1];
+    if (nav) {
+      let label = nav.querySelector(".wn-job-nav-label");
+      if (!label) {
+        Array.from(nav.childNodes).filter(n => n.nodeType === 3).forEach(n => n.remove());
+        label = document.createElement("span");
+        label.className = "wn-job-nav-label";
+        nav.appendChild(label);
+      }
+      if (label.textContent !== dictionary[0]) label.textContent = dictionary[0];
+    }
+  }
+  function getStatus() {
+    const engines = {};
+    modules.forEach(([name,api]) => {
+      engines[name] = {
+        available:Boolean(window[api]),
+        version:window[api]?.version || null
+      };
+    });
+    return {
+      version:VERSION,
+      engines,
+      availableModules:Object.values(engines).filter(x=>x.available).length,
+      mounts:["wnJobTrackerMount","wnJobPipelineMount","wnJobCalendarMount","wnJobAnalyticsMount"].map(id=>({
+        id,
+        rendered:Boolean(document.getElementById(id)?.childElementCount)
+      }))
+    };
+  }
+  window.WorknelyJobIntegration = Object.freeze({version:VERSION,getStatus,refresh:translate});
+  function initialize() {
+    translate();
+    const root = document.getElementById("job-tracker");
+    if (!root || document.getElementById("wnJobDiagnostics")) return;
+    const panel = document.createElement("details");
+    panel.id = "wnJobDiagnostics";
+    const summary = document.createElement("summary");
+    summary.textContent = "Job Tracker Diagnostics";
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "ghost";
+    button.textContent = "Run diagnostics";
+    const report = document.createElement("pre");
+    report.style.cssText = "white-space:pre-wrap;overflow-wrap:anywhere";
+    report.setAttribute("role","status");
+    panel.append(summary,button,report);
+    root.appendChild(panel);
+    button.addEventListener("click",async()=>{
+      button.disabled = true;
+      const status = getStatus();
+      const lines = ["Worknely V"+VERSION];
+      Object.entries(status.engines).forEach(([name,engine])=>{
+        lines.push(name+": "+(engine.available?"OK "+(engine.version||""):"MISSING"));
+      });
+      status.mounts.forEach(m=>lines.push(m.id+": "+(m.rendered?"RENDERED":"EMPTY")));
+      try {
+        const result = await window.WorknelyJobStorage?.testConnection?.();
+        lines.push("Database read: "+(result?.ok?"OK":result?.error||"NOT VERIFIED"));
+      } catch {
+        lines.push("Database read: FAILED");
+      } finally {
+        report.textContent = lines.join("\n");
+        button.disabled = false;
+      }
+    });
+  }
+  document.addEventListener("worknely:languagechange",translate);
+  document.addEventListener("worknely:localizationready",translate);
+  document.getElementById("language")?.addEventListener("change",translate);
+  window.addEventListener("load",initialize,{once:true});
+  window.addEventListener("pageshow",translate);
+  if(document.readyState==="loading"){
+    document.addEventListener("DOMContentLoaded",initialize,{once:true});
+  }else{initialize();}
+})();
+</script>
+<!-- END WORKNELY JOB INTEGRATION -->
 
 </body>
 </html>
