@@ -1063,3 +1063,69 @@ body .shell.wn-home-active footer {
 }
 
 /* END WORKNELY V7.13 LANDING CSS */
+
+/* WORKNELY V7.18.1.5 — RESPONSIVE VISUAL CORRECTION */
+@media screen and (max-width: 700px) {
+  body .shell.wn-home-active {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-inline: auto !important;
+    padding-inline: 12px !important;
+  }
+  body .shell #wnLanding .hero {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    margin-inline: auto !important;
+  }
+  body .shell #wnLanding .hero .wn-hero-content {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+  body .shell #wnLanding .hero nav.wn-landing-actions {
+    display: grid !important;
+    grid-template-columns: minmax(0, 320px) !important;
+    justify-content: center !important;
+    justify-items: center !important;
+    align-items: center !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    margin: 18px auto 0 !important;
+    padding: 0 !important;
+  }
+  body .shell #wnLanding .hero nav.wn-landing-actions > a.primary {
+    position: relative !important;
+    inset: auto !important;
+    display: inline-flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+    max-width: 320px !important;
+    min-width: 0 !important;
+    min-height: 48px !important;
+    margin: 0 auto !important;
+    transform: none !important;
+    float: none !important;
+  }
+  body .shell #wnLanding .hero .wn-hero-visual > svg,
+  body .shell #wnLanding .hero .wn-hero-visual > img {
+    width: 100% !important;
+    max-width: 280px !important;
+    height: auto !important;
+    margin-inline: auto !important;
+  }
+}
+@media screen and (max-width: 390px) {
+  body .shell #wnLanding .hero .wn-hero-visual > svg,
+  body .shell #wnLanding .hero .wn-hero-visual > img {
+    max-width: 245px !important;
+  }
+}
+/* END WORKNELY V7.18.1.5 VISUAL CORRECTION */
