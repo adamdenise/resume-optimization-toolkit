@@ -17,7 +17,7 @@
 <link rel="canonical" href="https://adamdenise.github.io/resume-optimization-toolkit/">
 <link rel="icon" type="image/svg+xml" href="worknely-favicon.svg">
 
-<!-- WORKNELY V7.18.1 CAREER INTELLIGENCE -->
+<!-- WORKNELY V7.18.1.3 CAREER INTELLIGENCE -->
 
 <link rel="stylesheet" href="style.css?v=7.12.1">
 <link rel="stylesheet" href="worknely-theme.css?v=7.12.1">
@@ -948,6 +948,240 @@ body .shell .wn-builder-secondary button {
     display:none!important;
   }
 }
+
+
+/* WORKNELY V7.18.1.3 RESPONSIVE LAYOUT STABILITY */
+
+@media screen {
+  body .shell,
+  #top,
+  #wnLanding,
+  .wn-tool-view,
+  #worknelyAccount,
+  #wnCareerDashboard,
+  #wnCareerIntelligence {
+    box-sizing:border-box;
+    min-width:0;
+    max-width:100%;
+  }
+
+  #top > *,
+  .section-head > *,
+  .results-head > *,
+  .builder-grid > *,
+  .input-grid > *,
+  .report-grid > *,
+  .score-layout > *,
+  .wn-tool-navigation > *,
+  #wnCareerDashboard > *,
+  #wnCareerIntelligence > * {
+    min-width:0;
+    box-sizing:border-box;
+  }
+
+  .workspace,
+  .report-card,
+  .score-card,
+  .import-panel,
+  .field,
+  .builder-grid,
+  .input-grid,
+  .report-grid,
+  .actions,
+  .export-actions,
+  .field-foot {
+    min-width:0;
+    max-width:100%;
+    box-sizing:border-box;
+  }
+
+  .section-head,
+  .results-head,
+  .actions,
+  .export-actions,
+  .field-foot {
+    flex-wrap:wrap;
+  }
+
+  .workspace h2,
+  .workspace h3,
+  .workspace p,
+  .workspace li,
+  .workspace label,
+  .report-card,
+  #wnCareerDashboard,
+  #wnCareerIntelligence {
+    overflow-wrap:anywhere;
+  }
+
+  .workspace input:not([type="checkbox"]):not([type="radio"]):not([type="color"]):not([type="range"]),
+  .workspace select,
+  .workspace textarea {
+    box-sizing:border-box;
+    min-width:0;
+    max-width:100%;
+  }
+
+  .workspace button,
+  #wnCareerDashboard button,
+  #wnCareerDashboard a {
+    box-sizing:border-box;
+    min-width:0;
+    max-width:100%;
+    white-space:normal;
+    overflow-wrap:anywhere;
+  }
+
+  #wnCareerDashboard .wnd-card {
+    box-sizing:border-box;
+    min-width:0;
+    max-width:100%;
+    overflow-wrap:anywhere;
+  }
+
+  #wnCareerIntelligence pre,
+  .builder-preview {
+    max-width:100%;
+    box-sizing:border-box;
+    white-space:pre-wrap;
+    overflow-wrap:anywhere;
+  }
+
+  #wnLanding .wn-hero-visual,
+  #wnLanding .wn-hero-visual svg {
+    min-width:0;
+    max-width:100%;
+  }
+
+  #wnCareerLanding .wn-career-launch svg {
+    flex-shrink:0;
+  }
+
+  .wn-tool-navigation {
+    box-sizing:border-box;
+    min-width:0;
+    max-width:100%;
+  }
+
+  .wn-tool-navigation a {
+    box-sizing:border-box;
+    max-width:100%;
+    white-space:normal;
+    overflow-wrap:anywhere;
+  }
+
+  footer {
+    box-sizing:border-box;
+    min-width:0;
+    max-width:100%;
+    flex-wrap:wrap;
+    overflow-wrap:anywhere;
+  }
+}
+
+@media screen and (max-width:700px) {
+  body .shell {
+    width:100%;
+  }
+
+  .wn-tool-navigation {
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    overflow:visible;
+    gap:7px;
+  }
+
+  .wn-tool-navigation a {
+    width:100%;
+    min-width:0;
+    min-height:44px;
+    padding:9px 7px;
+    text-align:center;
+  }
+
+  .builder-grid,
+  .input-grid,
+  .report-grid {
+    grid-template-columns:minmax(0,1fr);
+  }
+
+  .workspace .section-head,
+  .results-head {
+    flex-direction:column;
+    align-items:stretch;
+  }
+
+  .workspace input:not([type="checkbox"]):not([type="radio"]):not([type="color"]):not([type="range"]),
+  .workspace textarea,
+  .workspace select {
+    font-size:16px;
+  }
+
+  .workspace .actions > button,
+  .export-actions > button {
+    flex:1 1 140px;
+    min-height:44px;
+  }
+
+  #wnCareerDashboard .wnd-card {
+    padding:12px;
+  }
+
+  #wnCareerDashboard .wnd-value {
+    font-size:clamp(24px,7vw,36px);
+  }
+
+  #wnCareerIntelligence {
+    min-width:0;
+    max-width:100%;
+  }
+
+  #wnCareerIntelligence details,
+  #wnCareerIntelligence summary {
+    min-width:0;
+    max-width:100%;
+    overflow-wrap:anywhere;
+  }
+}
+
+@media screen and (max-width:360px) {
+  body .shell header.top {
+    flex-wrap:wrap!important;
+  }
+
+  body .shell header.top > .brand {
+    order:0!important;
+    flex:1 1 calc(100% - 55px)!important;
+  }
+
+  body .shell header.top > .header-tools {
+    order:1!important;
+  }
+
+  body .shell header.top > .wn-auth-nav {
+    order:2!important;
+    flex:1 1 100%!important;
+    flex-wrap:wrap!important;
+  }
+
+  .wn-builder-secondary,
+  #results .stats,
+  .wn-career-feature-grid {
+    grid-template-columns:minmax(0,1fr);
+  }
+
+  #wnCareerDashboard .wnd-card {
+    padding:9px;
+  }
+
+  #wnCareerDashboard .wnd-value {
+    font-size:24px;
+  }
+}
+
+/* END RESPONSIVE LAYOUT STABILITY */
+
+
 </style>
 </head>
 
@@ -2074,7 +2308,7 @@ body .shell .wn-builder-secondary button {
 })();
 </script>
 
-<!-- WORKSPACE ROUTER V7.18.1 -->
+<!-- WORKSPACE ROUTER V7.18.1.3 -->
 
 <script>
 (() => {
@@ -2812,7 +3046,7 @@ body .shell .wn-builder-secondary button {
 
   "use strict";
 
-  const VERSION = "7.18.1.2";
+  const VERSION = "7.18.1.3";
 
   const ids = [
     "wnCareerLandingKicker",
@@ -3857,6 +4091,66 @@ body .shell .wn-builder-secondary button {
 
 <script defer src="worknely-celebration.js?v=7.5"></script>
 
+
+
+<!-- WORKNELY RESPONSIVE DIAGNOSTICS -->
+
+<script>
+(() => {
+  "use strict";
+
+  function inspect() {
+    const width = document.documentElement.clientWidth;
+    const offenders = [];
+
+    document.querySelectorAll("body *").forEach(element => {
+      if (element.closest("svg") || !element.getClientRects().length) return;
+
+      const rect = element.getBoundingClientRect();
+
+      if (rect.right > width + 2 || rect.left < -2) {
+        let clipped = false;
+        let parent = element.parentElement;
+
+        while (parent && parent !== document.body) {
+          const style = getComputedStyle(parent);
+
+          if (["auto","scroll","hidden","clip"].includes(style.overflowX)) {
+            clipped = true;
+            break;
+          }
+
+          parent = parent.parentElement;
+        }
+
+        if (!clipped) {
+          offenders.push({
+            tag:element.tagName.toLowerCase(),
+            id:element.id || null,
+            width:Math.round(rect.width),
+            right:Math.round(rect.right)
+          });
+        }
+      }
+    });
+
+    return {
+      version:"7.18.1.3",
+      viewportWidth:width,
+      documentWidth:document.documentElement.scrollWidth,
+      horizontalOverflow:Math.max(0,document.documentElement.scrollWidth-width),
+      offenders:offenders.slice(0,30)
+    };
+  }
+
+  window.WorknelyResponsive = Object.freeze({
+    version:"7.18.1.3",
+    inspect
+  });
+
+})();
+</script>
+
 <!-- WORKNELY APPLICATION VERSION -->
 
 <script>
@@ -3868,9 +4162,9 @@ body .shell .wn-builder-secondary button {
 
     name:"Worknely",
 
-    version:"7.18.1.2",
+    version:"7.18.1.3",
 
-    release:"Career Intelligence Quality & Stability",
+    release:"Responsive Layout Stability",
 
     languages:Object.freeze([
       "en",
@@ -3885,7 +4179,7 @@ body .shell .wn-builder-secondary button {
 
       return {
 
-        version:"7.18.1.2",
+        version:"7.18.1.3",
 
         career:
           window.WorknelyCareerHTML
@@ -3904,7 +4198,7 @@ body .shell .wn-builder-secondary button {
 })();
 </script>
 
-<!-- END WORKNELY V7.18.1 -->
+<!-- END WORKNELY V7.18.1.3 -->
 
 </body>
 </html>
