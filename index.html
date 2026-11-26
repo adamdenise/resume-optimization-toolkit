@@ -1313,6 +1313,89 @@ body .shell .wn-builder-secondary button {
 }
 /* END PREMIUM MOBILE NAVIGATION */
 
+
+/* WORKNELY V7.18.3.4.2 LANGUAGE SELECTOR REPAIR */
+body .shell header.top {
+  position:relative!important;
+  z-index:1100!important;
+  overflow:visible!important;
+}
+body .shell header.top > .header-tools {
+  position:relative!important;
+  z-index:1200!important;
+  overflow:visible!important;
+}
+body .shell header.top .wn-language-picker {
+  overflow:visible!important;
+}
+body .shell header.top .wn-language-picker.wn-language-enhanced #language {
+  display:none!important;
+}
+body .shell header.top .wn-language-picker.wn-language-enhanced > .wn-language-visual {
+  display:none!important;
+}
+#wnLanguageToggle {
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:3px!important;
+  width:44px!important;
+  min-width:44px!important;
+  height:44px!important;
+  padding:4px!important;
+  margin:0!important;
+  border:1px solid #e3d9ff!important;
+  border-radius:10px!important;
+  background:#fff!important;
+  color:#5424ff!important;
+  font-size:20px!important;
+  cursor:pointer!important;
+  touch-action:manipulation;
+  transform:none!important;
+}
+#wnLanguageMenu {
+  position:absolute!important;
+  top:calc(100% + 8px)!important;
+  right:0!important;
+  width:190px!important;
+  max-width:calc(100vw - 24px)!important;
+  box-sizing:border-box!important;
+  padding:6px!important;
+  border:1px solid #e3d9ff!important;
+  border-radius:14px!important;
+  background:#fff!important;
+  box-shadow:0 12px 35px rgba(40,20,90,.16)!important;
+  z-index:1300!important;
+}
+#wnLanguageMenu[hidden] {
+  display:none!important;
+}
+#wnLanguageMenu button {
+  display:flex!important;
+  align-items:center!important;
+  gap:10px!important;
+  width:100%!important;
+  min-height:44px!important;
+  padding:10px!important;
+  margin:0!important;
+  box-sizing:border-box!important;
+  border:0!important;
+  border-radius:8px!important;
+  background:#fff!important;
+  color:#20123f!important;
+  font-size:14px!important;
+  font-weight:650!important;
+  text-align:left!important;
+  cursor:pointer!important;
+  touch-action:manipulation;
+  transform:none!important;
+}
+#wnLanguageMenu button[aria-pressed="true"] {
+  background:#f0eaff!important;
+  color:#5424ff!important;
+}
+/* END LANGUAGE SELECTOR REPAIR */
+
 </style>
 </head>
 
@@ -4272,7 +4355,7 @@ body .shell .wn-builder-secondary button {
     });
 
     return {
-      version:"7.18.3.4.1",
+      version:"7.18.3.4.2",
       viewportWidth:width,
       documentWidth:document.documentElement.scrollWidth,
       horizontalOverflow:Math.max(0,document.documentElement.scrollWidth-width),
@@ -4281,7 +4364,7 @@ body .shell .wn-builder-secondary button {
   }
 
   window.WorknelyResponsive = Object.freeze({
-    version:"7.18.3.4.1",
+    version:"7.18.3.4.2",
     inspect
   });
 
@@ -4299,9 +4382,9 @@ body .shell .wn-builder-secondary button {
 
     name:"Worknely",
 
-    version:"7.18.3.4.1",
+    version:"7.18.3.4.2",
 
-    release: "Localization Stability Hotfix",
+    release: "Language Selector Repair",
 
     languages:Object.freeze([
       "en",
@@ -4316,7 +4399,7 @@ body .shell .wn-builder-secondary button {
 
       return {
 
-        version:"7.18.3.4.1",
+        version:"7.18.3.4.2",
 
         career:
           window.WorknelyCareerHTML
@@ -4483,7 +4566,7 @@ body .shell .wn-builder-secondary button {
     refresh();
 
     window.WorknelyMobileNavigation = Object.freeze({
-      version:"7.18.3.4.1",
+      version:"7.18.3.4.2",
       refresh
     });
   }
@@ -4510,7 +4593,7 @@ body .shell .wn-builder-secondary button {
     panel.style.cssText = "margin:16px 0;padding:16px;border:1px solid #e3d9ff;border-radius:12px;background:#f8f5ff;overflow-wrap:anywhere";
 
     const title = document.createElement("summary");
-    title.textContent = "Cloud Diagnostics V7.18.3.4.1";
+    title.textContent = "Cloud Diagnostics V7.18.3.4.2";
     title.style.cssText = "color:#5424ff;font-weight:750;cursor:pointer";
 
     const button = document.createElement("button");
@@ -4589,6 +4672,158 @@ body .shell .wn-builder-secondary button {
 })();
 </script>
 <!-- END WORKNELY CLOUD DIAGNOSTICS -->
+
+
+<!-- WORKNELY LANGUAGE SELECTOR REPAIR -->
+<script>
+(() => {
+  "use strict";
+
+  const VERSION = "7.18.3.4.2";
+
+  function initialize() {
+    const select = document.getElementById("language");
+    const picker = select?.closest(".wn-language-picker");
+
+    if (!select || !picker ||
+        document.getElementById("wnLanguageToggle")) return;
+
+    const flags = {
+      en:"🇬🇧",ro:"🇷🇴",it:"🇮🇹",
+      de:"🇩🇪",fr:"🇫🇷",es:"🇪🇸"
+    };
+
+    const names = {
+      en:"English",ro:"Română",it:"Italiano",
+      de:"Deutsch",fr:"Français",es:"Español"
+    };
+
+    const toggle = document.createElement("button");
+    toggle.type = "button";
+    toggle.id = "wnLanguageToggle";
+    toggle.setAttribute("aria-expanded","false");
+    toggle.setAttribute("aria-controls","wnLanguageMenu");
+
+    const menu = document.createElement("div");
+    menu.id = "wnLanguageMenu";
+    menu.hidden = true;
+    menu.setAttribute("role","group");
+    menu.setAttribute("aria-label","Languages");
+
+    function setOpen(open) {
+      menu.hidden = !open;
+      toggle.setAttribute("aria-expanded",String(open));
+    }
+
+    function refresh() {
+      const code = flags[select.value] ? select.value : "en";
+      const text = flags[code] + " ▾";
+
+      if (toggle.textContent !== text) {
+        toggle.textContent = text;
+      }
+
+      const label = window.WorknelyLocalization
+        ?.t?.("common.language") || "Language";
+
+      toggle.setAttribute("aria-label",label + ": " + names[code]);
+      menu.setAttribute("aria-label",label);
+
+      menu.querySelectorAll("button").forEach(button => {
+        button.setAttribute(
+          "aria-pressed",
+          String(button.dataset.language === code)
+        );
+      });
+    }
+
+    Object.keys(names).forEach(code => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.dataset.language = code;
+      button.textContent = flags[code] + "  " + names[code];
+
+      button.addEventListener("click",event => {
+        event.stopPropagation();
+        setOpen(false);
+
+        const engine = window.WorknelyLocalization;
+
+        if (typeof engine?.setLanguage === "function" &&
+            engine.getLanguage() !== code) {
+          engine.setLanguage(code);
+        } else {
+          select.value = code;
+          select.dispatchEvent(new Event("change",{
+            bubbles:true
+          }));
+        }
+
+        refresh();
+        toggle.focus();
+      });
+
+      menu.appendChild(button);
+    });
+
+    toggle.addEventListener("click",event => {
+      event.stopPropagation();
+      setOpen(menu.hidden);
+    });
+
+    document.addEventListener("click",event => {
+      if (!picker.contains(event.target)) setOpen(false);
+    });
+
+    document.addEventListener("keydown",event => {
+      if (event.key === "Escape" && !menu.hidden) {
+        setOpen(false);
+        toggle.focus();
+      }
+    });
+
+    select.addEventListener("change",refresh);
+
+    document.addEventListener(
+      "worknely:languagechange",refresh
+    );
+
+    document.addEventListener(
+      "worknely:localizationready",refresh
+    );
+
+    window.addEventListener("pageshow",() => {
+      setOpen(false);
+      refresh();
+    });
+
+    picker.append(toggle,menu);
+    picker.classList.add("wn-language-enhanced");
+
+    refresh();
+
+    window.WorknelyLanguageSelector = Object.freeze({
+      version:VERSION,
+      refresh,
+      getState:() => ({
+        selected:select.value,
+        engineLanguage:window.WorknelyLocalization?.getLanguage?.(),
+        engineVersion:window.WorknelyLocalization?.version,
+        availableLanguages:Object.keys(names)
+      })
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener(
+      "DOMContentLoaded",initialize,{once:true}
+    );
+  } else {
+    initialize();
+  }
+})();
+</script>
+<!-- END WORKNELY LANGUAGE SELECTOR REPAIR -->
 
 </body>
 </html>
