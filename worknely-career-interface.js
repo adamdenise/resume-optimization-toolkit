@@ -1,6 +1,6 @@
 
 /*
- * WORKNELY V7.18.2
+ * WORKNELY V7.18.2.2
  * Career Intelligence Interface
  * International Edition
  * Local Processing & Optional Cloud History
@@ -9,7 +9,7 @@
 (function () {
   "use strict";
 
-  const VERSION = "7.18.2";
+  const VERSION = "7.18.2.2";
   const ROOT_ID = "wnCareerIntelligence";
 
   const LANGUAGES = [
@@ -1375,7 +1375,7 @@
 
 
 
-  /* WORKNELY V7.18.2 — CLOUD HISTORY INTEGRATION */
+  /* WORKNELY V7.18.2.2 — CLOUD HISTORY INTEGRATION */
 
   const CLOUD = {
     save: [
@@ -1563,22 +1563,29 @@
             return;
           }
 
-          await storage.save({
+          const savedRecord = await storage.save({
             type: id,
             result,
             language: getLanguage(),
             consent: true,
-            includeTargetRole: false
+            includeTargetRole: false,
+            expectedUserId: owner
           });
 
           if (!isCurrent()) return;
 
+          if (!savedRecord?.id) {
+            throw new Error("SAVE_NOT_CONFIRMED");
+          }
+
           saved = true;
           status.textContent = cloudText("saved");
 
-        } catch {
+        } catch (error) {
           if (isCurrent()) {
-            status.textContent = cloudText("failed");
+            const code = String(error?.code || error?.message || "UNKNOWN_ERROR");
+            const safeCode = /^[A-Z0-9_]{1,64}$/.test(code) ? code : "UNKNOWN_ERROR";
+            status.textContent = cloudText("failed") + " [" + safeCode + "]";
           }
 
         } finally {
@@ -2103,6 +2110,6 @@
 })();
 
 /*
- * END WORKNELY V7.18.2
+ * END WORKNELY V7.18.2.2
  * Career Intelligence Interface
  */
