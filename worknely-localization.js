@@ -1,5 +1,5 @@
 /*
- * WORKNELY V7.15
+ * WORKNELY V7.18.3.4.1
  * International SaaS Localization Engine
  *
  * Central Translation Dictionary
@@ -17,7 +17,7 @@
 
   "use strict";
 
-  const VERSION = "7.15";
+  const VERSION = "7.18.3.4.1";
 
   const STORAGE_KEY =
     "worknely.language";
@@ -753,6 +753,7 @@
   let initialized = false;
 
   let scheduled = false;
+  let languageChanging = false;
 
   /* TRANSLATION ENGINE */
 
@@ -980,7 +981,10 @@
 
     scheduled = true;
 
-    queueMicrotask(render);
+    queueMicrotask(() => {
+      scheduled = false;
+      applyTranslations();
+    });
 
   }
 
@@ -1018,9 +1022,16 @@
 
   function setLanguage(value, options = {}) {
 
-    const next = normalizeLanguage(value);
+    if (languageChanging) {
+      return currentLanguage;
+    }
 
+    const next = normalizeLanguage(value);
     const previous = currentLanguage;
+
+    languageChanging = true;
+
+    try {
 
     currentLanguage = next;
 
@@ -1062,6 +1073,10 @@
     }
 
     return currentLanguage;
+
+    } finally {
+      languageChanging = false;
+    }
 
   }
 
@@ -1185,19 +1200,23 @@
 
       }
 
-      setLanguage(
+      const selected = selector.value;
 
-        selector.value,
+      if (!SUPPORTED_LANGUAGES.includes(selected)) {
+        return;
+      }
 
-        {
+      if (languageChanging) return;
 
+      if (selected !== currentLanguage) {
+        setLanguage(selected, {
           source: selector
+        });
+      }
 
-        }
+    },
 
-      );
-
-    }
+    true
 
   );
 
@@ -1243,6 +1262,8 @@
     const observer = new MutationObserver(
 
       mutations => {
+
+        if (languageChanging) return;
 
         const hasNewElements =
           mutations.some(mutation =>
@@ -1376,7 +1397,7 @@
 })();
 
 /*
- * END WORKNELY V7.15
+ * END WORKNELY V7.18.3.4.1
  * International SaaS Localization Engine
  * WORKNELY — PEOPLE TECHNOLOGY
  */
