@@ -1,7 +1,20 @@
 import { createClient } from "npm:@supabase/supabase-js@2";
 
-const VERSION = "7.21.4.2";
-const ALLOWED_ORIGIN = "https://adamdenise.github.io";
+/**
+ * WORKNELY
+ * Secure Account Deletion Engine
+ * Version: 7.21.4.4
+ */
+
+const VERSION = "7.21.4.4";
+
+const ALLOWED_ORIGIN =
+  "https://adamdenise.github.io";
+
+const CONFIRMATION = "DELETE_MY_ACCOUNT";
+
+// Safety lock: keep disabled until testing.
+const DELETION_ENABLED = false;
 
 const headers = {
   "Access-Control-Allow-Origin": ALLOWED_ORIGIN,
@@ -10,6 +23,7 @@ const headers = {
   "Access-Control-Allow-Methods": "POST, OPTIONS",
   "Content-Type": "application/json",
   "Cache-Control": "no-store",
+  "X-Content-Type-Options": "nosniff",
   "Vary": "Origin"
 };
 
@@ -25,6 +39,12 @@ function respond(
     { status, headers }
   );
 }
+
+const authOptions = {
+  persistSession: false,
+  autoRefreshToken: false,
+  detectSessionInUrl: false
+};
 
 Deno.serve(async (request: Request) => {
   try {
@@ -71,7 +91,9 @@ Deno.serve(async (request: Request) => {
     }
 
     const url = Deno.env.get("SUPABASE_URL");
-    const anonKey = Deno.env.get("SUPABASE_ANON_KEY");
+
+    const anonKey =
+      Deno.env.get("SUPABASE_ANON_KEY");
 
     if (!url || !anonKey) {
       return respond(503, {
@@ -81,11 +103,7 @@ Deno.serve(async (request: Request) => {
     }
 
     const client = createClient(url, anonKey, {
-      auth: {
-        persistSession: false,
-        autoRefreshToken: false,
-        detectSessionInUrl: false
-      }
+      auth: authOptions
     });
 
     const { data, error } =
@@ -98,12 +116,149 @@ Deno.serve(async (request: Request) => {
       });
     }
 
+    const userId = data.user.id;
+
+    const contentType =
+      request.headers.get("content-type") || "";
+
+    if (!contentType.toLowerCase().includes(
+      "application/json"
+    )) {
+      return respond(415, {
+        ok: false,
+        code: "UNSUPPORTED_CONTENT_TYPE"
+      });
+    }
+
+    let body: Record<string, unknown>;
+
+    try {
+      const raw = await request.text();
+
+      if (new TextEncoder().encode(raw).length > 4096) {
+        return respond(413, {
+          ok: false,
+          code: "PAYLOAD_TOO_LARGE"
+        });
+      }
+
+      const parsed = JSON.parse(raw);
+
+      if (
+        !parsed ||
+        typeof parsed !== "object" ||
+        Array.isArray(parsed)
+      ) {
+        throw new Error("Invalid payload");
+      }
+
+      body = parsed;
+
+    } catch {
+      return respond(400, {
+        ok: false,
+        code: "INVALID_REQUEST"
+      });
+    }
+
+    const allowedFields = [
+      "action",
+      "confirmation"
+    ];
+
+    if (
+      Object.keys(body).some(
+        key => !allowedFields.includes(key)
+      )
+    ) {
+      return respond(400, {
+        ok: false,
+        code: "UNEXPECTED_FIELDS"
+      });
+    }
+
+    if (body.action === "status") {
+      return respond(200, {
+        ok: true,
+        code: "BACKEND_READY",
+        authenticated: true,
+        deletionEnabled: DELETION_ENABLED,
+        mode: DELETION_ENABLED
+          ? "account-deletion"
+          : "security-validation"
+      });
+    }
+
+    if (body.action !== "delete-account") {
+      return respond(400, {
+        ok: false,
+        code: "INVALID_ACTION"
+      });
+    }
+
+    if (body.confirmation !== CONFIRMATION) {
+      return respond(400, {
+        ok: false,
+        code: "CONFIRMATION_REQUIRED"
+      });
+    }
+
+    if (!DELETION_ENABLED) {
+      return respond(503, {
+        ok: false,
+        code: "DELETION_DISABLED"
+      });
+    }
+
+    const serviceRoleKey =
+      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+
+    if (!serviceRoleKey) {
+      return respond(503, {
+        ok: false,
+        code: "SERVICE_UNAVAILABLE"
+      });
+    }
+
+    // Revalidate identity before irreversible action.
+    const verification =
+      await client.auth.getUser(token);
+
+    if (
+      verification.error ||
+      verification.data.user?.id !== userId
+    ) {
+      return respond(401, {
+        ok: false,
+        code: "SESSION_CHANGED"
+      });
+    }
+
+    const admin = createClient(
+      url,
+      serviceRoleKey,
+      { auth: authOptions }
+    );
+
+    // Delete only the authenticated user.
+    // Never accept a user ID from the request body.
+    const { error: deletionError } =
+      await admin.auth.admin.deleteUser(
+        userId,
+        false
+      );
+
+    if (deletionError) {
+      return respond(500, {
+        ok: false,
+        code: "ACCOUNT_DELETION_FAILED"
+      });
+    }
+
     return respond(200, {
       ok: true,
-      code: "BACKEND_READY",
-      authenticated: true,
-      deletionEnabled: false,
-      mode: "security-validation"
+      code: "ACCOUNT_DELETED",
+      deleted: true
     });
 
   } catch {
