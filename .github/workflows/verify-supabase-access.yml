@@ -9,64 +9,27 @@ permissions:
 jobs:
   verify:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
-
-    env:
-      SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
-      SUPABASE_PROJECT_ID: xuyronnwsokfadnekeir
+    timeout-minutes: 10
 
     steps:
-      - name: Secure authentication diagnostics
-        shell: bash
+      - name: Install official Supabase CLI
+        uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      - name: Verify CLI installation
+        run: supabase --version
+
+      - name: Verify Edge Functions access
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
         run: |
-          python3 - <<'PY'
-          import os
-          import re
-          import json
-          import urllib.request
-          import urllib.error
+          if [ -z "$SUPABASE_ACCESS_TOKEN" ]; then
+            echo "ERROR: Missing access token."
+            exit 1
+          fi
 
-          raw = os.environ.get("SUPABASE_ACCESS_TOKEN", "")
-          token = raw.strip()
+          supabase functions list \
+            --project-ref xuyronnwsokfadnekeir
 
-          print("Token present:", bool(token))
-          print("Scoped token prefix valid:", token.startswith("sbp_fc"))
-          print("Extra whitespace detected:", raw != token)
-          print("Internal whitespace detected:", bool(re.search(r"\s", token)))
-
-          if not token or not token.startswith("sbp_fc") or re.search(r"\s", token):
-              print("ERROR: Unexpected token format.")
-              raise SystemExit(1)
-
-          project = os.environ["SUPABASE_PROJECT_ID"]
-          url = f"https://api.supabase.com/v1/projects/{project}/functions"
-
-          request = urllib.request.Request(
-              url,
-              headers={
-                  "Authorization": "Bearer " + token,
-                  "Accept": "application/json"
-              },
-              method="GET"
-          )
-
-          try:
-              with urllib.request.urlopen(request, timeout=30) as response:
-                  print("HTTP status:", response.status)
-                  print("SUCCESS: API access verified.")
-          except urllib.error.HTTPError as error:
-              print("HTTP status:", error.code)
-              body = error.read().decode("utf-8", errors="replace")
-              try:
-                  data = json.loads(body)
-                  message = str(data.get("message", data.get("error", "Unknown error")))
-                  message = message.replace(token, "[REDACTED]")
-                  message = re.sub(r"sbp_[A-Za-z0-9_-]+", "[REDACTED]", message)
-                  print("Server message:", message[:500])
-              except Exception:
-                  print("Server returned an unrecognized error format.")
-              raise SystemExit(1)
-          except urllib.error.URLError:
-              print("Network connection failed.")
-              raise SystemExit(1)
-          PY
+          echo "SUCCESS: Supabase CLI access verified."
