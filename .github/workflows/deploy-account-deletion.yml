@@ -1,0 +1,46 @@
+name: Worknely Account Deletion Backend
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: worknely-account-deletion-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    env:
+      SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+      SUPABASE_PROJECT_ID: xuyronnwsokfadnekeir
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Supabase CLI
+        uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      - name: Validate backend file
+        run: |
+          test -s supabase/functions/worknely-delete-account/index.ts
+
+      - name: Deploy Worknely backend
+        run: |
+          supabase functions deploy worknely-delete-account \
+            --project-ref "$SUPABASE_PROJECT_ID" \
+            --use-api
+
+      - name: Deployment completed
+        run: |
+          echo "Worknely backend deployment completed."
+          echo "Version: 7.21.4.2"
+          echo "Mode: Security validation"
