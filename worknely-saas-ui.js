@@ -1,6 +1,6 @@
 
 /*
- * WORKNELY V7.17.9.3
+ * WORKNELY V7.20.8.1
  * International SaaS Interface
  * Career Intelligence Account Navigation
  * Six International Languages
@@ -16,7 +16,7 @@
 
   "use strict";
 
-  const VERSION = "7.17.9.3";
+  const VERSION = "7.20.8.1";
 
   const keys = [
     "login",
@@ -45,7 +45,9 @@
     "proCta",
     "proLabel",
     "accountOverline",
-    "careerIntelligence"
+    "careerIntelligence",
+    "professionalDashboard",
+    "jobTracker"
   ];
 
   const dictionary = {
@@ -77,7 +79,9 @@
       "Explore Pro Plans",
       "Explore Worknely Pro plans",
       "YOUR WORKNELY ACCOUNT",
-      "Career Intelligence"
+      "Career Intelligence",
+      "Professional Dashboard",
+      "Job Application Tracker"
     ],
 
     ro: [
@@ -107,7 +111,9 @@
       "Explorează planurile Pro",
       "Explorează abonamentele Worknely Pro",
       "CONTUL TĂU WORKNELY",
-      "Inteligență profesională"
+      "Inteligență profesională",
+      "Tablou de bord profesional",
+      "Monitorizare candidaturi"
     ],
 
     it: [
@@ -137,7 +143,9 @@
       "Esplora i piani Pro",
       "Esplora i piani Worknely Pro",
       "IL TUO ACCOUNT WORKNELY",
-      "Intelligenza professionale"
+      "Intelligenza professionale",
+      "Dashboard professionale",
+      "Gestione candidature"
     ],
 
     de: [
@@ -167,7 +175,9 @@
       "Pro-Tarife entdecken",
       "Worknely Pro-Tarife entdecken",
       "DEIN WORKNELY-KONTO",
-      "Karriere-Intelligenz"
+      "Karriere-Intelligenz",
+      "Professionelles Dashboard",
+      "Bewerbungsübersicht"
     ],
 
     fr: [
@@ -197,7 +207,9 @@
       "Découvrir les offres Pro",
       "Découvrir les offres Worknely Pro",
       "VOTRE COMPTE WORKNELY",
-      "Intelligence de carrière"
+      "Intelligence de carrière",
+      "Tableau de bord professionnel",
+      "Suivi des candidatures"
     ],
 
     es: [
@@ -227,7 +239,9 @@
       "Explorar planes Pro",
       "Explorar los planes Worknely Pro",
       "TU CUENTA WORKNELY",
-      "Inteligencia profesional"
+      "Inteligencia profesional",
+      "Panel profesional",
+      "Seguimiento de candidaturas"
     ]
 
   };
@@ -376,6 +390,10 @@
         z-index:1000;
         min-width:185px;
         max-width:calc(100vw - 24px);
+        max-height:65vh;
+        max-height:65dvh;
+        overflow-y:auto;
+        overscroll-behavior:contain;
         padding:6px;
         background:#fff;
         border:1px solid #e8e2fa;
@@ -1376,6 +1394,81 @@
 
     }
 
+    /* PROFESSIONAL WORKSPACE NAVIGATION — V7.20.8.1 */
+
+    function createWorkspaceLink(key, view, id) {
+      const link = menuLink(
+        key,
+        getWorkspaceHref(view),
+        "wn-menu-career"
+      );
+      link.id = id;
+
+      link.addEventListener("click", event => {
+        if (
+          event.defaultPrevented ||
+          event.ctrlKey ||
+          event.metaKey ||
+          event.shiftKey ||
+          event.altKey ||
+          event.button !== 0
+        ) return;
+
+        const workspace = document.getElementById(view);
+        if (!workspace) return;
+
+        event.preventDefault();
+        closeMenu();
+
+        if (window.location.hash !== "#" + view) {
+          window.location.hash = view;
+        } else {
+          workspace.scrollIntoView({
+            behavior: "auto",
+            block: "start"
+          });
+        }
+      });
+
+      return link;
+    }
+
+    const professionalLink = createWorkspaceLink(
+      "professionalDashboard",
+      "professional-dashboard",
+      "wnAccountProfessionalDashboard"
+    );
+
+    const jobTrackerLink = createWorkspaceLink(
+      "jobTracker",
+      "job-tracker",
+      "wnAccountJobTracker"
+    );
+
+    function syncProfessionalNavigation() {
+      const hash = window.location.hash.toLowerCase();
+
+      [
+        [professionalLink, "professional-dashboard"],
+        [jobTrackerLink, "job-tracker"]
+      ].forEach(([link, view]) => {
+        link.setAttribute("href", getWorkspaceHref(view));
+
+        if (hash === "#" + view) {
+          link.setAttribute("aria-current", "page");
+        } else {
+          link.removeAttribute("aria-current");
+        }
+      });
+    }
+
+    window.addEventListener("hashchange", syncProfessionalNavigation);
+    window.addEventListener("pageshow", syncProfessionalNavigation);
+    document.addEventListener(
+      "worknely:workspacechange",
+      syncProfessionalNavigation
+    );
+
     const divider = document.createElement("div");
 
     divider.className = "wn-menu-divider";
@@ -1393,6 +1486,8 @@
         "dashboard.html"
       ),
 
+      professionalLink,
+
       menuLink(
         "resumes",
         "dashboard.html#resumes"
@@ -1404,6 +1499,8 @@
       ),
 
       careerLink,
+
+      jobTrackerLink,
 
       menuLink(
         "pricing",
@@ -1427,6 +1524,7 @@
 
     header.appendChild(nav);
 
+    syncProfessionalNavigation();
     syncCareerNavigation();
 
     window.addEventListener(
@@ -1776,6 +1874,7 @@
 
       translateModalContent();
 
+      syncProfessionalNavigation();
       syncCareerNavigation();
 
       updateAuthStatus();
@@ -2192,6 +2291,7 @@
 
       if (opening) {
 
+        syncProfessionalNavigation();
         syncCareerNavigation();
 
       }
@@ -2351,7 +2451,7 @@
 })();
 
 /*
- * END WORKNELY V7.17.9.3
+ * END WORKNELY V7.20.8.1
  * CAREER INTELLIGENCE ACCOUNT NAVIGATION
  * INTERNATIONAL SAAS INTERFACE
  * WORKNELY — PEOPLE TECHNOLOGY
