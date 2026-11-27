@@ -13,7 +13,13 @@
 
   "use strict";
 
-  const VERSION = "7.21.3.3";
+  const VERSION = "7.21.3.5.1";
+  const EXPORT_COLUMNS = Object.freeze({
+    resumes: "id,user_id,title,content,created_at,updated_at,design",
+    career_analyses: "id,user_id,analysis_type,target_role,language,score,result,engine_version,created_at",
+    job_applications: "id,user_id,company,job_title,location,job_url,employment_type,work_mode,status,applied_at,interview_at,follow_up_at,notes,created_at,updated_at"
+  });
+
 
   const PAGE_SIZE = 100;
   const MAX_ROWS = 50000;
@@ -380,7 +386,7 @@
 
       let query = context.client
         .from(table)
-        .select("*")
+        .select(EXPORT_COLUMNS[table])
         .eq("user_id", context.userId)
         .order("id", { ascending: true })
         .limit(PAGE_SIZE);
