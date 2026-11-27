@@ -29,7 +29,9 @@ jobs:
       - name: Validate backend source
         run: |
           test -s supabase/functions/worknely-delete-account/index.ts
-          echo "Backend source verified."
+          grep -Fq 'const DELETION_ENABLED = false;' \
+            supabase/functions/worknely-delete-account/index.ts
+          echo "Backend safety lock verified."
 
       - name: Validate deployment token
         run: |
@@ -60,12 +62,28 @@ jobs:
             supabase/functions/dynamic-task
 
           test -s supabase/functions/dynamic-task/index.ts
-          echo "Existing function slug preserved."
 
-      - name: Deployment safety checkpoint
+      - name: Configure JWT verification
         run: |
-          echo "Source preparation completed."
+          mkdir -p supabase
+          printf 'project_id = "worknely"\n\n[functions.dynamic-task]\nverify_jwt = true\n' \
+            > supabase/config.toml
+
+      - name: Deploy secure Worknely backend
+        run: |
+          supabase functions deploy dynamic-task \
+            --project-ref "$SUPABASE_PROJECT_ID"
+
+      - name: Verify deployed function
+        run: |
+          supabase functions list \
+            --project-ref "$SUPABASE_PROJECT_ID"
+
+      - name: Deployment completed
+        run: |
+          echo "Worknely backend deployment completed."
+          echo "Backend version: 7.21.4.4"
+          echo "Deployment release: 7.21.4.6"
           echo "Target slug: dynamic-task"
-          echo "Release target: 7.21.4.3"
+          echo "Account deletion remains disabled."
           echo "Mode: Supabase CLI"
-          echo "Deployment disabled pending source review."
