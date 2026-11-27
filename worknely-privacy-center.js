@@ -10,7 +10,7 @@
 (() => {
   "use strict";
 
-  const VERSION = "7.21.3.2";
+  const VERSION = "7.21.3.5.2";
   const ROOT_ID = "wnPrivacyCenter";
   const MOUNT_ID = "wnPrivacyCenterMount";
   const STYLE_ID = "wnPrivacyCenterStyles";
@@ -244,6 +244,39 @@
   let preparedExport = null;
   let exportMessage = "";
   let exportRevision = 0;
+  let exportExpiryTimer = null;
+
+  const EXPORT_STATUS_TEXT = Object.freeze({
+    en: ["Downloading your data...", "Your export has expired. Prepare a new file."],
+    ro: ["Se descarcă datele tale...", "Exportul a expirat. Pregătește un fișier nou."],
+    it: ["Download dei dati in corso...", "L'esportazione è scaduta. Prepara un nuovo file."],
+    de: ["Deine Daten werden heruntergeladen...", "Der Export ist abgelaufen. Erstelle eine neue Datei."],
+    fr: ["Téléchargement de vos données...", "Votre export a expiré. Préparez un nouveau fichier."],
+    es: ["Descargando tus datos...", "La exportación ha caducado. Prepara un nuevo archivo."]
+  });
+
+  function exportStatusText(index) {
+    return (EXPORT_STATUS_TEXT[getLanguage()] || EXPORT_STATUS_TEXT.en)[index];
+  }
+
+  function clearExportExpiry() {
+    clearTimeout(exportExpiryTimer);
+    exportExpiryTimer = null;
+  }
+
+  function scheduleExportExpiry() {
+    clearExportExpiry();
+    const revision = exportRevision;
+    const expectedOwner = owner;
+    exportExpiryTimer = setTimeout(() => {
+      if (revision !== exportRevision ||
+          owner !== expectedOwner ||
+          exportStage !== "ready") return;
+      resetExport();
+      exportStage = "expired";
+      render();
+    }, 119000);
+  }
 
   const EXPORT_TEXT = {
     en: ["Request Data Export","Your file contains personal information. Store it securely.","Confirm & Prepare Export","Cancel","Preparing your data...","Download My Data","Download requested. Check your browser or Files.","Export unavailable.","Try again","JSON file","Account deletion is not yet enabled. Export covers supported application data only.","Export failed."],
@@ -265,6 +298,7 @@
   }
 
   function resetExport() {
+    clearExportExpiry();
     exportRevision++;
     preparedExport?.discard?.();
     preparedExport = null;
@@ -317,6 +351,7 @@
       } else {
         preparedExport = result;
         exportStage = "ready";
+      scheduleExportExpiry();
       }
     } catch {
       if (!exportValid(ticket, expectedOwner)) return;
@@ -336,6 +371,7 @@
     const ticket = ++exportRevision;
     const file = preparedExport;
 
+    clearExportExpiry();
     exportStage = "downloading";
     render();
 
@@ -370,6 +406,20 @@
   }
 
   function renderExportControls(element) {
+    if (exportStage === "expired" && exportAllowed()) {
+      const notice = document.createElement("p");
+      notice.setAttribute("role", "status");
+      notice.textContent = exportStatusText(1);
+      element.appendChild(notice);
+
+      const retry = document.createElement("button");
+      retry.type = "button";
+      retry.textContent = et(8);
+      retry.style.minHeight = "44px";
+      retry.addEventListener("click", cancelPersonalExport);
+      element.appendChild(retry);
+      return;
+    }
     const status = node("p", "wnpc-note");
     status.setAttribute("role", "status");
 
@@ -400,7 +450,7 @@
 
     if (exportStage === "preparing" ||
         exportStage === "downloading") {
-      status.textContent = et(4);
+      status.textContent = exportStage === "downloading" ? exportStatusText(0) : et(4);
       element.appendChild(status);
       if (exportStage === "preparing") {
         element.appendChild(
