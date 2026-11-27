@@ -1,5 +1,5 @@
 /*
- * WORKNELY V7.21.2
+ * WORKNELY V7.21.3.2
  * International Privacy Center
  * Authentication-Aware Privacy Interface
  * Six International Languages
@@ -10,7 +10,7 @@
 (() => {
   "use strict";
 
-  const VERSION = "7.21.2";
+  const VERSION = "7.21.3.2";
   const ROOT_ID = "wnPrivacyCenter";
   const MOUNT_ID = "wnPrivacyCenterMount";
   const STYLE_ID = "wnPrivacyCenterStyles";
@@ -238,6 +238,220 @@
   let error = false;
   let scheduled = false;
 
+  /* PERSONAL DATA EXPORT INTERFACE */
+
+  let exportStage = "idle";
+  let preparedExport = null;
+  let exportMessage = "";
+  let exportRevision = 0;
+
+  const EXPORT_TEXT = {
+    en: ["Request Data Export","Your file contains personal information. Store it securely.","Confirm & Prepare Export","Cancel","Preparing your data...","Download My Data","Download requested. Check your browser or Files.","Export unavailable.","Try again","JSON file","Account deletion is not yet enabled. Export covers supported application data only.","Export failed."],
+    ro: ["Solicită exportul datelor","Fișierul conține informații personale. Păstrează-l în siguranță.","Confirmă și pregătește exportul","Anulează","Se pregătesc datele...","Descarcă datele mele","Descărcare solicitată. Verifică browserul sau aplicația Fișiere.","Export indisponibil.","Încearcă din nou","Fișier JSON","Ștergerea contului nu este încă activată. Exportul include doar datele acceptate ale aplicației.","Exportul a eșuat."],
+    it: ["Richiedi esportazione","Il file contiene dati personali. Conservalo in modo sicuro.","Conferma e prepara","Annulla","Preparazione dei dati...","Scarica i miei dati","Download richiesto. Controlla il browser o File.","Esportazione non disponibile.","Riprova","File JSON","La cancellazione non è ancora attiva. L'esportazione include solo i dati supportati.","Esportazione non riuscita."],
+    de: ["Datenexport anfordern","Die Datei enthält personenbezogene Daten. Bewahre sie sicher auf.","Bestätigen und vorbereiten","Abbrechen","Daten werden vorbereitet...","Meine Daten herunterladen","Download angefordert. Prüfe deinen Browser oder deine Dateien.","Export nicht verfügbar.","Erneut versuchen","JSON-Datei","Die Kontolöschung ist noch nicht aktiviert. Der Export umfasst nur unterstützte Anwendungsdaten.","Export fehlgeschlagen."],
+    fr: ["Demander un export","Le fichier contient des données personnelles. Conservez-le en sécurité.","Confirmer et préparer","Annuler","Préparation des données...","Télécharger mes données","Téléchargement demandé. Vérifiez votre navigateur ou vos fichiers.","Export indisponible.","Réessayer","Fichier JSON","La suppression du compte n'est pas encore activée. L'export couvre uniquement les données prises en charge.","Échec de l'export."],
+    es: ["Solicitar exportación","El archivo contiene datos personales. Guárdalo de forma segura.","Confirmar y preparar","Cancelar","Preparando tus datos...","Descargar mis datos","Descarga solicitada. Comprueba el navegador o Archivos.","Exportación no disponible.","Reintentar","Archivo JSON","La eliminación de la cuenta aún no está activada. La exportación incluye solo datos compatibles.","Error de exportación."]
+  };
+
+  function et(index) {
+    return (EXPORT_TEXT[getLanguage()] || EXPORT_TEXT.en)[index];
+  }
+
+  function exportEngine() {
+    const engine = window.WorknelyDataExport;
+    return typeof engine?.prepareExport === "function"
+      ? engine : null;
+  }
+
+  function resetExport() {
+    exportRevision++;
+    preparedExport?.discard?.();
+    preparedExport = null;
+    exportStage = "idle";
+    exportMessage = "";
+  }
+
+  function exportAllowed() {
+    return Boolean(
+      owner && account && !loading &&
+      !suspended && !recoveryActive() &&
+      exportEngine()
+    );
+  }
+
+  function exportValid(ticket, expectedOwner) {
+    return ticket === exportRevision &&
+      owner === expectedOwner &&
+      exportAllowed();
+  }
+
+  async function preparePersonalExport() {
+    if (!exportAllowed() || exportStage !== "confirm") return;
+
+    const expectedOwner = owner;
+    const ticket = ++exportRevision;
+    const engine = exportEngine();
+
+    exportStage = "preparing";
+    exportMessage = "";
+    render();
+
+    try {
+      const result = await engine.prepareExport({
+        consent: true,
+        expectedUserId: expectedOwner
+      });
+
+      if (!exportValid(ticket, expectedOwner)) {
+        result?.discard?.();
+        return;
+      }
+
+      if (!result?.ok ||
+          typeof result.download !== "function" ||
+          typeof result.discard !== "function") {
+        result?.discard?.();
+        exportStage = "error";
+        exportMessage = result?.code || "EXPORT_FAILED";
+      } else {
+        preparedExport = result;
+        exportStage = "ready";
+      }
+    } catch {
+      if (!exportValid(ticket, expectedOwner)) return;
+      exportStage = "error";
+      exportMessage = "EXPORT_FAILED";
+    }
+
+    render();
+  }
+
+  async function downloadPersonalExport() {
+    if (!exportAllowed() ||
+        exportStage !== "ready" ||
+        !preparedExport) return;
+
+    const expectedOwner = owner;
+    const ticket = ++exportRevision;
+    const file = preparedExport;
+
+    exportStage = "downloading";
+    render();
+
+    try {
+      const result = await file.download();
+
+      if (!exportValid(ticket, expectedOwner)) return;
+
+      preparedExport = null;
+
+      if (result?.ok && result.initiated) {
+        exportStage = "done";
+      } else {
+        exportStage = "error";
+        exportMessage = result?.code || "DOWNLOAD_FAILED";
+      }
+    } catch {
+      if (!exportValid(ticket, expectedOwner)) return;
+      preparedExport = null;
+      exportStage = "error";
+      exportMessage = "DOWNLOAD_FAILED";
+    } finally {
+      file.discard?.();
+    }
+
+    render();
+  }
+
+  function cancelPersonalExport() {
+    resetExport();
+    render();
+  }
+
+  function renderExportControls(element) {
+    const status = node("p", "wnpc-note");
+    status.setAttribute("role", "status");
+
+    if (!exportAllowed()) {
+      element.appendChild(button(et(7), true));
+      return;
+    }
+
+    if (exportStage === "idle") {
+      element.appendChild(button(et(0), false, () => {
+        if (!exportAllowed()) return;
+        exportStage = "confirm";
+        render();
+      }));
+      return;
+    }
+
+    if (exportStage === "confirm") {
+      status.textContent = et(1);
+      element.append(
+        status,
+        node("p", "", et(9)),
+        button(et(2), false, preparePersonalExport),
+        button(et(3), false, cancelPersonalExport)
+      );
+      return;
+    }
+
+    if (exportStage === "preparing" ||
+        exportStage === "downloading") {
+      status.textContent = et(4);
+      element.appendChild(status);
+      if (exportStage === "preparing") {
+        element.appendChild(
+          button(et(3), false, cancelPersonalExport)
+        );
+      }
+      return;
+    }
+
+    if (exportStage === "ready" && preparedExport) {
+      status.textContent =
+        exportEngine()?.translate?.("EXPORT_READY") || et(9);
+
+      element.append(
+        status,
+        node("p", "", preparedExport.filename),
+        node("p", "", new Intl.NumberFormat(
+          getLanguage(), {
+            style: "unit",
+            unit: "kilobyte",
+            maximumFractionDigits: 1
+          }
+        ).format(preparedExport.size / 1024)),
+        metric(t("resumes"), preparedExport.counts?.resumes),
+        metric(t("career"), preparedExport.counts?.career_analyses),
+        metric(t("jobs"), preparedExport.counts?.job_applications),
+        button(et(5), false, downloadPersonalExport),
+        button(et(3), false, cancelPersonalExport)
+      );
+      return;
+    }
+
+    status.textContent = exportStage === "done"
+      ? et(6)
+      : exportEngine()?.translate?.(exportMessage) || et(11);
+
+    element.append(
+      status,
+      button(
+        exportStage === "done" ? et(0) : et(8),
+        false,
+        () => {
+          resetExport();
+          if (exportAllowed()) exportStage = "confirm";
+          render();
+        }
+      )
+    );
+  }
+
+
   function getLanguage() {
     const value =
       window.WorknelyLocalization?.getLanguage() ||
@@ -292,6 +506,7 @@
   }
 
   function clear() {
+    resetExport();
     generation++;
     account = null;
     counts = null;
@@ -419,6 +634,7 @@
     const activeClient = client;
     const ticket = ++generation;
 
+    resetExport();
     account = null;
     counts = null;
     error = false;
@@ -885,12 +1101,13 @@
         key === "delete"
       );
 
-      element.appendChild(
-        button(
-          t("coming"),
-          true
-        )
-      );
+      if (key === "export") {
+        renderExportControls(element);
+      } else {
+        element.appendChild(
+          button(t("coming"), true)
+        );
+      }
 
       features.appendChild(element);
     });
@@ -900,7 +1117,7 @@
       node(
         "p",
         "wnpc-note",
-        t("privacyNote")
+        exportEngine() ? et(10) : t("privacyNote")
       ),
       button(
         t("refresh"),
@@ -979,7 +1196,10 @@
       language: getLanguage(),
       supportedLanguages: [...LANGUAGES],
       readOnly: true,
-      exportEnabled: false,
+      exportEnabled: Boolean(exportEngine()),
+      exportAvailable: exportAllowed(),
+      exportStage,
+      exportInterfaceVersion: VERSION,
       deletionEnabled: false,
       localDataStorage: false
     };
@@ -996,8 +1216,8 @@
 
     checks.push(
       {
-        name: "Export disabled",
-        passed: getState().exportEnabled === false
+        name: "Export engine availability",
+        passed: getState().exportEnabled === Boolean(exportEngine())
       },
       {
         name: "Deletion disabled",
@@ -1019,6 +1239,8 @@
       liveDatabaseTested: false
     };
   }
+
+  document.addEventListener("worknely:dataexportready", render);
 
   document.addEventListener(
     "worknely:languagechange",
@@ -1106,7 +1328,7 @@
 })();
 
 /*
- * END WORKNELY V7.21.2
+ * END WORKNELY V7.21.3.2
  * INTERNATIONAL PRIVACY CENTER
  * WORKNELY — PEOPLE TECHNOLOGY
  */
