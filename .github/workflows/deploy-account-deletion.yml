@@ -1,3 +1,4 @@
+
 name: Worknely Account Deletion Backend
 
 on:
@@ -42,6 +43,14 @@ jobs:
             echo "Missing SUPABASE_ACCESS_TOKEN"
             exit 1
           fi
+
+      - name: Verify Supabase Management API
+        run: |
+          curl --silent --show-error --fail \
+            --output /dev/null \
+            --write-out "Management API HTTP status: %{http_code}\n" \
+            --header "Authorization: Bearer $SUPABASE_ACCESS_TOKEN" \
+            "https://api.supabase.com/v1/projects/$SUPABASE_PROJECT_ID/functions"
 
       - name: Deploy Worknely backend
         run: |
