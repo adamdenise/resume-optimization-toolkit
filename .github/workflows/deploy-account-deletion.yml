@@ -25,9 +25,12 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup Supabase CLI
-        uses: supabase/setup-cli@v1
+        uses: supabase/setup-cli@v3
         with:
-          version: 2.39.2
+          version: latest
+
+      - name: Verify CLI version
+        run: supabase --version
 
       - name: Validate backend file
         run: |
