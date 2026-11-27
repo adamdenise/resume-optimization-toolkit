@@ -44,10 +44,12 @@ jobs:
       - name: Install official Supabase CLI
         uses: supabase/setup-cli@v1
         with:
-          version: latest
+          version: '3.4.0'
 
       - name: Verify CLI installation
-        run: supabase --version
+        run: |
+          supabase --version
+          test "$(supabase --version)" = "3.4.0"
 
       - name: Verify Edge Functions access
         run: |
@@ -83,7 +85,8 @@ jobs:
         run: |
           echo "Worknely backend deployment completed."
           echo "Backend version: 7.21.4.4"
-          echo "Deployment release: 7.21.4.6"
+          echo "Deployment release: 7.21.4.6.1"
+          echo "Supabase CLI: 3.4.0"
           echo "Target slug: dynamic-task"
           echo "Account deletion remains disabled."
           echo "Mode: Supabase CLI"
