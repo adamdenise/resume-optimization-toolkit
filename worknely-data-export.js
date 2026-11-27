@@ -1,5 +1,5 @@
 /*
- * WORKNELY V7.21.3.1
+ * WORKNELY V7.21.3.3
  * PERSONAL DATA EXPORT ENGINE
  * Authenticated Data Portability
  * Owner-Scoped Database Access
@@ -13,10 +13,12 @@
 
   "use strict";
 
-  const VERSION = "7.21.3.1";
+  const VERSION = "7.21.3.3";
 
   const PAGE_SIZE = 100;
   const MAX_ROWS = 50000;
+  const MAX_BYTES = 20 * 1024 * 1024;
+  const preparedDiscards = new Set();
 
   const TABLES = Object.freeze([
     "resumes",
@@ -197,6 +199,8 @@
   function invalidate() {
 
     generation += 1;
+    for (const discard of preparedDiscards) discard();
+    preparedDiscards.clear();
     releaseUrls();
 
   }
@@ -264,7 +268,8 @@
 
   function assertContext(context) {
 
-    if (recovery) {
+    const update = document.getElementById("wnUpdatePassword");
+    if (recovery || (update && !update.hidden)) {
       fail("RECOVERY_ACTIVE");
     }
 
@@ -365,6 +370,7 @@
     }
 
     const rows = [];
+    let bytes = 0;
 
     let cursor = null;
 
@@ -405,6 +411,8 @@
           fail("EXPORT_FAILED");
         }
 
+        bytes += new Blob([JSON.stringify(row)]).size;
+        if (bytes > MAX_BYTES) fail("EXPORT_LIMIT");
         rows.push(row);
 
         if (rows.length > MAX_ROWS) {
@@ -526,6 +534,8 @@
       }
     );
 
+    if (blob.size > MAX_BYTES) fail("EXPORT_LIMIT");
+
     const date = new Date()
       .toISOString()
       .slice(0, 10);
@@ -613,26 +623,84 @@
        */
 
       let preparedBlob = file.blob;
+      file.blob = null;
+      let downloading = false;
+      const expiresAt = Date.now() + 120000;
+      const expiryTimer = setTimeout(discard, 120000);
 
       function discard() {
-
         preparedBlob = null;
-
+        clearTimeout(expiryTimer);
+        preparedDiscards.delete(discard);
       }
 
+      preparedDiscards.add(discard);
+
       async function download() {
+        if (downloading) {
+          return {
+            ok: false,
+            code: "EXPORT_BUSY",
+            message: t("EXPORT_BUSY")
+          };
+        }
+
+        downloading = true;
 
         try {
+          assertContext(context);
 
-          if (!preparedBlob) {
+          if (!preparedBlob || Date.now() >= expiresAt) {
             fail("DOWNLOAD_FAILED");
           }
 
-          await verifyIdentity(context);
+          /*
+           * Identity was verified immediately before
+           * preparing this short-lived export.
+           * No asynchronous operation before invoking
+           * the browser's native share/download action.
+           */
 
-          if (!preparedBlob) {
-            fail("DOWNLOAD_FAILED");
+          if (
+            typeof File === "function" &&
+            typeof navigator.share === "function" &&
+            typeof navigator.canShare === "function"
+          ) {
+            const shareFile = new File(
+              [preparedBlob],
+              file.filename,
+              { type: "application/json" }
+            );
+
+            let supported = false;
+
+            try {
+              supported = navigator.canShare({
+                files: [shareFile]
+              });
+            } catch {
+              supported = false;
+            }
+
+            if (supported) {
+              assertContext(context);
+
+              await navigator.share({
+                files: [shareFile]
+              });
+
+              assertContext(context);
+              discard();
+
+              return {
+                ok: true,
+                initiated: true,
+                method: "native-share"
+              };
+            }
           }
+
+          assertContext(context);
 
           const url = URL.createObjectURL(
             preparedBlob
@@ -640,8 +708,7 @@
 
           objectUrls.add(url);
 
-          const link =
-            document.createElement("a");
+          const link = document.createElement("a");
 
           link.href = url;
           link.download = file.filename;
@@ -649,35 +716,26 @@
           link.style.display = "none";
 
           try {
-
-            assertContext(context);
-
             document.body.appendChild(link);
-
             link.click();
-
           } finally {
-
             link.remove();
 
             setTimeout(() => {
-
               URL.revokeObjectURL(url);
               objectUrls.delete(url);
-
             }, 60000);
-
           }
 
           discard();
 
           return {
             ok: true,
-            initiated: true
+            initiated: true,
+            method: "browser-download"
           };
 
         } catch (error) {
-
           discard();
 
           const code = safeError(error);
@@ -688,8 +746,9 @@
             message: t(code)
           };
 
+        } finally {
+          downloading = false;
         }
-
       }
 
       return Object.freeze({
@@ -764,7 +823,10 @@
 
       localDataStorage: false,
 
-      format: "JSON"
+      format: "JSON",
+      nativeShareSupported: typeof navigator.share === "function" && typeof navigator.canShare === "function",
+      preparedExportLifetimeSeconds: 120,
+      maximumFileBytes: MAX_BYTES
 
     };
 
@@ -823,7 +885,7 @@
 
     check(
       "Version",
-      VERSION === "7.21.3.1"
+      VERSION === "7.21.3.3"
     );
 
     check(
@@ -1026,7 +1088,7 @@
 })();
 
 /*
- * END WORKNELY V7.21.3.1
+ * END WORKNELY V7.21.3.3
  * PERSONAL DATA EXPORT ENGINE
  * WORKNELY — PEOPLE TECHNOLOGY
  */
