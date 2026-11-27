@@ -1402,6 +1402,12 @@ body .shell header.top .wn-language-picker.wn-language-enhanced > .wn-language-v
 #wnJobTrackerMount,#wnJobPipelineMount,#wnJobCalendarMount,#wnJobAnalyticsMount{margin:16px 0;}
 @media(max-width:700px){#job-tracker input,#job-tracker select,#job-tracker textarea{font-size:16px;}}
 @media print{#job-tracker{display:none!important;}}
+/* PROFESSIONAL DASHBOARD INTEGRATION */
+#professional-dashboard,#wnProfessionalDashboardMount,#wnCareerPerformanceMount,#wnCareerActionsMount,#wnCareerInsightsMount {
+  width:100%;min-width:0;max-width:100%;box-sizing:border-box;overflow-wrap:anywhere;
+}
+#wnProfessionalDashboardMount,#wnCareerPerformanceMount,#wnCareerActionsMount,#wnCareerInsightsMount {margin:16px 0;}
+@media print {#professional-dashboard{display:none!important;}}
 </style>
 </head>
 
@@ -1867,6 +1873,8 @@ body .shell header.top .wn-language-picker.wn-language-enhanced > .wn-language-v
   <a href="#career-intelligence" data-wn-tool="career-intelligence" id="wnNavCareerIntelligence">
     Career Intelligence
   </a>
+
+  <a href="#professional-dashboard" data-wn-tool="professional-dashboard" id="wnNavProfessionalDashboard">Professional Dashboard</a>
 
   <a href="#job-tracker" data-wn-tool="job-tracker" id="wnNavJobTracker">Job Application Tracker</a>
 
@@ -2335,6 +2343,20 @@ body .shell header.top .wn-language-picker.wn-language-enhanced > .wn-language-v
   <noscript>Job Application Tracker requires JavaScript.</noscript>
 </section>
 
+<!-- PROFESSIONAL DASHBOARD V7.20.8 -->
+<section class="workspace wn-tool-view" id="professional-dashboard" data-wn-view="professional-dashboard" aria-labelledby="wnProfessionalDashboardTitle" tabindex="-1" hidden>
+  <div class="section-head"><div>
+    <span class="overline">WORKNELY PROFESSIONAL EXPERIENCE</span>
+    <h2 id="wnProfessionalDashboardTitle">Professional Dashboard</h2>
+    <p id="wnProfessionalDashboardDescription">Your career, connected in one workspace.</p>
+  </div></div>
+  <div id="wnProfessionalDashboardMount"></div>
+  <div id="wnCareerPerformanceMount"></div>
+  <div id="wnCareerActionsMount"></div>
+  <div id="wnCareerInsightsMount"></div>
+  <noscript>Professional Dashboard requires JavaScript.</noscript>
+</section>
+
 <!-- WORKNELY ACCOUNT -->
 
 <section id="worknelyAccount" class="workspace" aria-labelledby="accountTitle">
@@ -2462,6 +2484,15 @@ body .shell header.top .wn-language-picker.wn-language-enhanced > .wn-language-v
 <script defer src="worknely-job-calendar.js?v=7.19.5"></script>
 <script defer src="worknely-job-analytics.js?v=7.19.6"></script>
 
+<!-- PROFESSIONAL DASHBOARD MODULES -->
+<script defer src="worknely-unified-career.js?v=7.20.1"></script>
+<script defer src="worknely-professional-dashboard.js?v=7.20.2"></script>
+<script defer src="worknely-career-performance.js?v=7.20.3"></script>
+<script defer src="worknely-career-actions.js?v=7.20.4"></script>
+<script defer src="worknely-career-insights.js?v=7.20.5"></script>
+<script defer src="worknely-dashboard-localization.js?v=7.20.6"></script>
+<script defer src="worknely-dashboard-responsive.js?v=7.20.7"></script>
+
 <!-- LANGUAGE FLAG SYNCHRONIZATION -->
 
 <script>
@@ -2570,7 +2601,8 @@ body .shell header.top .wn-language-picker.wn-language-enhanced > .wn-language-v
     "builder",
     "comparison",
     "career-intelligence",
-    "job-tracker"
+    "job-tracker",
+    "professional-dashboard"
   ];
 
   let activeView = "home";
@@ -4413,9 +4445,9 @@ body .shell header.top .wn-language-picker.wn-language-enhanced > .wn-language-v
 
     name:"Worknely",
 
-    version:"7.19.9",
+    version:"7.20.8",
 
-    release: "Job Application Tracker Integration",
+    release: "Professional Dashboard Integration",
 
     languages:Object.freeze([
       "en",
@@ -4430,7 +4462,9 @@ body .shell header.top .wn-language-picker.wn-language-enhanced > .wn-language-v
 
       return {
 
-        version:"7.19.9",
+        version:"7.20.8",
+
+        dashboard: window.WorknelyDashboardIntegration?.getStatus?.() || null,
 
         jobs: window.WorknelyJobIntegration?.getStatus?.() || null,
 
@@ -4480,6 +4514,7 @@ body .shell header.top .wn-language-picker.wn-language-enhanced > .wn-language-v
       builder:"M14 2H6v20h12V6L14 2Zm0 0v5h5M9 12h6M9 16h6",
       comparison:"M3 3v18h18M7 15l4-4 4 3 6-8",
       career:"M12 3v4m0 10v4M3 12h4m10 0h4M12 6a6 6 0 1 0 0 12 6 6 0 0 0 0-12Z",
+      dashboard:"M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h7v7h-7z",
       jobs:"M3 7h18v14H3zM8 7V3h8v4M3 12h18M10 12v3h4v-3",
       pricing:"M3 5h18v14H3zM3 10h18M7 15h3"
     };
@@ -4527,6 +4562,7 @@ body .shell header.top .wn-language-picker.wn-language-enhanced > .wn-language-v
       wnNavBuilder:"builder",
       wnNavAnalysis:"comparison",
       wnNavCareerIntelligence:"career",
+      wnNavProfessionalDashboard:"dashboard",
       wnNavJobTracker:"jobs",
       wnNavPricing:"pricing"
     };
@@ -4968,5 +5004,103 @@ body .shell header.top .wn-language-picker.wn-language-enhanced > .wn-language-v
 </script>
 <!-- END WORKNELY JOB INTEGRATION -->
 
+<!-- WORKNELY PROFESSIONAL DASHBOARD INTEGRATION V7.20.8 -->
+<script>
+(() => {
+  "use strict";
+  const VERSION = "7.20.8";
+  const words = {
+    en:["Professional Dashboard","Your career, connected in one workspace."],
+    ro:["Tablou de bord profesional","Cariera ta, într-un singur spațiu de lucru."],
+    it:["Dashboard professionale","La tua carriera in un unico spazio di lavoro."],
+    de:["Karriere-Dashboard","Deine Karriere in einem Arbeitsbereich."],
+    fr:["Tableau de bord professionnel","Votre carrière dans un espace de travail unique."],
+    es:["Panel profesional","Tu carrera en un único espacio de trabajo."]
+  };
+  const modules = [
+    ["unified","WorknelyUnifiedCareer","7.20.1"],
+    ["dashboard","WorknelyProfessionalDashboard","7.20.2"],
+    ["performance","WorknelyCareerPerformance","7.20.3"],
+    ["actions","WorknelyCareerActions","7.20.4"],
+    ["insights","WorknelyCareerInsights","7.20.5"],
+    ["localization","WorknelyDashboardLocalization","7.20.6"],
+    ["responsive","WorknelyDashboardResponsive","7.20.7"]
+  ];
+  const mounts = ["wnProfessionalDashboardMount","wnCareerPerformanceMount","wnCareerActionsMount","wnCareerInsightsMount"];
+  function translate(){
+    const d = words[document.getElementById("language")?.value] || words.en;
+    const title = document.getElementById("wnProfessionalDashboardTitle");
+    const description = document.getElementById("wnProfessionalDashboardDescription");
+    const nav = document.getElementById("wnNavProfessionalDashboard");
+    if(title && title.textContent !== d[0]) title.textContent = d[0];
+    if(description && description.textContent !== d[1]) description.textContent = d[1];
+    if(nav){
+      let label = nav.querySelector(".wn-dashboard-nav-label");
+      if(!label){
+        Array.from(nav.childNodes).filter(n=>n.nodeType===3).forEach(n=>n.remove());
+        label=document.createElement("span");
+        label.className="wn-dashboard-nav-label";
+        nav.appendChild(label);
+      }
+      if(label.textContent!==d[0]) label.textContent=d[0];
+    }
+  }
+  function getStatus(){
+    return {
+      version:VERSION,
+      modules:modules.map(([name,api,expected])=>({
+        name,expected,available:Boolean(window[api]),version:window[api]?.version||null
+      })),
+      mounts:mounts.map(id=>({id,rendered:Boolean(document.getElementById(id)?.childElementCount)})),
+      unified:window.WorknelyUnifiedCareer?.getState?.()||null
+    };
+  }
+  function initialize(){
+    translate();
+    const root=document.getElementById("professional-dashboard");
+    if(!root||document.getElementById("wnDashboardDiagnostics"))return;
+    const panel=document.createElement("details");
+    panel.id="wnDashboardDiagnostics";
+    const summary=document.createElement("summary");
+    summary.textContent="Professional Dashboard Diagnostics";
+    const button=document.createElement("button");
+    button.type="button";
+    button.className="ghost";
+    button.textContent="Run diagnostics";
+    const report=document.createElement("pre");
+    report.style.cssText="white-space:pre-wrap;overflow-wrap:anywhere";
+    report.setAttribute("role","status");
+    panel.append(summary,button,report);
+    root.appendChild(panel);
+    button.addEventListener("click",async()=>{
+      button.disabled=true;
+      try{
+        const engine=window.WorknelyUnifiedCareer;
+        if(engine?.getState?.()?.authenticated)await engine.refresh();
+        const s=getStatus();
+        const lines=["Worknely V"+VERSION];
+        s.modules.forEach(m=>lines.push(m.name+": "+(!m.available?"MISSING":m.version===m.expected?"OK "+m.version:"CHECK VERSION "+m.version)));
+        s.mounts.forEach(m=>lines.push(m.id+": "+(m.rendered?"RENDERED":"EMPTY")));
+        lines.push("Authenticated: "+(s.unified?.authenticated?"YES":"NO"));
+        const snapshot=engine?.getSnapshot?.();
+        Object.entries(snapshot?.sources||{}).forEach(([name,status])=>lines.push(name+": "+status));
+        lines.push("Data snapshot: "+(snapshot?(snapshot.partial?"PARTIAL":"AVAILABLE"):"NOT AVAILABLE"));
+        report.textContent=lines.join("\n");
+      }catch{
+        report.textContent="Diagnostics could not complete.";
+      }finally{button.disabled=false;}
+    });
+  }
+  window.WorknelyDashboardIntegration=Object.freeze({version:VERSION,getStatus,refresh:translate});
+  document.addEventListener("worknely:languagechange",translate);
+  document.addEventListener("worknely:localizationready",translate);
+  document.getElementById("language")?.addEventListener("change",translate);
+  window.addEventListener("pageshow",initialize);
+  window.addEventListener("load",initialize,{once:true});
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",initialize,{once:true});
+  else initialize();
+})();
+</script>
+<!-- END PROFESSIONAL DASHBOARD INTEGRATION -->
 </body>
 </html>
