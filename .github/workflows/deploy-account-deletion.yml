@@ -27,11 +27,18 @@ jobs:
       - name: Setup Supabase CLI
         uses: supabase/setup-cli@v1
         with:
-          version: latest
+          version: 2.39.2
 
       - name: Validate backend file
         run: |
           test -s supabase/functions/worknely-delete-account/index.ts
+
+      - name: Validate deployment token
+        run: |
+          if [ -z "$SUPABASE_ACCESS_TOKEN" ]; then
+            echo "Missing SUPABASE_ACCESS_TOKEN"
+            exit 1
+          fi
 
       - name: Deploy Worknely backend
         run: |
