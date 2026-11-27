@@ -1,4 +1,3 @@
-
 name: Worknely Account Deletion Backend
 
 on:
@@ -24,18 +23,13 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
-      - name: Setup Supabase CLI
-        uses: supabase/setup-cli@v3
         with:
-          version: latest
-
-      - name: Verify CLI version
-        run: supabase --version
+          persist-credentials: false
 
       - name: Validate backend file
         run: |
           test -s supabase/functions/worknely-delete-account/index.ts
+          echo "Backend file verified."
 
       - name: Validate deployment token
         run: |
@@ -44,22 +38,37 @@ jobs:
             exit 1
           fi
 
-      - name: Verify Supabase Management API
+          echo "Deployment token available."
+
+      - name: Verify Edge Functions access
         run: |
           curl --silent --show-error --fail \
             --output /dev/null \
-            --write-out "Management API HTTP status: %{http_code}\n" \
+            --write-out "Edge Functions API HTTP status: %{http_code}\n" \
             --header "Authorization: Bearer $SUPABASE_ACCESS_TOKEN" \
             "https://api.supabase.com/v1/projects/$SUPABASE_PROJECT_ID/functions"
 
       - name: Deploy Worknely backend
         run: |
-          supabase functions deploy worknely-delete-account \
-            --project-ref "$SUPABASE_PROJECT_ID" \
-            --use-api
+          curl --silent --show-error --fail \
+            --request POST \
+            --output /dev/null \
+            --write-out "Deployment HTTP status: %{http_code}\n" \
+            --header "Authorization: Bearer $SUPABASE_ACCESS_TOKEN" \
+            --form 'metadata={"name":"worknely-delete-account","entrypoint_path":"index.ts","verify_jwt":true}' \
+            --form 'file=@supabase/functions/worknely-delete-account/index.ts;filename=index.ts' \
+            "https://api.supabase.com/v1/projects/$SUPABASE_PROJECT_ID/functions/deploy?slug=worknely-delete-account"
+
+      - name: Verify deployed function
+        run: |
+          curl --silent --show-error --fail \
+            --output /dev/null \
+            --write-out "Function verification HTTP status: %{http_code}\n" \
+            --header "Authorization: Bearer $SUPABASE_ACCESS_TOKEN" \
+            "https://api.supabase.com/v1/projects/$SUPABASE_PROJECT_ID/functions/worknely-delete-account"
 
       - name: Deployment completed
         run: |
           echo "Worknely backend deployment completed."
           echo "Version: 7.21.4.2"
-          echo "Mode: Security validation"
+          echo "Mode: Direct Management API"
