@@ -1,6 +1,6 @@
 
 /*
- * WORKNELY V7.20.8.1
+ * WORKNELY V7.21.2.2
  * International SaaS Interface
  * Career Intelligence Account Navigation
  * Six International Languages
@@ -16,7 +16,7 @@
 
   "use strict";
 
-  const VERSION = "7.20.8.1";
+  const VERSION = "7.21.2.2";
 
   const keys = [
     "login",
@@ -47,7 +47,8 @@
     "accountOverline",
     "careerIntelligence",
     "professionalDashboard",
-    "jobTracker"
+    "jobTracker",
+    "privacyCenter"
   ];
 
   const dictionary = {
@@ -81,7 +82,8 @@
       "YOUR WORKNELY ACCOUNT",
       "Career Intelligence",
       "Professional Dashboard",
-      "Job Application Tracker"
+      "Job Application Tracker",
+      "Privacy Center"
     ],
 
     ro: [
@@ -113,7 +115,8 @@
       "CONTUL TĂU WORKNELY",
       "Inteligență profesională",
       "Tablou de bord profesional",
-      "Monitorizare candidaturi"
+      "Monitorizare candidaturi",
+      "Centru de confidențialitate"
     ],
 
     it: [
@@ -145,7 +148,8 @@
       "IL TUO ACCOUNT WORKNELY",
       "Intelligenza professionale",
       "Dashboard professionale",
-      "Gestione candidature"
+      "Gestione candidature",
+      "Centro privacy"
     ],
 
     de: [
@@ -177,7 +181,8 @@
       "DEIN WORKNELY-KONTO",
       "Karriere-Intelligenz",
       "Professionelles Dashboard",
-      "Bewerbungsübersicht"
+      "Bewerbungsübersicht",
+      "Datenschutzcenter"
     ],
 
     fr: [
@@ -209,7 +214,8 @@
       "VOTRE COMPTE WORKNELY",
       "Intelligence de carrière",
       "Tableau de bord professionnel",
-      "Suivi des candidatures"
+      "Suivi des candidatures",
+      "Centre de confidentialité"
     ],
 
     es: [
@@ -241,7 +247,8 @@
       "TU CUENTA WORKNELY",
       "Inteligencia profesional",
       "Panel profesional",
-      "Seguimiento de candidaturas"
+      "Seguimiento de candidaturas",
+      "Centro de privacidad"
     ]
 
   };
@@ -1394,7 +1401,7 @@
 
     }
 
-    /* PROFESSIONAL WORKSPACE NAVIGATION — V7.20.8.1 */
+    /* PROFESSIONAL WORKSPACE NAVIGATION — V7.21.2.2 */
 
     function createWorkspaceLink(key, view, id) {
       const link = menuLink(
@@ -1469,6 +1476,65 @@
       syncProfessionalNavigation
     );
 
+    /* PRIVACY CENTER NAVIGATION */
+
+    const privacyLink = menuLink(
+      "privacyCenter",
+      getWorkspaceHref("professional-dashboard"),
+      "wn-menu-career"
+    );
+
+    privacyLink.id = "wnAccountPrivacyCenter";
+
+    privacyLink.addEventListener("click", event => {
+      if (
+        event.defaultPrevented ||
+        event.ctrlKey ||
+        event.metaKey ||
+        event.shiftKey ||
+        event.altKey ||
+        event.button !== 0
+      ) return;
+
+      const workspace =
+        document.getElementById("professional-dashboard");
+
+      if (!workspace) return;
+
+      event.preventDefault();
+      closeMenu();
+
+      if (window.location.hash !== "#professional-dashboard") {
+        window.location.hash = "professional-dashboard";
+      }
+
+      let attempts = 0;
+
+      function revealPrivacyCenter() {
+        if (
+          window.location.hash !== "#professional-dashboard" ||
+          accountWrap.hidden
+        ) return;
+
+        const target =
+          document.getElementById("wnPrivacyCenterMount");
+
+        if (target && target.getClientRects().length) {
+          target.scrollIntoView({
+            behavior: "auto",
+            block: "start"
+          });
+          return;
+        }
+
+        if (++attempts < 20) {
+          setTimeout(revealPrivacyCenter, 100);
+        }
+      }
+
+      setTimeout(revealPrivacyCenter, 100);
+    });
+
     const divider = document.createElement("div");
 
     divider.className = "wn-menu-divider";
@@ -1512,6 +1578,8 @@
         "pricing.html",
         "wn-menu-pro"
       ),
+
+      privacyLink,
 
       divider,
       logoutBtn
@@ -2451,7 +2519,7 @@
 })();
 
 /*
- * END WORKNELY V7.20.8.1
+ * END WORKNELY V7.21.2.2
  * CAREER INTELLIGENCE ACCOUNT NAVIGATION
  * INTERNATIONAL SAAS INTERFACE
  * WORKNELY — PEOPLE TECHNOLOGY
