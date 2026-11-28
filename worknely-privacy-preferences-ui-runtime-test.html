@@ -1,41 +1,1463 @@
 
--- WORKNELY V7.21.5.1.3
--- Final Foundation Check
--- READ ONLY
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="referrer" content="no-referrer">
 
-SELECT
-    '09 Consent defaults' AS test,
-    CASE
-        WHEN COUNT(*) = 3 THEN 'PASS'
-        ELSE 'REVIEW'
-    END AS result
-FROM information_schema.columns
-WHERE table_schema = 'public'
-AND table_name = 'privacy_preferences'
-AND column_name IN (
-    'analytics_consent',
-    'marketing_consent',
-    'personalization_consent'
-)
-AND data_type = 'boolean'
-AND column_default = 'false'
-AND is_nullable = 'NO'
+  <title>Worknely Privacy Preferences UI Validation</title>
 
-UNION ALL
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-SELECT
-    '10 Custom triggers',
-    COUNT(*)::text
-FROM pg_trigger
-WHERE tgrelid =
-    'public.privacy_preferences'::regclass
-AND NOT tgisinternal
+    body {
+      margin: 0;
+      padding: 20px 14px 60px;
+      background: #f7f5fc;
+      color: #211a35;
+      font-family: Inter, system-ui, -apple-system,
+        BlinkMacSystemFont, sans-serif;
+      line-height: 1.6;
+    }
 
-UNION ALL
+    main {
+      max-width: 760px;
+      margin: auto;
+    }
 
-SELECT
-    '11 Existing records',
-    COUNT(*)::text
-FROM public.privacy_preferences
+    .card {
+      background: #fff;
+      border: 1px solid #e6e0ef;
+      border-radius: 24px;
+      padding: 24px;
+      margin-bottom: 20px;
+    }
 
-ORDER BY test;
+    .brand {
+      color: #7028e8;
+      font-size: 28px;
+      font-weight: 800;
+    }
+
+    h1 {
+      font-size: 27px;
+      line-height: 1.3;
+    }
+
+    h2 {
+      font-size: 23px;
+      line-height: 1.4;
+    }
+
+    p {
+      color: #625b73;
+    }
+
+    label {
+      display: block;
+      margin-top: 16px;
+      font-weight: 700;
+    }
+
+    .credential {
+      width: 100%;
+      min-height: 50px;
+      margin-top: 7px;
+      padding: 12px;
+      border: 1px solid #d8d2e3;
+      border-radius: 12px;
+      background: #fff;
+      color: #211a35;
+      font-size: 16px;
+    }
+
+    .action {
+      width: 100%;
+      min-height: 52px;
+      margin-top: 14px;
+      padding: 14px;
+      border: 0;
+      border-radius: 14px;
+      background: #7028e8;
+      color: white;
+      font-size: 16px;
+      font-weight: 750;
+      cursor: pointer;
+    }
+
+    .secondary {
+      background: #eee8fa;
+      color: #5823ad;
+    }
+
+    button:disabled {
+      opacity: .45;
+      cursor: not-allowed;
+    }
+
+    .security {
+      padding: 18px;
+      border-radius: 15px;
+      background: #f1ebfc;
+      overflow-wrap: anywhere;
+    }
+
+    .status {
+      margin-top: 16px;
+      padding: 14px;
+      background: #f5f3f8;
+      border-radius: 12px;
+      overflow-wrap: anywhere;
+    }
+
+    .success {
+      color: #16743b;
+    }
+
+    .failure {
+      color: #b42336;
+    }
+
+    .result {
+      font-size: 34px;
+      font-weight: 850;
+      margin: 20px 0;
+    }
+
+    .test-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 14px 0;
+      border-bottom: 1px solid #eeeaf3;
+      font-size: 14px;
+    }
+
+    .test-row strong {
+      flex-shrink: 0;
+    }
+
+    .small {
+      font-size: 13px;
+    }
+
+    #uiMount {
+      margin-top: 18px;
+    }
+
+    #uiMount[hidden] {
+      display: none;
+    }
+  </style>
+
+  <script
+    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+  </script>
+
+  <script
+    defer
+    src="./worknely-privacy-preferences.js?v=7.21.5.3">
+  </script>
+
+  <script
+    defer
+    src="./worknely-privacy-preferences-ui.js?v=7.21.5.4">
+  </script>
+</head>
+
+<body>
+
+<main>
+
+  <section class="card">
+
+    <div class="brand">Worknely</div>
+
+    <h1>Privacy Preferences</h1>
+
+    <p>
+      Authenticated UI Runtime Validation
+    </p>
+
+    <p class="small">
+      Release: V7.21.5.4.2<br>
+      Storage Engine: V7.21.5.3<br>
+      User Interface: V7.21.5.4
+    </p>
+
+    <div class="security">
+
+      <strong>Security boundary</strong>
+
+      <p>
+        Validation is restricted to one authorized
+        disposable test account.
+      </p>
+
+      <p>
+        Protected accounts must not be used.
+      </p>
+
+      <strong>Expected test UUID</strong>
+
+      <div>
+        fb4e0531-e2ad-4aca-ad8a-69ecce9539a4
+      </div>
+
+    </div>
+
+    <label for="publicKey">
+      Supabase public publishable / anon key
+    </label>
+
+    <input
+      class="credential"
+      id="publicKey"
+      type="password"
+      autocomplete="off"
+      autocapitalize="none"
+      spellcheck="false"
+      placeholder="Public key only">
+
+    <p class="small">
+      Never enter a service role or secret key.
+    </p>
+
+    <label for="email">
+      Test account email
+    </label>
+
+    <input
+      class="credential"
+      id="email"
+      type="email"
+      autocomplete="off"
+      autocapitalize="none"
+      spellcheck="false">
+
+    <label for="password">
+      Test account password
+    </label>
+
+    <input
+      class="credential"
+      id="password"
+      type="password"
+      autocomplete="off">
+
+    <button
+      class="action"
+      id="authenticate"
+      type="button">
+      Authenticate Test Account
+    </button>
+
+    <button
+      class="action secondary"
+      id="endSession"
+      type="button"
+      disabled>
+      End Test Session
+    </button>
+
+    <div
+      id="authStatus"
+      class="status"
+      role="status"
+      aria-live="polite">
+      Waiting for authentication.
+    </div>
+
+  </section>
+
+  <section class="card">
+
+    <h2>Runtime Validation</h2>
+
+    <p>
+      Tests exercise the actual Privacy Preferences
+      interface and storage engine.
+    </p>
+
+    <p>
+      Only the authorized temporary account may
+      receive preference updates.
+      Optional consents are withdrawn during cleanup.
+    </p>
+
+    <button
+      class="action"
+      id="run"
+      type="button"
+      disabled>
+      Run Authenticated UI Validation
+    </button>
+
+    <div
+      id="summary"
+      class="result"
+      aria-live="polite">
+      Not started
+    </div>
+
+    <div id="results"></div>
+
+    <div
+      id="cleanupStatus"
+      class="status"
+      role="status">
+      Cleanup pending.
+    </div>
+
+  </section>
+
+  <section class="card">
+
+    <h2>Interface Preview</h2>
+
+    <p class="small">
+      The interface is mounted only during validation.
+    </p>
+
+    <div id="uiMount" hidden></div>
+
+  </section>
+
+</main>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  "use strict";
+
+  const VERSION = "7.21.5.4.2";
+
+  const ENGINE_VERSION = "7.21.5.3";
+
+  const UI_VERSION = "7.21.5.4";
+
+  const SUPABASE_URL =
+    "https://xuyronnwsokfadnekeir.supabase.co";
+
+  const TEST_UID =
+    "fb4e0531-e2ad-4aca-ad8a-69ecce9539a4";
+
+  const PROTECTED_UIDS = Object.freeze([
+    "3efc3076-801a-47d2-a81c-c8a0ab61f495",
+    "8f23b7ae-00b3-4e60-96d9-f3130dbc239f"
+  ]);
+
+  const FIELDS = Object.freeze([
+    "analytics_consent",
+    "personalization_consent",
+    "marketing_consent"
+  ]);
+
+  const LANGUAGES = Object.freeze({
+    en: "Privacy Preferences",
+    ro: "Preferințe de confidențialitate",
+    it: "Preferenze sulla privacy",
+    de: "Datenschutzeinstellungen",
+    fr: "Préférences de confidentialité",
+    es: "Preferencias de privacidad"
+  });
+
+  const $ = id => document.getElementById(id);
+
+  let client = null;
+  let authorized = false;
+  let busy = false;
+  let sessionGeneration = 0;
+  let subscription = null;
+  let tests = [];
+  let cleanupRequired = false;
+
+  function engine() {
+
+    const value =
+      window.WorknelyPrivacyPreferences;
+
+    if (
+      !value ||
+      value.version !== ENGINE_VERSION ||
+      typeof value.load !== "function" ||
+      typeof value.save !== "function" ||
+      typeof value.withdrawAll !== "function" ||
+      typeof value.clear !== "function"
+    ) {
+      throw new Error("ENGINE_UNAVAILABLE");
+    }
+
+    return value;
+  }
+
+  function ui() {
+
+    const value =
+      window.WorknelyPrivacyPreferencesUI;
+
+    if (
+      !value ||
+      value.version !== UI_VERSION ||
+      value.engineVersion !== ENGINE_VERSION ||
+      typeof value.mount !== "function" ||
+      typeof value.refresh !== "function" ||
+      typeof value.save !== "function" ||
+      typeof value.withdrawAll !== "function" ||
+      typeof value.setLanguage !== "function" ||
+      typeof value.clear !== "function" ||
+      typeof value.destroy !== "function" ||
+      typeof value.getState !== "function"
+    ) {
+      throw new Error("UI_UNAVAILABLE");
+    }
+
+    return value;
+  }
+
+  function setStatus(message, success = false) {
+
+    $("authStatus").textContent = message;
+
+    $("authStatus").className =
+      "status " + (success ? "success" : "");
+  }
+
+  function updateButtons() {
+
+    $("authenticate").disabled =
+      busy || authorized || cleanupRequired;
+
+    $("run").disabled =
+      busy || !authorized || cleanupRequired;
+
+    $("endSession").disabled =
+      busy || !client;
+
+    $("publicKey").disabled =
+      busy || authorized;
+
+    $("email").disabled =
+      busy || authorized;
+
+    $("password").disabled =
+      busy || authorized;
+  }
+
+  function validatePublicKey(key) {
+
+    if (
+      typeof key !== "string" ||
+      key.length < 20 ||
+      key.length > 4096
+    ) {
+      return false;
+    }
+
+    if (key.startsWith("sb_secret_")) {
+      return false;
+    }
+
+    if (key.startsWith("sb_publishable_")) {
+
+      return /^sb_publishable_[A-Za-z0-9_-]+$/
+        .test(key);
+    }
+
+    try {
+
+      const parts = key.split(".");
+
+      if (parts.length !== 3) return false;
+
+      let payload = parts[1]
+        .replace(/-/g, "+")
+        .replace(/_/g, "/");
+
+      payload = payload.padEnd(
+        Math.ceil(payload.length / 4) * 4,
+        "="
+      );
+
+      const decoded = JSON.parse(
+        atob(payload)
+      );
+
+      return decoded.role === "anon";
+
+    } catch {
+
+      return false;
+    }
+  }
+
+  async function verifyIdentity() {
+
+    if (
+      !client ||
+      window.worknelySupabase !== client
+    ) {
+      throw new Error("CLIENT_CHANGED");
+    }
+
+    const generation = sessionGeneration;
+
+    const identity =
+      await client.auth.getUser();
+
+    const uid =
+      identity.data?.user?.id;
+
+    if (
+      identity.error ||
+      uid !== TEST_UID ||
+      PROTECTED_UIDS.includes(uid)
+    ) {
+      throw new Error("ACCOUNT_NOT_AUTHORIZED");
+    }
+
+    const response =
+      await client.auth.getSession();
+
+    const session =
+      response.data?.session;
+
+    if (
+      response.error ||
+      !session?.access_token ||
+      session.user?.id !== TEST_UID ||
+      generation !== sessionGeneration ||
+      window.worknelySupabase !== client
+    ) {
+      throw new Error("INVALID_SESSION");
+    }
+
+    return uid;
+  }
+
+  function addTest(name, passed) {
+
+    const result = passed === true;
+
+    tests.push({
+      name,
+      passed: result
+    });
+
+    const row = document.createElement("div");
+
+    row.className = "test-row";
+
+    const label = document.createElement("span");
+
+    label.textContent = name;
+
+    const value = document.createElement("strong");
+
+    value.textContent =
+      result ? "PASS" : "FAIL";
+
+    value.className =
+      result ? "success" : "failure";
+
+    row.append(label, value);
+
+    $("results").appendChild(row);
+
+    return result;
+  }
+
+  function requireTest(name, passed) {
+
+    if (!addTest(name, passed)) {
+
+      throw new Error("VALIDATION_FAILED");
+    }
+  }
+
+  function finishSummary() {
+
+    const passed = tests.filter(
+      test => test.passed
+    ).length;
+
+    const total = tests.length;
+
+    const success =
+      total > 0 &&
+      passed === total &&
+      !cleanupRequired;
+
+    $("summary").textContent =
+      passed + "/" + total +
+      (success ? " PASS" : " FAIL");
+
+    $("summary").className =
+      "result " +
+      (success ? "success" : "failure");
+  }
+
+  function clearPreview() {
+
+    try {
+      ui().destroy();
+    } catch {}
+
+    try {
+      engine().clear();
+    } catch {}
+
+    $("uiMount").replaceChildren();
+
+    $("uiMount").hidden = true;
+  }
+
+  async function readPreferences() {
+
+    await verifyIdentity();
+
+    const result =
+      await engine().load(TEST_UID);
+
+    await verifyIdentity();
+
+    if (
+      !result?.ok ||
+      result.version !== ENGINE_VERSION ||
+      result.preferences?.user_id !== TEST_UID
+    ) {
+      throw new Error("INVALID_ENGINE_RESPONSE");
+    }
+
+    for (const field of FIELDS) {
+
+      if (
+        typeof result.preferences[field] !==
+        "boolean"
+      ) {
+        throw new Error("INVALID_PREFERENCE");
+      }
+    }
+
+    return result;
+  }
+
+  function allDisabled(row) {
+
+    return FIELDS.every(
+      field => row?.[field] === false
+    );
+  }
+
+  function inputFor(field) {
+
+    const node = document.getElementById(
+      "wnPrivacyPreferencesUI-" + field
+    );
+
+    if (!node) {
+
+      throw new Error("CONTROL_NOT_FOUND");
+    }
+
+    return node;
+  }
+
+  function changeSwitch(field, value) {
+
+    const input = inputFor(field);
+
+    if (input.disabled) {
+
+      throw new Error("CONTROL_DISABLED");
+    }
+
+    if (input.checked !== value) {
+
+      input.click();
+    }
+
+    if (input.checked !== value) {
+
+      throw new Error("CONTROL_CHANGE_FAILED");
+    }
+  }
+
+  function actionButton(action) {
+
+    return $("uiMount").querySelector(
+      "[data-wnpp-action='" + action + "']"
+    );
+  }
+
+  async function authenticate() {
+
+    if (busy || authorized) return;
+
+    busy = true;
+
+    updateButtons();
+
+    try {
+
+      engine();
+      ui();
+
+      const key =
+        $("publicKey").value.trim();
+
+      const email =
+        $("email").value.trim();
+
+      const password =
+        $("password").value;
+
+      $("password").value = "";
+
+      if (!validatePublicKey(key)) {
+
+        throw new Error("PUBLIC_KEY_REQUIRED");
+      }
+
+      if (!email || !password) {
+
+        throw new Error("CREDENTIALS_REQUIRED");
+      }
+
+      if (
+        typeof window.supabase?.createClient !==
+        "function"
+      ) {
+        throw new Error("SUPABASE_UNAVAILABLE");
+      }
+
+      if (
+        window.worknelySupabase &&
+        window.worknelySupabase !== client
+      ) {
+        throw new Error("EXISTING_CLIENT_DETECTED");
+      }
+
+      client = window.supabase.createClient(
+        SUPABASE_URL,
+        key,
+        {
+          auth: {
+            persistSession: false,
+            autoRefreshToken: false,
+            detectSessionInUrl: false,
+            storageKey:
+              "worknely-ui-runtime-validation"
+          }
+        }
+      );
+
+      window.worknelySupabase = client;
+
+      const authResponse =
+        await client.auth.signInWithPassword({
+          email,
+          password
+        });
+
+      if (authResponse.error) {
+
+        throw new Error("AUTHENTICATION_FAILED");
+      }
+
+      await verifyIdentity();
+
+      const initial =
+        await readPreferences();
+
+      if (
+        initial.exists !== true ||
+        !allDisabled(initial.preferences)
+      ) {
+        throw new Error("UNEXPECTED_TEST_BASELINE");
+      }
+
+      const authListener =
+        client.auth.onAuthStateChange(
+          (event, session) => {
+
+            if (
+              event === "SIGNED_OUT" ||
+              session?.user?.id !== TEST_UID
+            ) {
+
+              sessionGeneration += 1;
+
+              authorized = false;
+
+              clearPreview();
+
+              updateButtons();
+            }
+          }
+        );
+
+      subscription =
+        authListener.data?.subscription;
+
+      if (!subscription) {
+
+        throw new Error("AUTH_LISTENER_FAILED");
+      }
+
+      authorized = true;
+
+      $("publicKey").value = "";
+      $("email").value = "";
+
+      setStatus(
+        "Authorized disposable account verified. " +
+        "Initial optional consents are disabled.",
+        true
+      );
+
+    } catch {
+
+      authorized = false;
+
+      if (subscription) {
+
+        subscription.unsubscribe();
+
+        subscription = null;
+      }
+
+      if (client) {
+
+        try {
+
+          await client.auth.signOut({
+            scope: "local"
+          });
+
+        } catch {}
+
+        if (window.worknelySupabase === client) {
+
+          delete window.worknelySupabase;
+        }
+      }
+
+      client = null;
+
+      clearPreview();
+
+      setStatus(
+        "Authentication or safety validation failed. " +
+        "No preference write was requested."
+      );
+
+    } finally {
+
+      $("password").value = "";
+
+      busy = false;
+
+      updateButtons();
+    }
+  }
+
+  async function runValidation() {
+
+    if (
+      busy ||
+      !authorized ||
+      cleanupRequired
+    ) {
+      return;
+    }
+
+    busy = true;
+
+    tests = [];
+
+    $("results").replaceChildren();
+
+    $("summary").textContent = "Running...";
+
+    $("summary").className = "result";
+
+    $("cleanupStatus").textContent =
+      "Validation in progress.";
+
+    updateButtons();
+
+    let completed = false;
+
+    try {
+
+      const storage = engine();
+
+      const interfaceUI = ui();
+
+      requireTest(
+        "01 Correct storage engine version",
+        storage.version === ENGINE_VERSION
+      );
+
+      requireTest(
+        "02 Correct UI version",
+        interfaceUI.version === UI_VERSION
+      );
+
+      requireTest(
+        "03 Correct engine compatibility",
+        interfaceUI.engineVersion ===
+          ENGINE_VERSION
+      );
+
+      requireTest(
+        "04 Immutable storage API",
+        Object.isFrozen(storage)
+      );
+
+      requireTest(
+        "05 Immutable UI API",
+        Object.isFrozen(interfaceUI)
+      );
+
+      const uid = await verifyIdentity();
+
+      requireTest(
+        "06 Authenticated identity verified",
+        uid === TEST_UID
+      );
+
+      requireTest(
+        "07 Disposable UUID authorized",
+        uid === TEST_UID
+      );
+
+      requireTest(
+        "08 Protected accounts excluded",
+        !PROTECTED_UIDS.includes(uid)
+      );
+
+      const initial =
+        await readPreferences();
+
+      requireTest(
+        "09 Existing test preferences found",
+        initial.exists === true
+      );
+
+      requireTest(
+        "10 Initial analytics disabled",
+        initial.preferences.analytics_consent ===
+          false
+      );
+
+      requireTest(
+        "11 Initial personalization disabled",
+        initial.preferences
+          .personalization_consent === false
+      );
+
+      requireTest(
+        "12 Initial marketing disabled",
+        initial.preferences.marketing_consent ===
+          false
+      );
+
+      $("uiMount").hidden = false;
+
+      requireTest(
+        "13 UI mounted",
+        interfaceUI.mount(
+          $("uiMount"),
+          { language: "en" }
+        ) === true
+      );
+
+      requireTest(
+        "14 Mounted state verified",
+        interfaceUI.getState().mounted === true
+      );
+
+      requireTest(
+        "15 No automatic writes configured",
+        interfaceUI.getState().automaticWrites ===
+          false
+      );
+
+      requireTest(
+        "16 No persistent UI cache configured",
+        interfaceUI.getState().persistentCache ===
+          false
+      );
+
+      requireTest(
+        "17 Save disabled before load",
+        actionButton("save")?.disabled === true
+      );
+
+      requireTest(
+        "18 Withdraw disabled before load",
+        actionButton("withdraw")?.disabled ===
+          true
+      );
+
+      requireTest(
+        "19 Switches disabled before load",
+        FIELDS.every(
+          field => inputFor(field).disabled
+        )
+      );
+
+      const afterMount =
+        await readPreferences();
+
+      requireTest(
+        "20 Mount did not change saved preferences",
+        afterMount.preferences.updated_at ===
+          initial.preferences.updated_at &&
+        allDisabled(afterMount.preferences)
+      );
+
+      await verifyIdentity();
+
+      const loaded =
+        await interfaceUI.refresh();
+
+      requireTest(
+        "21 Authenticated UI refresh",
+        loaded?.ok === true
+      );
+
+      requireTest(
+        "22 UI loaded state",
+        interfaceUI.getState().loaded === true
+      );
+
+      requireTest(
+        "23 Analytics switch initially off",
+        inputFor(FIELDS[0]).checked === false
+      );
+
+      requireTest(
+        "24 Personalization switch initially off",
+        inputFor(FIELDS[1]).checked === false
+      );
+
+      requireTest(
+        "25 Marketing switch initially off",
+        inputFor(FIELDS[2]).checked === false
+      );
+
+      requireTest(
+        "26 Save enabled after load",
+        actionButton("save")?.disabled === false
+      );
+
+      requireTest(
+        "27 Withdraw enabled after load",
+        actionButton("withdraw")?.disabled ===
+          false
+      );
+
+      requireTest(
+        "28 Initial draft is clean",
+        interfaceUI.getState().dirty === false
+      );
+
+      let number = 29;
+
+      for (
+        const [language, heading]
+        of Object.entries(LANGUAGES)
+      ) {
+
+        interfaceUI.setLanguage(language);
+
+        requireTest(
+          String(number++) +
+            " Language state: " + language,
+          interfaceUI.getState().language ===
+            language
+        );
+
+        requireTest(
+          String(number++) +
+            " Localized heading: " + language,
+          $("uiMount")
+            .querySelector(".wnpp-title")
+            ?.textContent === heading
+        );
+      }
+
+      interfaceUI.setLanguage("en");
+
+      requireTest(
+        "41 Regional language normalization",
+        interfaceUI.setLanguage("ro-RO") === "ro"
+      );
+
+      requireTest(
+        "42 Unsupported language fallback",
+        interfaceUI.setLanguage("unknown") ===
+          "en"
+      );
+
+      await verifyIdentity();
+
+      changeSwitch(FIELDS[0], true);
+
+      requireTest(
+        "43 Explicit analytics draft enabled",
+        inputFor(FIELDS[0]).checked === true
+      );
+
+      requireTest(
+        "44 Unsaved changes detected",
+        interfaceUI.getState().dirty === true
+      );
+
+      const beforeSave =
+        await readPreferences();
+
+      requireTest(
+        "45 Draft did not write to database",
+        allDisabled(beforeSave.preferences) &&
+        beforeSave.preferences.updated_at ===
+          initial.preferences.updated_at
+      );
+
+      await verifyIdentity();
+
+      cleanupRequired = true;
+
+      const saved =
+        await interfaceUI.save();
+
+      requireTest(
+        "46 Explicit UI save successful",
+        saved?.ok === true
+      );
+
+      const persisted =
+        await readPreferences();
+
+      requireTest(
+        "47 Analytics consent persisted",
+        persisted.preferences.analytics_consent ===
+          true
+      );
+
+      requireTest(
+        "48 Personalization remains disabled",
+        persisted.preferences
+          .personalization_consent === false
+      );
+
+      requireTest(
+        "49 Marketing remains disabled",
+        persisted.preferences.marketing_consent ===
+          false
+      );
+
+      requireTest(
+        "50 Current consent version persisted",
+        persisted.preferences.consent_version ===
+          storage.consentVersion
+      );
+
+      requireTest(
+        "51 Draft clean after successful save",
+        interfaceUI.getState().dirty === false
+      );
+
+      const refreshed =
+        await interfaceUI.refresh();
+
+      requireTest(
+        "52 Saved preferences reloaded",
+        refreshed?.ok === true
+      );
+
+      requireTest(
+        "53 Saved analytics restored in UI",
+        inputFor(FIELDS[0]).checked === true
+      );
+
+      await verifyIdentity();
+
+      const withdrawn =
+        await interfaceUI.withdrawAll();
+
+      requireTest(
+        "54 Explicit UI withdrawal successful",
+        withdrawn?.ok === true
+      );
+
+      const final =
+        await readPreferences();
+
+      requireTest(
+        "55 Analytics consent withdrawn",
+        final.preferences.analytics_consent ===
+          false
+      );
+
+      requireTest(
+        "56 Personalization consent disabled",
+        final.preferences
+          .personalization_consent === false
+      );
+
+      requireTest(
+        "57 Marketing consent disabled",
+        final.preferences.marketing_consent ===
+          false
+      );
+
+      requireTest(
+        "58 All UI switches disabled by choice",
+        FIELDS.every(
+          field => inputFor(field).checked === false
+        )
+      );
+
+      requireTest(
+        "59 Test account identity unchanged",
+        await verifyIdentity() === TEST_UID
+      );
+
+      requireTest(
+        "60 Preference owner unchanged",
+        final.preferences.user_id === TEST_UID
+      );
+
+      cleanupRequired = false;
+
+      interfaceUI.clear();
+
+      requireTest(
+        "61 UI clear removes loaded state",
+        interfaceUI.getState().loaded === false &&
+        actionButton("save")?.disabled === true
+      );
+
+      interfaceUI.destroy();
+
+      requireTest(
+        "62 UI lifecycle cleanup completed",
+        interfaceUI.getState().mounted === false &&
+        !document.getElementById(
+          "wnPrivacyPreferencesUI"
+        )
+      );
+
+      completed = true;
+
+    } catch {
+
+      addTest(
+        "Validation completed without interruption",
+        false
+      );
+
+    } finally {
+
+      if (cleanupRequired) {
+
+        try {
+
+          await verifyIdentity();
+
+          ui().destroy();
+
+          engine().clear();
+
+          const result =
+            await engine().withdrawAll(TEST_UID);
+
+          if (!result?.ok) {
+
+            throw new Error("CLEANUP_FAILED");
+          }
+
+          const verified =
+            await readPreferences();
+
+          if (
+            verified.exists !== true ||
+            !allDisabled(verified.preferences)
+          ) {
+            throw new Error("CLEANUP_FAILED");
+          }
+
+          cleanupRequired = false;
+
+          addTest(
+            "Emergency consent cleanup",
+            true
+          );
+
+        } catch {
+
+          addTest(
+            "Emergency consent cleanup",
+            false
+          );
+        }
+      }
+
+      clearPreview();
+
+      if (cleanupRequired) {
+
+        $("cleanupStatus").textContent =
+          "WARNING: Cleanup could not be verified. " +
+          "Keep the test session open and verify " +
+          "the temporary account in Supabase.";
+
+        $("cleanupStatus").className =
+          "status failure";
+
+      } else if (completed) {
+
+        $("cleanupStatus").textContent =
+          "Cleanup verified. All three optional " +
+          "consents are disabled. " +
+          "Temporary account retained.";
+
+        $("cleanupStatus").className =
+          "status success";
+
+      } else {
+
+        $("cleanupStatus").textContent =
+          "Validation stopped. No pending " +
+          "consent cleanup detected.";
+
+        $("cleanupStatus").className =
+          "status";
+      }
+
+      busy = false;
+
+      finishSummary();
+
+      updateButtons();
+    }
+  }
+
+  async function endSession() {
+
+    if (busy || !client) return;
+
+    if (cleanupRequired) {
+
+      setStatus(
+        "Session retained: verify consent cleanup " +
+        "in Supabase before signing out."
+      );
+
+      return;
+    }
+
+    busy = true;
+
+    updateButtons();
+
+    try {
+
+      clearPreview();
+
+      if (subscription) {
+
+        subscription.unsubscribe();
+
+        subscription = null;
+      }
+
+      const response =
+        await client.auth.signOut({
+          scope: "local"
+        });
+
+      if (response.error) {
+
+        throw new Error("SIGN_OUT_FAILED");
+      }
+
+      sessionGeneration += 1;
+
+      authorized = false;
+
+      if (window.worknelySupabase === client) {
+
+        delete window.worknelySupabase;
+      }
+
+      client = null;
+
+      setStatus(
+        "Test session ended successfully.",
+        true
+      );
+
+    } catch {
+
+      authorized = false;
+
+      setStatus(
+        "Session termination could not be verified."
+      );
+
+    } finally {
+
+      $("password").value = "";
+
+      busy = false;
+
+      updateButtons();
+    }
+  }
+
+  $("authenticate").addEventListener(
+    "click",
+    authenticate
+  );
+
+  $("run").addEventListener(
+    "click",
+    runValidation
+  );
+
+  $("endSession").addEventListener(
+    "click",
+    endSession
+  );
+
+  window.addEventListener(
+    "beforeunload",
+    event => {
+
+      if (busy || cleanupRequired) {
+
+        event.preventDefault();
+
+        event.returnValue = "";
+      }
+    }
+  );
+
+  updateButtons();
+
+});
+</script>
+
+</body>
+</html>
