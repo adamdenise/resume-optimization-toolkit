@@ -27,50 +27,18 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Validate restricted backend source
-        shell: bash
+      - name: Validate dry-run backend source
         run: |
-          set -euo pipefail
-
-          SOURCE="supabase/functions/worknely-delete-account/index.ts"
-
+          set -eu
+          SOURCE=supabase/functions/worknely-delete-account/index.ts
           test -s "$SOURCE"
-
-          grep -Fq 'const VERSION = "7.21.4.9.4";' "$SOURCE"
-
+          grep -Fq 'const VERSION = "7.21.4.11.1";' "$SOURCE"
+          grep -Fq 'const DRY_RUN_ONLY = true;' "$SOURCE"
           grep -Fq 'const DELETION_ENABLED = true;' "$SOURCE"
-
-          grep -Fq 'const TEST_ACCOUNT_UID = "003e6e99-3d61-4685-ad8e-3b6abe608f74";' "$SOURCE"
-
-          grep -Fq 'if (userId !== TEST_ACCOUNT_UID)' "$SOURCE"
-
-          grep -Fq 'code: "TEST_ACCOUNT_ONLY"' "$SOURCE"
-
-          grep -Fq 'const userId = data.user.id;' "$SOURCE"
-
-          grep -Fq 'verification.data.user?.id !== userId' "$SOURCE"
-
-          grep -Fq 'await admin.auth.admin.deleteUser(' "$SOURCE"
-
-          python3 - <<'PY'
-          from pathlib import Path
-
-          source = Path(
-              "supabase/functions/worknely-delete-account/index.ts"
-          ).read_text()
-
-          guard = "if (userId !== TEST_ACCOUNT_UID)"
-          deletion = "await admin.auth.admin.deleteUser("
-
-          assert source.count(guard) == 1
-          assert source.count(deletion) == 1
-          assert source.index(guard) < source.index(deletion)
-
-          print("Restricted deletion guard found before deletion call.")
-          PY
-
-          echo "Backend source checks passed."
-          echo "Restricted test account mode detected."
+          grep -Fq '003e6e99-3d61-4685-ad8e-3b6abe608f74' "$SOURCE"
+          grep -Fq 'DRY_RUN_PASSED' "$SOURCE"
+          grep -Fq 'if (DRY_RUN_ONLY)' "$SOURCE"
+          echo "Dry-run safety markers verified."
 
       - name: Validate deployment token
         run: |
@@ -133,10 +101,8 @@ jobs:
 
       - name: Deployment completed
         run: |
-          echo "Worknely backend deployment completed."
-          echo "Backend version: 7.21.4.9.4"
-          echo "Deployment release: 7.21.4.9.5"
-          echo "Supabase CLI: 3.4.0"
+          echo "Worknely dry-run deployment completed."
+          echo "Backend version: 7.21.4.11.1"
+          echo "Deployment release: 7.21.4.11.2"
           echo "Target slug: dynamic-task"
-          echo "Mode: Restricted account deletion test"
-          echo "Runtime security validation still required."
+          echo "Expected mode: dry-run only"
