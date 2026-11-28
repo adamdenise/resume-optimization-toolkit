@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Worknely - Authenticated Storage Validation</title>
+
+<style>
+*{box-sizing:border-box}
+body{
+margin:0;
+padding:20px;
+background:#f7f5ff;
+color:#211b38;
+font-family:Inter,-apple-system,BlinkMacSystemFont,
+Arial,sans-serif;
+}
+main{
+max-width:760px;
+margin:24px auto;
+}
+.brand{
+font-size:32px;
+font-weight:800;
+color:#7029ed;
+letter-spacing:-1px;
+}
+.version{
+font-size:13px;
+color:#746d85;
+margin:8px 0 24px;
+}
+.panel{
+background:#fff;
+border:1px solid #e7e1f2;
+border-radius:22px;
+padding:24px;
+margin-bottom:20px;
+}
+h1{
+font-size:27px;
+line-height:1.2;
+margin:0 0 16px;
+}
+p{
+line-height:1.65;
+color:#696278;
+}
+label{
+display:block;
+font-size:14px;
+font-weight:700;
+margin:16px 0 8px;
+}
+input{
+width:100%;
+min-height:48px;
+padding:12px;
+border:1px solid #dcd5e8;
+border-radius:12px;
+font-size:16px;
+background:#fff;
+}
+button{
+width:100%;
+border:0;
+border-radius:14px;
+padding:16px;
+margin-top:14px;
+font-size:16px;
+font-weight:700;
+background:#7029ed;
+color:#fff;
+cursor:pointer;
+}
+button:disabled{
+opacity:.45;
+cursor:not-allowed;
+}
+.secondary{
+background:#eee9fa;
+color:#49258a;
+}
+.notice{
+background:#f5f0ff;
+border-radius:12px;
+padding:14px;
+font-size:14px;
+line-height:1.6;
+overflow-wrap:anywhere;
+}
+.score{
+font-size:32px;
+font-weight:800;
+margin:18px 0;
+}
+.pass{color:#16803d}
+.fail{color:#b42318}
+.pending{color:#8a6500}
+.result{
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:12px;
+padding:15px 0;
+border-bottom:1px solid #eeeaf4;
+font-size:14px;
+}
+.result strong{
+flex-shrink:0;
+}
+#status{
+overflow-wrap:anywhere;
+font-size:14px;
+}
+small{
+display:block;
+color:#746d85;
+line-height:1.6;
+}
+</style>
+</head>
+
+<body>
+
+<main>
+
+<div class="brand">Worknely</div>
+
+<div class="version">
+V7.21.5.3.2.4 · Runtime Validation
+</div>
+
+<section class="panel">
+
+<h1>Privacy Preferences</h1>
+
+<p>
+Authenticated Storage Engine Runtime Validation.
+Restricted to one disposable test account.
+</p>
+
+<div class="notice">
+<strong>Security boundary</strong><br>
+Protected accounts are not authorized for
+storage validation.<br><br>
+Expected test account:<br>
+fb4e0531-e2ad-4aca-ad8a-69ecce9539a4
+</div>
+
+<label for="publicKey">
+Supabase public publishable / anon key
+</label>
+
+<input id="publicKey"
+type="password"
+autocomplete="off"
+spellcheck="false"
+placeholder="Public key only">
+
+<small>
+Never enter a service role or secret key.
+</small>
+
+<label for="email">Test account email</label>
+
+<input id="email"
+type="email"
+autocomplete="off"
+spellcheck="false">
+
+<label for="password">Test account password</label>
+
+<input id="password"
+type="password"
+autocomplete="off">
+
+<button id="authenticate" type="button">
+Authenticate Test Account
+</button>
+
+<button id="signout"
+type="button"
+class="secondary"
+disabled>
+End Test Session
+</button>
+
+<p id="status" role="status">
+Waiting for authentication.
+</p>
+
+</section>
+
+<section class="panel">
+
+<h1>Runtime Validation</h1>
+
+<p>
+Tests create and update privacy preferences
+only for the authorized test account.
+All optional consents are withdrawn at
+the end of a successful test.
+</p>
+
+<button id="run" type="button" disabled>
+Run Authenticated Storage Validation
+</button>
+
+<div id="score" class="score pending">
+Not started
+</div>
+
+<div id="results" aria-live="polite"></div>
+
+<small>
+This test does not delete accounts, modify
+database policies or enable account deletion.
+</small>
+
+</section>
+
+</main>
+
+<script
+src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+</script>
+
+<script
+src="worknely-privacy-preferences.js?v=7.21.5.3">
+</script>
+
+<script>
+(function(){
+"use strict";
+
+const VERSION="7.21.5.3.2.4";
+const ENGINE_VERSION="7.21.5.3";
+
+const PROJECT_URL=
+"https://xuyronnwsokfadnekeir.supabase.co";
+
+const TEST_UID=
+"fb4e0531-e2ad-4aca-ad8a-69ecce9539a4";
+
+const PROTECTED_UIDS=Object.freeze([
+"3efc3076-801a-47d2-a81c-c8a0ab61f495",
+"8f23b7ae-00b3-4e60-96d9-f3130dbc239f"
+]);
+
+const $=id=>document.getElementById(id);
+
+const TEST_NAMES=[
+"Storage engine available",
+"Correct engine version",
+"Authenticated identity verified",
+"Disposable UUID authorized",
+"Protected account exclusion",
+"Session identity verified",
+"Initial preferences absent",
+"Default analytics consent disabled",
+"Default personalization consent disabled",
+"Default marketing consent disabled",
+"Explicit initial save",
+"Initial preferences persisted",
+"Analytics consent updated",
+"Personalization consent updated",
+"Marketing consent updated",
+"Updated preferences persisted",
+"Single owner record",
+"Consent version persisted",
+"Withdraw all consents",
+"All consents disabled in database",
+"Final identity verified"
+];
+
+let client=null;
+let busy=false;
+let authorized=false;
+let passed=0;
+let failed=0;
+let writeAttempted=false;
+
+function status(message,type){
+$("status").textContent=message;
+$("status").className=type||"";
+}
+
+function controls(){
+$("authenticate").disabled=busy||authorized;
+$("run").disabled=busy||!authorized;
+$("signout").disabled=busy||!client;
+$("publicKey").disabled=busy||authorized;
+$("email").disabled=busy||authorized;
+$("password").disabled=busy||authorized;
+}
+
+function score(){
+$("score").textContent=
+passed+"/"+TEST_NAMES.length+" PASS";
+
+$("score").className=
+"score "+(
+failed>0?"fail":
+passed===TEST_NAMES.length?"pass":"pending"
+);
+}
+
+function check(name,condition){
+const ok=condition===true;
+
+const row=document.createElement("div");
+row.className="result";
+
+const label=document.createElement("span");
+label.textContent=name;
+
+const result=document.createElement("strong");
+result.textContent=ok?"PASS":"FAIL";
+result.className=ok?"pass":"fail";
+
+row.append(label,result);
+$("results").appendChild(row);
+
+if(ok)passed++;
+else failed++;
+
+score();
+
+if(!ok){
+throw new Error("VALIDATION_STOPPED");
+}
+}
+
+function resetResults(){
+passed=0;
+failed=0;
+$("results").replaceChildren();
+$("score").textContent="Running...";
+$("score").className="score pending";
+}
+
+function validPublicKey(key){
+
+if(/^sb_publishable_[A-Za-z0-9_-]+$/.test(key)){
+return true;
+}
+
+try{
+const parts=key.split(".");
+if(parts.length!==3)return false;
+
+const encoded=parts[1]
+.replace(/-/g,"+")
+.replace(/_/g,"/");
+
+const padded=encoded.padEnd(
+Math.ceil(encoded.length/4)*4,"="
+);
+
+const payload=JSON.parse(atob(padded));
+
+return payload.role==="anon";
+
+}catch{
+return false;
+}
+}
+
+function engine(){
+return window.WorknelyPrivacyPreferences;
+}
+
+async function verifyIdentity(){
+
+if(!client){
+throw new Error("CLIENT_UNAVAILABLE");
+}
+
+const identity=await client.auth.getUser();
+
+if(identity.error||!identity.data?.user?.id){
+throw new Error("AUTH_REQUIRED");
+}
+
+const uid=identity.data.user.id;
+
+if(
+uid!==TEST_UID||
+PROTECTED_UIDS.includes(uid)
+){
+throw new Error("ACCOUNT_NOT_AUTHORIZED");
+}
+
+const sessionResult=await client.auth.getSession();
+
+if(
+sessionResult.error||
+!sessionResult.data?.session?.access_token||
+sessionResult.data.session.user?.id!==uid
+){
+throw new Error("INVALID_SESSION");
+}
+
+return uid;
+}
+
+async function readDatabase(){
+
+await verifyIdentity();
+
+const result=await client
+.from("privacy_preferences")
+.select(
+"user_id,analytics_consent,"+
+"personalization_consent,marketing_consent,"+
+"consent_version,created_at,updated_at"
+)
+.eq("user_id",TEST_UID);
+
+if(result.error){
+throw new Error("DATABASE_READ_FAILED");
+}
+
+await verifyIdentity();
+
+if(!Array.isArray(result.data)){
+throw new Error("INVALID_DATABASE_RESULT");
+}
+
+return result.data;
+}
+
+function matches(row,a,p,m){
+return Boolean(
+row&&
+row.analytics_consent===a&&
+row.personalization_consent===p&&
+row.marketing_consent===m
+);
+}
+
+async function authenticate(){
+
+if(busy||authorized)return;
+
+busy=true;
+controls();
+
+try{
+
+const key=$("publicKey").value.trim();
+const email=$("email").value.trim();
+const password=$("password").value;
+
+if(!validPublicKey(key)){
+throw new Error("PUBLIC_KEY_REQUIRED");
+}
+
+if(!email||!password){
+throw new Error("CREDENTIALS_REQUIRED");
+}
+
+if(!window.supabase?.createClient){
+throw new Error("SUPABASE_LIBRARY_UNAVAILABLE");
+}
+
+client=window.supabase.createClient(
+PROJECT_URL,
+key,
+{
+auth:{
+persistSession:false,
+autoRefreshToken:false,
+detectSessionInUrl:false,
+storageKey:"worknely-runtime-test-"+VERSION
+}
+}
+);
+
+const login=await client.auth.signInWithPassword({
+email,
+password
+});
+
+if(login.error){
+throw new Error("AUTHENTICATION_FAILED");
+}
+
+await verifyIdentity();
+
+window.worknelySupabase=client;
+
+authorized=true;
+
+$("password").value="";
+$("publicKey").value="";
+$("email").value="";
+
+status(
+"Authenticated. Authorized test UUID: "+
+TEST_UID,
+"pass"
+);
+
+}catch(error){
+
+authorized=false;
+
+if(client){
+try{
+await client.auth.signOut({scope:"local"});
+}catch{}
+}
+
+client=null;
+window.worknelySupabase=null;
+
+$("password").value="";
+$("publicKey").value="";
+
+status(
+"Authentication stopped: "+
+(
+error.message==="ACCOUNT_NOT_AUTHORIZED"
+?"This account is not the authorized test account."
+:"Check the public key and test credentials."
+),
+"fail"
+);
+
+}finally{
+busy=false;
+controls();
+}
+}
+
+async function runValidation(){
+
+if(busy||!authorized)return;
+
+busy=true;
+writeAttempted=false;
+controls();
+resetResults();
+
+try{
+
+const api=engine();
+
+check(
+TEST_NAMES[0],
+Boolean(
+api&&
+typeof api.load==="function"&&
+typeof api.save==="function"&&
+typeof api.withdrawAll==="function"
+)
+);
+
+check(
+TEST_NAMES[1],
+api.version===ENGINE_VERSION
+);
+
+const uid=await verifyIdentity();
+
+check(TEST_NAMES[2],Boolean(uid));
+check(TEST_NAMES[3],uid===TEST_UID);
+
+check(
+TEST_NAMES[4],
+!PROTECTED_UIDS.includes(uid)
+);
+
+const session=await client.auth.getSession();
+
+check(
+TEST_NAMES[5],
+!session.error&&
+session.data?.session?.user?.id===TEST_UID
+);
+
+const before=await readDatabase();
+
+const initial=await api.load(TEST_UID);
+
+check(
+TEST_NAMES[6],
+before.length===0&&
+initial?.ok===true&&
+initial.exists===false
+);
+
+const defaults=initial.preferences;
+
+check(
+TEST_NAMES[7],
+defaults?.analytics_consent===false
+);
+
+check(
+TEST_NAMES[8],
+defaults?.personalization_consent===false
+);
+
+check(
+TEST_NAMES[9],
+defaults?.marketing_consent===false
+);
+
+await verifyIdentity();
+
+writeAttempted=true;
+
+const created=await api.save(
+{
+analytics_consent:false,
+personalization_consent:false,
+marketing_consent:false,
+consent_version:"1.0"
+},
+TEST_UID
+);
+
+check(TEST_NAMES[10],created?.ok===true);
+
+const inserted=await readDatabase();
+
+check(
+TEST_NAMES[11],
+inserted.length===1&&
+inserted[0].user_id===TEST_UID&&
+matches(inserted[0],false,false,false)
+);
+
+await verifyIdentity();
+
+const updated=await api.save(
+{
+analytics_consent:true,
+personalization_consent:true,
+marketing_consent:true,
+consent_version:"1.0"
+},
+TEST_UID
+);
+
+if(updated?.ok!==true){
+throw new Error("UPDATE_FAILED");
+}
+
+const reloaded=await api.load(TEST_UID);
+
+if(reloaded?.ok!==true){
+throw new Error("RELOAD_FAILED");
+}
+
+check(
+TEST_NAMES[12],
+reloaded.preferences?.analytics_consent===true
+);
+
+check(
+TEST_NAMES[13],
+reloaded.preferences?.personalization_consent===true
+);
+
+check(
+TEST_NAMES[14],
+reloaded.preferences?.marketing_consent===true
+);
+
+const persisted=await readDatabase();
+
+check(
+TEST_NAMES[15],
+persisted.length===1&&
+matches(persisted[0],true,true,true)
+);
+
+check(
+TEST_NAMES[16],
+persisted.length===1&&
+persisted[0].user_id===TEST_UID
+);
+
+check(
+TEST_NAMES[17],
+persisted[0].consent_version==="1.0"
+);
+
+await verifyIdentity();
+
+const withdrawn=await api.withdrawAll(TEST_UID);
+
+check(
+TEST_NAMES[18],
+withdrawn?.ok===true
+);
+
+const finalRows=await readDatabase();
+
+check(
+TEST_NAMES[19],
+finalRows.length===1&&
+finalRows[0].user_id===TEST_UID&&
+matches(finalRows[0],false,false,false)
+);
+
+check(
+TEST_NAMES[20],
+await verifyIdentity()===TEST_UID
+);
+
+status(
+"Runtime validation completed. "+
+"All optional test consents are disabled.",
+"pass"
+);
+
+}catch(error){
+
+if(failed===0){
+failed++;
+score();
+}
+
+let cleanup="No write attempted.";
+
+if(writeAttempted){
+
+cleanup="Cleanup could not be verified.";
+
+try{
+
+await verifyIdentity();
+
+const api=engine();
+
+await api.withdrawAll(TEST_UID);
+
+const rows=await readDatabase();
+
+if(
+rows.length===1&&
+matches(rows[0],false,false,false)
+){
+cleanup="Test consents safely withdrawn.";
+}
+
+}catch{}
+
+}
+
+status(
+"Validation stopped. "+cleanup+
+" Check database state before retrying.",
+"fail"
+);
+
+}finally{
+
+busy=false;
+authorized=false;
+
+controls();
+
+$("authenticate").disabled=true;
+$("run").disabled=true;
+
+}
+}
+
+async function endSession(){
+
+if(busy)return;
+
+busy=true;
+controls();
+
+try{
+
+if(client){
+
+const result=await client.auth.signOut({
+scope:"local"
+});
+
+if(result.error){
+throw new Error("SIGNOUT_FAILED");
+}
+
+}
+
+if(typeof engine()?.clear==="function"){
+engine().clear();
+}
+
+status("Test session ended.","pass");
+
+}catch{
+
+status(
+"Sign-out could not be verified. Close this page.",
+"fail"
+);
+
+}finally{
+
+authorized=false;
+client=null;
+window.worknelySupabase=null;
+
+$("password").value="";
+$("email").value="";
+$("publicKey").value="";
+
+busy=false;
+controls();
+
+}
+}
+
+$("authenticate").addEventListener(
+"click",authenticate
+);
+
+$("run").addEventListener(
+"click",runValidation
+);
+
+$("signout").addEventListener(
+"click",endSession
+);
+
+controls();
+
+})();
+</script>
+
+</body>
+</html>
