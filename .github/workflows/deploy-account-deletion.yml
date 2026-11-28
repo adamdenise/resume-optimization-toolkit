@@ -27,18 +27,35 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Validate dry-run backend source
+      - name: Validate controlled deletion backend
+        shell: bash
         run: |
-          set -eu
-          SOURCE=supabase/functions/worknely-delete-account/index.ts
+          set -euo pipefail
+          SOURCE="supabase/functions/worknely-delete-account/index.ts"
           test -s "$SOURCE"
-          grep -Fq 'const VERSION = "7.21.4.11.1";' "$SOURCE"
-          grep -Fq 'const DRY_RUN_ONLY = true;' "$SOURCE"
+          grep -Fq 'const VERSION = "7.21.4.12.2";' "$SOURCE"
+          grep -Fq 'const DRY_RUN_ONLY = false;' "$SOURCE"
           grep -Fq 'const DELETION_ENABLED = true;' "$SOURCE"
           grep -Fq '003e6e99-3d61-4685-ad8e-3b6abe608f74' "$SOURCE"
-          grep -Fq 'DRY_RUN_PASSED' "$SOURCE"
-          grep -Fq 'if (DRY_RUN_ONLY)' "$SOURCE"
-          echo "Dry-run safety markers verified."
+          python3 - <<'PY'
+          from pathlib import Path
+          s = Path('supabase/functions/worknely-delete-account/index.ts').read_text()
+          checks = [
+              'if (userId !== TEST_ACCOUNT_UID)',
+              'verification.data.user?.id !== userId',
+              'if (body.dryRun === true)',
+              'if (DRY_RUN_ONLY)',
+              'body.dryRun !== false',
+              'body.executionConfirmation !== "EXECUTE_DISPOSABLE_TEST_DELETION"',
+              'finalIdentity.data.user?.id !== userId',
+              'await admin.auth.admin.deleteUser(userId, false)'
+          ]
+          assert all(s.count(x) == 1 for x in checks)
+          positions = [s.index(x) for x in checks]
+          assert positions == sorted(positions)
+          assert s.count('deleteUser(') == 1
+          print('Controlled deletion source checks passed.')
+          PY
 
       - name: Validate deployment token
         run: |
@@ -101,8 +118,9 @@ jobs:
 
       - name: Deployment completed
         run: |
-          echo "Worknely dry-run deployment completed."
-          echo "Backend version: 7.21.4.11.1"
-          echo "Deployment release: 7.21.4.11.2"
+          echo "Worknely controlled backend deployment completed."
+          echo "Backend version: 7.21.4.12.2"
+          echo "Deployment release: 7.21.4.12.3"
           echo "Target slug: dynamic-task"
-          echo "Expected mode: dry-run only"
+          echo "Mode: Restricted execution"
+          echo "Runtime validation required before execution."
