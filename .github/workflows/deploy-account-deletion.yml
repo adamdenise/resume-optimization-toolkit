@@ -22,47 +22,106 @@ jobs:
       SUPABASE_PROJECT_ID: xuyronnwsokfadnekeir
 
     steps:
-      - name: Checkout repository
+
+      - name: Checkout Worknely repository
         uses: actions/checkout@v4
         with:
           persist-credentials: false
 
-      - name: Validate controlled deletion backend
+      - name: Validate security lock backend
         shell: bash
         run: |
           set -euo pipefail
+
           SOURCE="supabase/functions/worknely-delete-account/index.ts"
+
           test -s "$SOURCE"
-          grep -Fq 'const VERSION = "7.21.4.12.2";' "$SOURCE"
-          grep -Fq 'const DRY_RUN_ONLY = false;' "$SOURCE"
-          grep -Fq 'const DELETION_ENABLED = true;' "$SOURCE"
-          grep -Fq '003e6e99-3d61-4685-ad8e-3b6abe608f74' "$SOURCE"
+
+          grep -Fq 'const VERSION = "7.21.4.12.16";' "$SOURCE"
+
+          grep -Fq 'const DELETION_ENABLED = false;' "$SOURCE"
+
+          grep -Fq 'const DRY_RUN_ONLY = true;' "$SOURCE"
+
+          grep -Fq 'const SECURITY_LOCK = true;' "$SOURCE"
+
           python3 - <<'PY'
           from pathlib import Path
-          s = Path('supabase/functions/worknely-delete-account/index.ts').read_text()
-          checks = [
-              'if (userId !== TEST_ACCOUNT_UID)',
-              'verification.data.user?.id !== userId',
-              'if (body.dryRun === true)',
-              'if (DRY_RUN_ONLY)',
-              'body.dryRun !== false',
-              'body.executionConfirmation !== "EXECUTE_DISPOSABLE_TEST_DELETION"',
-              'finalIdentity.data.user?.id !== userId',
-              'await admin.auth.admin.deleteUser(userId, false)'
+
+          source = Path(
+              "supabase/functions/worknely-delete-account/index.ts"
+          ).read_text()
+
+          required = [
+              'const VERSION = "7.21.4.12.16";',
+              'const DELETION_ENABLED = false;',
+              'const DRY_RUN_ONLY = true;',
+              'const SECURITY_LOCK = true;',
+              'client.auth.getUser(token)',
+              'dryRunAuthorized: false',
+              'deletionEnabled: DELETION_ENABLED',
+              'securityLock: SECURITY_LOCK',
+              'mode: "security-locked"',
+              'code: "DELETION_DISABLED"',
+              'deleted: false',
+              'authorized: false',
+              'request.body.getReader()',
+              'MAX_PAYLOAD_BYTES = 4096'
           ]
-          assert all(s.count(x) == 1 for x in checks)
-          positions = [s.index(x) for x in checks]
-          assert positions == sorted(positions)
-          assert s.count('deleteUser(') == 1
-          print('Controlled deletion source checks passed.')
+
+          forbidden = [
+              'SUPABASE_SERVICE_ROLE_KEY',
+              'serviceRoleKey',
+              'deleteUser(',
+              '.auth.admin',
+              'TEST_ACCOUNT_UID',
+              'EXECUTE_DISPOSABLE_TEST_DELETION',
+              'const DELETION_ENABLED = true;',
+              'const DRY_RUN_ONLY = false;'
+          ]
+
+          missing = [
+              item for item in required
+              if item not in source
+          ]
+
+          unsafe = [
+              item for item in forbidden
+              if item in source
+          ]
+
+          if missing:
+              raise SystemExit(
+                  "Missing security controls: "
+                  + ", ".join(missing)
+              )
+
+          if unsafe:
+              raise SystemExit(
+                  "Forbidden execution capabilities: "
+                  + ", ".join(unsafe)
+              )
+
+          print("Backend version: PASS")
+          print("Security lock: PASS")
+          print("Real deletion disabled: PASS")
+          print("Dry-run authorization disabled: PASS")
+          print("Privileged client absent: PASS")
+          print("Destructive method absent: PASS")
+          print("Bounded payload reader: PASS")
+          print("Security lock source validation completed.")
           PY
 
       - name: Validate deployment token
+        shell: bash
         run: |
+          set -euo pipefail
+
           if [ -z "$SUPABASE_ACCESS_TOKEN" ]; then
             echo "Missing deployment token."
             exit 1
           fi
+
           echo "Deployment token available."
 
       - name: Install official Supabase CLI
@@ -71,33 +130,47 @@ jobs:
           version: '3.4.0'
 
       - name: Verify CLI installation
+        shell: bash
         run: |
+          set -euo pipefail
+
           supabase --version
+
           test "$(supabase --version)" = "3.4.0"
 
       - name: Verify Edge Functions access
+        shell: bash
         run: |
+          set -euo pipefail
+
           supabase functions list \
             --project-ref "$SUPABASE_PROJECT_ID"
 
-      - name: Prepare deployment source
+      - name: Prepare security lock deployment source
+        shell: bash
         run: |
+          set -euo pipefail
+
           test ! -e supabase/functions/dynamic-task
 
           cp -R \
             supabase/functions/worknely-delete-account \
             supabase/functions/dynamic-task
 
-          test -s supabase/functions/dynamic-task/index.ts
+          test -s \
+            supabase/functions/dynamic-task/index.ts
 
           cmp \
             supabase/functions/worknely-delete-account/index.ts \
             supabase/functions/dynamic-task/index.ts
 
-          echo "Deployment source verified."
+          echo "Security lock deployment source verified."
 
       - name: Configure JWT verification
+        shell: bash
         run: |
+          set -euo pipefail
+
           mkdir -p supabase
 
           printf 'project_id = "worknely"\n\n[functions.dynamic-task]\nverify_jwt = true\n' \
@@ -105,22 +178,32 @@ jobs:
 
           echo "JWT verification enabled."
 
-      - name: Deploy restricted Worknely backend
+      - name: Deploy Worknely security lock
+        shell: bash
         run: |
+          set -euo pipefail
+
           supabase functions deploy dynamic-task \
             --project-ref "$SUPABASE_PROJECT_ID" \
             --yes
 
       - name: Verify deployed function
+        shell: bash
         run: |
+          set -euo pipefail
+
           supabase functions list \
             --project-ref "$SUPABASE_PROJECT_ID"
 
-      - name: Deployment completed
+      - name: Security lock deployment completed
+        shell: bash
         run: |
-          echo "Worknely controlled backend deployment completed."
-          echo "Backend version: 7.21.4.12.2"
-          echo "Deployment release: 7.21.4.12.3"
+          echo "Worknely Security Lock deployment completed."
+          echo "Backend version: 7.21.4.12.16"
+          echo "Deployment release: 7.21.4.12.17"
           echo "Target slug: dynamic-task"
-          echo "Mode: Restricted execution"
-          echo "Runtime validation required before execution."
+          echo "Mode: Security Locked"
+          echo "Source deletion capability: DISABLED"
+          echo "Source dry-run authorization: DISABLED"
+          echo "Source privileged client: ABSENT"
+          echo "Runtime validation required."
