@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'none'; base-uri 'none'; form-action 'none';">
+
+  <title>Worknely Privacy UI Validation</title>
+
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      padding: 18px;
+      background: #f6f3fc;
+      color: #201a32;
+      font-family: Inter, system-ui, sans-serif;
+      line-height: 1.55;
+    }
+
+    main {
+      max-width: 760px;
+      margin: 24px auto;
+    }
+
+    .panel {
+      background: white;
+      border: 1px solid #e7e0f0;
+      border-radius: 22px;
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      font-size: 27px;
+      line-height: 1.25;
+      margin: 12px 0;
+    }
+
+    p { color: #655e75; }
+
+    .brand {
+      color: #7028e8;
+      font-weight: 800;
+      letter-spacing: 2px;
+    }
+
+    .version {
+      font-size: 12px;
+      color: #655e75;
+    }
+
+    .boundary {
+      background: #f1ebff;
+      padding: 16px;
+      border-radius: 12px;
+      margin: 20px 0;
+    }
+
+    .primary {
+      width: 100%;
+      min-height: 52px;
+      padding: 14px;
+      border: 0;
+      border-radius: 14px;
+      background: #7028e8;
+      color: white;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .primary:disabled {
+      opacity: .5;
+    }
+
+    #summary {
+      font-size: 30px;
+      font-weight: 800;
+      margin: 20px 0;
+    }
+
+    .pass { color: #16803d; }
+    .fail { color: #b91c1c; }
+
+    .result {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      padding: 13px 0;
+      border-bottom: 1px solid #ece8f1;
+      font-size: 14px;
+    }
+
+    .result strong {
+      flex-shrink: 0;
+    }
+
+    #language {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #d9d2e5;
+      border-radius: 10px;
+      background: white;
+      font: inherit;
+      margin-bottom: 16px;
+    }
+  </style>
+</head>
+
+<body>
+<main>
+
+  <section class="panel">
+    <div class="brand">WORKNELY</div>
+    <div class="version">V7.21.5.4.1</div>
+
+    <h1>Privacy Preferences UI</h1>
+
+    <p>
+      Independent interface validation.
+      Simulated authentication and storage.
+      No production database access.
+    </p>
+
+    <div class="boundary">
+      <strong>Security boundary</strong>
+      <p>
+        Network connections are blocked.
+        All identities and records are fictional.
+        No credentials are required.
+      </p>
+    </div>
+
+    <button id="run" class="primary">
+      Run Independent UI Validation
+    </button>
+
+    <div id="summary" role="status"
+         aria-live="polite">
+      Ready
+    </div>
+
+    <div id="results"></div>
+  </section>
+
+  <section class="panel">
+    <h2>Interactive UI Preview</h2>
+
+    <label for="language">
+      Interface language
+    </label>
+
+    <select id="language" disabled>
+      <option value="en">English</option>
+      <option value="ro">Română</option>
+      <option value="it">Italiano</option>
+      <option value="de">Deutsch</option>
+      <option value="fr">Français</option>
+      <option value="es">Español</option>
+    </select>
+
+    <div id="preview"></div>
+  </section>
+
+</main>
+
+<script>
+(function () {
+  "use strict";
+
+  const UID_A =
+    "11111111-1111-4111-8111-111111111111";
+
+  const UID_B =
+    "22222222-2222-4222-8222-222222222222";
+
+  const CONSENT_VERSION = "1.0";
+
+  const FIELDS = [
+    "analytics_consent",
+    "personalization_consent",
+    "marketing_consent"
+  ];
+
+  const records = new Map();
+  const listeners = new Set();
+
+  let currentUser = UID_A;
+  let writeCount = 0;
+  let readCount = 0;
+  let revision = 0;
+  let failNextLoad = false;
+  let failNextSave = false;
+  let running = false;
+
+  function clone(value) {
+    return JSON.parse(JSON.stringify(value));
+  }
+
+  function defaults(uid) {
+    return {
+      user_id: uid,
+      analytics_consent: false,
+      personalization_consent: false,
+      marketing_consent: false,
+      consent_version: CONSENT_VERSION,
+      created_at: null,
+      updated_at: null
+    };
+  }
+
+  function session() {
+    return currentUser
+      ? {
+          user: { id: currentUser },
+          access_token: "SIMULATED_TOKEN_ONLY"
+        }
+      : null;
+  }
+
+  function changeIdentity(uid) {
+    currentUser = uid;
+
+    for (const callback of listeners) {
+      callback(
+        uid ? "SIGNED_IN" : "SIGNED_OUT",
+        session()
+      );
+    }
+  }
+
+  function failure(code) {
+    return {
+      ok: false,
+      version: "7.21.5.3",
+      code
+    };
+  }
+
+  function response(uid) {
+    return {
+      ok: true,
+      version: "7.21.5.3",
+      exists: records.has(uid),
+      preferences: clone(
+        records.get(uid) || defaults(uid)
+      )
+    };
+  }
+
+  function store(payload, uid) {
+    if (!currentUser || currentUser !== uid) {
+      return failure("OWNER_MISMATCH");
+    }
+
+    if (failNextSave) {
+      failNextSave = false;
+      return failure("SAVE_FAILED");
+    }
+
+    if (!FIELDS.every(
+      field => typeof payload[field] === "boolean"
+    )) {
+      return failure("INVALID_PREFERENCES");
+    }
+
+    revision += 1;
+
+    const timestamp = new Date(
+      Date.UTC(2026, 0, 1) + revision * 1000
+    ).toISOString();
+
+    const previous = records.get(uid);
+
+    const row = {
+      ...defaults(uid),
+      analytics_consent:
+        payload.analytics_consent,
+      personalization_consent:
+        payload.personalization_consent,
+      marketing_consent:
+        payload.marketing_consent,
+      created_at:
+        previous?.created_at || timestamp,
+      updated_at: timestamp
+    };
+
+    records.set(uid, row);
+    writeCount += 1;
+
+    window.dispatchEvent(
+      new CustomEvent(
+        "worknely:privacypreferenceschange"
+      )
+    );
+
+    return response(uid);
+  }
+
+  // Fictional authentication client.
+
+  window.worknelySupabase = Object.freeze({
+    auth: Object.freeze({
+
+      async getUser() {
+        return {
+          data: {
+            user: currentUser
+              ? { id: currentUser }
+              : null
+          },
+          error: currentUser
+            ? null
+            : { message: "SIGNED_OUT" }
+        };
+      },
+
+      async getSession() {
+        return {
+          data: { session: session() },
+          error: null
+        };
+      },
+
+      onAuthStateChange(callback) {
+        listeners.add(callback);
+
+        return {
+          data: {
+            subscription: {
+              unsubscribe() {
+                listeners.delete(callback);
+              }
+            }
+          }
+        };
+      }
+
+    })
+  });
+
+  // Fictional storage engine.
+  // No fetch, Supabase SDK or network calls.
+
+  window.WorknelyPrivacyPreferences =
+    Object.freeze({
+
+      version: "7.21.5.3",
+      consentVersion: CONSENT_VERSION,
+
+      async load(uid) {
+        readCount += 1;
+
+        if (failNextLoad) {
+          failNextLoad = false;
+          return failure("LOAD_FAILED");
+        }
+
+        if (!currentUser || currentUser !== uid) {
+          return failure("OWNER_MISMATCH");
+        }
+
+        return response(uid);
+      },
+
+      async save(payload, uid) {
+        return store(payload, uid);
+      },
+
+      async withdrawAll(uid) {
+        return store(defaults(uid), uid);
+      },
+
+      clear() {
+        return true;
+      },
+
+      getState() {
+        return Object.freeze({
+          version: "7.21.5.3",
+          busy: false
+        });
+      }
+
+    });
+
+  window.WNPrivacyUITest = Object.freeze({
+
+    UID_A,
+    UID_B,
+    FIELDS: Object.freeze(FIELDS),
+
+    reset() {
+      records.clear();
+      currentUser = UID_A;
+      writeCount = 0;
+      readCount = 0;
+      revision = 0;
+      failNextLoad = false;
+      failNextSave = false;
+    },
+
+    identity: changeIdentity,
+
+    counts() {
+      return {
+        writes: writeCount,
+        reads: readCount,
+        records: records.size
+      };
+    },
+
+    record(uid) {
+      return records.has(uid)
+        ? clone(records.get(uid))
+        : null;
+    },
+
+    failLoad() {
+      failNextLoad = true;
+    },
+
+    failSave() {
+      failNextSave = true;
+    },
+
+    stale(uid) {
+      const row = records.get(uid);
+
+      if (row) {
+        revision += 1;
+
+        records.set(uid, {
+          ...row,
+          updated_at: new Date(
+            Date.UTC(2026, 0, 1) +
+            revision * 1000
+          ).toISOString()
+        });
+      }
+    },
+
+    isRunning() {
+      return running;
+    },
+
+    setRunning(value) {
+      running = Boolean(value);
+    }
+
+  });
+
+})();
+</script>
+
+<script src="worknely-privacy-preferences-ui.js?v=7.21.5.4"></script>
+
+<script>
+(function () {
+  "use strict";
+
+  const runButton =
+    document.getElementById("run");
+
+  const summary =
+    document.getElementById("summary");
+
+  const results =
+    document.getElementById("results");
+
+  const language =
+    document.getElementById("language");
+
+  const mock = window.WNPrivacyUITest;
+
+  const ROOT = "wnPrivacyPreferencesUI";
+
+  function ui() {
+    return window.WorknelyPrivacyPreferencesUI;
+  }
+
+  function root() {
+    return document.getElementById(ROOT);
+  }
+
+  function input(field) {
+    return document.getElementById(
+      ROOT + "-" + field
+    );
+  }
+
+  function action(name) {
+    return root()?.querySelector(
+      "[data-wnpp-action='" + name + "']"
+    );
+  }
+
+  function allOff() {
+    return mock.FIELDS.every(field => {
+      const node = input(field);
+      return node && node.checked === false;
+    });
+  }
+
+  function allDisabled() {
+    return mock.FIELDS.every(field => {
+      const node = input(field);
+      return node && node.disabled === true;
+    });
+  }
+
+  function change(field, value) {
+    const node = input(field);
+
+    if (!node || node.disabled) {
+      throw new Error("CONTROL_UNAVAILABLE");
+    }
+
+    node.checked = value;
+
+    node.dispatchEvent(
+      new Event("change", { bubbles: true })
+    );
+  }
+
+  function addResult(name, passed) {
+    const row = document.createElement("div");
+    row.className = "result";
+
+    const label = document.createElement("span");
+    label.textContent = name;
+
+    const state = document.createElement("strong");
+    state.textContent = passed ? "PASS" : "FAIL";
+    state.className = passed ? "pass" : "fail";
+
+    row.append(label, state);
+    results.appendChild(row);
+  }
+
+  async function run() {
+    if (mock.isRunning()) return;
+
+    mock.setRunning(true);
+
+    runButton.disabled = true;
+    language.disabled = true;
+
+    results.replaceChildren();
+
+    summary.className = "";
+    summary.textContent = "Running...";
+
+    let passed = 0;
+    let total = 0;
+
+    async function test(name, callback) {
+      total += 1;
+
+      let success = false;
+
+      try {
+        success = await callback() === true;
+      } catch {
+        success = false;
+      }
+
+      if (success) passed += 1;
+
+      addResult(name, success);
+
+      summary.textContent =
+        passed + "/" + total + " running";
+    }
+
+    try {
+      ui()?.destroy();
+      mock.reset();
+
+      await test(
+        "UI module loaded",
+        () => Boolean(ui())
+      );
+
+      if (!ui()) {
+        throw new Error("UI_MODULE_MISSING");
+      }
+
+      await test(
+        "Correct UI version",
+        () => ui().version === "7.21.5.4"
+      );
+
+      await test(
+        "Correct engine compatibility",
+        () => ui().engineVersion === "7.21.5.3"
+      );
+
+      await test(
+        "Immutable public API",
+        () => Object.isFrozen(ui())
+      );
+
+      await test(
+        "Public lifecycle methods",
+        () => [
+          "mount",
+          "refresh",
+          "save",
+          "withdrawAll",
+          "setLanguage",
+          "clear",
+          "destroy",
+          "getState",
+          "selfTest"
+        ].every(
+          key => typeof ui()[key] === "function"
+        )
+      );
+
+      const internal = ui().selfTest();
+
+      for (const item of internal.tests) {
+        await test(
+          "Internal: " + item.name,
+          () => item.passed === true
+        );
+      }
+
+      await test(
+        "Mount successful",
+        () => ui().mount(
+          "preview",
+          { language: "en" }
+        ) === true && Boolean(root())
+      );
+
+      await test(
+        "Mount performs no database reads or writes",
+        () => mock.counts().writes === 0 &&
+              mock.counts().reads === 0
+      );
+
+      await test(
+        "Initial optional controls disabled",
+        allDisabled
+      );
+
+      await test(
+        "Initial optional consent off",
+        allOff
+      );
+
+      await test(
+        "Initial save disabled",
+        () => action("save")?.disabled === true
+      );
+
+      await test(
+        "Authenticated preference load",
+        async () => {
+          const result = await ui().refresh();
+
+          return result.ok === true &&
+            ui().getState().loaded === true;
+        }
+      );
+
+      await test(
+        "Read does not create preferences",
+        () => mock.counts().writes === 0 &&
+              mock.counts().records === 0
+      );
+
+      await test(
+        "Default consent remains disabled",
+        allOff
+      );
+
+      await test(
+        "Controls enabled after loading",
+        () => mock.FIELDS.every(
+          field => input(field)?.disabled === false
+        )
+      );
+
+      await test(
+        "Independent analytics draft",
+        () => {
+          change("analytics_consent", true);
+
+          return input("analytics_consent").checked &&
+            !input("personalization_consent").checked &&
+            !input("marketing_consent").checked;
+        }
+      );
+
+      await test(
+        "Draft marked as unsaved",
+        () => ui().getState().dirty === true
+      );
+
+      await test(
+        "Toggle does not automatically save",
+        () => mock.counts().writes === 0
+      );
+
+      await test(
+        "Explicit save succeeds",
+        async () => {
+          const result = await ui().save();
+
+          return result.ok === true &&
+            mock.counts().writes === 1;
+        }
+      );
+
+      await test(
+        "Correct owner and consent persisted",
+        () => {
+          const row = mock.record(mock.UID_A);
+
+          return row?.user_id === mock.UID_A &&
+            row.analytics_consent === true &&
+            row.personalization_consent === false &&
+            row.marketing_consent === false;
+        }
+      );
+
+      await test(
+        "Saved draft becomes clean",
+        () => ui().getState().dirty === false
+      );
+
+      await test(
+        "Reload restores saved consent",
+        async () => {
+          const result = await ui().refresh();
+
+          return result.ok === true &&
+            input("analytics_consent").checked === true;
+        }
+      );
+
+      await test(
+        "All three optional choices editable",
+        () => {
+          change("personalization_consent", true);
+          change("marketing_consent", true);
+
+          return mock.FIELDS.every(
+            field => input(field).checked === true
+          );
+        }
+      );
+
+      await test(
+        "All choices explicitly saved",
+        async () => {
+          const result = await ui().save();
+          const row = mock.record(mock.UID_A);
+
+          return result.ok === true &&
+            mock.FIELDS.every(
+              field => row[field] === true
+            );
+        }
+      );
+
+      await test(
+        "Withdraw all optional consent",
+        async () => {
+          const result = await ui().withdrawAll();
+          const row = mock.record(mock.UID_A);
+
+          return result.ok === true &&
+            allOff() &&
+            mock.FIELDS.every(
+              field => row[field] === false
+            );
+        }
+      );
+
+      const expectedTitles = {
+        en: "Privacy Preferences",
+        ro: "Preferințe de confidențialitate",
+        it: "Preferenze sulla privacy",
+        de: "Datenschutzeinstellungen",
+        fr: "Préférences de confidentialité",
+        es: "Preferencias de privacidad"
+      };
+
+      for (const code of Object.keys(expectedTitles)) {
+        await test(
+          "Language rendering: " +
+            code.toUpperCase(),
+          () => {
+            ui().setLanguage(code);
+
+            return root()?.lang === code &&
+              root()?.querySelector("h2")
+                ?.textContent === expectedTitles[code];
+          }
+        );
+      }
+
+      await test(
+        "Unsupported language fallback",
+        () => ui().setLanguage("unknown") === "en" &&
+              root()?.lang === "en"
+      );
+
+      await test(
+        "Language change preserves draft",
+        () => {
+          change("analytics_consent", true);
+          ui().setLanguage("ro");
+
+          return input("analytics_consent").checked &&
+            ui().getState().dirty;
+        }
+      );
+
+      ui().setLanguage("en");
+
+      await test(
+        "Concurrent operation rejected",
+        async () => {
+          const first = ui().save();
+          const second = await ui().save();
+          const completed = await first;
+
+          return second.ok === false &&
+            completed.ok === true;
+        }
+      );
+
+      await test(
+        "Stale snapshot prevents overwrite",
+        async () => {
+          change("marketing_consent", true);
+
+          const before = mock.counts().writes;
+
+          mock.stale(mock.UID_A);
+
+          const result = await ui().save();
+
+          return result.ok === false &&
+            mock.counts().writes === before &&
+            allDisabled();
+        }
+      );
+
+      await test(
+        "Recovery after stale snapshot",
+        async () => {
+          const result = await ui().refresh();
+
+          return result.ok === true &&
+            ui().getState().loaded;
+        }
+      );
+
+      await test(
+        "Failed save does not write",
+        async () => {
+          change("marketing_consent", true);
+
+          const before = mock.counts().writes;
+
+          mock.failSave();
+
+          const result = await ui().save();
+
+          return result.ok === false &&
+            mock.counts().writes === before &&
+            allDisabled();
+        }
+      );
+
+      await test(
+        "Recovery after failed save",
+        async () => {
+          const result = await ui().refresh();
+          return result.ok === true;
+        }
+      );
+
+      await test(
+        "Account switch clears previous state",
+        () => {
+          mock.identity(mock.UID_B);
+
+          return ui().getState().loaded === false &&
+            allOff() &&
+            allDisabled();
+        }
+      );
+
+      await test(
+        "Second account starts independently",
+        async () => {
+          const result = await ui().refresh();
+
+          return result.ok === true &&
+            allOff() &&
+            mock.record(mock.UID_B) === null;
+        }
+      );
+
+      await test(
+        "Second account cannot inherit first consent",
+        () => mock.record(mock.UID_A)
+                ?.analytics_consent === true &&
+              allOff()
+      );
+
+      await test(
+        "Sign-out clears private interface state",
+        () => {
+          mock.identity(null);
+
+          return ui().getState().loaded === false &&
+            allDisabled() &&
+            allOff();
+        }
+      );
+
+      await test(
+        "Signed-out save blocked",
+        async () => {
+          const before = mock.counts().writes;
+          const result = await ui().save();
+
+          return result.ok === false &&
+            mock.counts().writes === before;
+        }
+      );
+
+      await test(
+        "Signed-out refresh blocked",
+        async () => {
+          const result = await ui().refresh();
+
+          return result.ok === false &&
+            allDisabled();
+        }
+      );
+
+      await test(
+        "Authenticated load failure handled",
+        async () => {
+          mock.identity(mock.UID_A);
+          mock.failLoad();
+
+          const result = await ui().refresh();
+
+          return result.ok === false &&
+            allDisabled();
+        }
+      );
+
+      await test(
+        "Recovery after failed load",
+        async () => {
+          const result = await ui().refresh();
+
+          return result.ok === true &&
+            ui().getState().loaded;
+        }
+      );
+
+      await test(
+        "Accessible switch labels",
+        () => mock.FIELDS.every(field => {
+          const node = input(field);
+
+          return node?.getAttribute("role") === "switch" &&
+            Boolean(document.getElementById(
+              node.getAttribute("aria-labelledby")
+            )) &&
+            Boolean(document.getElementById(
+              node.getAttribute("aria-describedby")
+            ));
+        })
+      );
+
+      await test(
+        "Duplicate mount prevented",
+        () => {
+          ui().mount("preview");
+
+          return document.querySelectorAll(
+            "#" + ROOT
+          ).length === 1;
+        }
+      );
+
+      await test(
+        "External change invalidates UI",
+        () => {
+          window.dispatchEvent(
+            new CustomEvent(
+              "worknely:privacypreferenceschange"
+            )
+          );
+
+          return !ui().getState().loaded &&
+            allDisabled();
+        }
+      );
+
+      await test(
+        "Destroy removes mounted interface",
+        () => ui().destroy() === true &&
+              root() === null &&
+              !ui().getState().mounted
+      );
+
+      await test(
+        "Clean remount successful",
+        () => ui().mount(
+          "preview",
+          { language: "en" }
+        ) === true && Boolean(root())
+      );
+
+      await test(
+        "Final optional consent withdrawal",
+        async () => {
+          await ui().refresh();
+
+          const result = await ui().withdrawAll();
+
+          return result.ok === true &&
+            allOff();
+        }
+      );
+
+      await test(
+        "Second fictional account remains untouched",
+        () => mock.record(mock.UID_B) === null
+      );
+
+      await test(
+        "Final simulated record count",
+        () => mock.counts().records === 1
+      );
+
+      summary.textContent =
+        passed + "/" + total +
+        (passed === total ? " PASS" : " FAIL");
+
+      summary.className =
+        passed === total ? "pass" : "fail";
+
+    } catch {
+      summary.textContent =
+        passed + "/" + total +
+        " — VALIDATION STOPPED";
+
+      summary.className = "fail";
+
+    } finally {
+      ui()?.destroy();
+      mock.reset();
+
+      if (ui()) {
+        ui().mount(
+          "preview",
+          { language: "en" }
+        );
+
+        await ui().refresh();
+
+        language.value = "en";
+        language.disabled = false;
+      }
+
+      mock.setRunning(false);
+      runButton.disabled = false;
+    }
+  }
+
+  language.addEventListener("change", () => {
+    if (!mock.isRunning() && ui()) {
+      ui().setLanguage(language.value);
+    }
+  });
+
+  runButton.addEventListener("click", run);
+
+})();
+</script>
+</body>
+</html>
