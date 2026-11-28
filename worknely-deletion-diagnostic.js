@@ -2,8 +2,8 @@
 (function () {
   "use strict";
 
-  const VERSION = "7.21.4.11.4";
-  const BACKEND_VERSION = "7.21.4.11.1";
+  const VERSION = "7.21.4.12.6";
+  const BACKEND_VERSION = "7.21.4.12.2";
 
   const TEST_UID =
     "003e6e99-3d61-4685-ad8e-3b6abe608f74";
@@ -26,7 +26,7 @@
 
     if (button) {
       button.disabled = true;
-      button.textContent = "Validating security...";
+      button.textContent = "Checking readiness...";
     }
 
     try {
@@ -60,104 +60,51 @@
         throw new Error("INVALID_SESSION");
       }
 
-      async function verifyIdentity() {
-        const result =
-          await client.auth.getUser();
-
-        if (
-          result.error ||
-          result.data?.user?.id !== uid
-        ) {
-          throw new Error("SESSION_CHANGED");
-        }
-      }
-
-      async function request(body) {
-        await verifyIdentity();
-
-        const response = await fetch(ENDPOINT, {
-          method: "POST",
-          cache: "no-store",
-          headers: {
-            "Authorization":
-              "Bearer " + session.access_token,
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(body)
-        });
-
-        const data = await response.json();
-
-        await verifyIdentity();
-
-        return {
-          status: response.status,
-          data
-        };
-      }
-
-      // Phase 1: verify the deployed safety lock.
-      const status = await request({
-        action: "status"
+      const response = await fetch(ENDPOINT, {
+        method: "POST",
+        cache: "no-store",
+        headers: {
+          "Authorization":
+            "Bearer " + session.access_token,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          action: "status"
+        })
       });
 
-      const statusPassed =
-        status.status === 200 &&
-        status.data.ok === true &&
-        status.data.authenticated === true &&
-        status.data.code === "BACKEND_READY" &&
-        status.data.version === BACKEND_VERSION &&
-        status.data.dryRunOnly === true &&
-        status.data.deletionEnabled === false &&
-        status.data.dryRunAuthorized === isTestAccount &&
-        status.data.mode === (
-          isTestAccount
-            ? "restricted-dry-run"
-            : "security-validation"
-        );
+      const result = await response.json();
 
-      if (!statusPassed) {
-        throw new Error("SAFETY_STATUS_FAILED");
+      const verification =
+        await client.auth.getUser();
+
+      if (
+        verification.error ||
+        verification.data?.user?.id !== uid
+      ) {
+        throw new Error("SESSION_CHANGED");
       }
 
-      // Phase 2: explicitly non-destructive request.
-      const result = await request({
-        action: "delete-account",
-        confirmation: "DELETE_MY_ACCOUNT",
-        dryRun: true
-      });
-
-      const expectedHTTP =
-        isTestAccount ? 200 : 403;
-
-      const expectedCode =
-        isTestAccount
-          ? "DRY_RUN_PASSED"
-          : "TEST_ACCOUNT_ONLY";
-
-      const resultPassed =
-        result.status === expectedHTTP &&
-        result.data.version === BACKEND_VERSION &&
-        result.data.code === expectedCode &&
-        result.data.deleted === false &&
-        (
-          isTestAccount
-            ? (
-                result.data.ok === true &&
-                result.data.authorized === true &&
-                result.data.dryRun === true
-              )
-            : result.data.ok === false
-        );
+      const expectedMode = isTestAccount
+        ? "restricted-execution"
+        : "security-validation";
 
       const passed =
-        statusPassed && resultPassed;
+        response.status === 200 &&
+        result.ok === true &&
+        result.authenticated === true &&
+        result.code === "BACKEND_READY" &&
+        result.version === BACKEND_VERSION &&
+        result.dryRunOnly === false &&
+        result.dryRunAuthorized === isTestAccount &&
+        result.deletionEnabled === isTestAccount &&
+        result.mode === expectedMode;
 
       alert([
-        "WORKNELY SECURITY DIAGNOSTIC",
+        "WORKNELY EXECUTION READINESS",
         "",
         "Diagnostic: " + VERSION,
-        "Backend: " + BACKEND_VERSION,
+        "Backend: " + result.version,
         "",
         "Account: " + (
           isTestAccount
@@ -166,30 +113,25 @@
         ),
         "UID: " + uid.slice(0, 8),
         "",
-        "Safety status: PASS",
-        "Dry-run only: true",
-        "Real deletion enabled: false",
-        "",
-        "HTTP: " + result.status,
-        "Expected HTTP: " + expectedHTTP,
-        "Code: " + result.data.code,
-        "Expected code: " + expectedCode,
-        "Deleted: " + result.data.deleted,
+        "HTTP: " + response.status,
+        "Dry-run only: " + result.dryRunOnly,
+        "Deletion enabled: " + result.deletionEnabled,
+        "Expected: " + isTestAccount,
+        "Mode: " + result.mode,
         "",
         "RESULT: " + (passed ? "PASS" : "FAIL"),
         "",
-        "No real deletion requested."
+        "Read-only status check.",
+        "No deletion requested."
       ].join("\n"));
 
-    } catch (error) {
+    } catch {
       alert([
-        "WORKNELY SECURITY DIAGNOSTIC",
+        "WORKNELY EXECUTION READINESS",
+        "",
         "RESULT: FAIL",
-        "",
-        String(error?.message || "UNKNOWN_ERROR"),
-        "",
-        "Validation stopped.",
-        "No real deletion requested."
+        "Readiness validation stopped.",
+        "No deletion requested."
       ].join("\n"));
 
     } finally {
@@ -198,7 +140,7 @@
       if (button) {
         button.disabled = false;
         button.textContent =
-          "Run Dry-Run Security Test";
+          "Check Execution Readiness";
       }
     }
   }
@@ -215,7 +157,7 @@
     button.type = "button";
 
     button.textContent =
-      "Run Dry-Run Security Test";
+      "Check Execution Readiness";
 
     Object.assign(button.style, {
       position: "fixed",
@@ -249,8 +191,7 @@
       version: VERSION,
       backendVersion: BACKEND_VERSION,
       run,
-      readOnly: true,
-      dryRunOnly: true
+      readOnly: true
     });
 
   if (document.readyState === "loading") {
