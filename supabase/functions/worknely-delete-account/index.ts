@@ -4,32 +4,53 @@ import { createClient } from "npm:@supabase/supabase-js@2";
 /**
  * WORKNELY
  * Secure Account Deletion Engine
- * Version: 7.21.4.12.2
- * Controlled Account Deletion Test
+ *
+ * Version: 7.21.4.12.16
+ * Release: Backend Security Lock
+ *
+ * Controlled deletion test completed.
+ *
+ * Security configuration:
+ * - Real deletion disabled
+ * - Dry-run authorization disabled
+ * - No privileged admin client
+ * - No service role key access
+ * - Authenticated status checks only
+ * - Fail-closed execution
  */
 
-const VERSION = "7.21.4.12.2";
+const VERSION = "7.21.4.12.16";
 
 const ALLOWED_ORIGIN =
   "https://adamdenise.github.io";
 
-const CONFIRMATION = "DELETE_MY_ACCOUNT";
+const DELETION_ENABLED = false;
 
-const DELETION_ENABLED = true;
-const DRY_RUN_ONLY = false;
+const DRY_RUN_ONLY = true;
 
-const TEST_ACCOUNT_UID =
-  "003e6e99-3d61-4685-ad8e-3b6abe608f74";
+const SECURITY_LOCK = true;
 
 const headers = {
-  "Access-Control-Allow-Origin": ALLOWED_ORIGIN,
+  "Access-Control-Allow-Origin":
+    ALLOWED_ORIGIN,
+
   "Access-Control-Allow-Headers":
     "authorization, apikey, content-type, x-client-info",
-  "Access-Control-Allow-Methods": "POST, OPTIONS",
-  "Content-Type": "application/json",
-  "Cache-Control": "no-store",
-  "X-Content-Type-Options": "nosniff",
-  "Vary": "Origin"
+
+  "Access-Control-Allow-Methods":
+    "POST, OPTIONS",
+
+  "Content-Type":
+    "application/json",
+
+  "Cache-Control":
+    "no-store",
+
+  "X-Content-Type-Options":
+    "nosniff",
+
+  "Vary":
+    "Origin"
 };
 
 function respond(
@@ -41,7 +62,10 @@ function respond(
       version: VERSION,
       ...payload
     }),
-    { status, headers }
+    {
+      status,
+      headers
+    }
   );
 }
 
@@ -52,15 +76,25 @@ const authOptions = {
 };
 
 Deno.serve(async (request: Request) => {
-  try {
-    const origin = request.headers.get("origin");
 
-    if (origin && origin !== ALLOWED_ORIGIN) {
+  try {
+
+    // 01. Origin validation
+
+    const origin =
+      request.headers.get("origin");
+
+    if (
+      origin &&
+      origin !== ALLOWED_ORIGIN
+    ) {
       return respond(403, {
         ok: false,
         code: "ORIGIN_NOT_ALLOWED"
       });
     }
+
+    // 02. CORS preflight
 
     if (request.method === "OPTIONS") {
       return new Response(null, {
@@ -69,6 +103,8 @@ Deno.serve(async (request: Request) => {
       });
     }
 
+    // 03. HTTP method validation
+
     if (request.method !== "POST") {
       return respond(405, {
         ok: false,
@@ -76,17 +112,22 @@ Deno.serve(async (request: Request) => {
       });
     }
 
+    // 04. Authorization validation
+
     const authorization =
       request.headers.get("Authorization");
 
-    if (!authorization?.startsWith("Bearer ")) {
+    if (
+      !authorization?.startsWith("Bearer ")
+    ) {
       return respond(401, {
         ok: false,
         code: "AUTH_REQUIRED"
       });
     }
 
-    const token = authorization.slice(7).trim();
+    const token =
+      authorization.slice(7).trim();
 
     if (!token) {
       return respond(401, {
@@ -95,7 +136,10 @@ Deno.serve(async (request: Request) => {
       });
     }
 
-    const url = Deno.env.get("SUPABASE_URL");
+    // 05. Public backend configuration
+
+    const url =
+      Deno.env.get("SUPABASE_URL");
 
     const anonKey =
       Deno.env.get("SUPABASE_ANON_KEY");
@@ -107,49 +151,162 @@ Deno.serve(async (request: Request) => {
       });
     }
 
-    const client = createClient(url, anonKey, {
-      auth: authOptions
-    });
+    // 06. Non-privileged authentication client
+
+    const client = createClient(
+      url,
+      anonKey,
+      {
+        auth: authOptions
+      }
+    );
+
+    // 07. Verify authenticated identity
 
     const { data, error } =
       await client.auth.getUser(token);
 
-    if (error || !data.user?.id) {
+    if (
+      error ||
+      !data.user?.id
+    ) {
       return respond(401, {
         ok: false,
         code: "INVALID_SESSION"
       });
     }
 
-    const userId = data.user.id;
+    // 08. Content type validation
 
     const contentType =
       request.headers.get("content-type") || "";
 
-    if (!contentType.toLowerCase().includes(
-      "application/json"
-    )) {
+    const mediaType =
+      contentType
+        .split(";")[0]
+        .trim()
+        .toLowerCase();
+
+    if (mediaType !== "application/json") {
       return respond(415, {
         ok: false,
         code: "UNSUPPORTED_CONTENT_TYPE"
       });
     }
 
-    let body: Record<string, unknown>;
+    // 09. Request size validation
 
-    try {
-      const raw = await request.text();
+    const MAX_PAYLOAD_BYTES = 4096;
+
+    const contentLength =
+      request.headers.get("content-length");
+
+    if (contentLength !== null) {
+
+      const declaredLength =
+        Number(contentLength);
 
       if (
-        new TextEncoder().encode(raw).length > 4096
+        !Number.isSafeInteger(declaredLength) ||
+        declaredLength < 0
+      ) {
+        return respond(400, {
+          ok: false,
+          code: "INVALID_CONTENT_LENGTH"
+        });
+      }
+
+      if (
+        declaredLength > MAX_PAYLOAD_BYTES
       ) {
         return respond(413, {
           ok: false,
           code: "PAYLOAD_TOO_LARGE"
         });
       }
+    }
 
-      const parsed = JSON.parse(raw);
+    // 10. Bounded request body reader
+
+    if (!request.body) {
+      return respond(400, {
+        ok: false,
+        code: "INVALID_REQUEST"
+      });
+    }
+
+    const reader =
+      request.body.getReader();
+
+    const decoder =
+      new TextDecoder("utf-8", {
+        fatal: true
+      });
+
+    let raw = "";
+    let receivedBytes = 0;
+
+    try {
+
+      while (true) {
+
+        const { done, value } =
+          await reader.read();
+
+        if (done) break;
+
+        receivedBytes += value.byteLength;
+
+        if (
+          receivedBytes > MAX_PAYLOAD_BYTES
+        ) {
+
+          try {
+            await reader.cancel();
+          } catch {
+            // Cancellation is best effort.
+          }
+
+          return respond(413, {
+            ok: false,
+            code: "PAYLOAD_TOO_LARGE"
+          });
+        }
+
+        raw += decoder.decode(value, {
+          stream: true
+        });
+      }
+
+      raw += decoder.decode();
+
+    } catch {
+
+      try {
+        await reader.cancel();
+      } catch {
+        // Cancellation is best effort.
+      }
+
+      return respond(400, {
+        ok: false,
+        code: "INVALID_REQUEST"
+      });
+
+    } finally {
+
+      reader.releaseLock();
+
+    }
+
+    // 11. JSON payload validation
+
+    let body: Record<string, unknown>;
+
+    try {
+
+      const parsed =
+        JSON.parse(raw);
 
       if (
         !parsed ||
@@ -162,11 +319,14 @@ Deno.serve(async (request: Request) => {
       body = parsed;
 
     } catch {
+
       return respond(400, {
         ok: false,
         code: "INVALID_REQUEST"
       });
     }
+
+    // 12. Allowed request fields
 
     const allowedFields = [
       "action",
@@ -186,6 +346,8 @@ Deno.serve(async (request: Request) => {
       });
     }
 
+    // 13. Validate dry-run type
+
     if (
       body.dryRun !== undefined &&
       typeof body.dryRun !== "boolean"
@@ -196,153 +358,75 @@ Deno.serve(async (request: Request) => {
       });
     }
 
-    const authorizedTestAccount =
-      DELETION_ENABLED &&
-      userId === TEST_ACCOUNT_UID;
+    // 14. Authenticated status endpoint
 
     if (body.action === "status") {
+
       return respond(200, {
         ok: true,
         code: "BACKEND_READY",
+
         authenticated: true,
+
         dryRunOnly: DRY_RUN_ONLY,
-        dryRunAuthorized: authorizedTestAccount,
-        deletionEnabled:
-          !DRY_RUN_ONLY && authorizedTestAccount,
-        mode: authorizedTestAccount
-          ? "restricted-execution"
-          : "security-validation"
+
+        dryRunAuthorized: false,
+
+        deletionEnabled: DELETION_ENABLED,
+
+        securityLock: SECURITY_LOCK,
+
+        mode: "security-locked",
+
+        controlledTestCompleted: true
       });
     }
 
-    if (body.action !== "delete-account") {
+    // 15. Reject unsupported actions
+
+    if (
+      body.action !== "delete-account"
+    ) {
       return respond(400, {
         ok: false,
         code: "INVALID_ACTION"
       });
     }
 
-    if (body.confirmation !== CONFIRMATION) {
-      return respond(400, {
-        ok: false,
-        code: "CONFIRMATION_REQUIRED"
-      });
-    }
+    // 16. Permanent fail-closed test lock
+    //
+    // All deletion requests are rejected.
+    // No privileged client exists.
+    // No destructive operation is available.
+    //
+    // This also blocks dry-run authorization.
 
-    if (!DELETION_ENABLED) {
-      return respond(503, {
-        ok: false,
-        code: "DELETION_DISABLED"
-      });
-    }
+    return respond(503, {
+      ok: false,
 
-    // Restrict authorization to the test account.
-    if (userId !== TEST_ACCOUNT_UID) {
-      return respond(403, {
-        ok: false,
-        code: "TEST_ACCOUNT_ONLY",
-        deleted: false
-      });
-    }
+      code: "DELETION_DISABLED",
 
-    const serviceRoleKey =
-      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+      deleted: false,
 
-    if (!serviceRoleKey) {
-      return respond(503, {
-        ok: false,
-        code: "SERVICE_UNAVAILABLE"
-      });
-    }
+      authorized: false,
 
-    // Revalidate the authenticated identity.
-    const verification =
-      await client.auth.getUser(token);
+      deletionEnabled: false,
 
-    if (
-      verification.error ||
-      verification.data.user?.id !== userId
-    ) {
-      return respond(401, {
-        ok: false,
-        code: "SESSION_CHANGED"
-      });
-    }
+      securityLock: true,
 
-    // Non-destructive authorization validation.
-    if (body.dryRun === true) {
-      return respond(200, {
-        ok: true,
-        code: "DRY_RUN_PASSED",
-        authorized: true,
-        dryRun: true,
-        deleted: false
-      });
-    }
-
-    // Server-side safety lock.
-    if (DRY_RUN_ONLY) {
-      return respond(403, {
-        ok: false,
-        code: "DRY_RUN_ONLY",
-        deleted: false
-      });
-    }
-
-    // Require explicit authorization for the real test.
-    if (
-      body.dryRun !== false ||
-      body.executionConfirmation !== "EXECUTE_DISPOSABLE_TEST_DELETION"
-    ) {
-      return respond(400, {
-        ok: false,
-        code: "EXECUTION_CONFIRMATION_REQUIRED",
-        deleted: false
-      });
-    }
-
-    // Final identity and target verification.
-    const finalIdentity =
-      await client.auth.getUser(token);
-
-    if (
-      finalIdentity.error ||
-      finalIdentity.data.user?.id !== userId ||
-      userId !== TEST_ACCOUNT_UID
-    ) {
-      return respond(403, {
-        ok: false,
-        code: "FINAL_IDENTITY_CHECK_FAILED",
-        deleted: false
-      });
-    }
-
-    const admin = createClient(
-      url,
-      serviceRoleKey,
-      { auth: authOptions }
-    );
-
-    const { error: deletionError } =
-      await admin.auth.admin.deleteUser(userId, false);
-
-    if (deletionError) {
-      return respond(500, {
-        ok: false,
-        code: "ACCOUNT_DELETION_FAILED"
-      });
-    }
-
-    return respond(200, {
-      ok: true,
-      code: "ACCOUNT_DELETED",
-      deleted: true
+      mode: "security-locked"
     });
 
   } catch {
+
+    // 17. Safe error response
+
     return respond(500, {
       ok: false,
-      code: "INTERNAL_ERROR"
+      code: "INTERNAL_ERROR",
+      deleted: false
     });
+
   }
+
 });
