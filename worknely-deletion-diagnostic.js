@@ -2,7 +2,7 @@
 (function () {
   "use strict";
 
-  const VERSION = "7.21.4.10.2";
+  const VERSION = "7.21.4.10.6";
 
   const TEST_UID =
     "003e6e99-3d61-4685-ad8e-3b6abe608f74";
@@ -18,6 +18,11 @@
     if (busy) return;
 
     busy = true;
+    const diagnosticButton = document.getElementById("wnDeletionAuthorizationDiagnostic");
+    if (diagnosticButton) {
+      diagnosticButton.textContent = "Checking authorization...";
+      diagnosticButton.disabled = true;
+    }
 
     try {
       const client = window.worknelySupabase;
@@ -125,6 +130,10 @@
 
     } finally {
       busy = false;
+      if (diagnosticButton) {
+        diagnosticButton.textContent = "Run Authorization Diagnostic";
+        diagnosticButton.disabled = false;
+      }
     }
   }
 
@@ -147,6 +156,13 @@
 
     button.style.cssText = [
       "display:block",
+      "position:fixed",
+      "top:100px",
+      "left:50%",
+      "transform:translateX(-50%)",
+      "z-index:2147483647",
+      "pointer-events:auto",
+      "touch-action:manipulation",
       "margin:24px auto",
       "padding:16px 24px",
       "max-width:90%",
