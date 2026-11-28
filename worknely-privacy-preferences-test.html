@@ -1,0 +1,401 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+content="width=device-width, initial-scale=1">
+
+<title>Worknely Privacy Preferences Validation</title>
+<meta name="robots" content="noindex,nofollow">
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 20px;
+  background: #f6f5fc;
+  color: #201638;
+  font-family: -apple-system,
+    BlinkMacSystemFont, Arial, sans-serif;
+}
+
+main {
+  max-width: 700px;
+  margin: auto;
+}
+
+.brand {
+  color: #7138e8;
+  font-size: 28px;
+  font-weight: 800;
+}
+
+.version {
+  color: #716782;
+  font-size: 13px;
+  margin: 8px 0 24px;
+}
+
+.card {
+  background: white;
+  padding: 20px;
+  border-radius: 20px;
+  border: 1px solid #e6dff5;
+  margin-bottom: 16px;
+}
+
+h1 {
+  font-size: 23px;
+}
+
+button {
+  width: 100%;
+  border: 0;
+  border-radius: 14px;
+  padding: 16px;
+  background: #7138e8;
+  color: white;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: .6;
+}
+
+.result {
+  padding: 13px 0;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+}
+
+.pass {
+  color: #15803d;
+  font-weight: 700;
+}
+
+.fail {
+  color: #b91c1c;
+  font-weight: 700;
+}
+
+.summary {
+  font-size: 28px;
+  font-weight: 800;
+  margin: 15px 0;
+}
+
+.note {
+  color: #716782;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+</style>
+</head>
+
+<body>
+<main>
+
+<div class="brand">Worknely</div>
+
+<div class="version">
+V7.21.5.3.1 · Storage Engine Validation
+</div>
+
+<section class="card">
+
+<h1>Privacy Preferences</h1>
+
+<p class="note">
+Independent, non-destructive validation.
+No database writes. No account changes.
+No authentication credentials required.
+</p>
+
+<button id="runTest" type="button">
+Run Storage Engine Validation
+</button>
+
+<div id="summary"
+class="summary"
+role="status"
+aria-live="polite">
+Ready
+</div>
+
+<div id="results"></div>
+
+</section>
+
+<section class="card">
+
+<strong>Validation scope</strong>
+
+<p class="note">
+Local engine integrity, input validation,
+default consent configuration and public API.
+Live database operations are not tested
+on this page.
+</p>
+
+</section>
+
+</main>
+
+<script src="worknely-privacy-preferences.js?v=7.21.5.3"></script>
+
+<script>
+(function () {
+  "use strict";
+
+  const EXPECTED_VERSION = "7.21.5.3";
+
+  const button =
+    document.getElementById("runTest");
+
+  const summary =
+    document.getElementById("summary");
+
+  const results =
+    document.getElementById("results");
+
+  function addResult(name, passed) {
+
+    const row =
+      document.createElement("div");
+
+    row.className = "result";
+
+    const label =
+      document.createElement("span");
+
+    label.textContent = name;
+
+    const status =
+      document.createElement("span");
+
+    status.textContent =
+      passed ? "PASS" : "FAIL";
+
+    status.className =
+      passed ? "pass" : "fail";
+
+    row.append(label, status);
+
+    results.appendChild(row);
+  }
+
+  function run() {
+
+    button.disabled = true;
+    results.replaceChildren();
+
+    summary.textContent = "Running...";
+    summary.className = "summary";
+
+    const tests = [];
+
+    function test(name, callback) {
+
+      let passed = false;
+
+      try {
+        passed = callback() === true;
+      } catch {
+        passed = false;
+      }
+
+      tests.push(passed);
+
+      addResult(name, passed);
+    }
+
+    try {
+
+      const engine =
+        window.WorknelyPrivacyPreferences;
+
+      test(
+        "Engine loaded",
+        () => Boolean(engine)
+      );
+
+      test(
+        "Correct engine version",
+        () => engine.version ===
+          EXPECTED_VERSION
+      );
+
+      test(
+        "Public API available",
+        () => [
+          "getDefaults",
+          "load",
+          "save",
+          "withdrawAll",
+          "clear",
+          "getState",
+          "selfTest"
+        ].every(
+          key =>
+            typeof engine[key] === "function"
+        )
+      );
+
+      test(
+        "Public API immutable",
+        () => Object.isFrozen(engine)
+      );
+
+      test(
+        "Consent version",
+        () => engine.consentVersion === "1.0"
+      );
+
+      test(
+        "Engine initially idle",
+        () => engine.getState().busy === false
+      );
+
+      test(
+        "Automatic insert disabled",
+        () =>
+          engine.getState().automaticInsert
+          === false
+      );
+
+      test(
+        "Automatic consent disabled",
+        () =>
+          engine.getState().automaticConsent
+          === false
+      );
+
+      test(
+        "Persistent cache disabled",
+        () =>
+          engine.getState().persistentCache
+          === false
+      );
+
+      test(
+        "Default consent values",
+        () => {
+          const d = engine.getDefaults();
+
+          return (
+            d.analytics_consent === false &&
+            d.personalization_consent === false &&
+            d.marketing_consent === false
+          );
+        }
+      );
+
+      let internal = null;
+
+      try {
+        internal = engine.selfTest();
+      } catch {
+        internal = null;
+      }
+
+      test(
+        "Internal test suite integrity",
+        () =>
+          internal.version ===
+            EXPECTED_VERSION &&
+          internal.total === 12 &&
+          internal.tests.length === 12 &&
+          internal.passed === 12 &&
+          internal.ok === true &&
+          internal.databaseWrites === false
+      );
+
+      if (
+        internal &&
+        Array.isArray(internal.tests) &&
+        internal.tests.length === 12
+      ) {
+
+        for (const item of internal.tests) {
+
+          test(
+            "Internal: " + item.name,
+            () => item.passed === true
+          );
+
+        }
+
+      } else {
+
+        for (let i = 1; i <= 12; i++) {
+
+          test(
+            "Internal test " + i,
+            () => false
+          );
+
+        }
+      }
+
+      test(
+        "Session invalidation API",
+        () => {
+          const result = engine.clear();
+
+          return (
+            result.ok === true &&
+            result.cleared === true &&
+            result.version === EXPECTED_VERSION
+          );
+        }
+      );
+
+      const passed =
+        tests.filter(Boolean).length;
+
+      const total = tests.length;
+
+      const success =
+        passed === total && total === 24;
+
+      summary.textContent =
+        passed + "/" + total +
+        (success ? " PASS" : " FAIL");
+
+      summary.className =
+        "summary " +
+        (success ? "pass" : "fail");
+
+    } catch {
+
+      summary.textContent =
+        "VALIDATION FAILED";
+
+      summary.className =
+        "summary fail";
+
+    } finally {
+
+      button.disabled = false;
+
+    }
+  }
+
+  button.addEventListener("click", run);
+
+})();
+</script>
+
+</body>
+</html>
