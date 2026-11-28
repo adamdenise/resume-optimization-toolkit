@@ -74,7 +74,8 @@ jobs:
       - name: Deploy secure Worknely backend
         run: |
           supabase functions deploy dynamic-task \
-            --project-ref "$SUPABASE_PROJECT_ID"
+            --project-ref "$SUPABASE_PROJECT_ID" \
+            --yes
 
       - name: Verify deployed function
         run: |
@@ -85,7 +86,7 @@ jobs:
         run: |
           echo "Worknely backend deployment completed."
           echo "Backend version: 7.21.4.4"
-          echo "Deployment release: 7.21.4.6.1"
+          echo "Deployment release: 7.21.4.6.2"
           echo "Supabase CLI: 3.4.0"
           echo "Target slug: dynamic-task"
           echo "Account deletion remains disabled."
