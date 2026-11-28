@@ -3,10 +3,10 @@ import { createClient } from "npm:@supabase/supabase-js@2";
 /**
  * WORKNELY
  * Secure Account Deletion Engine
- * Version: 7.21.4.9.4
+ * Version: 7.21.4.11.1
  */
 
-const VERSION = "7.21.4.9.4";
+const VERSION = "7.21.4.11.1";
 
 const ALLOWED_ORIGIN =
   "https://adamdenise.github.io";
@@ -15,6 +15,7 @@ const CONFIRMATION = "DELETE_MY_ACCOUNT";
 
 // Restricted deletion: disposable test account only.
 const DELETION_ENABLED = true;
+const DRY_RUN_ONLY = true;
 const TEST_ACCOUNT_UID = "003e6e99-3d61-4685-ad8e-3b6abe608f74";
 
 const headers = {
@@ -164,7 +165,8 @@ Deno.serve(async (request: Request) => {
 
     const allowedFields = [
       "action",
-      "confirmation"
+      "confirmation",
+      "dryRun"
     ];
 
     if (
@@ -183,10 +185,18 @@ Deno.serve(async (request: Request) => {
         ok: true,
         code: "BACKEND_READY",
         authenticated: true,
+        dryRunOnly: DRY_RUN_ONLY,
         deletionEnabled: DELETION_ENABLED && userId === TEST_ACCOUNT_UID,
         mode: DELETION_ENABLED && userId === TEST_ACCOUNT_UID
           ? "restricted-test"
           : "security-validation"
+      });
+    }
+
+    if (body.dryRun !== undefined && typeof body.dryRun !== "boolean") {
+      return respond(400, {
+        ok: false,
+        code: "INVALID_DRY_RUN"
       });
     }
 
@@ -240,6 +250,26 @@ Deno.serve(async (request: Request) => {
       return respond(401, {
         ok: false,
         code: "SESSION_CHANGED"
+      });
+    }
+
+    // Validate authorization without deleting any data.
+    if (body.dryRun === true) {
+      return respond(200, {
+        ok: true,
+        code: "DRY_RUN_PASSED",
+        authorized: true,
+        dryRun: true,
+        deleted: false
+      });
+    }
+
+    // Server-side safety lock for the validation phase.
+    if (DRY_RUN_ONLY) {
+      return respond(403, {
+        ok: false,
+        code: "DRY_RUN_ONLY",
+        deleted: false
       });
     }
 
