@@ -3,25 +3,19 @@ import { createClient } from "npm:@supabase/supabase-js@2";
 /**
  * WORKNELY
  * Secure Account Deletion Engine
- * Version: 7.21.4.9.3
- * Restricted Test Mode
+ * Version: 7.21.4.9.4
  */
 
-const VERSION = "7.21.4.9.3";
+const VERSION = "7.21.4.9.4";
 
 const ALLOWED_ORIGIN =
   "https://adamdenise.github.io";
 
 const CONFIRMATION = "DELETE_MY_ACCOUNT";
 
-// Global deletion remains disabled.
-const DELETION_ENABLED = false;
-
-// Temporary restricted testing.
-const TEST_MODE_ENABLED = true;
-
-const TEST_USER_ID =
-  "003e6e99-3d61-4685-ad8e-3b6abe608f74";
+// Restricted deletion: disposable test account only.
+const DELETION_ENABLED = true;
+const TEST_ACCOUNT_UID = "003e6e99-3d61-4685-ad8e-3b6abe608f74";
 
 const headers = {
   "Access-Control-Allow-Origin": ALLOWED_ORIGIN,
@@ -52,14 +46,6 @@ const authOptions = {
   autoRefreshToken: false,
   detectSessionInUrl: false
 };
-
-function deletionAllowed(userId: string): boolean {
-  if (TEST_MODE_ENABLED) {
-    return userId === TEST_USER_ID;
-  }
-
-  return DELETION_ENABLED;
-}
 
 Deno.serve(async (request: Request) => {
   try {
@@ -197,16 +183,10 @@ Deno.serve(async (request: Request) => {
         ok: true,
         code: "BACKEND_READY",
         authenticated: true,
-        deletionEnabled: deletionAllowed(userId),
-        testMode: TEST_MODE_ENABLED,
-        testAccountEligible:
-          TEST_MODE_ENABLED &&
-          userId === TEST_USER_ID,
-        mode: TEST_MODE_ENABLED
+        deletionEnabled: DELETION_ENABLED && userId === TEST_ACCOUNT_UID,
+        mode: DELETION_ENABLED && userId === TEST_ACCOUNT_UID
           ? "restricted-test"
-          : DELETION_ENABLED
-            ? "account-deletion"
-            : "security-validation"
+          : "security-validation"
       });
     }
 
@@ -224,21 +204,18 @@ Deno.serve(async (request: Request) => {
       });
     }
 
-    // Restricted test account protection.
-    if (
-      TEST_MODE_ENABLED &&
-      userId !== TEST_USER_ID
-    ) {
-      return respond(403, {
-        ok: false,
-        code: "TEST_ACCOUNT_NOT_ALLOWED"
-      });
-    }
-
-    if (!deletionAllowed(userId)) {
+    if (!DELETION_ENABLED) {
       return respond(503, {
         ok: false,
         code: "DELETION_DISABLED"
+      });
+    }
+
+    // Deny deletion for every account except the approved test account.
+    if (userId !== TEST_ACCOUNT_UID) {
+      return respond(403, {
+        ok: false,
+        code: "TEST_ACCOUNT_ONLY"
       });
     }
 
@@ -266,24 +243,14 @@ Deno.serve(async (request: Request) => {
       });
     }
 
-    // Final server-side eligibility check.
-    if (!deletionAllowed(
-      verification.data.user.id
-    )) {
-      return respond(403, {
-        ok: false,
-        code: "DELETION_NOT_ALLOWED"
-      });
-    }
-
     const admin = createClient(
       url,
       serviceRoleKey,
       { auth: authOptions }
     );
 
+    // Delete only the authenticated user.
     // Never accept a user ID from the request body.
-    // Delete only the verified authenticated user.
     const { error: deletionError } =
       await admin.auth.admin.deleteUser(
         userId,
