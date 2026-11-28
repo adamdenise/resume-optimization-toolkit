@@ -1,0 +1,41 @@
+
+-- WORKNELY V7.21.5.1.3
+-- Final Foundation Check
+-- READ ONLY
+
+SELECT
+    '09 Consent defaults' AS test,
+    CASE
+        WHEN COUNT(*) = 3 THEN 'PASS'
+        ELSE 'REVIEW'
+    END AS result
+FROM information_schema.columns
+WHERE table_schema = 'public'
+AND table_name = 'privacy_preferences'
+AND column_name IN (
+    'analytics_consent',
+    'marketing_consent',
+    'personalization_consent'
+)
+AND data_type = 'boolean'
+AND column_default = 'false'
+AND is_nullable = 'NO'
+
+UNION ALL
+
+SELECT
+    '10 Custom triggers',
+    COUNT(*)::text
+FROM pg_trigger
+WHERE tgrelid =
+    'public.privacy_preferences'::regclass
+AND NOT tgisinternal
+
+UNION ALL
+
+SELECT
+    '11 Existing records',
+    COUNT(*)::text
+FROM public.privacy_preferences
+
+ORDER BY test;
