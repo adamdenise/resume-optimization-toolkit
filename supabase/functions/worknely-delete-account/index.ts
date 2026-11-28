@@ -1,9 +1,11 @@
+
 import { createClient } from "npm:@supabase/supabase-js@2";
 
 /**
  * WORKNELY
  * Secure Account Deletion Engine
  * Version: 7.21.4.11.1
+ * Restricted Dry-Run Validation
  */
 
 const VERSION = "7.21.4.11.1";
@@ -13,10 +15,11 @@ const ALLOWED_ORIGIN =
 
 const CONFIRMATION = "DELETE_MY_ACCOUNT";
 
-// Restricted deletion: disposable test account only.
 const DELETION_ENABLED = true;
 const DRY_RUN_ONLY = true;
-const TEST_ACCOUNT_UID = "003e6e99-3d61-4685-ad8e-3b6abe608f74";
+
+const TEST_ACCOUNT_UID =
+  "003e6e99-3d61-4685-ad8e-3b6abe608f74";
 
 const headers = {
   "Access-Control-Allow-Origin": ALLOWED_ORIGIN,
@@ -137,7 +140,9 @@ Deno.serve(async (request: Request) => {
     try {
       const raw = await request.text();
 
-      if (new TextEncoder().encode(raw).length > 4096) {
+      if (
+        new TextEncoder().encode(raw).length > 4096
+      ) {
         return respond(413, {
           ok: false,
           code: "PAYLOAD_TOO_LARGE"
@@ -180,23 +185,31 @@ Deno.serve(async (request: Request) => {
       });
     }
 
+    if (
+      body.dryRun !== undefined &&
+      typeof body.dryRun !== "boolean"
+    ) {
+      return respond(400, {
+        ok: false,
+        code: "INVALID_DRY_RUN"
+      });
+    }
+
+    const authorizedTestAccount =
+      DELETION_ENABLED &&
+      userId === TEST_ACCOUNT_UID;
+
     if (body.action === "status") {
       return respond(200, {
         ok: true,
         code: "BACKEND_READY",
         authenticated: true,
         dryRunOnly: DRY_RUN_ONLY,
-        deletionEnabled: DELETION_ENABLED && userId === TEST_ACCOUNT_UID,
-        mode: DELETION_ENABLED && userId === TEST_ACCOUNT_UID
-          ? "restricted-test"
+        dryRunAuthorized: authorizedTestAccount,
+        deletionEnabled: false,
+        mode: authorizedTestAccount
+          ? "restricted-dry-run"
           : "security-validation"
-      });
-    }
-
-    if (body.dryRun !== undefined && typeof body.dryRun !== "boolean") {
-      return respond(400, {
-        ok: false,
-        code: "INVALID_DRY_RUN"
       });
     }
 
@@ -221,11 +234,12 @@ Deno.serve(async (request: Request) => {
       });
     }
 
-    // Deny deletion for every account except the approved test account.
+    // Restrict authorization to the test account.
     if (userId !== TEST_ACCOUNT_UID) {
       return respond(403, {
         ok: false,
-        code: "TEST_ACCOUNT_ONLY"
+        code: "TEST_ACCOUNT_ONLY",
+        deleted: false
       });
     }
 
@@ -239,7 +253,7 @@ Deno.serve(async (request: Request) => {
       });
     }
 
-    // Revalidate identity before irreversible action.
+    // Revalidate the authenticated identity.
     const verification =
       await client.auth.getUser(token);
 
@@ -253,7 +267,7 @@ Deno.serve(async (request: Request) => {
       });
     }
 
-    // Validate authorization without deleting any data.
+    // Non-destructive authorization validation.
     if (body.dryRun === true) {
       return respond(200, {
         ok: true,
@@ -264,7 +278,7 @@ Deno.serve(async (request: Request) => {
       });
     }
 
-    // Server-side safety lock for the validation phase.
+    // Server-side safety lock.
     if (DRY_RUN_ONLY) {
       return respond(403, {
         ok: false,
@@ -273,31 +287,13 @@ Deno.serve(async (request: Request) => {
       });
     }
 
-    const admin = createClient(
-      url,
-      serviceRoleKey,
-      { auth: authOptions }
-    );
-
-    // Delete only the authenticated user.
-    // Never accept a user ID from the request body.
-    const { error: deletionError } =
-      await admin.auth.admin.deleteUser(
-        userId,
-        false
-      );
-
-    if (deletionError) {
-      return respond(500, {
-        ok: false,
-        code: "ACCOUNT_DELETION_FAILED"
-      });
-    }
-
-    return respond(200, {
-      ok: true,
-      code: "ACCOUNT_DELETED",
-      deleted: true
+    // Fail closed.
+    // Real deletion is intentionally unavailable
+    // in this validation release.
+    return respond(503, {
+      ok: false,
+      code: "DELETION_UNAVAILABLE",
+      deleted: false
     });
 
   } catch {
