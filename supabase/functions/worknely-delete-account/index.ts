@@ -207,7 +207,8 @@ Deno.serve(async (request: Request) => {
         authenticated: true,
         dryRunOnly: DRY_RUN_ONLY,
         dryRunAuthorized: authorizedTestAccount,
-        deletionEnabled: !DRY_RUN_ONLY && authorizedTestAccount,
+        deletionEnabled:
+          !DRY_RUN_ONLY && authorizedTestAccount,
         mode: authorizedTestAccount
           ? "restricted-execution"
           : "security-validation"
@@ -301,7 +302,9 @@ Deno.serve(async (request: Request) => {
     }
 
     // Final identity and target verification.
-    const finalIdentity = await client.auth.getUser(token);
+    const finalIdentity =
+      await client.auth.getUser(token);
+
     if (
       finalIdentity.error ||
       finalIdentity.data.user?.id !== userId ||
@@ -314,9 +317,11 @@ Deno.serve(async (request: Request) => {
       });
     }
 
-    const admin = createClient(url, serviceRoleKey, {
-      auth: authOptions
-    });
+    const admin = createClient(
+      url,
+      serviceRoleKey,
+      { auth: authOptions }
+    );
 
     const { error: deletionError } =
       await admin.auth.admin.deleteUser(userId, false);
