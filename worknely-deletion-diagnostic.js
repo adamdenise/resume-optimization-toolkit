@@ -2,11 +2,8 @@
 (function () {
   "use strict";
 
-  const VERSION = "7.21.4.12.6";
-  const BACKEND_VERSION = "7.21.4.12.2";
-
-  const TEST_UID =
-    "003e6e99-3d61-4685-ad8e-3b6abe608f74";
+  const VERSION = "7.21.4.12.18";
+  const BACKEND_VERSION = "7.21.4.12.16";
 
   const ENDPOINT =
     "https://xuyronnwsokfadnekeir.supabase.co/functions/v1/dynamic-task";
@@ -17,6 +14,7 @@
   let busy = false;
 
   async function run() {
+
     if (busy) return;
 
     busy = true;
@@ -26,11 +24,14 @@
 
     if (button) {
       button.disabled = true;
-      button.textContent = "Checking readiness...";
+      button.textContent =
+        "Checking security lock...";
     }
 
     try {
-      const client = window.worknelySupabase;
+
+      const client =
+        window.worknelySupabase;
 
       if (!client?.auth) {
         throw new Error("AUTH_UNAVAILABLE");
@@ -39,18 +40,18 @@
       const identity =
         await client.auth.getUser();
 
-      const uid = identity.data?.user?.id;
+      const uid =
+        identity.data?.user?.id;
 
       if (identity.error || !uid) {
         throw new Error("SIGN_IN_REQUIRED");
       }
 
-      const isTestAccount = uid === TEST_UID;
-
       const sessionResult =
         await client.auth.getSession();
 
-      const session = sessionResult.data?.session;
+      const session =
+        sessionResult.data?.session;
 
       if (
         sessionResult.error ||
@@ -60,20 +61,29 @@
         throw new Error("INVALID_SESSION");
       }
 
-      const response = await fetch(ENDPOINT, {
-        method: "POST",
-        cache: "no-store",
-        headers: {
-          "Authorization":
-            "Bearer " + session.access_token,
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          action: "status"
-        })
-      });
+      const response = await fetch(
+        ENDPOINT,
+        {
+          method: "POST",
+          cache: "no-store",
+          redirect: "error",
 
-      const result = await response.json();
+          headers: {
+            "Authorization":
+              "Bearer " + session.access_token,
+
+            "Content-Type":
+              "application/json"
+          },
+
+          body: JSON.stringify({
+            action: "status"
+          })
+        }
+      );
+
+      const result =
+        await response.json();
 
       const verification =
         await client.auth.getUser();
@@ -85,70 +95,101 @@
         throw new Error("SESSION_CHANGED");
       }
 
-      const expectedMode = isTestAccount
-        ? "restricted-execution"
-        : "security-validation";
+      const checks = [
+        response.status === 200,
+        result.version === BACKEND_VERSION,
+        result.ok === true,
+        result.code === "BACKEND_READY",
+        result.authenticated === true,
+        result.dryRunOnly === true,
+        result.dryRunAuthorized === false,
+        result.deletionEnabled === false,
+        result.securityLock === true,
+        result.mode === "security-locked",
+        result.controlledTestCompleted === true
+      ];
 
       const passed =
-        response.status === 200 &&
-        result.ok === true &&
-        result.authenticated === true &&
-        result.code === "BACKEND_READY" &&
-        result.version === BACKEND_VERSION &&
-        result.dryRunOnly === false &&
-        result.dryRunAuthorized === isTestAccount &&
-        result.deletionEnabled === isTestAccount &&
-        result.mode === expectedMode;
+        checks.every(Boolean);
+
+      const passedCount =
+        checks.filter(Boolean).length;
 
       alert([
-        "WORKNELY EXECUTION READINESS",
+        "WORKNELY SECURITY LOCK",
         "",
         "Diagnostic: " + VERSION,
         "Backend: " + result.version,
         "",
-        "Account: " + (
-          isTestAccount
-            ? "Disposable test account"
-            : "Protected account"
-        ),
         "UID: " + uid.slice(0, 8),
-        "",
         "HTTP: " + response.status,
-        "Dry-run only: " + result.dryRunOnly,
-        "Deletion enabled: " + result.deletionEnabled,
-        "Expected: " + isTestAccount,
-        "Mode: " + result.mode,
         "",
-        "RESULT: " + (passed ? "PASS" : "FAIL"),
+        "Authenticated: " +
+          result.authenticated,
+
+        "Dry-run only: " +
+          result.dryRunOnly,
+
+        "Dry-run authorized: " +
+          result.dryRunAuthorized,
+
+        "Deletion enabled: " +
+          result.deletionEnabled,
+
+        "Security lock: " +
+          result.securityLock,
+
+        "Mode: " +
+          result.mode,
+
+        "Controlled test completed: " +
+          result.controlledTestCompleted,
+
+        "",
+        "Checks: " +
+          passedCount + "/" + checks.length,
+
+        "RESULT: " +
+          (passed ? "PASS" : "FAIL"),
+
         "",
         "Read-only status check.",
         "No deletion requested."
+
       ].join("\n"));
 
     } catch {
+
       alert([
-        "WORKNELY EXECUTION READINESS",
+        "WORKNELY SECURITY LOCK",
         "",
         "RESULT: FAIL",
-        "Readiness validation stopped.",
+        "",
+        "Security lock validation stopped.",
+        "Check authentication and deployment.",
+        "",
         "No deletion requested."
       ].join("\n"));
 
     } finally {
+
       busy = false;
 
       if (button) {
         button.disabled = false;
+
         button.textContent =
-          "Check Execution Readiness";
+          "Verify Backend Security Lock";
       }
+
     }
   }
 
   function mount() {
-    if (document.getElementById(BUTTON_ID)) {
-      return;
-    }
+
+    if (
+      document.getElementById(BUTTON_ID)
+    ) return;
 
     const button =
       document.createElement("button");
@@ -157,7 +198,7 @@
     button.type = "button";
 
     button.textContent =
-      "Check Execution Readiness";
+      "Verify Backend Security Lock";
 
     Object.assign(button.style, {
       position: "fixed",
@@ -173,15 +214,19 @@
       minHeight: "48px",
       border: "0",
       borderRadius: "16px",
-      background: "#6528ed",
+      background: "#047857",
       color: "#ffffff",
       fontSize: "16px",
       fontWeight: "700",
       cursor: "pointer",
-      boxShadow: "0 8px 24px rgba(0,0,0,.18)"
+      boxShadow:
+        "0 8px 24px rgba(0,0,0,.18)"
     });
 
-    button.addEventListener("click", run);
+    button.addEventListener(
+      "click",
+      run
+    );
 
     document.body.appendChild(button);
   }
@@ -195,12 +240,17 @@
     });
 
   if (document.readyState === "loading") {
+
     document.addEventListener(
       "DOMContentLoaded",
       mount,
       { once: true }
     );
+
   } else {
+
     mount();
+
   }
+
 })();
