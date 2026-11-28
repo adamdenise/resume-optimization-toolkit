@@ -1,0 +1,233 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Worknely Backend Diagnostic</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 24px;
+      background: #f7f5ff;
+      color: #17152b;
+      font-family: -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+    }
+    main {
+      max-width: 760px;
+      margin: 30px auto;
+      background: white;
+      padding: 24px;
+      border-radius: 24px;
+      box-shadow: 0 12px 40px #7738e815;
+    }
+    h1 {
+      color: #7738e8;
+      font-size: 28px;
+    }
+    .version {
+      color: #777;
+      font-size: 13px;
+    }
+    .notice {
+      background: #f0ebff;
+      padding: 16px;
+      border-radius: 12px;
+      line-height: 1.6;
+    }
+    button {
+      width: 100%;
+      min-height: 48px;
+      border: 0;
+      border-radius: 12px;
+      margin-top: 12px;
+      padding: 14px;
+      background: #7738e8;
+      color: white;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    button:disabled {
+      opacity: .5;
+    }
+    pre {
+      background: #17152b;
+      color: #b9f6d2;
+      padding: 16px;
+      border-radius: 12px;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Worknely</h1>
+  <h2>Backend Diagnostic</h2>
+  <p class="version">V7.21.4.7.6</p>
+
+  <div class="notice">
+    Read-only connectivity diagnostic.
+    No account deletion requests.
+    No credentials collected.
+    No database modifications.
+  </div>
+
+  <h3>Application Origin</h3>
+  <pre id="origin"></pre>
+
+  <button id="run">
+    Run Backend Diagnostic
+  </button>
+
+  <h3>Diagnostic Results</h3>
+  <pre id="results">Ready for testing.</pre>
+</main>
+
+<script>
+"use strict";
+
+const VERSION = "7.21.4.7.6";
+
+const EXPECTED_ORIGIN =
+  "https://adamdenise.github.io";
+
+const ENDPOINT =
+  "https://xuyronnwsokfadnekeir.supabase.co/functions/v1/dynamic-task";
+
+const originOutput =
+  document.getElementById("origin");
+
+const results =
+  document.getElementById("results");
+
+const button =
+  document.getElementById("run");
+
+originOutput.textContent =
+  window.location.origin;
+
+function log(message) {
+  results.textContent += message + "\n";
+}
+
+async function runDiagnostic() {
+  button.disabled = true;
+  results.textContent = "";
+
+  const controller = new AbortController();
+
+  const timeout = setTimeout(
+    () => controller.abort(),
+    20000
+  );
+
+  try {
+    log("WORKNELY BACKEND DIAGNOSTIC");
+    log("Version: " + VERSION);
+    log("Time: " + new Date().toISOString());
+    log("");
+
+    log("Origin: " + window.location.origin);
+    log("Expected: " + EXPECTED_ORIGIN);
+
+    if (window.location.origin !== EXPECTED_ORIGIN) {
+      log("FAIL: Unexpected application origin.");
+      return;
+    }
+
+    log("PASS: Application origin verified.");
+    log("");
+    log("Endpoint: " + ENDPOINT);
+    log("Sending non-destructive status request...");
+
+    const response = await fetch(ENDPOINT, {
+      method: "POST",
+      mode: "cors",
+      credentials: "omit",
+      cache: "no-store",
+      redirect: "error",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        action: "status"
+      }),
+      signal: controller.signal
+    });
+
+    const raw = await response.text();
+
+    let payload;
+
+    try {
+      payload = JSON.parse(raw);
+    } catch {
+      payload = null;
+    }
+
+    log("");
+    log("HTTP Status: " + response.status);
+    log("PASS: Browser received backend response.");
+    log("");
+
+    if (payload) {
+      log(JSON.stringify(payload, null, 2));
+    } else {
+      log(raw.slice(0, 2000));
+    }
+
+    log("");
+
+    if (
+      response.status === 401 &&
+      payload?.code === "AUTH_REQUIRED"
+    ) {
+      log("PASS: Allowed origin accepted.");
+      log("PASS: Unauthenticated request rejected.");
+      log("RESULT: CORS CONNECTIVITY VERIFIED.");
+    } else if (
+      response.status === 403 &&
+      payload?.code === "ORIGIN_NOT_ALLOWED"
+    ) {
+      log("FAIL: Application origin rejected.");
+      log("RESULT: ORIGIN CONFIGURATION ISSUE.");
+    } else if (response.status === 401) {
+      log("PASS: Browser connectivity.");
+      log("Authentication rejected by gateway or backend.");
+      log("RESULT: AUTHENTICATION REVIEW REQUIRED.");
+    } else {
+      log("RESULT: RESPONSE REQUIRES REVIEW.");
+    }
+
+  } catch (error) {
+    log("");
+    log("FAIL: Browser request unsuccessful.");
+    log("Error: " + error.name);
+    log("Message: " + error.message);
+    log("");
+    log("Possible causes:");
+    log("- CORS preflight rejection");
+    log("- Network connectivity");
+    log("- Gateway configuration");
+    log("- Request timeout");
+    log("");
+    log("RESULT: FURTHER DIAGNOSTIC REQUIRED.");
+  } finally {
+    clearTimeout(timeout);
+    button.disabled = false;
+    log("");
+    log("Diagnostic finished.");
+    log("No deletion action requested.");
+  }
+}
+
+button.addEventListener("click", runDiagnostic);
+</script>
+</body>
+</html>
