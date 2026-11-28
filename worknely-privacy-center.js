@@ -10,7 +10,7 @@
 (() => {
   "use strict";
 
-  const VERSION = "7.21.3.5.2";
+  const VERSION = "7.21.4.12.21";
   const ROOT_ID = "wnPrivacyCenter";
   const MOUNT_ID = "wnPrivacyCenterMount";
   const STYLE_ID = "wnPrivacyCenterStyles";
@@ -556,6 +556,7 @@
   }
 
   function clear() {
+    deletionStatusEngine()?.clear?.();
     resetExport();
     generation++;
     account = null;
@@ -681,6 +682,7 @@
       return false;
     }
 
+    deletionStatusEngine()?.clear?.();
     const activeClient = client;
     const ticket = ++generation;
 
@@ -1018,6 +1020,88 @@
     return element;
   }
 
+  /* ACCOUNT DELETION STATUS INTEGRATION */
+
+  function deletionStatusEngine() {
+    const engine = window.WorknelyAccountDeletionStatus;
+    return engine?.version === "7.21.4.12.20" &&
+      typeof engine.checkStatus === "function" &&
+      typeof engine.translate === "function"
+      ? engine : null;
+  }
+
+  function renderDeletionControls(element) {
+    const engine = deletionStatusEngine();
+
+    if (!engine) {
+      element.appendChild(button(t("coming"), true));
+      return;
+    }
+
+    const language = getLanguage();
+    const tr = key => engine.translate(key, language);
+    const status = node("p", "wnpc-note", tr("disabled"));
+    status.setAttribute("role", "status");
+    status.setAttribute("aria-live", "polite");
+
+    const allowed = Boolean(
+      owner && account && !loading &&
+      !suspended && !recoveryActive()
+    );
+
+    const checkButton = button(tr("check"), !allowed, async () => {
+      if (!owner || !account || loading ||
+          suspended || recoveryActive() ||
+          !element.isConnected) return;
+
+      const expectedOwner = owner;
+      const ticket = generation;
+
+      checkButton.disabled = true;
+      status.textContent = tr("checking");
+
+      try {
+        const result = await engine.checkStatus({
+          expectedUserId: expectedOwner
+        });
+
+        if (ticket !== generation ||
+            owner !== expectedOwner ||
+            suspended || recoveryActive() ||
+            !element.isConnected) return;
+
+        const verified = result?.verified === true &&
+          result.securityLock === true &&
+          result.deletionEnabled === false &&
+          result.status === "locked";
+
+        status.textContent = tr(
+          verified ? "locked" : "unavailable"
+        );
+      } catch {
+        if (ticket === generation &&
+            owner === expectedOwner &&
+            !suspended && !recoveryActive() &&
+            element.isConnected) {
+          status.textContent = tr("unavailable");
+        }
+      } finally {
+        if (ticket === generation &&
+            owner === expectedOwner &&
+            !suspended && !recoveryActive() &&
+            element.isConnected) {
+          checkButton.disabled = false;
+        }
+      }
+    });
+
+    element.append(
+      status,
+      button(tr("disabled"), true),
+      checkButton
+    );
+  }
+
   function render() {
     if (!root?.isConnected || suspended) {
       return;
@@ -1153,6 +1237,8 @@
 
       if (key === "export") {
         renderExportControls(element);
+      } else if (key === "delete") {
+        renderDeletionControls(element);
       } else {
         element.appendChild(
           button(t("coming"), true)
@@ -1291,6 +1377,7 @@
   }
 
   document.addEventListener("worknely:dataexportready", render);
+  document.addEventListener("worknely:accountdeletionstatusready", render);
 
   document.addEventListener(
     "worknely:languagechange",
