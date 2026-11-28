@@ -1,0 +1,1442 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<meta name="referrer" content="no-referrer">
+
+<meta http-equiv="Content-Security-Policy"
+      content="default-src 'none';
+      script-src 'self' 'unsafe-inline';
+      style-src 'self' 'unsafe-inline';
+      connect-src 'none';
+      img-src 'none';
+      object-src 'none';
+      frame-src 'none';
+      base-uri 'none';
+      form-action 'none'">
+
+<title>Worknely Independent Integration Validation</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 20px 14px 60px;
+  background: #f7f4fc;
+  color: #241442;
+  font-family: Inter, system-ui, sans-serif;
+  line-height: 1.6;
+}
+
+main {
+  max-width: 850px;
+  margin: auto;
+}
+
+.panel {
+  background: white;
+  border: 1px solid #e7dff5;
+  border-radius: 22px;
+  padding: 22px;
+  margin-bottom: 18px;
+}
+
+.brand {
+  color: #7138ed;
+  font-size: 26px;
+  font-weight: 850;
+}
+
+h1 {
+  font-size: 25px;
+  line-height: 1.3;
+}
+
+h2 {
+  font-size: 20px;
+}
+
+p {
+  color: #625873;
+}
+
+.security {
+  background: #f3edff;
+  border-radius: 14px;
+  padding: 16px;
+  font-size: 14px;
+}
+
+.run {
+  width: 100%;
+  min-height: 52px;
+  border: 0;
+  border-radius: 13px;
+  background: #7138ed;
+  color: white;
+  font-size: 16px;
+  font-weight: 750;
+  margin: 16px 0;
+  cursor: pointer;
+}
+
+.run:disabled {
+  opacity: .45;
+}
+
+.result {
+  font-size: 32px;
+  font-weight: 850;
+  margin: 10px 0;
+}
+
+.test {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 12px 0;
+  border-bottom: 1px solid #eee9f5;
+  font-size: 14px;
+}
+
+.pass {
+  color: #16743b;
+}
+
+.fail {
+  color: #b42336;
+}
+
+.note {
+  background: #f5f2f9;
+  border-radius: 12px;
+  padding: 12px;
+  margin-top: 14px;
+  overflow-wrap: anywhere;
+}
+
+.small {
+  font-size: 13px;
+}
+</style>
+</head>
+
+<body>
+
+<main>
+
+<section class="panel">
+
+  <div class="brand">Worknely</div>
+
+  <h1>Privacy Center Integration</h1>
+
+  <p>Independent Integration Validation</p>
+
+  <p class="small">
+    Test version: V7.21.5.5.2<br>
+    Candidate: V7.21.5.5.1<br>
+    Preferences UI: V7.21.5.4<br>
+    Storage Engine: V7.21.5.3
+  </p>
+
+  <div class="security">
+
+    <strong>Isolated validation environment</strong>
+
+    <p>
+      No real Supabase client.
+      No real credentials.
+      No database access.
+      No account deletion.
+      No production data.
+    </p>
+
+    <p>
+      Authentication and database responses are
+      simulated entirely in browser memory.
+      Network connections are blocked by CSP.
+    </p>
+
+  </div>
+
+  <button
+    id="run"
+    class="run"
+    type="button"
+    disabled>
+    Run Independent Validation
+  </button>
+
+  <div
+    id="summary"
+    class="result"
+    aria-live="polite">
+    Loading modules...
+  </div>
+
+  <div id="results"></div>
+
+  <div
+    id="status"
+    class="note"
+    role="status">
+    Preparing isolated environment.
+  </div>
+
+</section>
+
+<section class="panel">
+
+  <h2>Integration Preview</h2>
+
+  <p class="small">
+    This preview uses fictional accounts only.
+    Controls are reserved for the test runner.
+  </p>
+
+  <div id="preview" inert>
+
+    <div id="wnPrivacyCenterMount"></div>
+
+  </div>
+
+</section>
+
+</main>
+
+<script>
+(() => {
+
+  "use strict";
+
+  const A = Object.freeze({
+    id: "10000000-0000-4000-8000-000000000001",
+    email: "account-a@example.invalid"
+  });
+
+  const B = Object.freeze({
+    id: "10000000-0000-4000-8000-000000000002",
+    email: "account-b@example.invalid"
+  });
+
+  const TABLES = Object.freeze({
+    resumes: 2,
+    career_analyses: 4,
+    job_applications: 1
+  });
+
+  const listeners = new Set();
+
+  const audit = {
+    reads: [],
+    authReads: 0,
+    writeAttempts: 0,
+    networkViolations: 0,
+    exportRequests: 0,
+    exportDownloads: 0,
+    exportDiscards: 0,
+    deletionChecks: 0,
+    deletionRequests: 0
+  };
+
+  let user = null;
+  let language = "en";
+  let identityError = false;
+
+  function session() {
+
+    return user
+      ? {
+          user: { ...user },
+          access_token: "SIMULATED_TOKEN_ONLY"
+        }
+      : null;
+  }
+
+  function rejectWrite() {
+
+    audit.writeAttempts++;
+
+    throw new Error(
+      "DATABASE_WRITE_BLOCKED"
+    );
+  }
+
+  function query(table) {
+
+    let selected = false;
+    let validSelection = false;
+
+    const builder = {
+
+      select(columns, options) {
+
+        selected = true;
+
+        validSelection =
+          columns === "id" &&
+          options?.count === "exact" &&
+          options?.head === true;
+
+        return builder;
+      },
+
+      async eq(column, value) {
+
+        audit.reads.push({
+          table,
+          column,
+          value
+        });
+
+        if (
+          !selected ||
+          !validSelection ||
+          !user ||
+          column !== "user_id" ||
+          value !== user.id ||
+          !Object.prototype.hasOwnProperty.call(
+            TABLES, table
+          )
+        ) {
+
+          return {
+            data: null,
+            count: null,
+            error: {
+              message: "MOCK_READ_DENIED"
+            }
+          };
+        }
+
+        return {
+          data: null,
+          count: TABLES[table],
+          error: null
+        };
+      },
+
+      insert: rejectWrite,
+      update: rejectWrite,
+      upsert: rejectWrite,
+      delete: rejectWrite
+
+    };
+
+    return builder;
+  }
+
+  const client = Object.freeze({
+
+    auth: Object.freeze({
+
+      async getUser() {
+
+        audit.authReads++;
+
+        return {
+          data: {
+            user: identityError || !user
+              ? null
+              : { ...user }
+          },
+          error: identityError
+            ? { message: "MOCK_AUTH_ERROR" }
+            : null
+        };
+      },
+
+      async getSession() {
+
+        return {
+          data: { session: session() },
+          error: null
+        };
+      },
+
+      onAuthStateChange(callback) {
+
+        listeners.add(callback);
+
+        return {
+          data: {
+            subscription: {
+              unsubscribe() {
+                listeners.delete(callback);
+              }
+            }
+          }
+        };
+      }
+
+    }),
+
+    from: query,
+
+    rpc: rejectWrite,
+
+    functions: Object.freeze({
+      invoke: rejectWrite
+    })
+
+  });
+
+  window.worknelySupabase = client;
+
+  window.WorknelyLocalization = Object.freeze({
+    getLanguage() {
+      return language;
+    }
+  });
+
+  window.WorknelyDataExport = Object.freeze({
+
+    version: "7.21.3.3",
+
+    async prepareExport(options) {
+
+      audit.exportRequests++;
+
+      if (
+        !user ||
+        options?.consent !== true ||
+        options.expectedUserId !== user.id
+      ) {
+
+        return {
+          ok: false,
+          code: "MOCK_EXPORT_DENIED"
+        };
+      }
+
+      return {
+
+        ok: true,
+
+        filename: "mock-export.json",
+
+        size: 256,
+
+        counts: {
+          resumes: 2,
+          career_analyses: 4,
+          job_applications: 1
+        },
+
+        async download() {
+
+          audit.exportDownloads++;
+
+          return {
+            ok: true,
+            initiated: true
+          };
+        },
+
+        discard() {
+          audit.exportDiscards++;
+        }
+      };
+    },
+
+    translate(key) {
+      return key;
+    }
+
+  });
+
+  window.WorknelyAccountDeletionStatus =
+    Object.freeze({
+
+      version: "7.21.4.12.20",
+
+      clear() {},
+
+      translate(key) {
+        return "MOCK_DELETION_" + key;
+      },
+
+      async checkStatus(options) {
+
+        audit.deletionChecks++;
+
+        const verified = Boolean(
+          user &&
+          options?.expectedUserId === user.id
+        );
+
+        return {
+          verified,
+          securityLock: true,
+          deletionEnabled: false,
+          status: verified
+            ? "locked"
+            : "unavailable"
+        };
+      },
+
+      deleteAccount() {
+
+        audit.deletionRequests++;
+
+        throw new Error(
+          "ACCOUNT_DELETION_BLOCKED"
+        );
+      }
+
+    });
+
+  document.addEventListener(
+    "securitypolicyviolation",
+    event => {
+
+      if (
+        event.violatedDirective === "connect-src"
+      ) {
+
+        audit.networkViolations++;
+      }
+    }
+  );
+
+  function emit(event, nextUser) {
+
+    user = nextUser;
+
+    for (const callback of [...listeners]) {
+
+      callback(event, session());
+    }
+  }
+
+  window.WN_INTEGRATION_TEST =
+    Object.freeze({
+
+      A,
+      B,
+      TABLES,
+      audit,
+      client,
+      emit,
+
+      setUser(value) {
+        user = value;
+      },
+
+      setIdentityError(value) {
+        identityError = Boolean(value);
+      },
+
+      setLanguage(value) {
+
+        language = value;
+
+        document.dispatchEvent(
+          new CustomEvent(
+            "worknely:languagechange"
+          )
+        );
+      }
+
+    });
+
+})();
+</script>
+
+<script
+  src="./worknely-privacy-preferences.js?v=7.21.5.3">
+</script>
+
+<script
+  src="./worknely-privacy-preferences-ui.js?v=7.21.5.4">
+</script>
+
+<script
+  src="./worknely-privacy-center-v7.21.5.5.1.js?v=7.21.5.5.2">
+</script>
+
+<script>
+window.addEventListener("load", () => {
+
+  "use strict";
+
+  const $ = id =>
+    document.getElementById(id);
+
+  const test = window.WN_INTEGRATION_TEST;
+
+  const center =
+    window.WorknelyPrivacyCenter;
+
+  const preferences =
+    window.WorknelyPrivacyPreferencesUI;
+
+  const storage =
+    window.WorknelyPrivacyPreferences;
+
+  const fields = [
+    "analytics_consent",
+    "personalization_consent",
+    "marketing_consent"
+  ];
+
+  const languages = [
+    "en", "ro", "it", "de", "fr", "es"
+  ];
+
+  const results = [];
+
+  let running = false;
+
+  function root() {
+    return $("wnPrivacyCenter");
+  }
+
+  function state() {
+    return center.getState();
+  }
+
+  function uiState() {
+    return preferences.getState();
+  }
+
+  function host() {
+    return $("wnPrivacyPreferencesMount");
+  }
+
+  function switchFor(field) {
+
+    return $(
+      "wnPrivacyPreferencesUI-" + field
+    );
+  }
+
+  function buttonFor(label) {
+
+    return Array.from(
+      root()?.querySelectorAll("button") || []
+    ).find(
+      element =>
+        element.textContent.trim() === label
+    );
+  }
+
+  function cardByTitle(title) {
+
+    return Array.from(
+      root()?.querySelectorAll(".wnpc-card") || []
+    ).find(
+      element =>
+        element.querySelector("h3")
+          ?.textContent === title
+    );
+  }
+
+  function pause(ms = 80) {
+
+    return new Promise(
+      resolve => setTimeout(resolve, ms)
+    );
+  }
+
+  async function settle() {
+
+    await pause();
+
+    for (let i = 0; i < 100; i++) {
+
+      if (
+        !state().loading &&
+        !uiState().busy
+      ) {
+
+        await pause();
+
+        if (
+          !state().loading &&
+          !uiState().busy
+        ) {
+
+          return true;
+        }
+      }
+
+      await pause(30);
+    }
+
+    throw new Error("SETTLE_TIMEOUT");
+  }
+
+  function check(name, condition) {
+
+    const passed = condition === true;
+
+    results.push({
+      name,
+      passed
+    });
+
+    const row =
+      document.createElement("div");
+
+    row.className = "test";
+
+    const title =
+      document.createElement("span");
+
+    title.textContent = name;
+
+    const value =
+      document.createElement("strong");
+
+    value.className =
+      passed ? "pass" : "fail";
+
+    value.textContent =
+      passed ? "PASS" : "FAIL";
+
+    row.append(title, value);
+
+    $("results").appendChild(row);
+
+    return passed;
+  }
+
+  function requireCheck(name, condition) {
+
+    if (!check(name, condition)) {
+
+      throw new Error(name);
+    }
+  }
+
+  function finish() {
+
+    const passed = results.filter(
+      item => item.passed
+    ).length;
+
+    const total = results.length;
+
+    $("summary").textContent =
+      passed + "/" + total +
+      (passed === total
+        ? " PASS"
+        : " FAIL");
+
+    $("summary").className =
+      "result " +
+      (passed === total
+        ? "pass"
+        : "fail");
+
+    $("status").textContent =
+      "Database write attempts: " +
+      test.audit.writeAttempts +
+      " | Blocked network connections: " +
+      test.audit.networkViolations +
+      " | Account deletion requests: " +
+      test.audit.deletionRequests +
+      " | Real database tested: NO";
+  }
+
+  async function run() {
+
+    if (running) return;
+
+    running = true;
+
+    $("run").disabled = true;
+
+    $("summary").textContent =
+      "Running validation...";
+
+    $("results").replaceChildren();
+
+    results.length = 0;
+
+    try {
+
+      requireCheck(
+        "01 Privacy Center API loaded",
+        Boolean(center)
+      );
+
+      requireCheck(
+        "02 Correct candidate version",
+        center.version === "7.21.5.5.1"
+      );
+
+      requireCheck(
+        "03 Correct Preferences UI version",
+        preferences?.version === "7.21.5.4"
+      );
+
+      requireCheck(
+        "04 Correct storage engine version",
+        storage?.version === "7.21.5.3"
+      );
+
+      check(
+        "05 Immutable Privacy Center API",
+        Object.isFrozen(center)
+      );
+
+      check(
+        "06 Immutable Preferences UI API",
+        Object.isFrozen(preferences)
+      );
+
+      check(
+        "07 Immutable storage engine API",
+        Object.isFrozen(storage)
+      );
+
+      check(
+        "08 Simulated database client active",
+        window.worknelySupabase === test.client
+      );
+
+      check(
+        "09 Production Supabase SDK not loaded",
+        typeof window.supabase === "undefined"
+      );
+
+      check(
+        "10 Network access denied by CSP",
+        document.querySelector(
+          'meta[http-equiv="Content-Security-Policy"]'
+        )?.content.includes(
+          "connect-src 'none'"
+        ) === true
+      );
+
+      test.emit("SIGNED_OUT", null);
+
+      await settle();
+
+      requireCheck(
+        "11 Privacy Center mounted",
+        center.mount(
+          $("wnPrivacyCenterMount")
+        ) === true
+      );
+
+      await center.refresh();
+
+      check(
+        "12 Signed-out state",
+        state().authenticated === false
+      );
+
+      check(
+        "13 No preferences access while signed out",
+        state().preferencesAvailable === false
+      );
+
+      check(
+        "14 No preferences mount while signed out",
+        !host()
+      );
+
+      check(
+        "15 No private email displayed",
+        !root().querySelector(".wnpc-email")
+      );
+
+      check(
+        "16 Export unavailable while signed out",
+        state().exportAvailable === false
+      );
+
+      check(
+        "17 Account deletion disabled",
+        state().deletionEnabled === false
+      );
+
+      const self = center.selfTest();
+
+      check(
+        "18 Candidate internal self-test",
+        self.total > 0 &&
+        self.total === self.passed
+      );
+
+      check(
+        "19 Self-test does not claim live validation",
+        self.liveDatabaseTested === false
+      );
+
+      test.setUser(test.A);
+
+      requireCheck(
+        "20 Simulated account A refresh",
+        await center.refresh() === true
+      );
+
+      check(
+        "21 Account A authenticated",
+        state().authenticated === true
+      );
+
+      check(
+        "22 Account A email displayed",
+        root().querySelector(".wnpc-email")
+          ?.textContent === test.A.email
+      );
+
+      check(
+        "23 Preferences integration enabled",
+        state().preferencesEnabled === true
+      );
+
+      check(
+        "24 Preferences available",
+        state().preferencesAvailable === true
+      );
+
+      check(
+        "25 Correct integrated UI version",
+        state().preferencesInterfaceVersion ===
+          "7.21.5.4"
+      );
+
+      check(
+        "26 Preferences host created",
+        Boolean(host())
+      );
+
+      check(
+        "27 Actual Preferences UI mounted",
+        uiState().mounted === true
+      );
+
+      check(
+        "28 Single Preferences UI instance",
+        document.querySelectorAll(
+          "#wnPrivacyPreferencesUI"
+        ).length === 1
+      );
+
+      check(
+        "29 No automatic preference writes",
+        state().preferencesAutomaticWrites ===
+          false
+      );
+
+      check(
+        "30 No local private data storage",
+        state().localDataStorage === false
+      );
+
+      check(
+        "31 Preferences not automatically loaded",
+        uiState().loaded === false
+      );
+
+      check(
+        "32 Optional switches disabled before load",
+        fields.every(
+          field =>
+            switchFor(field)?.disabled === true
+        )
+      );
+
+      check(
+        "33 Optional switches initially off",
+        fields.every(
+          field =>
+            switchFor(field)?.checked === false
+        )
+      );
+
+      check(
+        "34 Explicit save disabled before load",
+        host()?.querySelector(
+          '[data-wnpp-action="save"]'
+        )?.disabled === true
+      );
+
+      check(
+        "35 Withdrawal disabled before load",
+        host()?.querySelector(
+          '[data-wnpp-action="withdraw"]'
+        )?.disabled === true
+      );
+
+      check(
+        "36 Explicit load control available",
+        host()?.querySelector(
+          '[data-wnpp-action="reload"]'
+        )?.disabled === false
+      );
+
+      const inventory =
+        cardByTitle("Data Inventory");
+
+      const values = Array.from(
+        inventory?.querySelectorAll(
+          ".wnpc-value"
+        ) || []
+      ).map(
+        item => item.textContent
+      );
+
+      check(
+        "37 Resume inventory preserved",
+        values[0] === "2"
+      );
+
+      check(
+        "38 Career inventory preserved",
+        values[1] === "4"
+      );
+
+      check(
+        "39 Job inventory preserved",
+        values[2] === "1"
+      );
+
+      check(
+        "40 Inventory queries scoped to account A",
+        test.audit.reads.length >= 3 &&
+        test.audit.reads.every(
+          item =>
+            item.column === "user_id" &&
+            item.value === test.A.id
+        )
+      );
+
+      check(
+        "41 Export integration preserved",
+        state().exportAvailable === true
+      );
+
+      check(
+        "42 Privacy Policy card preserved",
+        Boolean(cardByTitle("Privacy Policy"))
+      );
+
+      check(
+        "43 Terms of Service card preserved",
+        Boolean(cardByTitle("Terms of Service"))
+      );
+
+      check(
+        "44 Delete Account card preserved",
+        Boolean(cardByTitle("Delete My Account"))
+      );
+
+      check(
+        "45 Permanent deletion action disabled",
+        buttonFor("MOCK_DELETION_disabled")
+          ?.disabled === true
+      );
+
+      const exportButton =
+        buttonFor("Request Data Export");
+
+      requireCheck(
+        "46 Existing export request control",
+        Boolean(exportButton) &&
+          !exportButton.disabled
+      );
+
+      exportButton.click();
+
+      check(
+        "47 Export confirmation required",
+        state().exportStage === "confirm"
+      );
+
+      check(
+        "48 No export before confirmation",
+        test.audit.exportRequests === 0
+      );
+
+      const cancelButton =
+        buttonFor("Cancel");
+
+      requireCheck(
+        "49 Export cancellation control present",
+        Boolean(cancelButton)
+      );
+
+      cancelButton.click();
+
+      check(
+        "50 Export cancellation resets stage",
+        state().exportStage === "idle"
+      );
+
+      check(
+        "51 Preferences remounted after export UI",
+        uiState().mounted === true &&
+        document.querySelectorAll(
+          "#wnPrivacyPreferencesUI"
+        ).length === 1
+      );
+
+      buttonFor("Request Data Export")?.click();
+
+      buttonFor(
+        "Confirm & Prepare Export"
+      )?.click();
+
+      await settle();
+
+      check(
+        "52 Simulated export preparation",
+        state().exportStage === "ready" &&
+        test.audit.exportRequests === 1
+      );
+
+      check(
+        "53 Simulated export download available",
+        Boolean(
+          buttonFor("Download My Data")
+        )
+      );
+
+      buttonFor("Download My Data")?.click();
+
+      await settle();
+
+      check(
+        "54 Simulated export download completed",
+        state().exportStage === "done" &&
+        test.audit.exportDownloads === 1
+      );
+
+      check(
+        "55 Simulated export discarded",
+        test.audit.exportDiscards >= 1
+      );
+
+      const statusButton =
+        buttonFor("MOCK_DELETION_check");
+
+      requireCheck(
+        "56 Read-only deletion status control",
+        Boolean(statusButton) &&
+        !statusButton.disabled
+      );
+
+      statusButton.click();
+
+      await settle();
+
+      check(
+        "57 Simulated security lock verified",
+        root().textContent.includes(
+          "MOCK_DELETION_locked"
+        ) &&
+        test.audit.deletionChecks === 1
+      );
+
+      check(
+        "58 Deletion remains disabled",
+        state().deletionEnabled === false
+      );
+
+      let number = 59;
+
+      for (const lang of languages) {
+
+        test.setLanguage(lang);
+
+        check(
+          String(number++) +
+          " Privacy Center language: " + lang,
+          state().language === lang &&
+          root().lang === lang
+        );
+
+        check(
+          String(number++) +
+          " Preferences UI language: " + lang,
+          uiState().language === lang &&
+          uiState().mounted === true
+        );
+
+      }
+
+      test.setLanguage("en");
+
+      check(
+        "71 Six supported languages preserved",
+        state().supportedLanguages.length === 6 &&
+        languages.every(
+          lang =>
+            state().supportedLanguages.includes(lang)
+        )
+      );
+
+      const offset =
+        test.audit.reads.length;
+
+      test.emit("SIGNED_IN", test.B);
+
+      await settle();
+
+      check(
+        "72 Previous account email removed",
+        !root().textContent.includes(
+          test.A.email
+        )
+      );
+
+      check(
+        "73 Account B visible after identity change",
+        root().querySelector(".wnpc-email")
+          ?.textContent === test.B.email
+      );
+
+      const newReads =
+        test.audit.reads.slice(offset);
+
+      check(
+        "74 New inventory queries scoped to B",
+        newReads.length >= 3 &&
+        newReads.every(
+          item => item.value === test.B.id
+        )
+      );
+
+      check(
+        "75 Preferences state reset for account B",
+        uiState().mounted === true &&
+        uiState().loaded === false &&
+        uiState().dirty === false
+      );
+
+      test.emit(
+        "PASSWORD_RECOVERY",
+        test.B
+      );
+
+      await settle();
+
+      check(
+        "76 Recovery mode recognized",
+        state().recoveryMode === true
+      );
+
+      check(
+        "77 Preferences blocked during recovery",
+        state().preferencesAvailable === false &&
+        !host()
+      );
+
+      check(
+        "78 Export blocked during recovery",
+        state().exportAvailable === false
+      );
+
+      check(
+        "79 Private email removed during recovery",
+        !root().querySelector(".wnpc-email")
+      );
+
+      test.emit("SIGNED_OUT", null);
+
+      await settle();
+
+      check(
+        "80 Signed-out recovery state reset",
+        state().recoveryMode === false &&
+        state().authenticated === false
+      );
+
+      test.setUser(test.A);
+
+      await center.refresh();
+
+      test.setIdentityError(true);
+
+      const failedRefresh =
+        await center.refresh();
+
+      check(
+        "81 Identity failure rejected",
+        failedRefresh === false &&
+        state().authenticated === false
+      );
+
+      check(
+        "82 Preferences hidden on identity failure",
+        state().preferencesAvailable === false &&
+        !host()
+      );
+
+      test.setIdentityError(false);
+
+      await center.refresh();
+
+      const savedUI =
+        window.WorknelyPrivacyPreferencesUI;
+
+      window.WorknelyPrivacyPreferencesUI =
+        Object.freeze({
+          version: "INCOMPATIBLE"
+        });
+
+      document.dispatchEvent(
+        new CustomEvent(
+          "worknely:privacypreferencesuiready"
+        )
+      );
+
+      check(
+        "83 Incompatible UI version rejected",
+        state().preferencesEnabled === false &&
+        !host()
+      );
+
+      window.WorknelyPrivacyPreferencesUI =
+        savedUI;
+
+      document.dispatchEvent(
+        new CustomEvent(
+          "worknely:privacypreferencesuiready"
+        )
+      );
+
+      check(
+        "84 Compatible UI restored",
+        state().preferencesEnabled === true &&
+        Boolean(host())
+      );
+
+      center.clear();
+
+      check(
+        "85 Clearing removes private account data",
+        state().authenticated === false &&
+        !root().querySelector(".wnpc-email")
+      );
+
+      check(
+        "86 Clearing destroys Preferences UI",
+        uiState().mounted === false &&
+        !host()
+      );
+
+      test.emit("SIGNED_OUT", null);
+
+      await settle();
+
+      check(
+        "87 Final signed-out state",
+        state().authenticated === false &&
+        state().preferencesAvailable === false
+      );
+
+      check(
+        "88 No database write attempts",
+        test.audit.writeAttempts === 0
+      );
+
+      check(
+        "89 No blocked network connection attempts",
+        test.audit.networkViolations === 0
+      );
+
+      check(
+        "90 No account deletion requests",
+        test.audit.deletionRequests === 0
+      );
+
+    } catch (error) {
+
+      check(
+        "Validation interrupted: " +
+        String(error?.message || "UNKNOWN"),
+        false
+      );
+
+    } finally {
+
+      try {
+
+        test.setIdentityError(false);
+
+        test.emit("SIGNED_OUT", null);
+
+        preferences?.destroy();
+
+        storage?.clear();
+
+        center?.clear();
+
+      } catch {
+
+        check(
+          "Final environment cleanup",
+          false
+        );
+      }
+
+      if (test) {
+
+        finish();
+
+      } else {
+
+        $("summary").textContent =
+          "ENVIRONMENT UNAVAILABLE";
+      }
+
+      running = false;
+
+      $("run").disabled = true;
+
+      $("run").textContent =
+        "Validation completed — reload to repeat";
+    }
+  }
+
+  $("run").addEventListener("click", run);
+
+  if (
+    !test ||
+    !center ||
+    !preferences ||
+    !storage
+  ) {
+
+    $("summary").textContent =
+      "MODULE LOAD FAILED";
+
+    $("summary").className =
+      "result fail";
+
+    $("status").textContent =
+      "Check repository file names and " +
+      "GitHub Pages deployment.";
+
+    return;
+  }
+
+  $("summary").textContent =
+    "Ready";
+
+  $("status").textContent =
+    "Modules loaded. Isolated test environment ready.";
+
+  $("run").disabled = false;
+
+}, { once: true });
+</script>
+
+</body>
+</html>
