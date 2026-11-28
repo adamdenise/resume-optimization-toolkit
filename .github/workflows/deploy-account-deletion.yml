@@ -1,3 +1,4 @@
+
 name: Worknely Account Deletion Backend
 
 on:
@@ -26,12 +27,50 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Validate backend source
+      - name: Validate restricted backend source
+        shell: bash
         run: |
-          test -s supabase/functions/worknely-delete-account/index.ts
-          grep -Fq 'const DELETION_ENABLED = false;' \
-            supabase/functions/worknely-delete-account/index.ts
-          echo "Backend safety lock verified."
+          set -euo pipefail
+
+          SOURCE="supabase/functions/worknely-delete-account/index.ts"
+
+          test -s "$SOURCE"
+
+          grep -Fq 'const VERSION = "7.21.4.9.4";' "$SOURCE"
+
+          grep -Fq 'const DELETION_ENABLED = true;' "$SOURCE"
+
+          grep -Fq 'const TEST_ACCOUNT_UID = "003e6e99-3d61-4685-ad8e-3b6abe608f74";' "$SOURCE"
+
+          grep -Fq 'if (userId !== TEST_ACCOUNT_UID)' "$SOURCE"
+
+          grep -Fq 'code: "TEST_ACCOUNT_ONLY"' "$SOURCE"
+
+          grep -Fq 'const userId = data.user.id;' "$SOURCE"
+
+          grep -Fq 'verification.data.user?.id !== userId' "$SOURCE"
+
+          grep -Fq 'await admin.auth.admin.deleteUser(' "$SOURCE"
+
+          python3 - <<'PY'
+          from pathlib import Path
+
+          source = Path(
+              "supabase/functions/worknely-delete-account/index.ts"
+          ).read_text()
+
+          guard = "if (userId !== TEST_ACCOUNT_UID)"
+          deletion = "await admin.auth.admin.deleteUser("
+
+          assert source.count(guard) == 1
+          assert source.count(deletion) == 1
+          assert source.index(guard) < source.index(deletion)
+
+          print("Restricted deletion guard found before deletion call.")
+          PY
+
+          echo "Backend source checks passed."
+          echo "Restricted test account mode detected."
 
       - name: Validate deployment token
         run: |
@@ -59,19 +98,29 @@ jobs:
       - name: Prepare deployment source
         run: |
           test ! -e supabase/functions/dynamic-task
+
           cp -R \
             supabase/functions/worknely-delete-account \
             supabase/functions/dynamic-task
 
           test -s supabase/functions/dynamic-task/index.ts
 
+          cmp \
+            supabase/functions/worknely-delete-account/index.ts \
+            supabase/functions/dynamic-task/index.ts
+
+          echo "Deployment source verified."
+
       - name: Configure JWT verification
         run: |
           mkdir -p supabase
+
           printf 'project_id = "worknely"\n\n[functions.dynamic-task]\nverify_jwt = true\n' \
             > supabase/config.toml
 
-      - name: Deploy secure Worknely backend
+          echo "JWT verification enabled."
+
+      - name: Deploy restricted Worknely backend
         run: |
           supabase functions deploy dynamic-task \
             --project-ref "$SUPABASE_PROJECT_ID" \
@@ -85,9 +134,9 @@ jobs:
       - name: Deployment completed
         run: |
           echo "Worknely backend deployment completed."
-          echo "Backend version: 7.21.4.4"
-          echo "Deployment release: 7.21.4.6.2"
+          echo "Backend version: 7.21.4.9.4"
+          echo "Deployment release: 7.21.4.9.5"
           echo "Supabase CLI: 3.4.0"
           echo "Target slug: dynamic-task"
-          echo "Account deletion remains disabled."
-          echo "Mode: Supabase CLI"
+          echo "Mode: Restricted account deletion test"
+          echo "Runtime security validation still required."
